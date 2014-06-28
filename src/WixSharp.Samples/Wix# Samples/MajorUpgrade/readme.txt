@@ -1,0 +1,2 @@
+This sample demonstrates how to implement MajorUpgrade deployment scenario.
+Execute corresponding .cmd file to build msi files for two versions of the same product. Then execute the setup.1.msi to start the installation of the version 1.0.0. Aftere that Then execute the setup.2.msi. Note installation of version 2.0.0 will automatically uninstall version 1.0.0 

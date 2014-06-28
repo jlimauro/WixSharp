@@ -1,0 +1,40 @@
+//css_ref ..\..\WixSharp.dll;
+//css_ref System.Core.dll;
+//css_ref ..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
+
+using System;
+using System.Windows.Forms;
+using Microsoft.Deployment.WindowsInstaller;
+using WixSharp;
+
+internal class Script
+{
+    static public void Main()
+    {
+        var project = new Project("Setup",
+                new PropertyRef("NETFRAMEWORK20"),
+                new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_BeingRemoved));
+
+        project.WixExtensions.Add("WiXNetFxExtension");
+        project.WixNamespaces.Add("netfx=\"http://schemas.microsoft.com/wix/NetFxExtension\"");
+
+        Compiler.BuildMsi(project);
+    }
+}
+
+public class CustomActions
+{
+    [CustomAction]
+    public static ActionResult MyAction(Session session)
+    {
+        try
+        {
+            MessageBox.Show(session["NETFRAMEWORK20"], "");
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show(e.ToString(), "Error");
+        }
+        return ActionResult.Success;
+    }
+}

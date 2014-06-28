@@ -1,0 +1,7 @@
+E:\Galos\Projects\WixSharp\src\WixSharp\bin\Debug\WixSharp.XML
+E:\Galos\Projects\WixSharp\src\WixSharp\bin\Debug\WixSharp.dll
+E:\Galos\Projects\WixSharp\src\WixSharp\bin\Debug\WixSharp.pdb
+E:\Galos\Projects\WixSharp\src\WixSharp\bin\Debug\Microsoft.Deployment.WindowsInstaller.dll
+E:\Galos\Projects\WixSharp\src\WixSharp\bin\Debug\Microsoft.Deployment.WindowsInstaller.xml
+E:\Galos\Projects\WixSharp\src\WixSharp\obj\Debug\WixSharp.dll
+E:\Galos\Projects\WixSharp\src\WixSharp\obj\Debug\WixSharp.pdb

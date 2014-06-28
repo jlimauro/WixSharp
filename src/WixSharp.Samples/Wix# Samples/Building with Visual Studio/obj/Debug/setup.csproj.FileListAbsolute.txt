@@ -1,0 +1,7 @@
+E:\Galos\Projects\WixSharp\Main\WixSharp.Samples\Wix# Samples\Building with Visual Studio\bin\Debug\setup.exe
+E:\Galos\Projects\WixSharp\Main\WixSharp.Samples\Wix# Samples\Building with Visual Studio\bin\Debug\setup.pdb
+E:\Galos\Projects\WixSharp\Main\WixSharp.Samples\Wix# Samples\Building with Visual Studio\bin\Debug\WixSharp.dll
+E:\Galos\Projects\WixSharp\Main\WixSharp.Samples\Wix# Samples\Building with Visual Studio\bin\Debug\WixSharp.xml
+E:\Galos\Projects\WixSharp\Main\WixSharp.Samples\Wix# Samples\Building with Visual Studio\obj\Debug\ResolveAssemblyReference.cache
+E:\Galos\Projects\WixSharp\Main\WixSharp.Samples\Wix# Samples\Building with Visual Studio\obj\Debug\setup.exe
+E:\Galos\Projects\WixSharp\Main\WixSharp.Samples\Wix# Samples\Building with Visual Studio\obj\Debug\setup.pdb
