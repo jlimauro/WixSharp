@@ -18,25 +18,6 @@ class Script
 
         Compiler.BuildMsi(project);
     }
-
-    static public void AlternativeSyntax()
-    {
-        Project project =
-            new Project("MyProduct",
-                new Dir {
-                    Id = "PRODUCT_INSTALLDIR",
-                    Name = @"%ProgramFiles%\My Company\My Product",
-                    
-                    Files = new[] { new File { Id = "App_File", Name = @"Files\Bin\MyApp.exe" } },
-
-                    Dirs = new[] { new Dir { 
-                                        Name = @"Docs\Manual",
-                                        Files = new[] { new File { Id="Manual_File", Name=@"Files\Docs\Manual.txt" } } } } });
-
-        project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
-
-        Compiler.BuildMsi(project);
-    }
 }
 
 

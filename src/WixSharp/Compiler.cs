@@ -1268,7 +1268,7 @@ namespace WixSharp
             {
                 Dir firstDirWithItems = wDirs.First();
 
-                string logicalPath = firstDirWithItems.Name;
+                string logicalPath = firstDirWithItems.Name;//.Expand();
                 while (firstDirWithItems.Shortcuts.Count() == 0 &&
                        firstDirWithItems.Dirs.Count() != 0 &&
                        firstDirWithItems.Files.Count() == 0)

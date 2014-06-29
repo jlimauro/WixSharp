@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingStyles_Initializers",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingStyles_Traditional", "WixSharp.Samples\VSProjects\CodingStyles_Traditional.csproj", "{CE7A8B8F-6C6E-4B1D-9869-44FC2B750FA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingStyles_XDocumant", "WixSharp.Samples\VSProjects\CodingStyles_XDocumant.csproj", "{5334F852-7F7D-4210-A0E4-159BBD00669E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingStyles_XDocument", "WixSharp.Samples\VSProjects\CodingStyles_XDocument.csproj", "{5334F852-7F7D-4210-A0E4-159BBD00669E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conditional Installation", "WixSharp.Samples\VSProjects\Conditional Installation.csproj", "{A68C886D-D99A-4922-8552-0A5B304DF0F5}"
 EndProject
