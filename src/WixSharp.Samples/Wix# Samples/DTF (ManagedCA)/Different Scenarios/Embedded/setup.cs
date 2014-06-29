@@ -21,7 +21,7 @@ class Script
                 new ManagedAction(@"MyAction", "%this%")
             }
         };
-       
+
         Compiler.BuildMsi(project);
     }
 }
