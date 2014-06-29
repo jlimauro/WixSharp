@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -36,26 +37,36 @@ using IO = System.IO;
 
 namespace WixSharp
 {
-	internal class Utils
-	{
-		//fix for unexpected behavior: System.IO.Path.Combine(@"C:\Test", @"\Docs\readme.txt") return @"\Docs\readme.txt";
-		internal static string PathCombine(string path1, string path2)
-		{
-			if (path2.Length == 0)
-			{
-				return path1;
-			}
-			else if (path2.Length == 1 && path2[0] == IO.Path.DirectorySeparatorChar)
-			{
-				return path1;
-			}
-			else if (path2[0] == IO.Path.DirectorySeparatorChar)
-			{
-				if (path2[0] != path2[1])
-					return IO.Path.Combine(path1, path2.Substring(1));
-			}
+    internal class Utils
+    {
+        //fix for unexpected behaviour: System.IO.Path.Combine(@"C:\Test", @"\Docs\readme.txt") return @"\Docs\readme.txt";
+        internal static string PathCombine(string path1, string path2)
+        {
+            if (path2.Length == 0)
+            {
+                return path1;
+            }
+            else if (path2.Length == 1 && path2[0] == IO.Path.DirectorySeparatorChar)
+            {
+                return path1;
+            }
+            else if (path2[0] == IO.Path.DirectorySeparatorChar)
+            {
+                if (path2[0] != path2[1])
+                    return IO.Path.Combine(path1, path2.Substring(1));
+            }
 
-			return IO.Path.Combine(path1, path2);
-		}
-	}
+            return IO.Path.Combine(path1, path2);
+        }
+
+        internal static string[] AllConstStringValues<T>()
+        {
+            var fields = typeof(T).GetFields()
+                                  .Where(f => f.IsStatic && f.IsPublic && f.IsLiteral && f.FieldType == typeof(string))
+                                  .Select(f=>f.GetValue(null) as string)
+                                  .ToArray();
+
+            return fields;
+        }
+    }
 }

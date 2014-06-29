@@ -41,12 +41,12 @@ namespace WixSharp
     /// target system such assembly needs to be listed in the <see cref="ManagedAction.RefAssemblies"/>.
     /// </para>
     /// <remarks>
-    /// <see cref="ManagedAction"/> often needs to be executed with the elevated privilages. Thus after instntiation it will have 
+    /// <see cref="ManagedAction"/> often needs to be executed with the elevated privileges. Thus after instantiation it will have 
     /// <see cref="Action.Impersonate"/> set to <c>false</c> and <see cref="Action.Execute"/> set to <c>Execute.deferred</c> to allow elevating.
     /// </remarks>
     /// </summary>
     /// <example>The following is an example of using <c>MyManagedAction</c> method of the class 
-    /// <c>CustonActions</c> as a Managed CustomAction.
+    /// <c>CustomActions</c> as a Managed CustomAction.
     /// <code>
     /// class Script
     /// {
@@ -71,7 +71,7 @@ namespace WixSharp
     ///     }
     /// }
     /// 
-    /// public class CustonActions
+    /// public class CustomActions
     /// {
     ///     [CustomAction]
     ///     public static ActionResult MyManagedAction(Session session)

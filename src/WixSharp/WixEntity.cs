@@ -157,7 +157,7 @@ namespace WixSharp
             {
                 var attrToAdd = new Dictionary<string, string>();
 
-                foreach (string attrDef in AttributesDefinition.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
+                foreach (string attrDef in AttributesDefinition.Trim().Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
                 {
                     try
                     {

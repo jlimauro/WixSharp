@@ -54,7 +54,7 @@ namespace WixSharp
     ///
     /// ...
     ///
-    /// public class CustonActions
+    /// public class CustomActions
     ///{
     ///    [CustomAction]
     ///    public static ActionResult MyAction(Session session)

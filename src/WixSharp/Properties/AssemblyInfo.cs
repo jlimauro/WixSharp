@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WixSharp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Oleg Shilo")]
 [assembly: AssemblyProduct("WixSharp")]
-[assembly: AssemblyCopyright("Copyright 2008-2009")]
+[assembly: AssemblyCopyright("Copyright Oleg Shilo 2008-20013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.1.42.0")]
-[assembly: AssemblyFileVersion("0.1.42.0")]
+[assembly: AssemblyVersion("0.1.43.0")]
+[assembly: AssemblyFileVersion("0.1.43.0")]

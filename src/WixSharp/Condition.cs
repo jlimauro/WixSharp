@@ -85,6 +85,16 @@ namespace WixSharp
         }
 
         /// <summary>
+        /// Type casts the <see cref="T:WixSharo.Condition"/> into string object.
+        /// </summary>
+        /// <param name="obj">The obj.</param>
+        /// <returns></returns>
+        public static implicit operator string(Condition obj)
+        {
+            return obj.ToString();
+        }
+
+        /// <summary>
         ///  Returns the WiX <c>Condition</c> as a <see cref="T:System.Xml.Linq.XCData"/>.
         ///  <remarks> Normally <c>Condition</c> is not designed to be parsed by the XML parser thus it should be embedded as CDATA</remarks>
         /// <code>

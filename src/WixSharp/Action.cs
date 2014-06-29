@@ -53,7 +53,7 @@ namespace WixSharp
     {
         /// <summary>
         /// Global counter, which is used as suffix for the automatically generated action name. This counter is used by
-        /// Wix# engine to avoid naming collision and indicate <c>CustonActions</c> declaration order.
+        /// Wix# engine to avoid naming collision and indicate <c>CustomActions</c> declaration order.
         /// </summary>
         protected static int count = 0;
         /// <summary>

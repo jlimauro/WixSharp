@@ -457,14 +457,34 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Converts <see cref="T:WixSharp.Sequence"/> into the WiX identifier by removing WiX illegal characters.
+        /// </summary>
+        /// <param name="value">The <see cref="T:WixSharp.Sequence"/> value.</param>
+        /// <returns>Valid WiX identifier.</returns>
         internal static string ToWString(this Sequence value)
         {
             return value.ToString().Replace(" ", "_");
         }
 
+        /// <summary>
+        /// Converts the string into the WiX identifier by removing WiX illegal characters.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>Valid WiX identifier.</returns>
         internal static string ToWString(this string value)
         {
             return value.Replace(" ", "_");
+        }
+
+        /// <summary>
+        /// Converts the string into the <see cref="T:WixSharp.Condition"/> instance.
+        /// </summary>
+        /// <param name="value">The string value.</param>
+        /// <returns><see cref="T:WixSharp.Condition"/> instance</returns>
+        public static Condition ToCondition(this string value)
+        {
+            return Condition.Create(value);
         }
 
         /// <summary>

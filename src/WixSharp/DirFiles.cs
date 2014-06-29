@@ -38,7 +38,7 @@ namespace WixSharp
     /// Use this class to define files to be automatically included into the deployment solution
     /// if they name complain with specified wildcard character pattern (<see cref="DirFiles.IncludeMask"/>).
     /// </para>
-    /// 	<para>
+    ///     <para>
     /// You can use <see cref="DirFiles.ExcludeMasks"/> if it is required to exclude certain files from
     /// being included into setup.
     /// </para>

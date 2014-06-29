@@ -245,6 +245,13 @@ namespace WixSharp
         /// If specified <see cref="WUI.WixUI_Minimal"/> will used.
         /// </summary>
         public WUI UI = WUI.WixUI_Minimal;
+
+        /// <summary>
+        /// The custom UI definition. Use CustomUIBuilder to generate the WiX UI definition or compose 
+        /// <see cref="WixSharp.CustomUI"/> manually.
+        /// </summary>
+        public CustomUI CustomUI = null;
+
         /// <summary>
         /// This is the value of the <c>UpgradeCode</c> attribute of the Wix <c>Product</c> element. 
         /// <para>Both WiX and MSI consider this element as optional even it is the only available identifier 
@@ -347,6 +354,12 @@ namespace WixSharp
                 ProductId = CalculateProductId(guid.Value, Version);
         }
 
+        /// <summary>
+        /// Calculates the product id.
+        /// </summary>
+        /// <param name="productGuid">The product GUID.</param>
+        /// <param name="version">The version.</param>
+        /// <returns></returns>
         public static Guid CalculateProductId(Guid productGuid, Version version)
         {
             return WixGuid.HashGuidByInteger(productGuid, version.GetHashCode() + 1);
@@ -383,12 +396,12 @@ namespace WixSharp
         public Binary[] Binaries = new Binary[0];
 
         /// <summary>
-        /// Collection of pathes to the custom assemblies referenced by <see cref="ManagedAction"/>s.
+        /// Collection of paths to the custom assemblies referenced by <see cref="ManagedAction"/>s.
         /// </summary>
-        [Obsolete("WixRefAssemblies is a depricated. Use WixExtensions instead.")]
+        [Obsolete("WixRefAssemblies is a deprecated. Use WixExtensions instead.")]
         public List<string> WixRefAssemblies { get { return WixExtensions; } set { WixExtensions = value; } }
         /// <summary>
-        /// Collection of pathes to the WiX extensions. 
+        /// Collection of paths to the WiX extensions. 
         /// <para>The items from this collection will be passed to the Candle/Light compiler as commend lien parameters.</para>
         /// </summary>
         public List<string> WixExtensions = new List<string>();
