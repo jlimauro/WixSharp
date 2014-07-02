@@ -4,6 +4,14 @@
         <name>Microsoft.Deployment.Resources</name>
     </assembly>
     <members>
+        <member name="T:Microsoft.Deployment.Resources.BitmapResource">
+            <summary>
+            A subclass of Resource which provides specific methods for manipulating the resource data.
+            </summary>
+            <remarks>
+            The resource is of type <see cref="P:Microsoft.Deployment.Resources.ResourceType.Bitmap"/> (RT_GROUPICON).
+            </remarks>
+        </member>
         <member name="T:Microsoft.Deployment.Resources.Resource">
             <summary>
             Represents a Win32 resource which can be loaded from and saved to a PE file.
@@ -70,6 +78,66 @@
         <member name="P:Microsoft.Deployment.Resources.Resource.Data">
             <summary>
             Gets or sets the raw data of the resource.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Deployment.Resources.BitmapResource.#ctor(System.String,System.Int32)">
+            <summary>
+            Creates a new BitmapResource object without any data. The data can be later loaded from a file.
+            </summary>
+            <param name="name">Name of the resource. For a numeric resource identifier, prefix the decimal number with a "#".</param>
+            <param name="locale">Locale of the resource</param>
+        </member>
+        <member name="M:Microsoft.Deployment.Resources.BitmapResource.#ctor(System.String,System.Int32,System.Byte[])">
+            <summary>
+            Creates a new BitmapResource object with data. The data can be later saved to a file.
+            </summary>
+            <param name="name">Name of the resource. For a numeric resource identifier, prefix the decimal number with a "#".</param>
+            <param name="locale">Locale of the resource</param>
+            <param name="data">Raw resource data</param>
+        </member>
+        <member name="M:Microsoft.Deployment.Resources.BitmapResource.ReadFromFile(System.String)">
+            <summary>
+            Reads the bitmap from a .bmp file.
+            </summary>
+            <param name="path">Path to a bitmap file (.bmp).</param>
+        </member>
+        <member name="T:Microsoft.Deployment.Resources.GroupIconResource">
+            <summary>
+            A subclass of Resource which provides specific methods for manipulating the resource data.
+            </summary>
+            <remarks>
+            The resource is of type <see cref="P:Microsoft.Deployment.Resources.ResourceType.GroupIcon"/> (RT_GROUPICON).
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Deployment.Resources.GroupIconResource.#ctor(System.String,System.Int32)">
+            <summary>
+            Creates a new GroupIconResource object without any data. The data can be later loaded from a file.
+            </summary>
+            <param name="name">Name of the resource. For a numeric resource identifier, prefix the decimal number with a "#".</param>
+            <param name="locale">Locale of the resource</param>
+        </member>
+        <member name="M:Microsoft.Deployment.Resources.GroupIconResource.#ctor(System.String,System.Int32,System.Byte[])">
+            <summary>
+            Creates a new GroupIconResource object with data. The data can be later saved to a file.
+            </summary>
+            <param name="name">Name of the resource. For a numeric resource identifier, prefix the decimal number with a "#".</param>
+            <param name="locale">Locale of the resource</param>
+            <param name="data">Raw resource data</param>
+        </member>
+        <member name="M:Microsoft.Deployment.Resources.GroupIconResource.ReadFromFile(System.String)">
+            <summary>
+            Reads the icon group from a .ico file.
+            </summary>
+            <param name="path">Path to an icon file (.ico).</param>
+        </member>
+        <member name="P:Microsoft.Deployment.Resources.GroupIconResource.Data">
+            <summary>
+            Gets or sets the raw data of the resource.  The data is in the format of the RT_GROUPICON resource structure.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Deployment.Resources.GroupIconResource.Icons">
+            <summary>
+            Enumerates the the icons in the icon group.
             </summary>
         </member>
         <member name="T:Microsoft.Deployment.Resources.ResourceCollection">
@@ -437,6 +505,31 @@
         <member name="P:Microsoft.Deployment.Resources.VersionStringTable.Count">
             <summary>
             Gets the number of strings in the table.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Tools.WindowsInstallerXml.WixDistribution">
+            <summary>
+            Distribution specific strings.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Tools.WindowsInstallerXml.WixDistribution.NewsUrl">
+            <summary>
+            News URL for the distribution.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Tools.WindowsInstallerXml.WixDistribution.ShortProduct">
+            <summary>
+            Short product name for the distribution.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Tools.WindowsInstallerXml.WixDistribution.SupportUrl">
+            <summary>
+            Support URL for the distribution.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Tools.WindowsInstallerXml.WixDistribution.TelemetryUrlFormat">
+            <summary>
+            Telemetry URL format for the distribution.
             </summary>
         </member>
     </members>

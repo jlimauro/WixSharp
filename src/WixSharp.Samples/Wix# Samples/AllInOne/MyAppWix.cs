@@ -68,7 +68,7 @@ class Script
     }
 }
 
-public class CustonActions
+public class CustomActions
 {
     [CustomAction]
     public static ActionResult MyManagedAction(Session session)

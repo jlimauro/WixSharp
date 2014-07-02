@@ -250,7 +250,7 @@ namespace WixSharp
         /// The custom UI definition. Use CustomUIBuilder to generate the WiX UI definition or compose 
         /// <see cref="WixSharp.CustomUI"/> manually.
         /// </summary>
-        //public CustomUI CustomUI = null;
+        public CustomUI CustomUI = null;
 
         /// <summary>
         /// This is the value of the <c>UpgradeCode</c> attribute of the Wix <c>Product</c> element. 

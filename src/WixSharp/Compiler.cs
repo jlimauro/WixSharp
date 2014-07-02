@@ -184,6 +184,7 @@ namespace WixSharp
         /// <para>The default value is "-sw1076 -sw1079" (disable warning 1076 and 1079).</para>
         /// </summary>
         static public string LightOptions = "-sw1076 -sw1079";
+
         /// <summary>
         /// WiX compiler <c>Candle.exe</c> options.
         /// <para>The default value is "-sw1076" (disable warning 1026).</para>
@@ -211,16 +212,22 @@ namespace WixSharp
             {
                 if (wixLocation.IsEmpty())
                 {
-                    string programFilesDir = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-                    if ("".GetType().Assembly.Location.Contains("Framework64"))
-                        programFilesDir += " (x86)"; //for x64 systems
-
-                    var dir = Utils.PathCombine(programFilesDir, "Windows Installer XML v3\\bin");
+                    var dir = Environment.ExpandEnvironmentVariables("%WIX%\\bin");
 
                     if (!IO.Directory.Exists(dir))
-                        throw new Exception("Wix binaries cannot be found. Please set environment variable WIXSHARP_WIXDIR of WCompiler.WixLocation to valid path to the Wix binaries.");
+                    {
+                        string wixDir = IO.Directory.GetDirectories(Utils.ProgramFilesDirectory, "Windows Installer XML v3*")
+                                                    .OrderBy(x => x)
+                                                    .LastOrDefault();
 
-                    WixLocation = dir;
+                        if (!wixDir.IsEmpty())
+                            dir = Utils.PathCombine(wixDir, "bin");
+                    }
+
+                    if (!IO.Directory.Exists(dir))
+                        throw new Exception("WiX binaries cannot be found. Please set environment variable WIXSHARP_WIXDIR or WixSharp.Compiler.WixLocation to valid path to the Wix binaries.");
+
+                    wixLocation = dir;
                 }
 
                 return wixLocation;
@@ -229,6 +236,36 @@ namespace WixSharp
         }
 
         static string wixLocation = Environment.GetEnvironmentVariable("WIXSHARP_WIXDIR");
+
+        static string wixSdkLocation;
+        /// <summary>
+        /// Gets or sets the location WiX SDK binaries (e.g. MakeSfxCA.exe).
+        /// The default value is a 'SDK' sub-directory of WixSharp.Compiler.WixLocation directory.
+        /// <para>
+        /// If for whatever reason the default location is invalid you can always set this property to the location of your choice.
+        /// </para>
+        /// </summary>
+        /// <value>
+        /// The wix SDK location.
+        /// </value>
+        /// <exception cref="System.Exception">WiX SDK binaries cannot be found. Please set WixSharp.Compiler.WixSdkLocation to valid path to the Wix SDK binaries.</exception>
+        public static string WixSdkLocation
+        {
+            get
+            {
+                if (wixSdkLocation.IsEmpty())
+                    wixSdkLocation = IO.Path.GetFullPath(Utils.PathCombine(WixLocation, "..\\sdk"));
+
+                if (!IO.Directory.Exists(wixSdkLocation))
+                    throw new Exception("WiX SDK binaries cannot be found. Please set WixSharp.Compiler.WixSdkLocation to valid path to the Wix SDK binaries.");
+
+                return wixSdkLocation;
+            }
+            set
+            {
+                wixSdkLocation = value;
+            }
+        }
 
         /// <summary>
         /// Forces <see cref="Compiler"/> to preserve all temporary build files (e.g. *.wxs).
@@ -266,6 +303,9 @@ namespace WixSharp
 
         private static string Build(Project project, OutputType type)
         {
+            if (ClientAssembly.IsEmpty())
+                ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
             string outFile = IO.Path.GetFullPath(IO.Path.Combine(project.OutDir, project.OutFileName) + "." + type.ToString().ToLower());
 
             if (IO.File.Exists(outFile))
@@ -383,6 +423,8 @@ namespace WixSharp
         /// <returns>Path to the built MSI file.</returns>
         static public void BuildMsi(Project project, string path)
         {
+            if (ClientAssembly.IsEmpty())
+                ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
             Build(project, path, OutputType.MSI);
         }
 
@@ -414,9 +456,6 @@ namespace WixSharp
 
         private static void Build(Project project, string path, OutputType type)
         {
-            if (ClientAssembly.IsEmpty())
-                ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
-
             //System.Diagnostics.Debug.Assert(false);
             tempFiles.Clear();
             string compiler = Utils.PathCombine(WixLocation, @"candle.exe");
@@ -538,7 +577,7 @@ namespace WixSharp
         {
             XDocument doc = GenerateWixProj(project);
 
-            //IndjectCustomUI(project.CustomUI, doc);
+            IndjectCustomUI(project.CustomUI, doc);
             DefaultWixSourceGeneratedHandler(doc);
             AutoElements.InjectAutoElementsHandler(doc);
 
@@ -588,11 +627,11 @@ namespace WixSharp
             public override Encoding Encoding { get { return encoding; } }
         }
 
-        //static void IndjectCustomUI(CustomUI customUI, XDocument doc)
-        //{
-        //    if (customUI != null)
-        //        doc.Root.Select("Product").Add(customUI.ToXElement());
-        //}
+        static void IndjectCustomUI(CustomUI customUI, XDocument doc)
+        {
+            if (customUI != null)
+                doc.Root.Select("Product").Add(customUI.ToXElement());
+        }
         /// <summary>
         /// The default <see cref="Compiler.WixSourceGenerated"/> event handler.
         /// </summary>
@@ -819,6 +858,9 @@ namespace WixSharp
 
             if (!project.LicenceFile.IsEmpty())
             {
+                if (!AllowNonRtfLicense && !project.LicenceFile.EndsWith(".rtf", StringComparison.OrdinalIgnoreCase))
+                    throw new ApplicationException("License file must have 'rtf' file extension. Specify 'Compiler.AllowNonRtfLicense=true' to overcome this constrain.");
+
                 product.Add(
                        new XElement("WixVariable",
                        new XAttribute("Id", "WixUILicenseRtf"),
@@ -832,6 +874,11 @@ namespace WixSharp
 
             return doc;
         }
+
+        /// <summary>
+        /// Defines if license file can be have non RTF extension. 
+        /// </summary>
+        static public bool AllowNonRtfLicense = false;
 
         private static XElement GetTopLevelDir(XElement product)
         {
@@ -1532,16 +1579,20 @@ namespace WixSharp
                 {
                     var rvProp = (prop as RegValueProperty);
 
+                    XElement RegistrySearchElement;
                     product.Add(new XElement("Property",
                                     new XAttribute("Id", rvProp.Name),
                                     new XAttribute("Value", rvProp.Value),
-                                    new XElement("RegistrySearch",
+                                    RegistrySearchElement = new XElement("RegistrySearch",
                                         new XAttribute("Id", rvProp.Name + "_RegSearch"),
                                         new XAttribute("Root", rvProp.Root.ToWString()),
                                         new XAttribute("Key", rvProp.Key),
-                                        new XAttribute("Type", "raw"),
-                                        new XAttribute("Name", rvProp.EntryName)))
+                                        new XAttribute("Type", "raw")
+                                        ))
                                     .AddAttributes(rvProp.Attributes));
+
+                    if (rvProp.EntryName != "")
+                        RegistrySearchElement.Add(new XAttribute("Name", rvProp.EntryName));
                 }
                 else
                 {
@@ -1572,7 +1623,11 @@ namespace WixSharp
                 string step = wAction.Step.ToString();
 
                 if (wAction.When == When.After && wAction.Step == Step.PreviousAction)
+                {
+                    if (lastActionName == null)
+                        throw new Exception("Step.PreviousAction is specified for the very first 'Custom Action'.\nThere cannot be any previous action as it is the very first one in the sequence.");
                     step = lastActionName;
+                }
                 else if (wAction.When == When.After && wAction.Step == Step.PreviousActionOrInstallFinalize)
                     step = lastActionName ?? Step.InstallFinalize.ToString();
                 else if (wAction.When == When.After && wAction.Step == Step.PreviousActionOrInstallInitialize)
@@ -1758,6 +1813,13 @@ namespace WixSharp
         /// <see cref="Compiler"/> will set it to the caller of its <c>Build</c> method.</para>
         /// </summary>
         static public string ClientAssembly = null;
+        //static string clientAssembly;
+
+        //static public string ClientAssembly
+        //{
+        //    get { return clientAssembly; }
+        //    set { clientAssembly = value;  }
+        //}
 
         /// <summary>
         /// Falg indicating whether to include PDB file of the assembly implementing ManagedCustomAction into MSI.Default value is <c>false</c>.
@@ -1769,12 +1831,11 @@ namespace WixSharp
         {
             //Debug.Assert(false);
 
-            var dtfDir = Utils.PathCombine(IO.Path.GetDirectoryName(WixLocation), "SDK");
-            var makeSfxCA = Utils.PathCombine(dtfDir, @"MakeSfxCA.exe");
-            var sfxcaDll = Utils.PathCombine(dtfDir, @"x86\sfxca.dll");
+            var makeSfxCA = Utils.PathCombine(WixSdkLocation, @"MakeSfxCA.exe");
+            var sfxcaDll = Utils.PathCombine(WixSdkLocation, @"x86\sfxca.dll");
 
-            if ("".GetType().Assembly.Location.Contains("Framework64")) //x64 CLR
-                sfxcaDll = Utils.PathCombine(dtfDir, @"x64\sfxca.dll");
+            //if ("".GetType().Assembly.Location.Contains("Framework64")) //x64 CLR  //will lead to install failure on x86
+            //    sfxcaDll = Utils.PathCombine(WixSdkLocation, @"x64\sfxca.dll");
 
             var outDll = IO.Path.GetFullPath(nativeDll);
             var asmFile = IO.Path.GetFullPath(asm);
@@ -1782,7 +1843,7 @@ namespace WixSharp
             if (asm.EndsWith("%this%"))
             {
                 //restore the original assembly name as MakeSfxCA does not like renamed assemblies
-                asmFile = IO.Path.GetFullPath(System.Reflection.Assembly.LoadFrom(ClientAssembly).ManifestModule.ScopeName); 
+                asmFile = IO.Path.GetFullPath(System.Reflection.Assembly.LoadFrom(ClientAssembly).ManifestModule.ScopeName);
                 if (IO.Path.GetFullPath(ClientAssembly).ToLower() != IO.Path.GetFullPath(asmFile).ToLower())
                 {
                     IO.File.Copy(ClientAssembly, asmFile, true);
@@ -1816,18 +1877,17 @@ namespace WixSharp
 
             using (var writer = new IO.StreamWriter(configFile))
                 writer.Write(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-                                    <configuration>
-                                        <startup useLegacyV2RuntimeActivationPolicy=""true"">
-
-                                            <supportedRuntime version=""v" + Environment.Version.ToNoRevisionString() + @"""/>
-
-                                            <supportedRuntime version=""v4.0"" />
-
-                                            <supportedRuntime version=""v2.0.50727""/>
-                                            <supportedRuntime version=""v2.0.50215""/>
-                                            <supportedRuntime version=""v1.1.4322""/>
-                                        </startup>
-                                    </configuration>");
+                                                <configuration>
+                                                    <startup useLegacyV2RuntimeActivationPolicy=""true"">
+            
+                                                        <supportedRuntime version=""v" + Environment.Version.ToNoRevisionString() + @"""/>
+            
+                                                        <supportedRuntime version=""v4.0"" sku="".NETFramework,Version=v4.0""/>
+                                                        <supportedRuntime version=""v2.0.50727""/>
+                                                        <supportedRuntime version=""v2.0.50215""/>
+                                                        <supportedRuntime version=""v1.1.4322""/>
+                                                    </startup>
+                                                </configuration>");
 
             tempFiles.Add(configFile);
 
@@ -1844,7 +1904,7 @@ namespace WixSharp
                         "\"" + configFile + "\" " +
                         (pdbFileArgument ?? " ") +
                         referencedAssemblies +
-                        "\"" + Utils.PathCombine(dtfDir, "Microsoft.Deployment.WindowsInstaller.dll") + "\"";
+                        "\"" + Utils.PathCombine(WixSdkLocation, "Microsoft.Deployment.WindowsInstaller.dll") + "\"";
 #if DEBUG
             Console.WriteLine("<- Packing managed CA:");
             Console.WriteLine(makeSfxCA + " " + makeSfxCA_args);

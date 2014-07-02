@@ -16,19 +16,20 @@ class Script
             Name = "CustomActionTest",
 
             Actions = new WixSharp.Action[]{
+                            new SetPropertyAction("IDIR", "[INSTALLDIR]"),
                             new ManagedAction(@"MyAction")},
                             
+            Properties = new[] {
+                            new Property("IDIR", "empty") ,
+                            new Property("Test", "empty") },
+
             Dirs = new[] { 
-                            new Dir(@"%ProgramFiles%\CustomActionTest",
-                                        new File("readme.txt"))}
-            //Dirs = new[] { 
-            //                new Dir(@"%ProgramFiles%\CustomActionTest"){
-            //                        Files = new []{
-            //                            new File("readme.txt")}}}
+                            new Dir(@"%ProgramFiles%\CustomActionTest"){
+                                    Files = new []{
+                                        new File("readme.txt")}}}
         };
 
-        //Compiler.PreserveTempFiles = true;
-        Compiler.BuildMsi(project);
+        Compiler.BuildMsiCmd(project);
     }
 }
 
@@ -39,6 +40,7 @@ public class CustonActions
     {
         try
         {
+            MessageBox.Show(session["IDIR"], "InstallDir (INSTALLDIR copy)");
             MessageBox.Show(session["INSTALLDIR"], "InstallDir (actual INSTALLDIR)");
         }
         catch (Exception e)

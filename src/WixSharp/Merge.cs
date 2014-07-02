@@ -93,10 +93,10 @@ namespace WixSharp
         /// <see cref="Feature"></see> the file is included in.
         /// </summary>
         public Feature Feature;
-        /// <summary>
-        /// Defines the installation <see cref="Condition"/>, which is to be checked during the installation to 
-        /// determine if the file should be installed on the target system.
-        /// </summary>
+        ///// <summary>
+        ///// Defines the installation <see cref="Condition"/>, which is to be checked during the installation to 
+        ///// determine if the file should be installed on the target system.
+        ///// </summary>
         //public Condition Condition; //currently WiX does not allow child Condition element but in the future release it most likely will
     }
 }

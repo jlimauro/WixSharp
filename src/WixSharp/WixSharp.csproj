@@ -66,6 +66,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
@@ -94,6 +95,31 @@
     <Compile Include="Assembly.cs" />
     <Compile Include="AutoElements.cs" />
     <Compile Include="CommonTasks.cs" />
+    <Compile Include="Controls\Control.cs" />
+    <Compile Include="Controls\ControlType.cs" />
+    <Compile Include="Controls\CustomUI.cs" />
+    <Compile Include="Controls\Dialog.cs" />
+    <Compile Include="Controls\Extensions.cs" />
+    <Compile Include="Controls\WixButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\WixCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\WixControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\WixControlCondition.cs" />
+    <Compile Include="Controls\WixControlDesigner.cs" />
+    <Compile Include="Controls\WixForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\WixLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\WixTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ElevatedManagedAction.cs" />
     <Compile Include="EmbeddedFileAction.cs" />
     <Compile Include="ExeFileShortcut.cs" />
@@ -130,10 +156,6 @@
     <Compile Include="Utils.cs" />
     <Compile Include="VersionRange.cs" />
     <Compile Include="WebSite.cs" />
-    <Compile Include="Win32.cs" />
-    <Compile Include="WixCLRDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="WixGuid.cs" />
     <Compile Include="WixEntity.cs" />
     <Compile Include="Id.cs" />
@@ -165,8 +187,12 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>md "$(ProjectDir)..\..\..\bin\WixSharp"
+copy "$(TargetDir)$(TargetFileName)" "$(ProjectDir)..\..\bin\WixSharp\$(TargetFileName)"
+copy "$(TargetDir)$(TargetName).xml" "$(ProjectDir)..\..\bin\WixSharp\$(TargetName).xml"
+copy "$(TargetDir)$(TargetFileName)" "$(ProjectDir)..\..\src\WixSharp.Samples\$(TargetFileName)"
+copy "$(TargetDir)$(TargetName).xml" "$(ProjectDir)..\..\src\WixSharp.Samples\$(TargetName).xml"
+</PostBuildEvent>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>

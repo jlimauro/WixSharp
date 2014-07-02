@@ -22,7 +22,7 @@ class Script
 
         project.MSIFileName = "setup";
 
-        var wxsFile = Compiler.BuildMsi(project);
+        var wxsFile = Compiler.BuildWxs(project);
     }
 }
 

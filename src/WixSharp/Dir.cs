@@ -125,48 +125,48 @@ namespace WixSharp
             return retval.ToArray();
         }
 
-        //internal Dir(Feature feature, string targetPath, Project project)
-        //{
-        //    //create nested Dirs on-fly but reuse already existing ones in the project
-        //    var nestedDirs = targetPath.Split("\\/".ToCharArray());
+        internal Dir(Feature feature, string targetPath, Project project)
+        {
+            //create nested Dirs on-fly but reuse already existing ones in the project
+            var nestedDirs = targetPath.Split("\\/".ToCharArray());
 
-        //    Dir lastFound = null;
-        //    string lastMatching = null;
-        //    string[] flatTree = ToFlatPathTree(targetPath);
+            Dir lastFound = null;
+            string lastMatching = null;
+            string[] flatTree = ToFlatPathTree(targetPath);
 
-        //    foreach (string path in flatTree)
-        //    {
-        //        var existingDir = project.FindDir(path);
-        //        if (existingDir != null)
-        //        {
-        //            lastFound = existingDir;
-        //            lastMatching = path;
-        //        }
-        //        else
-        //        {
-        //            if (lastFound != null)
-        //            {
-        //                Dir currDir = lastFound;
+            foreach (string path in flatTree)
+            {
+                var existingDir = project.FindDir(path);
+                if (existingDir != null)
+                {
+                    lastFound = existingDir;
+                    lastMatching = path;
+                }
+                else
+                {
+                    if (lastFound != null)
+                    {
+                        Dir currDir = lastFound;
 
-        //                string[] newSubDirs = targetPath.Substring(lastMatching.Length + 1).Split("\\/".ToCharArray());
-        //                for (int i = 0; i < newSubDirs.Length; i++)
-        //                {
-        //                    Dir nextSubDir = new Dir(newSubDirs[i]);
-        //                    currDir.Dirs = new Dir[] { nextSubDir };
-        //                    currDir = nextSubDir;
-        //                }
+                        string[] newSubDirs = targetPath.Substring(lastMatching.Length + 1).Split("\\/".ToCharArray());
+                        for (int i = 0; i < newSubDirs.Length; i++)
+                        {
+                            Dir nextSubDir = new Dir(newSubDirs[i]);
+                            currDir.Dirs = new Dir[] { nextSubDir };
+                            currDir = nextSubDir;
+                        }
 
-        //                currDir.Feature = feature;
-        //            }
-        //            else
-        //            {
-        //                Dir lastDir = ProcessTargetPath(targetPath);
-        //                lastDir.Feature = feature;
-        //            }
-        //            break;
-        //        }
-        //    }
-        //}
+                        currDir.Feature = feature;
+                    }
+                    else
+                    {
+                        Dir lastDir = ProcessTargetPath(targetPath);
+                        lastDir.Feature = feature;
+                    }
+                    break;
+                }
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Dir"/> class with properties/fields initialized with specified parameters.
@@ -267,7 +267,6 @@ namespace WixSharp
                 currDir.Dirs = new Dir[] { nextSubDir };
                 currDir = nextSubDir;
             }
-
             return currDir;
         }
 

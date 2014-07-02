@@ -1015,6 +1015,16 @@
             Gets the current installation state of the item.
             </summary>
         </member>
+        <member name="M:Microsoft.Deployment.WindowsInstaller.ComponentInstallation.Components(System.String,Microsoft.Deployment.WindowsInstaller.UserContexts)">
+            <summary>
+            Gets the set of installed components for products in the indicated context.
+            </summary>
+            <exception cref="T:Microsoft.Deployment.WindowsInstaller.InstallerException">The installer configuration data is corrupt</exception>
+            <remarks><p>
+            Win32 MSI API:
+            <a href="http://msdn.microsoft.com/library/dd407947.aspx">MsiEnumComponentsEx</a>
+            </p></remarks>
+        </member>
         <member name="M:Microsoft.Deployment.WindowsInstaller.ComponentInstallation.#ctor(System.String)">
             <summary>
             Creates a new ComponentInstallation, automatically detecting the
@@ -1026,6 +1036,15 @@
             <a href="http://msdn.microsoft.com/library/en-us/msi/setup/msigetproductcode.asp">MsiGetProductCode</a>
             </p></remarks>
         </member>
+        <member name="M:Microsoft.Deployment.WindowsInstaller.ComponentInstallation.#ctor(System.String,System.String,Microsoft.Deployment.WindowsInstaller.UserContexts)">
+            <summary>
+            Creates a new ComponentInstallation, automatically detecting the
+            product that the component is a part of.
+            </summary>
+            <param name="componentCode">component GUID</param>
+            <param name="szUserSid">context user SID</param>
+            <param name="dwContext">user contexts</param>
+        </member>
         <member name="M:Microsoft.Deployment.WindowsInstaller.ComponentInstallation.#ctor(System.String,System.String)">
             <summary>
             Creates a new ComponentInstallation for a component installed by a
@@ -1033,6 +1052,16 @@
             </summary>
             <param name="componentCode">component GUID</param>
             <param name="productCode">ProductCode GUID</param>
+        </member>
+        <member name="M:Microsoft.Deployment.WindowsInstaller.ComponentInstallation.#ctor(System.String,System.String,System.String,Microsoft.Deployment.WindowsInstaller.UserContexts)">
+            <summary>
+            Creates a new ComponentInstallation for a component installed by a
+            specific product.
+            </summary>
+            <param name="componentCode">component GUID</param>
+            <param name="productCode">ProductCode GUID</param>
+            <param name="szUserSid">context user SID</param>
+            <param name="dwContext">user contexts</param>
         </member>
         <member name="P:Microsoft.Deployment.WindowsInstaller.ComponentInstallation.AllComponents">
             <summary>
@@ -1060,7 +1089,8 @@
             This means that the property may return clients in any order.
             </p><p>
             Win32 MSI API:
-            <a href="http://msdn.microsoft.com/library/en-us/msi/setup/msienumclients.asp">MsiEnumClients</a>
+            <a href="http://msdn.microsoft.com/library/en-us/msi/setup/msienumclients.asp">MsiEnumClients</a>,
+            <a href="http://msdn.microsoft.com/library/dd407946.aspx">MsiEnumClientsEx</a>
             </p></remarks>
         </member>
         <member name="P:Microsoft.Deployment.WindowsInstaller.ComponentInstallation.State">
@@ -1071,7 +1101,8 @@
             if this component is not part of a product</returns>
             <remarks><p>
             Win32 MSI API:
-            <a href="http://msdn.microsoft.com/library/en-us/msi/setup/msigetcomponentpath.asp">MsiGetComponentPath</a>
+            <a href="http://msdn.microsoft.com/library/en-us/msi/setup/msigetcomponentpath.asp">MsiGetComponentPath</a>,
+            <a href="http://msdn.microsoft.com/library/dd408006.aspx">MsiGetComponentPathEx</a>
             </p></remarks>
         </member>
         <member name="P:Microsoft.Deployment.WindowsInstaller.ComponentInstallation.Path">
@@ -1091,6 +1122,7 @@
             </p><p>
             Win32 MSI APIs:
             <a href="http://msdn.microsoft.com/library/en-us/msi/setup/msigetcomponentpath.asp">MsiGetComponentPath</a>,
+            <a href="http://msdn.microsoft.com/library/dd408006.aspx">MsiGetComponentPathEx</a>,
             <a href="http://msdn.microsoft.com/library/en-us/msi/setup/msilocatecomponent.asp">MsiLocateComponent</a>
             </p></remarks>
         </member>
@@ -1884,6 +1916,12 @@
             indirectly by a user's code, so managed and unmanaged resources will be
             disposed. If false, only unmanaged resources will be disposed.</param>
         </member>
+        <member name="M:Microsoft.Deployment.WindowsInstaller.Database.ExecutePropertyQuery(System.String)">
+            <summary>
+            Returns the value of the specified property.
+            </summary>
+            <param name="property">Name of the property to retrieve.</param>
+        </member>
         <member name="M:Microsoft.Deployment.WindowsInstaller.Database.OpenView(System.String,System.Object[])">
             <summary>
             Gets a View object representing the query specified by a SQL string.
@@ -2669,6 +2707,11 @@
             Forces display of the source resolution dialog even if the UI is otherwise silent.
             </summary>
         </member>
+        <member name="F:Microsoft.Deployment.WindowsInstaller.InstallUIOptions.UacOnly">
+            <summary>
+            [MSI 5.0] Forces display of the UAC dialog even if the UI is otherwise silent.
+            </summary>
+        </member>
         <member name="T:Microsoft.Deployment.WindowsInstaller.MessageResult">
             <summary>
             Specifies a return status value for message handlers.  These values are returned by
@@ -2808,6 +2851,22 @@
         <member name="F:Microsoft.Deployment.WindowsInstaller.MessageDefaultButton.Button3">
             <summary>
             The third button on the message is the default button.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Deployment.WindowsInstaller.MessageBoxStyles">
+            <summary>
+            Additional styles for use with message boxes.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Deployment.WindowsInstaller.MessageBoxStyles.TopMost">
+            <summary>
+            The message box is created with the WS_EX_TOPMOST window style.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Deployment.WindowsInstaller.MessageBoxStyles.ServiceNotification">
+            <summary>
+            The caller is a service notifying the user of an event.
+            The function displays a message box on the current active desktop, even if there is no user logged on to the computer.
             </summary>
         </member>
         <member name="T:Microsoft.Deployment.WindowsInstaller.PatchStates">
@@ -4698,7 +4757,6 @@
             enumeration to the current user or any user in the system. The special SID string
             s-1-1-0 (Everyone) specifies enumeration across all users in the system. This parameter
             can be set to null to restrict the enumeration scope to the current user. When
-            <paramref name="installContext"/> is set to the machine context only,
             <paramref name="userSid"/> must be null.</param>
             <param name="context">Specifies the user context.</param>
             <param name="states">The <see cref="T:Microsoft.Deployment.WindowsInstaller.PatchStates"/> of patches to return.</param>
@@ -4860,7 +4918,7 @@
             </summary>
             <param name="productCode">ProductCode (GUID) of the product instances to be enumerated. Only
             instances of products within the scope of the context specified by the
-            <paramref name="userSid"/> and <paramref name="installContext"/> parameters will be
+            <paramref name="userSid"/> and <paramref name="context"/> parameters will be
             enumerated. This parameter may be set to null to enumerate all products in the specified
             context.</param>
             <param name="userSid">Specifies a security identifier (SID) that restricts the context
@@ -6399,15 +6457,6 @@
             Adds or updates a disk of the media source for the product or patch.
             </summary>
             <remarks><p>
-            To change the disk prompt only, get the existing volume label from the
-            registry and provide it in this call along with the new disk prompt.
-            Passing a null or empty string for <paramref name="volumeLabel"/>
-            registers an empty string as the volume label.
-            <p>To change the volume label only, get the existing disk prompt
-            that is registered and provide it when calling SourceListAddMediaDisk
-            along with the new volume label. Passing null or an empty string
-            registers an empty string as the disk prompt.</p>
-            </p><p>
             Win32 MSI API:
             <a href="http://msdn.microsoft.com/library/en-us/msi/setup/msisourcelistaddmediadisk.asp">MsiSourceListAddMediaDisk</a>
             </p></remarks>
@@ -7329,6 +7378,31 @@
             Win32 MSI API:
             <a href="http://msdn.microsoft.com/library/en-us/msi/setup/msiviewgetcolumninfo.asp">MsiViewGetColumnInfo</a>
             </p></remarks>
+        </member>
+        <member name="T:Microsoft.Tools.WindowsInstallerXml.WixDistribution">
+            <summary>
+            Distribution specific strings.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Tools.WindowsInstallerXml.WixDistribution.NewsUrl">
+            <summary>
+            News URL for the distribution.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Tools.WindowsInstallerXml.WixDistribution.ShortProduct">
+            <summary>
+            Short product name for the distribution.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Tools.WindowsInstallerXml.WixDistribution.SupportUrl">
+            <summary>
+            Support URL for the distribution.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Tools.WindowsInstallerXml.WixDistribution.TelemetryUrlFormat">
+            <summary>
+            Telemetry URL format for the distribution.
+            </summary>
         </member>
     </members>
 </doc>

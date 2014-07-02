@@ -68,5 +68,22 @@ namespace WixSharp
 
             return fields;
         }
+
+        /// <summary>
+        /// Gets the program files directory.
+        /// </summary>
+        /// <value>
+        /// The program files directory.
+        /// </value>
+	    internal static string ProgramFilesDirectory 
+        {
+            get 
+            {
+                string programFilesDir = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                if ("".GetType().Assembly.Location.Contains("Framework64"))
+                    programFilesDir += " (x86)"; //for x64 systems
+                return programFilesDir;
+            }
+        }
     }
 }

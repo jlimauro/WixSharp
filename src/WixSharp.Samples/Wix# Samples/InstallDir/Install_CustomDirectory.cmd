@@ -1,1 +1,1 @@
-start msiexec /i setup.msi INSTALLDIR="C:\Devices\CustomDir" /q
+start msiexec /i setup.msi PROGRAMFILESFOLDER.CUSTOMACTIONTEST="C:\Program Files\CustomDir" /q

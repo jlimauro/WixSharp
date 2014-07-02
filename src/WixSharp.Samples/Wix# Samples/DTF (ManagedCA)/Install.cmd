@@ -1,2 +1,2 @@
-start msiexec setup.msi /L setup.log 
+start msiexec /i CustomActionTest.msi /L setup.log 
 pause

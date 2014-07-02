@@ -395,6 +395,14 @@
             Unpacks a single file from an archive or archive chain.
             </summary>
         </member>
+        <member name="M:Microsoft.Deployment.Compression.Zip.ZipEngine.AreFilePathsEqual(System.String,System.String)">
+            <summary>
+            Compares two internal file paths while ignoring case and slash differences.
+            </summary>
+            <param name="path1">The first path to compare.</param>
+            <param name="path2">The second path to compare.</param>
+            <returns>True if the paths are equivalent.</returns>
+        </member>
         <member name="M:Microsoft.Deployment.Compression.Zip.ZipEngine.UnpackFileBytes(Microsoft.Deployment.Compression.IUnpackStreamContext,System.String,System.Int64,System.Int64,System.UInt32,System.IO.Stream,System.Converter{System.IO.Stream,System.IO.Stream},System.IO.Stream@)">
             <summary>
             Decompresses bytes for one file from an archive or archive chain,
@@ -509,6 +517,31 @@
             "*.txt".</param>
             <returns>A list of <see cref="T:Microsoft.Deployment.Compression.Zip.ZipFileInfo"/> objects, each containing
             information about a file in the archive.</returns>
+        </member>
+        <member name="T:Microsoft.Tools.WindowsInstallerXml.WixDistribution">
+            <summary>
+            Distribution specific strings.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Tools.WindowsInstallerXml.WixDistribution.NewsUrl">
+            <summary>
+            News URL for the distribution.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Tools.WindowsInstallerXml.WixDistribution.ShortProduct">
+            <summary>
+            Short product name for the distribution.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Tools.WindowsInstallerXml.WixDistribution.SupportUrl">
+            <summary>
+            Support URL for the distribution.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Tools.WindowsInstallerXml.WixDistribution.TelemetryUrlFormat">
+            <summary>
+            Telemetry URL format for the distribution.
+            </summary>
         </member>
     </members>
 </doc>
