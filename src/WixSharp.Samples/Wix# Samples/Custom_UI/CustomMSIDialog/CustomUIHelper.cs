@@ -6,7 +6,7 @@ using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
 using System;
 
-class CustoUIHelper
+class CustomUIHelper
 {
     /// <summary>
     /// Builds the custom UI.
@@ -16,6 +16,8 @@ class CustoUIHelper
     public static CustomUI BuildCustomUI()
     {
         Dialog activationDialog = new ProductActivationForm().ToWDialog();
+
+        XElement xml = activationDialog.ToXElement();
 
         var customUI = new CustomUI();
 

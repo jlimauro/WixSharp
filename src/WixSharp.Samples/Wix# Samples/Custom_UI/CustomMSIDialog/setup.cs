@@ -31,8 +31,13 @@ class Script
                                                                     onNextActions: new DialogAction[]{
                                                                                        new ExecueteCustomAction ("ValidateLicenceKey"),
                                                                                        new ShowDialog(Dialogs.InstallDirDlg, "SERIALNUMBER_VALIDATED = \"TRUE\"")});
-
-        //alternatively you can call CustoUIHelper with the local implementation of the CustolUI sequence
+        
+        //In this sample we are using built-in BuildPostLicenseDialogUI but if it is not suitable for
+        //you can define you own routine for building UI definition.
+        //CustomUIHelper.cs is an example of such an alternative. In this case it does the same job 
+        //as built-in BuildPostLicenseDialogUI but you can modify it to suite your needs better.
+        //
+        //alternatively you can call CustoUIHelper with the local implementation of the CustomUI sequence
         //project.CustomUI = CustoUIHelper.BuildCustomUI();
 
         Compiler.PreserveTempFiles = true;
