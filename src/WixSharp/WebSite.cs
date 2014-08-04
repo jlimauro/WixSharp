@@ -275,10 +275,12 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="WixSharp.WebDirProperties"/>.
+        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="WebDirProperties"/>.
         /// </summary>
         /// <param name="attributesDefinition">The attributes definition.</param>
-        /// <returns>The result of the conversion (instance of <see cref="T:WixSharp.WebDirProperties"/>).</returns>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
         public static implicit operator WebDirProperties(string attributesDefinition)
         {
             return new WebDirProperties(attributesDefinition);

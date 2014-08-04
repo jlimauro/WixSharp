@@ -118,6 +118,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MajorUpgrade2", "WixSharp.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyRef", "WixSharp.Samples\VSProjects\PropertyRef.csproj", "{2F11B72C-38E7-4A7C-BABD-3AF6016F75FE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{109F5B7D-AFE6-4923-B52F-73C5862C04A9}"
+	ProjectSection(SolutionItems) = preProject
+		agregate.cmd = agregate.cmd
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

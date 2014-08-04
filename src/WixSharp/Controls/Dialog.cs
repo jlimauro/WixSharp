@@ -112,10 +112,12 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Strings the specified obj.
+        /// Performs an implicit conversion from <see cref="Dialog"/> to <see cref="System.String"/>.
         /// </summary>
-        /// <param name="obj">The obj.</param>
-        /// <returns></returns>
+        /// <param name="obj">The object.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
         public static implicit operator string(Dialog obj)
         {
             return obj.ToString();

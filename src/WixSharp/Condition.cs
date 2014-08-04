@@ -42,19 +42,19 @@ namespace WixSharp
     /// the InstalledFileAction.<see cref="T:WixSharp.InstalledFileAction.Condition"/> with perefined value <c>NOT_Installed</c>:
     ///   <code>
     /// var project =
-    /// new Project("My Product",
-    /// ...
-    /// new Dir(@"%Desktop%",
-    /// new WixSharp.Shortcut("MyApp", "[INSTALL_DIR]MyApp.exe", "")
-    /// {
-    /// Condition = new Condition("INSTALLDESKTOPSHORTCUT=\"yes\"")
-    /// }),
-    /// new InstalledFileAction("MyApp.exe", "",
-    /// Return.check,
-    /// When.After,
-    /// Step.InstallFinalize,
-    /// Condition.NOT_Installed),
-    /// ...
+    ///     new Project("My Product",
+    ///                 ...
+    ///                 new Dir(@"%Desktop%",
+    ///                     new WixSharp.Shortcut("MyApp", "[INSTALL_DIR]MyApp.exe", "")
+    ///                     {
+    ///                         Condition = new Condition("INSTALLDESKTOPSHORTCUT=\"yes\"")
+    ///                     }),
+    ///                 new InstalledFileAction("MyApp.exe", "",
+    ///                                         Return.check,
+    ///                                         When.After,
+    ///                                         Step.InstallFinalize,
+    ///                                         Condition.NOT_Installed),
+    ///                                         ...
     ///   </code>
     ///   </example>
     public partial class Condition : WixEntity
@@ -85,10 +85,12 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Type casts the <see cref="T:WixSharo.Condition"/> into string object.
+        /// Performs an implicit conversion from <see cref="Condition"/> to <see cref="System.String"/>.
         /// </summary>
-        /// <param name="obj">The obj.</param>
-        /// <returns></returns>
+        /// <param name="obj">The object.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
         public static implicit operator string(Condition obj)
         {
             return obj.ToString();

@@ -82,20 +82,24 @@ namespace WixSharp
             }
 
             /// <summary>
-            /// Performs an implicit conversion from <see cref="WixSharp.WixGuid.SequentialGuid"/> to <see cref="System.Guid"/>.
+            /// Performs an implicit conversion from <see cref="SequentialGuid"/> to <see cref="Guid"/>.
             /// </summary>
             /// <param name="value">The value.</param>
-            /// <returns>The result of the conversion.</returns>
+            /// <returns>
+            /// The result of the conversion.
+            /// </returns>
             public static implicit operator Guid(SequentialGuid value)
             {
                 return value.CurrentGuid;
             }
 
             /// <summary>
-            /// Performs an implicit conversion from <see cref="System.Guid"/> to <see cref="WixSharp.WixGuid.SequentialGuid"/>.
+            /// Performs an implicit conversion from <see cref="Guid"/> to <see cref="SequentialGuid"/>.
             /// </summary>
             /// <param name="value">The value.</param>
-            /// <returns>The result of the conversion.</returns>
+            /// <returns>
+            /// The result of the conversion.
+            /// </returns>
             public static implicit operator SequentialGuid(Guid value)
             {
                 return new SequentialGuid(value);

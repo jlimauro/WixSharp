@@ -81,11 +81,14 @@ namespace WixSharp
         {
             return string.Compare(id1.Value, id2.Value) != 0;
         }
+
         /// <summary>
-        /// Implements the operator <see cref="T:System.String"/>.
+        /// Performs an implicit conversion from <see cref="Id"/> to <see cref="System.String"/>.
         /// </summary>
-        /// <param name="id">The <see cref="Id"/> instance.</param>
-        /// <returns>The result of the operator.</returns>
+        /// <param name="id">The identifier.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
         public static implicit operator System.String(Id id)
         {   return id.Value;
         }

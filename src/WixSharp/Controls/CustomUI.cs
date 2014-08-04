@@ -145,12 +145,12 @@ namespace WixSharp
 
     /// <summary>
     /// Defines custom UI (WiX <c>UI</c> element). This class is to be used to define the customization of the standard MSI UI. 
-    /// The usual scenario of the customisation is the injection of the custom <see cref="T:WixSharp.Dialog"/> 
+    /// The usual scenario of the customization is the injection of the custom <see cref="T:WixSharp.Dialog"/> 
     /// into the sequence of the standard dialogs. This can be accomplished by defining the custom dialog as  
     /// <see cref="T:WixSharp.WixForm"/>. Such a <see cref="T:WixSharp.WixForm"/> can be edited with the Visual Studio form designer. 
     /// <para>
     /// When <see cref="T:WixSharp.WixForm"/> is complete it can be converted into <see cref="T:WixSharp.Dialog"/> 
-    /// with the <see cref="T:WixSharp.Dialog.ToWDialog()"/> call. And at compile time Wix# compiler converts 
+    /// with the <see cref="T:WixSharp.Dialog.ToWDialog"/>() call. And at compile time Wix# compiler converts 
     /// <see cref="T:WixSharp.Dialog"/> into the final WiX <c>UI</c> element XML definition .
     /// </para>
     /// <para>
