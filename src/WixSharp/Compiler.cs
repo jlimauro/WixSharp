@@ -210,9 +210,9 @@ namespace WixSharp
         {
             get
             {
-                if (wixLocation.IsEmpty())
+                if (wixLocation.IsEmpty()) //WixSharp did not set WIXSHARP_WIXDIR environment variable so check if the full WiX was installed
                 {
-                    var dir = Environment.ExpandEnvironmentVariables("%WIX%\\bin");
+                    var dir = Environment.ExpandEnvironmentVariables("%WIX%\\bin"); 
 
                     if (!IO.Directory.Exists(dir))
                     {
