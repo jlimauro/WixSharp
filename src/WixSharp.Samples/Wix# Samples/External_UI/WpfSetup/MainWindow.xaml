@@ -76,7 +76,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Foreground="White"
-                   Text="Copyrights 2013 - MyCompany All&#10;All Rights Reserved " />
+                   Text="Copyrights 2014 - MyCompany&#10;All Rights Reserved " />
 
         <CheckBox Grid.Row="1"
                   Margin="26, 80, 0, 0"

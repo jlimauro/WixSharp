@@ -34,12 +34,11 @@ namespace WixSharp
 {
     internal static class AutoElements
     {
-
-        static void InsertRemoveFolder(XElement xDir, XElement xComponent)
+        static void InsertRemoveFolder(XElement xDir, XElement xComponent, string when = "uninstall")
         {
             xComponent.Add(new XElement("RemoveFolder",
                                new XAttribute("Id", xDir.Attribute("Id").Value),
-                               new XAttribute("On", "uninstall")));
+                               new XAttribute("On", when)));
         }
 
         static void InsertCreateFolder(XElement xDir, XElement xComponent)
@@ -189,11 +188,16 @@ namespace WixSharp
 
             foreach (XElement xDir in doc.Root.Descendants("Directory"))
             {
-                foreach (XElement xComp in xDir.Elements("Component"))
+                var dirComponents = xDir.Elements("Component");
+
+                foreach (XElement xComp in dirComponents)
                 {
                     if (!xComp.ContainsFiles())
                     {
-                        InsertCreateFolder(xDir, xComp);
+                        if (xDir.Attribute("Name").Value != "DummyDir")
+                            InsertCreateFolder(xDir, xComp);
+                        else if (!xDir.ContainsAnyRemoveFolder())
+                            InsertRemoveFolder(xDir, xComp, "both"); //to keep WiX/compiler happy and allow removal of the dummy directory
                     }
 
                     if (xDir.InUserProfile())
@@ -214,7 +218,7 @@ namespace WixSharp
                     foreach (XElement xFile in xComp.Elements("File"))
                         if (xFile.ContainsAdvertisedShortcuts())
                             SetFileKeyPath(xFile);
-                            
+
                 }
 
                 if (!xDir.ContainsComponents() && xDir.InUserProfile())

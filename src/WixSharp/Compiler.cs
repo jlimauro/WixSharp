@@ -212,7 +212,7 @@ namespace WixSharp
             {
                 if (wixLocation.IsEmpty()) //WixSharp did not set WIXSHARP_WIXDIR environment variable so check if the full WiX was installed
                 {
-                    var dir = Environment.ExpandEnvironmentVariables("%WIX%\\bin"); 
+                    var dir = Environment.ExpandEnvironmentVariables("%WIX%\\bin");
 
                     if (!IO.Directory.Exists(dir))
                     {
@@ -708,21 +708,31 @@ namespace WixSharp
                     if (prevLine.Trim().IsEmpty() && line.Trim().IsEmpty())
                         continue;
 
+                    string lineTrimmed = line.Trim();
+                    string prevLineTrimmed = prevLine.Trim();
+
                     if (!prevLine.Trim().IsEmpty() && prevLine.GetLeftIndent() == line.GetLeftIndent())
                     {
                         var delimiters = " ".ToCharArray();
                         var prevLineTokens = prevLine.Trim().Split(delimiters, 2);
-                        var lineTokens = line.Trim().Split(delimiters, 2);
+                        var lineTokens = lineTrimmed.Split(delimiters, 2);
                         if (prevLineTokens.First() != lineTokens.First())
                         {
                             bool preventSpliting = false;
                             foreach (var token in mergeSections)
-                                if (preventSpliting = line.Trim().StartsWith(token))
+                                if (preventSpliting = lineTrimmed.StartsWith(token))
                                     break;
 
                             if (!preventSpliting)
                                 sw.WriteLine();
                         }
+                    }
+                    else
+                    {
+                        if (lineTrimmed.StartsWith("<Component ")) //start of another component
+                            sw.WriteLine();
+                        else if (lineTrimmed == "</Directory>" && prevLineTrimmed == "</Component>") //last component
+                            sw.WriteLine();
                     }
 
                     foreach (var token in splitSections)
@@ -1313,7 +1323,7 @@ namespace WixSharp
             if (wProject.Dirs.Count() == 0)
             {
                 //WIX/MSI does not like no-directory deployments thus create fake one
-                wProject.Dirs = new[] { new Dir(@"%AppDataFolder%\WixSharp\DummyDir") }; //C:\Documents and Settings\UserName\Application Data\WixSharp\DummyDir
+                wProject.Dirs = new[] { new Dir(@"%ProgramFiles%\WixSharp\DummyDir") }; //C:\Documents and Settings\UserName\Application Data\WixSharp\DummyDir
             }
 
             Dir[] wDirs = wProject.Dirs;

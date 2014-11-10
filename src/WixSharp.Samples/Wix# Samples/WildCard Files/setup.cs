@@ -18,9 +18,9 @@ class Script
                     
                     new DirFiles(@"Release\Bin\*.*"),
 
-                    new Dir(@"GlobalResources", new DirFiles(@"Release\Bin\GlobalResources\*.*")),
+                    new Dir("GlobalResources", new DirFiles(@"Release\Bin\GlobalResources\*.*")),
 
-                    new Dir(@"Images", new DirFiles(@"Release\Bin\Images\*.*")),
+                    new Dir("Images", new DirFiles(@"Release\Bin\Images\*.*")),
 
                     new ExeFileShortcut("Uninstall MyProduct", "[System64Folder]msiexec.exe", "/x [ProductCode]")));
         
