@@ -1,4 +1,4 @@
-WixSharp (C# interface to WiX toolset)
+WiX - WixSharp (C# interface to WiX toolset)
 --------------------------------------------------------------
 System Requirements:
    * .NET runtime v4.0 or higher must be installed.
@@ -13,3 +13,8 @@ System Requirements:
    
  To uninstall:
    1. remove environment variable WIXSHARP_DIR manually
+
+ Alternatively you can use install.cmd/uninstall.cmd
+ Note: strictly speaking setting environment variables is optional. WIXSHARP_DIR is only needed for building 
+ WixSharp\Samples\Bootstrapper\NativeBootstrapper sample. And WIXSHARP_WIXDIR only needed if WixSharp compiler
+ cannot locate WiX binaries. 
