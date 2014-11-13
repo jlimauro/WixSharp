@@ -27,8 +27,8 @@ class Script
 
         Compiler.BuildMsi(project);
     }
-	
-	static void Compiler_WixSourceGenerated(System.Xml.Linq.XDocument document)
+    
+    static void Compiler_WixSourceGenerated(System.Xml.Linq.XDocument document)
     {
         XElement aspxFileComponent = (from e in document.Descendants("File")
                                       where e.Attribute("Source").Value.EndsWith("Default.aspx")

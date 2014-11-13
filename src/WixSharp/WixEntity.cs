@@ -164,7 +164,8 @@ namespace WixSharp
                         string[] tokens = attrDef.Split("=".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                         string name = tokens[0].Trim();
                         string value = tokens[1].Trim();
-                        attrToAdd.Add(name, value);
+
+                        attrToAdd[name] = value;
                     }
                     catch (Exception e)
                     {
@@ -175,7 +176,7 @@ namespace WixSharp
                 this.Attributes = attrToAdd;
             }
         }
-        
+
         /// <summary>
         /// Returns all attributes of the <see cref="Attributes"/> directly associated with <see cref="WixEntity"/>.
         /// </summary>

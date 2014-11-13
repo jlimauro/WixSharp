@@ -146,7 +146,7 @@ namespace WixSharp
             Value = value;
             Feature = feature;
         }
-           
+
         /// <summary>
         /// The registry hive name.
         /// <para>Default value is <c>RegistryHive.CurrentUser</c></para>
@@ -170,5 +170,10 @@ namespace WixSharp
         /// determine if the registry value should be created on the target system.
         /// </summary>
         public Condition Condition;
+        /// <summary>
+        /// Facilitates the installation of packages that include both 32-bit and 64-bit components. 
+        /// Set this attribute to 'yes' to mark the corresponding RegValue as a 64-bit component. 
+        /// </summary>
+        public bool Win64 = false;
     }
 }

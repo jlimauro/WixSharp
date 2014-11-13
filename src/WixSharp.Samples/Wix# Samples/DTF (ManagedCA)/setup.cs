@@ -7,7 +7,7 @@ using WixSharp;
 using Microsoft.Win32;
 using System;
 
-internal class Script
+class Script
 {
     static public void Main(string[] args)
     {

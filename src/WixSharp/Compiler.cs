@@ -1396,6 +1396,11 @@ namespace WixSharp
                 var keyPathSet = false;
                 foreach (RegValue regVal in wProject.RegValues)
                 {
+                    if (regVal.Win64)
+                    {
+                        regVal.AttributesDefinition += ";Component:Win64=yes";
+                    }
+
                     count++;
                     string compId = "Registry" + count;
 
