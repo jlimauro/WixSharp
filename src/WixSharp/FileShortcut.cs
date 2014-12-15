@@ -111,6 +111,7 @@ namespace WixSharp
         /// <param name="location">The directory where the shortcut should be installed.</param>
         public FileShortcut(Id id, string name, string location)
         {
+            Id = id.Value;
             Name = name;
             Location = location;
         }

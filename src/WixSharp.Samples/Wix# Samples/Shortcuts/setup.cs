@@ -1,6 +1,6 @@
 //css_ref ..\..\WixSharp.dll;
 //css_ref System.Core.dll;
-//css_ref ..\..\ Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
+//css_ref ..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 using System;
 using System.Xml;
 using Microsoft.Win32;
@@ -32,7 +32,7 @@ class Script
             project.UI = WUI.WixUI_ProgressOnly;
             project.MSIFileName = "setup";
 
-            Compiler.BuildMsi(project);
+            Compiler.BuildMsiCmd(project);
         }
         catch (System.Exception ex)
         {
