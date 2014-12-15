@@ -67,7 +67,7 @@ namespace WixSharp
         public VersionRange PreventDowngradingVersions;
         /// <summary>
         /// Step, which determines when the RemoveExistingProducts standard action is to be performed.
-        /// <para>The default value is <c>InstallInitialize</c>. </para>
+        /// <para>The default value is <c>InstallFinalize</c>. </para>
         /// </summary>
         public Step RemoveExistingProductAfter = Step.InstallFinalize;
         /// <summary>
