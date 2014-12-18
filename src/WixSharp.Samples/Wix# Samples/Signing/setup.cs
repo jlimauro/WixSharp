@@ -19,7 +19,10 @@ class Script
 
         string msi = Compiler.BuildMsi(project);
 
-        int exitCode = Tasks.DigitalySign(msi, "wixsharp.pfx", "http://timestamp.verisign.com/scripts/timstamp.dll", "my_password", null);
+        int exitCode = Tasks.DigitalySign(msi,
+                                          "wixsharp.pfx",
+                                          "http://timestamp.verisign.com/scripts/timstamp.dll",
+                                          "my_password");
 
         if (exitCode != 0)
             Console.WriteLine("Could not sign the MSI file.");

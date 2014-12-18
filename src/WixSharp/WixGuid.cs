@@ -37,14 +37,14 @@ namespace WixSharp
     public class WixGuid : WixObject
     {
         /// <summary>
-        /// GUID value of teh <see cref="WixGuid"/> instance.
+        /// GUID value of the <see cref="WixGuid"/> instance.
         /// </summary>
         public Guid Value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WixGuid"/> class.
         /// </summary>
-        /// <param name="guid">The GUID value of the isntance to be created.</param>
+        /// <param name="guid">The GUID value of the instance to be created.</param>
         public WixGuid(string guid)
         {
             Value = new Guid(guid);
@@ -176,11 +176,14 @@ namespace WixSharp
         /// <returns></returns>
         static public Guid NewGuid()
         {
-            if (ConsistentGenerationStartValue != null)
-                return ConsistentGenerationStartValue++;
-            else
-                return Guid.NewGuid();
+            //if (ConsistentGenerationStartValue != null)
+            //    return ConsistentGenerationStartValue++;
+            //else
+            //    return Guid.NewGuid();
+            var seed = rnd.Next(int.MaxValue);
+            return Generator(seed);
         }
+        static Random rnd = new Random(1);
 
         /// <summary>
         /// Returns new GUID.
@@ -188,36 +191,84 @@ namespace WixSharp
         /// <returns></returns>
         static public Guid NewGuid(object seed)
         {
-            if (ConsistentGenerationStartValue != null)
+            return Generator(seed);
+        }
+
+        static Func<object, Guid> generator = null;
+
+        /// <summary>
+        /// Gets or sets the GUID generation algorithm.
+        /// </summary>
+        /// <value>
+        /// The generator.
+        /// </value>
+        static public Func<object, Guid> Generator
+        {
+            get
             {
-                for (int i = 0; i < seed.GetHashCode(); i++)
+                if (generator == null)
                 {
-                    ConsistentGenerationStartValue++;
+                    generator = GuidGenerators.Default;
                 }
-                return ConsistentGenerationStartValue;
+                return generator;
             }
-            else
-                return Guid.NewGuid();
+            set { generator = value; }
         }
 
 
+
+        static int[] orderMap = new int[16] { 15, 14, 13, 12, 11, 10, 9, 8, 6, 7, 4, 5, 0, 1, 2, 3 };
         /// <summary>
         /// Hashes the Guid by the specified integer hash value.
         /// </summary>
         /// <param name="guid">The GUID.</param>
         /// <param name="hashValue">The hash value.</param>
         /// <returns>GUID value.</returns>
-        static public Guid HashGuidByInteger(Guid guid, int hashValue)
+        public static Guid HashGuidByInteger(Guid guid, int hashValue)
         {
             byte[] bytes = guid.ToByteArray();
             byte[] hashBytes = BitConverter.GetBytes(hashValue);
-
             Debug.Assert(bytes.Length > hashBytes.Length);
-
             for (int i = 0; i < hashBytes.Length; i++)
-                bytes[i] = (byte)(bytes[i] + hashBytes[i]);
-
+            {
+                int bytesIndex = orderMap[i];
+                bytes[bytesIndex] = (byte)(bytes[bytesIndex] + hashBytes[i]);
+            }
             return new Guid(bytes);
+        }
+    }
+
+    /// <summary>
+    /// Collection of the deterministic GUID generation algorithms
+    /// </summary>
+    public static class GuidGenerators
+    {
+        /// <summary>
+        /// Returns sequentially incremented GUID. The specified seed is ignored. Every consecutive 
+        /// call to this method will return the last returned GUID by 1 and return its value. 
+        /// </summary>
+        /// <param name="seed">The seed.</param>
+        /// <returns></returns>
+        public static Guid Sequential(object seed)
+        {
+            if (WixGuid.ConsistentGenerationStartValue != null)
+            {
+                //seed is ignored
+                WixGuid.ConsistentGenerationStartValue++;
+                return WixGuid.ConsistentGenerationStartValue;
+            }
+            else
+                return Guid.NewGuid();
+        }
+
+        /// <summary>
+        /// Default GUID generation algorithm.
+        /// </summary>
+        /// <param name="seed">The seed.</param>
+        /// <returns></returns>
+        public static Guid Default(object seed)
+        {
+            return WixGuid.HashGuidByInteger(WixGuid.ConsistentGenerationStartValue.CurrentGuid, seed.ToString().GetHashCode32());
         }
     }
 }

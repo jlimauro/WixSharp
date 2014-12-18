@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WixSharp", "WixSharp\WixSharp.csproj", "{8860B29B-749F-4925-86C8-F9C4B93C9DA5}"
 EndProject
@@ -122,6 +122,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{109F5B7D
 	ProjectSection(SolutionItems) = preProject
 		agregate.cmd = agregate.cmd
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Signing", "WixSharp.Samples\VSProjects\Signing.csproj", "{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WixSharp.Test", "WixSharp.Test\WixSharp.Test.csproj", "{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -605,6 +609,26 @@ Global
 		{2F11B72C-38E7-4A7C-BABD-3AF6016F75FE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2F11B72C-38E7-4A7C-BABD-3AF6016F75FE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2F11B72C-38E7-4A7C-BABD-3AF6016F75FE}.Release|x86.ActiveCfg = Release|Any CPU
+		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Release|x86.ActiveCfg = Release|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -654,5 +678,6 @@ Global
 		{8F905A17-39E0-4F87-955A-98317C73CE2B} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{5153DD18-56C1-4154-B36A-9CE424317876} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{2F11B72C-38E7-4A7C-BABD-3AF6016F75FE} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
+		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 	EndGlobalSection
 EndGlobal

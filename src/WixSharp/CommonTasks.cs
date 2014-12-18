@@ -158,21 +158,23 @@ namespace WixSharp.CommonTasks
         ///     null);
         /// </code>
         /// </example>
-        static public int DigitalySign(string fileToSign, string pfxFile, string timeURL, string password, string optionalArguments)
+        static public int DigitalySign(string fileToSign, string pfxFile, string timeURL, string password, string optionalArguments = null)
         {
             //"C:\Program Files\\Microsoft SDKs\Windows\v6.0A\bin\signtool.exe" sign /f "pfxFile" /p password /v "fileToSign" /t timeURL
-            string args = "sign /v /f \"" + pfxFile + "\" \"" + fileToSign + "\"";
-            //string args = "sign /v /f \"" + pfxFile + "\"";
+            //string args = "sign /v /f \"" + pfxFile + "\" \"" + fileToSign + "\"";
+            string args = "sign /v /f \"" + pfxFile + "\"";
             if (timeURL != null)
                 args += " /t \"" + timeURL + "\"";
             if (password != null)
                 args += " /p \"" + password + "\"";
             if (!optionalArguments.IsEmpty())
                 args += " " + optionalArguments;
+            
+            args +=  " \"" + fileToSign + "\"";
 
             var tool = new ExternalTool
             {
-                WellKnownLocations = @"C:\Program Files\\Microsoft SDKs\Windows\v6.0A\bin",
+                WellKnownLocations = @"C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin",
                 ExePath = "signtool.exe",
                 Arguments = args
             };

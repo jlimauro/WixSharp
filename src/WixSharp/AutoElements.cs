@@ -104,10 +104,11 @@ namespace WixSharp
 
         static XElement CrteateComponentFor(this XDocument doc, XElement xDir)
         {
+            string compId = xDir.Attribute("Id").Value;
             XElement xComponent = xDir.AddElement(
                               new XElement("Component",
-                                  new XAttribute("Id", xDir.Attribute("Id").Value),
-                                  new XAttribute("Guid", WixGuid.NewGuid().ToString())));
+                                  new XAttribute("Id", compId),
+                                  new XAttribute("Guid", WixGuid.NewGuid(compId))));
 
             foreach (XElement xFeature in doc.Root.Descendants("Feature"))
                 xFeature.Add(new XElement("ComponentRef",

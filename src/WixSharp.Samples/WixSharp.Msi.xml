@@ -3866,7 +3866,14 @@
             <param name="msiParams">The MSI parameters.</param>
             <exception cref="T:System.ApplicationException"></exception>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:WixSharp.UI.MsiSession.OnMessage(System.String,WindowsInstaller.MsiInstallMessage)" -->
+        <member name="M:WixSharp.UI.MsiSession.OnMessage(System.String,WindowsInstaller.MsiInstallMessage)">
+            <summary>
+            Called when MSI message is received. It is actual the MSI <c>Message Loop</c>.
+            </summary>
+            <param name="message">The message data.</param>
+            <param name="messageType">Type of the message.</param>
+            <returns>The integer as per MSI documentation.</returns>
+        </member>
         <member name="E:WixSharp.UI.MsiSession.ProgressChanged">
             <summary>
             Occurs when setup progress changed.
@@ -4065,7 +4072,14 @@
             <c>true</c> if the product can uninstall; otherwise, <c>false</c>.
             </value>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:WixSharp.UI.GenericSetup.CanRepair" -->
+        <member name="P:WixSharp.UI.GenericSetup.CanRepair">
+            <summary>
+            Gets a value indicating whether the product can be repaired.
+            </summary>
+            <value>
+            <c>true</c> if the product can repaired; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="P:WixSharp.UI.GenericSetup.LogFileCreated">
             <summary>
             Gets or sets a value indicating whether the log file created.

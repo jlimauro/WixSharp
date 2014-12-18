@@ -37,7 +37,7 @@ using IO = System.IO;
 
 namespace WixSharp
 {
-    internal class Utils
+    internal static class Utils
     {
         //fix for unexpected behaviour: System.IO.Path.Combine(@"C:\Test", @"\Docs\readme.txt") return @"\Docs\readme.txt";
         internal static string PathCombine(string path1, string path2)
@@ -75,7 +75,7 @@ namespace WixSharp
         /// <value>
         /// The program files directory.
         /// </value>
-	    internal static string ProgramFilesDirectory 
+        internal static string ProgramFilesDirectory 
         {
             get 
             {
@@ -84,6 +84,28 @@ namespace WixSharp
                     programFilesDir += " (x86)"; //for x64 systems
                 return programFilesDir;
             }
+        }
+
+        //needed to have reliable HASH as x64 and x32 have different algorithms; This leads to the inability of script clients calculate cache directory correctly  
+        public static int GetHashCode32(this string s)
+        {
+            char[] chars = s.ToCharArray();
+            int lastCharInd = chars.Length - 1;
+            int num1 = 0x15051505;
+            int num2 = num1;
+            int ind = 0;
+            while (ind <= lastCharInd)
+            {
+                char ch = chars[ind];
+                char nextCh = ++ind > lastCharInd ? '\0' : chars[ind];
+                num1 = (((num1 << 5) + num1) + (num1 >> 0x1b)) ^ (nextCh << 16 | ch);
+                if (++ind > lastCharInd)
+                    break;
+                ch = chars[ind];
+                nextCh = ++ind > lastCharInd ? '\0' : chars[ind++];
+                num2 = (((num2 << 5) + num2) + (num2 >> 0x1b)) ^ (nextCh << 16 | ch);
+            }
+            return num1 + num2 * 0x5d588b65;
         }
     }
 }

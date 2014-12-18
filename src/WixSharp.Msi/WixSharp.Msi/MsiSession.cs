@@ -102,7 +102,7 @@ namespace WixSharp.UI
         /// </summary>
         public static int ProgressStepDelay = 0;
 
-        string currentActionName;
+        string currentActionName = null;
 
         /// <summary>
         /// Gets or sets the name of the current action.
@@ -402,7 +402,7 @@ namespace WixSharp.UI
         /// </summary>
         /// <param name="message">The message data.</param>
         /// <param name="messageType">Type of the message.</param>
-        /// <returns>The integer as per MSI documentation.</c></returns>
+        /// <returns>The integer as per MSI documentation.</returns>
         protected virtual int OnMessage(string message, MsiInstallMessage messageType)
         {
             try

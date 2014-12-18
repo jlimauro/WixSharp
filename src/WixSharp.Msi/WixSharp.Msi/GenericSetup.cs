@@ -272,7 +272,7 @@ namespace WixSharp.UI
         /// </summary>
         /// <value>
         /// <c>true</c> if the product can repaired; otherwise, <c>false</c>.
-
+        /// </value>
         public bool CanRepair { get { return IsCurrentlyInstalled; } }
 
         bool logFileCreated;

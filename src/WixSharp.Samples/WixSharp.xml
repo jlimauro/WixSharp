@@ -3132,6 +3132,30 @@
             </value>
             <exception cref="T:System.Exception">WiX SDK binaries cannot be found. Please set WixSharp.Compiler.WixSdkLocation to valid path to the Wix SDK binaries.</exception>
         </member>
+        <member name="P:WixSharp.Compiler.GuidGenerator">
+            <summary>
+            Gets or sets the GUID generator algorithm. You can use either one of the built-in algorithms or define your own.
+            The default value is <see cref="M:WixSharp.GuidGenerators.Default(System.Object)"/>.
+            <description>Possible  WiX source file only:
+            <code>
+            //default built-in seeded GUID generator
+            Compiler.GuidGenerator = GuidGenerators.Default;
+            
+            //sequential built-in GUID generator 
+            Compiler.GuidGenerator = GuidGenerators.Sequential;
+            
+            //Custom 'aways-same' GUID generator
+            Compiler.GuidGenerator = (seed) =&gt; Guid.Parse("9e2974a1-9539-4c5c-bef7-80fc35b9d7b0");
+            
+            //Custom random GUID generator
+            Compiler.GuidGenerator = (seed) =&gt; Guid.NewGuid();
+            </code>
+            </description>
+            </summary>
+            <value>
+            The GUID generator algorithm. 
+            </value>
+        </member>
         <member name="T:WixSharp.Compiler.OutputType">
             <summary>
             Specifies the typr of the setup binaries to build.
@@ -5144,7 +5168,7 @@
         <member name="F:WixSharp.MajorUpgradeStrategy.RemoveExistingProductAfter">
             <summary>
             Step, which determines when the RemoveExistingProducts standard action is to be performed.
-            <para>The default value is <c>InstallInitialize</c>. </para>
+            <para>The default value is <c>InstallFinalize</c>. </para>
             </summary>
         </member>
         <member name="F:WixSharp.MajorUpgradeStrategy.NewerProductInstalledErrorMessage">
@@ -5514,14 +5538,14 @@
         </member>
         <member name="F:WixSharp.WixGuid.Value">
             <summary>
-            GUID value of teh <see cref="T:WixSharp.WixGuid"/> instance.
+            GUID value of the <see cref="T:WixSharp.WixGuid"/> instance.
             </summary>
         </member>
         <member name="M:WixSharp.WixGuid.#ctor(System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.WixGuid"/> class.
             </summary>
-            <param name="guid">The GUID value of the isntance to be created.</param>
+            <param name="guid">The GUID value of the instance to be created.</param>
         </member>
         <member name="F:WixSharp.WixGuid.ConsistentGenerationStartValue">
             <summary>
@@ -5548,6 +5572,14 @@
             <param name="guid">The GUID.</param>
             <param name="hashValue">The hash value.</param>
             <returns>GUID value.</returns>
+        </member>
+        <member name="P:WixSharp.WixGuid.Generator">
+            <summary>
+            Gets or sets the GUID generation algorithm.
+            </summary>
+            <value>
+            The generator.
+            </value>
         </member>
         <member name="T:WixSharp.WixGuid.SequentialGuid">
             <summary>
@@ -5597,6 +5629,26 @@
             Gets or sets the current GUID.
             </summary>
             <value>The current GUID.</value>
+        </member>
+        <member name="T:WixSharp.GuidGenerators">
+            <summary>
+            Collection of the deterministic GUID generation algorithms
+            </summary>
+        </member>
+        <member name="M:WixSharp.GuidGenerators.Sequential(System.Object)">
+            <summary>
+            Returns sequentially incremented GUID. The specified seed is ignored. Every consecutive 
+            call to this method will return the last returned GUID by 1 and return its value. 
+            </summary>
+            <param name="seed">The seed.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.GuidGenerators.Default(System.Object)">
+            <summary>
+            Default GUID generation algorithm.
+            </summary>
+            <param name="seed">The seed.</param>
+            <returns></returns>
         </member>
         <member name="T:WixSharp.Attributes">
             <summary>
