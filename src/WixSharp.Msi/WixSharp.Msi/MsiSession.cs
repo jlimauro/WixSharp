@@ -115,14 +115,14 @@ namespace WixSharp.UI
             get { return currentActionName; }
             protected set
             {
-                //var newValue = (value ?? "").Trim();
+                var newValue = (value ?? "").Trim();
 
-                //currentActionName = newValue;
-                //OnPropertyChanged("CurrentActionName");
+                currentActionName = newValue;
+                OnPropertyChanged("CurrentActionName");
 
-                ////MSI Runtime can periodically fire null-CurrentAction
-                //if (!string.IsNullOrWhiteSpace(CurrentActionName))
-                //    NotifyHostOnActionStarted();
+                //MSI Runtime can periodically fire null-CurrentAction
+                if (!string.IsNullOrWhiteSpace(CurrentActionName))
+                    NotifyHostOnActionStarted();
             }
         }
 

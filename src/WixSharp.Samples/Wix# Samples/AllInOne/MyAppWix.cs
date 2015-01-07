@@ -4,6 +4,8 @@
 
 using System;
 using System.Xml;
+using System.Xml.Linq;
+using System.Linq;
 using Microsoft.Win32;
 using System.Windows.Forms;
 using Microsoft.Deployment.WindowsInstaller;
@@ -34,7 +36,7 @@ class Script
                     new Dir(@"%ProgramMenu%\My Company\My Product",
                         new ExeFileShortcut(binaries, "Uninstall MyApp", "[System64Folder]msiexec.exe", "/x [ProductCode]")),
 
-                    //Rigistries
+                    //Registries
                     new RegValue(binaries, RegistryHive.LocalMachine, @"Software\My Product", "ExePath", @"[INSTALLDIR]MyApp.exe"),
 
                     //Custom Actions
@@ -59,6 +61,7 @@ class Script
             project.MSIFileName = "MyApp";
 
             //Compiler.PreserveTempFiles = true;
+            Compiler.WixSourceGenerated += Compiler_WixSourceGenerated;
             Compiler.BuildMsi(project);
         }
         catch (System.Exception ex)
@@ -66,7 +69,19 @@ class Script
             Console.WriteLine(ex.Message);
         }
     }
+
+    static void Compiler_WixSourceGenerated(System.Xml.Linq.XDocument document)
+    {
+        document.Root.Descendants("Shortcut")
+                     .ToList()
+                     .ForEach(x => 
+                      {
+                          if(x.Attribute("Name").Value == "MyApp.lnk")
+                            x.Attribute("Name").Value = "My Product App.lnk";
+                      });
+    }
 }
+
 
 public class CustomActions
 {

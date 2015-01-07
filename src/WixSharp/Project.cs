@@ -116,7 +116,7 @@ namespace WixSharp
         /// The product full name or description.
         /// </summary>
         public string Description = "";
-
+       
         /// <summary>
         /// Optional comments for browsing.
         /// </summary>
@@ -128,17 +128,8 @@ namespace WixSharp
         /// </summary>
         public string SourceBaseDir
         {
-            get
-            {
-                //if (sourceBaseDir.IsEmpty())
-                //    sourceBaseDir = Environment.CurrentDirectory;
-
-                return sourceBaseDir;
-            }
-            set
-            {
-                sourceBaseDir = value;
-            }
+            get { return sourceBaseDir; }
+            set { sourceBaseDir = value; }
         }
 
         private string outDir;
@@ -287,6 +278,9 @@ namespace WixSharp
                 WixGuid.ConsistentGenerationStartValue = new WixGuid.SequentialGuid(guid.Value);
             }
         }
+
+        public string ProductIcon = null;
+
 
         /// <summary>
         /// Version of the product to be installed.

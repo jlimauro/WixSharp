@@ -25,6 +25,7 @@ THE SOFTWARE.
 */
 #endregion
 using IO = System.IO;
+using Reflection = System.Reflection;
 using System.Collections.Generic;
 using System;
 using System.Diagnostics;
@@ -169,8 +170,8 @@ namespace WixSharp.CommonTasks
                 args += " /p \"" + password + "\"";
             if (!optionalArguments.IsEmpty())
                 args += " " + optionalArguments;
-            
-            args +=  " \"" + fileToSign + "\"";
+
+            args += " \"" + fileToSign + "\"";
 
             var tool = new ExternalTool
             {
@@ -204,6 +205,16 @@ namespace WixSharp.CommonTasks
         static public int DigitalySign(string fileToSign, string pfxFile, string timeURL, string password)
         {
             return DigitalySign(fileToSign, pfxFile, timeURL, password, null);
+        }
+
+        static public bool InstallService(string serviceFile, bool isInstalling = true)
+        {
+            string installUtil = IO.Path.Combine(IO.Path.GetDirectoryName(typeof(string).Assembly.Location), "InstallUtil.exe");
+            string[] installArgs = new[] { "/LogFile=", Reflection.Assembly.GetExecutingAssembly().Location };
+            if (!isInstalling)
+                installArgs = new[] { "/u", "/LogFile=", Reflection.Assembly.GetExecutingAssembly().Location };
+
+            return 0 == AppDomain.CreateDomain(Environment.TickCount.ToString()).ExecuteAssembly(installUtil, null, installArgs);
         }
     }
 

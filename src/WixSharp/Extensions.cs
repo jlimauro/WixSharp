@@ -54,6 +54,45 @@ namespace WixSharp
         }
 
         /// <summary>
+        /// Adds the element.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="element">The element.</param>
+        /// <param name="attributesDefinition">The attributes definition.</param>
+        /// <returns></returns>
+        public static XElement AddElement(this XElement obj, string elementName, string attributesDefinition)
+        {
+            var retval = new XElement(elementName)
+                             .AddAttributes(attributesDefinition.ToDictionary());
+            obj.Add(retval);
+            return retval;
+        }
+
+        public static Dictionary<string, string> ToDictionary(this string map)
+        {
+            var retval = new Dictionary<string, string>();
+            if (!map.IsEmpty())
+            {
+                foreach (string pair in map.Trim().Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
+                {
+                    try
+                    {
+                        string[] tokens = pair.Split("=".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                        string name = tokens[0].Trim();
+                        string value = tokens[1].Trim();
+
+                        retval[name] = value;
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Invalid map entry", e);
+                    }
+                }
+
+            }
+            return retval;
+        }
+        /// <summary>
         /// Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
         /// </summary>
         /// <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
@@ -62,9 +101,13 @@ namespace WixSharp
         /// <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
         public static XElement AddElement(this XElement obj, XElement element, Dictionary<string, string> attributes)
         {
-            obj.Add(element);
-            obj.AddAttributes(attributes);
+            obj.Add(element.AddAttributes(attributes));
             return element;
+        }
+
+        public static XElement AddAttributes(this XElement obj, string attributesDefinition)
+        {
+            return obj.AddAttributes(attributesDefinition.ToDictionary());
         }
         /// <summary>
         /// Adds the attributes to the to a given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
