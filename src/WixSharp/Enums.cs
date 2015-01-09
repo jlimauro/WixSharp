@@ -165,6 +165,14 @@ namespace WixSharp
         /// </summary>
         InstallFinalize,
         /// <summary>
+        /// <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallFiles</c> action.
+        /// </summary>
+        InstallFiles,
+        /// <summary>
+        /// <c>Custom Action</c> is to be executed before/after MSI built-in <c>RemoveFiles</c> action.
+        /// </summary>
+        RemoveFiles,
+        /// <summary>
         /// <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallExecute</c> action.
         /// </summary>
         InstallExecute,
@@ -294,5 +302,82 @@ namespace WixSharp
         /// Means execution alone in a separate process. 
         /// </summary>
         high
+    }
+
+    /// <summary>
+    /// Determines what service action should be taken on an error. 
+    /// </summary>
+    public enum SvcErrorControl
+    {
+        /// <summary>
+        ///Logs the error and continues with the startup operation.
+        /// </summary>
+        ignore,
+        /// <summary>
+        ///Logs the error, displays a message box and continues the startup operation.
+        /// </summary>
+        normal,
+        /// <summary>
+        //Logs the error if it is possible and the system is restarted with the last configuration known to be good. If the last-known-good configuration is being started, the startup operation fails.
+        /// </summary>
+        critical
+    }
+
+    /// <summary>
+    /// Determines when the service should be started. The Windows Installer does not support boot or system. 
+    /// </summary>
+    public enum SvcStartType
+    {
+        /// <summary>
+        /// The service will start during startup of the system.
+        /// </summary>
+        auto,
+        /// <summary>
+        ///The service will start when the service control manager calls the StartService function.        
+        /// </summary>
+        demand,
+        /// <summary>
+        /// The service can no longer be started.
+        /// </summary>
+        disabled,
+        /// <summary>
+        /// The service is a device driver that will be started by the operating system boot loader. This value is not currently supported by the Windows Installer.
+        /// </summary>
+        boot,
+        /// <summary>
+        /// The service is a device driver that will be started by the IoInitSystem function. This value is not currently supported by the Windows Installer.
+        /// </summary>
+        system
+    }
+
+
+    /// <summary>
+    /// The Windows Installer does not currently support kernelDriver or systemDriver. This attribute's value must be one of the following:
+    /// </summary>
+    public enum SvcType
+    {
+        /// <summary>
+        /// A Win32 service that runs its own process.
+        /// </summary>
+        ownProcess,
+        /// <summary>
+        /// A Win32 service that shares a process.
+        /// </summary>
+        shareProcess,
+        /// <summary>
+        /// A kernel driver service. This value is not currently supported by the Windows Installer.
+        /// </summary>
+        kernelDriver,
+        /// <summary>
+        /// A file system driver service. This value is not currently supported by the Windows Installer.
+        /// </summary>
+        systemDriver
+    }
+
+    public enum SvcEventType
+    {
+        install,
+        uninstall,
+        both
     }
 }

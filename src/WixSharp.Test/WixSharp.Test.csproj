@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="GenericTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XmlInjectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

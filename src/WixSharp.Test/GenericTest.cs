@@ -20,4 +20,5 @@ namespace WixSharp.Test
             var rrr = WixGuid.NewGuid();
         }
     }
+
 }

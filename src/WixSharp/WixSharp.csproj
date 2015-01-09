@@ -152,6 +152,7 @@
     <Compile Include="RegValue.cs" />
     <Compile Include="ScriptAction.cs" />
     <Compile Include="ScriptFileAction.cs" />
+    <Compile Include="ServiceInstaller.cs" />
     <Compile Include="SetPropertyAction.cs" />
     <Compile Include="Shortcut.cs" />
     <Compile Include="UpgradeStrategy.cs" />

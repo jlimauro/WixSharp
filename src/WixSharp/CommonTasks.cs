@@ -207,14 +207,26 @@ namespace WixSharp.CommonTasks
             return DigitalySign(fileToSign, pfxFile, timeURL, password, null);
         }
 
-        static public bool InstallService(string serviceFile, bool isInstalling = true)
+        static public void InstallService(string serviceFile, bool isInstalling, out string output)
         {
-            string installUtil = IO.Path.Combine(IO.Path.GetDirectoryName(typeof(string).Assembly.Location), "InstallUtil.exe");
-            string[] installArgs = new[] { "/LogFile=", Reflection.Assembly.GetExecutingAssembly().Location };
-            if (!isInstalling)
-                installArgs = new[] { "/u", "/LogFile=", Reflection.Assembly.GetExecutingAssembly().Location };
+            output = "";
+            string logFile = IO.Path.GetTempFileName();
 
-            return 0 == AppDomain.CreateDomain(Environment.TickCount.ToString()).ExecuteAssembly(installUtil, null, installArgs);
+            string installUtil = IO.Path.Combine(IO.Path.GetDirectoryName(typeof(string).Assembly.Location), "InstallUtil.exe");
+            string[] installArgs = new[] { "/LogFile=" + logFile, serviceFile };
+            if (!isInstalling)
+                installArgs = new[] { "/u", "/LogFile=" + logFile, serviceFile };
+
+            try
+            {
+                AppDomain.CreateDomain(Environment.TickCount.ToString()).ExecuteAssembly(installUtil, null, installArgs);
+                output = IO.File.ReadAllText(logFile);
+            }
+            finally
+            {
+                if (IO.File.Exists(logFile))
+                    IO.File.Delete(logFile);
+            }
         }
     }
 

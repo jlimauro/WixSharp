@@ -20,8 +20,6 @@ class Script
 
         notepad.Attributes = new Attributes { { "Component:SharedDllRefCount", "yes" } };
 
-        project.MSIFileName = "setup";
-
         var wxsFile = Compiler.BuildWxs(project);
     }
 }

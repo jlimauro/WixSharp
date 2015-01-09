@@ -1149,6 +1149,9 @@ namespace WixSharp
                         new XAttribute("Source", Utils.PathCombine(wProject.SourceBaseDir, wFile.Name)))
                         .AddAttributes(wFile.LocalAttributes));
 
+                if (wFile.ServiceInstaller != null)
+                    comp.Add(wFile.ServiceInstaller.ToXml());
+
                 if (wFile is Assembly && (wFile as Assembly).RegisterInGAC)
                 {
                     file.Add(new XAttribute("KeyPath", "yes"),
@@ -1169,8 +1172,7 @@ namespace WixSharp
                                               new XAttribute("ContentType", wFileAssociation.ContentType),
                                               new XElement("Verb",
                                                   wFileAssociation.Advertise ?
-                                                     new XAttribute("Sequence", wFileAssociation.SequenceNo)
-                                                     :
+                                                     new XAttribute("Sequence", wFileAssociation.SequenceNo) :
                                                      new XAttribute("TargetFile", fileId),
                                                   new XAttribute("Id", wFileAssociation.Command),
                                                   new XAttribute("Command", wFileAssociation.Command),
@@ -1747,6 +1749,22 @@ namespace WixSharp
 
                     PackageManagedAsm(asmFile, packageFile, wManagedAction.RefAssemblies);
 
+                    if (wManagedAction.UsesProperties != null) //map managed action properties
+                    {
+                        var setPropValuesId = "Set_" + wAction.Id + "_Props";
+
+                        product.Add(new XElement("CustomAction",
+                                        new XAttribute("Id", setPropValuesId),
+                                        new XAttribute("Property", wAction.Id),
+                                        new XAttribute("Value", wManagedAction.ExpandUsesProperties())));
+
+                        if (sequence != null)
+                            sequence.Add(
+                                new XElement("Custom",
+                                    new XAttribute("Action", setPropValuesId),
+                                    new XAttribute("After", "InstallInitialize")));
+                    }
+
                     if (sequence != null)
                         sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
                                         new XAttribute("Action", wAction.Name.Expand()),
@@ -1764,6 +1782,7 @@ namespace WixSharp
                                     new XAttribute("Execute", wAction.Execute),
                                     new XAttribute("Return", wAction.Return))
                                     .AddAttributes(wAction.Attributes));
+
                 }
                 else if (wAction is QtCmdLineAction)
                 {

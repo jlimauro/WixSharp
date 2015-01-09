@@ -24,6 +24,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System;
+using System.Linq;
+using System.Text;
 namespace WixSharp
 {
     /// <summary>
@@ -52,6 +55,7 @@ namespace WixSharp
         {
             Impersonate = false;
             Execute = Execute.deferred;
+            UsesProperties="INSTALLDIR";
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatedManagedAction"/> class with properties/fields initialized with specified parameters.
@@ -62,6 +66,7 @@ namespace WixSharp
         {
             Impersonate = false;
             Execute = Execute.deferred;
+            UsesProperties = "INSTALLDIR";
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatedManagedAction"/> class with properties/fields initialized with specified parameters.
@@ -73,6 +78,7 @@ namespace WixSharp
         {
             Impersonate = false;
             Execute = Execute.deferred;
+            UsesProperties = "INSTALLDIR";
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatedManagedAction"/> class with properties/fields initialized with specified parameters.
@@ -98,6 +104,7 @@ namespace WixSharp
         {
             Impersonate = false;
             Execute = Execute.deferred;
+            UsesProperties = "INSTALLDIR";
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatedManagedAction"/> class with properties/fields initialized with specified parameters.
@@ -112,6 +119,7 @@ namespace WixSharp
         {
             Impersonate = false;
             Execute = Execute.deferred;
+            UsesProperties = "INSTALLDIR";
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatedManagedAction"/> class with properties/fields initialized with specified parameters.
@@ -143,6 +151,7 @@ namespace WixSharp
         {
             Impersonate = false;
             Execute = Execute.deferred;
+            UsesProperties = "INSTALLDIR";
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatedManagedAction"/> class with properties/fields initialized with specified parameters.
@@ -160,6 +169,7 @@ namespace WixSharp
         {
             Impersonate = false;
             Execute = Execute.deferred;
+            UsesProperties = "INSTALLDIR";
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatedManagedAction"/> class with properties/fields initialized with specified parameters.
@@ -175,6 +185,7 @@ namespace WixSharp
         {
             Impersonate = false;
             Execute = Execute.deferred;
+            UsesProperties = "INSTALLDIR";
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatedManagedAction"/> class with properties/fields initialized with specified parameters.
@@ -192,6 +203,7 @@ namespace WixSharp
         {
             Impersonate = false;
             Execute = Execute.deferred;
+            UsesProperties = "INSTALLDIR";
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatedManagedAction"/> class with properties/fields initialized with specified parameters.
@@ -208,6 +220,7 @@ namespace WixSharp
         {
             Impersonate = false;
             Execute = Execute.deferred;
+            UsesProperties = "INSTALLDIR";
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatedManagedAction"/> class with properties/fields initialized with specified parameters.
@@ -226,7 +239,7 @@ namespace WixSharp
         {
             Impersonate = false;
             Execute = Execute.deferred;
+            UsesProperties = "INSTALLDIR";
         }
-
     }
 }

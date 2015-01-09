@@ -130,14 +130,20 @@ namespace WixSharp
             Shortcuts = (from i in items where i is FileShortcut select i as FileShortcut).ToArray();
             Associations = (from i in items where i is FileAssociation select i as FileAssociation).ToArray();
             IISVirtualDirs = (from i in items where i is IISVirtualDir select i as IISVirtualDir).ToArray();
-            if ((Associations.Length + Shortcuts.Length + IISVirtualDirs.Length) != items.Length)
-                throw new ApplicationException("Only {0} and {1} items can be added to {2}".Format(typeof(FileShortcut), typeof(FileAssociation), this.GetType()));
+            ServiceInstaller = items.Where(i => i is ServiceInstaller).FirstOrDefault() as ServiceInstaller; 
+            if ((Associations.Length + Shortcuts.Length + IISVirtualDirs.Length + (ServiceInstaller != null ? 1 : 0)) != items.Length)
+                throw new ApplicationException("Only {0},{1} and {2} items can be added to {2}".Format(typeof(FileShortcut), 
+                                                                                                       typeof(FileAssociation), 
+                                                                                                       typeof(ServiceInstaller), 
+                                                                                                       this.GetType()));
         }
 
         /// <summary>
         /// Collection of the <see cref="FileAssociation"/>s associated with the file. 
         /// </summary>
         public FileAssociation[] Associations = new FileAssociation[0];
+        
+        public ServiceInstaller ServiceInstaller = null;
 
         /// <summary>
         /// Collection of the contained <see cref="IISVirtualDir"/>s. 
