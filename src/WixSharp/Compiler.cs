@@ -1749,20 +1749,25 @@ namespace WixSharp
 
                     PackageManagedAsm(asmFile, packageFile, wManagedAction.RefAssemblies);
 
-                    if (wManagedAction.UsesProperties != null) //map managed action properties
+                    if (wManagedAction.Execute == Execute.deferred && wManagedAction.UsesProperties != null) //map managed action properties
                     {
-                        var setPropValuesId = "Set_" + wAction.Id + "_Props";
+                        string mapping = wManagedAction.ExpandAllUsedProperties();
 
-                        product.Add(new XElement("CustomAction",
-                                        new XAttribute("Id", setPropValuesId),
-                                        new XAttribute("Property", wAction.Id),
-                                        new XAttribute("Value", wManagedAction.ExpandUsesProperties())));
+                        if (!mapping.IsEmpty())
+                        {
+                            var setPropValuesId = "Set_" + wAction.Id + "_Props";
 
-                        if (sequence != null)
-                            sequence.Add(
-                                new XElement("Custom",
-                                    new XAttribute("Action", setPropValuesId),
-                                    new XAttribute("After", "InstallInitialize")));
+                            product.Add(new XElement("CustomAction",
+                                            new XAttribute("Id", setPropValuesId),
+                                            new XAttribute("Property", wAction.Id),
+                                            new XAttribute("Value", mapping)));
+
+                            if (sequence != null)
+                                sequence.Add(
+                                    new XElement("Custom",
+                                        new XAttribute("Action", setPropValuesId),
+                                        new XAttribute("After", "InstallInitialize")));
+                        }
                     }
 
                     if (sequence != null)

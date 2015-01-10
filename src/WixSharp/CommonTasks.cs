@@ -1,9 +1,7 @@
 #region Licence...
 /*
 The MIT License (MIT)
-
 Copyright (c) 2014 Oleg Shilo
-
 Permission is hereby granted, 
 free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -11,10 +9,8 @@ in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,11 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using IO = System.IO;
-using Reflection = System.Reflection;
-using System.Collections.Generic;
 using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using IO = System.IO;
 
 namespace WixSharp.CommonTasks
 {
@@ -207,25 +203,60 @@ namespace WixSharp.CommonTasks
             return DigitalySign(fileToSign, pfxFile, timeURL, password, null);
         }
 
-        static public void InstallService(string serviceFile, bool isInstalling, out string output)
+        static public string InstallService(string serviceFile, bool isInstalling)
         {
-            output = "";
-            string logFile = IO.Path.GetTempFileName();
+            var util = new ExternalTool
+                {
+                    ExePath = IO.Path.Combine(LatestFrameworkDirectory, "InstallUtil.exe"),
+                    Arguments = string.Format("{1} \"{0}\"", serviceFile, isInstalling ? "" : "/u")
+                };
 
-            string installUtil = IO.Path.Combine(IO.Path.GetDirectoryName(typeof(string).Assembly.Location), "InstallUtil.exe");
-            string[] installArgs = new[] { "/LogFile=" + logFile, serviceFile };
-            if (!isInstalling)
-                installArgs = new[] { "/u", "/LogFile=" + logFile, serviceFile };
+            var buf = new StringBuilder();
+            int retval = util.ConsoleRun(line => buf.AppendLine(line));
+            string output = buf.ToString();
 
-            try
+            string logoLastLine = "Microsoft Corporation.  All rights reserved.";
+            int pos = output.IndexOf(logoLastLine);
+            if (pos != -1)
+                output = output.Substring(pos + logoLastLine.Length).Trim();
+
+            if (retval != 0)
+                throw new Exception(output);
+
+            return output;
+        }
+
+        static public string StartService(string service, bool throwOnError = true)
+        {
+            return ServiceDo("start", service, throwOnError);
+        }
+
+        static public string StopService(string service, bool throwOnError = true)
+        {
+            return ServiceDo("stop", service, throwOnError);
+        }
+
+        static string ServiceDo(string action, string service, bool throwOnError)
+        {
+            var util = new ExternalTool { ExePath = "sc.exe", Arguments = action + " \"" + service + "\"" };
+
+            var buf = new StringBuilder();
+            int retval = util.ConsoleRun(line => buf.AppendLine(line));
+
+            if (retval != 0 && throwOnError)
+                throw new Exception(buf.ToString());
+            return buf.ToString();
+        }
+
+        public static string LatestFrameworkDirectory
+        {
+            get
             {
-                AppDomain.CreateDomain(Environment.TickCount.ToString()).ExecuteAssembly(installUtil, null, installArgs);
-                output = IO.File.ReadAllText(logFile);
-            }
-            finally
-            {
-                if (IO.File.Exists(logFile))
-                    IO.File.Delete(logFile);
+                string currentVersionDir = IO.Path.GetDirectoryName(typeof(string).Assembly.Location);
+                string rootDir = IO.Path.GetDirectoryName(currentVersionDir);
+                return IO.Directory.GetDirectories(rootDir, "v*.*")
+                                   .OrderByDescending(x => x)
+                                   .FirstOrDefault();
             }
         }
     }
@@ -241,7 +272,7 @@ namespace WixSharp.CommonTasks
             string systemPathOriginal = Environment.GetEnvironmentVariable("PATH");
             try
             {
-                Environment.SetEnvironmentVariable("PATH", systemPathOriginal + ";" + Environment.ExpandEnvironmentVariables(this.WellKnownLocations));
+                Environment.SetEnvironmentVariable("PATH", systemPathOriginal + ";" + Environment.ExpandEnvironmentVariables(this.WellKnownLocations ?? ""));
 
                 var process = new Process();
                 process.StartInfo.FileName = this.ExePath;
@@ -268,7 +299,7 @@ namespace WixSharp.CommonTasks
             string systemPathOriginal = Environment.GetEnvironmentVariable("PATH");
             try
             {
-                Environment.SetEnvironmentVariable("PATH", systemPathOriginal + ";" + Environment.ExpandEnvironmentVariables(this.WellKnownLocations) + ";" + "%WIXSHARP_PATH%");
+                Environment.SetEnvironmentVariable("PATH", systemPathOriginal + ";" + Environment.ExpandEnvironmentVariables(this.WellKnownLocations ?? "") + ";" + "%WIXSHARP_PATH%");
 
                 string exePath = GetFullPath(this.ExePath);
 

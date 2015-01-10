@@ -291,11 +291,20 @@ namespace WixSharp
 
         public string UsesProperties;
 
-        internal string ExpandUsesProperties()
+        public string DefaultUsesProperties = "INSTALLDIR,UILevel";
+
+        internal string ExpandAllUsedProperties()
         {
-            var result = string.Join(";", UsesProperties.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
-                                                        .Select(x => string.Format("{0}=[{0}]", x))
-                                                        .ToArray());
+            var allProps = (UsesProperties + ","+DefaultUsesProperties);
+            var result = string.Join(";", allProps.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+                                                  .Select(x =>
+                                                      {
+                                                          if (x.Contains('=')) //e.g. INSTALLDIR=[INSTALLDIR]
+                                                              return x;
+                                                          else
+                                                              return string.Format("{0}=[{0}]", x);
+                                                      })
+                                                  .ToArray());
             return result;
         }
     }

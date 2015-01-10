@@ -1,9 +1,7 @@
 #region Licence...
 /*
 The MIT License (MIT)
-
 Copyright (c) 2014 Oleg Shilo
-
 Permission is hereby granted, 
 free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -11,10 +9,8 @@ in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,15 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
+using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
 using IO = System.IO;
-using System.Text;
 
 namespace WixSharp
 {
@@ -627,6 +623,42 @@ namespace WixSharp
         public static bool IsNullOrEmpty(this string obj)
         {
             return string.IsNullOrEmpty(obj);
+        }
+
+        public static bool IsActive(this Session session)
+        {
+            //if (!session.IsClosed) //unfortunately isClosed is always false even for the deferred actions
+            try
+            {
+                var test = session.Components; //it will throw for the deferred action
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static string Property(this Session session, string name)
+        {
+            if (session.IsActive())
+                return session[name];
+            else
+                return session.CustomActionData[name];
+        }
+
+        public static ActionResult HandleErrors(this Session session, System.Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                session.Log(e.Message);
+                return ActionResult.Failure;
+            }
+            return ActionResult.Success;
         }
     }
 }

@@ -2,4 +2,4 @@ This example demonstrates how to install (on Program Menu and on Desktop) shortc
 Also this setup installs "Install Product" and "Uninstall Product" shortcuts.
 This example also demonstrates how to specify a custom icon for the shortcut (MyApp.lnk on Desktop). 
 
-Build msi by executiong build.cmd. Then you can test setup by launching setup.msi.
+Build msi by executing build.cmd. Then you can test setup by launching setup.msi.
