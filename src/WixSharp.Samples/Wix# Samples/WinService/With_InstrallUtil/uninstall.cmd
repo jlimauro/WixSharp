@@ -1,1 +1,1 @@
-start msiexec /uninstall MyApp.msi
+start msiexec /uninstall setup.msi
