@@ -10,17 +10,16 @@ class Script
 {
     static public void Main(string[] args)
     {
-        RegFileImporter.skipUnknownTypes = true;
-        var importedValues = Tasks.ImportRegFile("MyProduct.reg");
+        //uncomment the line below if the reg file contains unsupported type to be ignored
+        //RegFileImporter.SkipUnknownTypes = true;
 
         Project project =
             new Project("MyProduct",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
                     new File(@"readme.txt")),
+                new RegFile("MyProduct.reg"),
                 new RegValue(RegistryHive.LocalMachine, "Software\\My Company\\My Product", "Message", "Hello"),
                 new RegValue(RegistryHive.LocalMachine, "Software\\My Company\\My Product", "Count", 777));
-
-        project.RegValues = project.RegValues.Concat(importedValues).ToArray();
 
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
         project.UI = WUI.WixUI_ProgressOnly;
