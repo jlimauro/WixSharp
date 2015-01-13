@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Xunit;
 using IO = System.IO;
 
@@ -11,46 +12,21 @@ namespace WixSharp.Test
 {
     public class SamplesTest
     {
+        string[] nonMsiProjects = new[] { "CustomAttributes" };
+
         [Fact]
         public void CanBuildAllSamples()
         {
-            var files = Directory.GetFiles(@"..\..\..\WixSharp.Samples\Wix# Samples", "build*.cmd", SearchOption.AllDirectories);
-
             var failedSamples = new List<string>();
-
-            int startStep = 17;
+            int startStep = 0;
             int currentStep = startStep;
+
+            var files = Directory.GetFiles(@"..\..\..\WixSharp.Samples\Wix# Samples", "build*.cmd", SearchOption.AllDirectories);
             foreach (string file in files.Skip(startStep))
             {
+                currentStep++;
                 var batchFile = IO.Path.GetFullPath(file);
-
-                try
-                {
-                    var dir = Path.GetDirectoryName(batchFile);
-
-                    DeleteAllMsis(dir);
-                    Assert.False(HasAnyMsis(dir), "Cannot clear directory for the test...");
-
-                    DisablePause(batchFile);
-
-                    string output = Run(batchFile);
-
-                    if (output.Contains(" : error") || !HasAnyMsis(dir))
-                        failedSamples.Add(batchFile);
-
-                    DeleteAllMsis(dir);
-
-                    Log(currentStep++, failedSamples);
-                }
-                catch (Exception e)
-                {
-                    failedSamples.Add(batchFile);
-                    //Assert.True(false, e.Message);
-                }
-                finally
-                {
-                    RestorePause(batchFile);
-                }
+                BuildSample(batchFile, currentStep, failedSamples);
             }
 
             if (failedSamples.Any())
@@ -58,8 +34,40 @@ namespace WixSharp.Test
                 string error = "Failed Samples:\r\n" + string.Join(Environment.NewLine, failedSamples.ToArray());
                 Assert.True(false, error);
             }
-
         }
+
+        void BuildSample(string batchFile, int currentStep, List<string> failedSamples)
+        {
+            try
+            {
+                var dir = Path.GetDirectoryName(batchFile);
+
+                DeleteAllMsis(dir);
+                Assert.False(HasAnyMsis(dir), "Cannot clear directory for the test...");
+
+                DisablePause(batchFile);
+
+                string output = Run(batchFile);
+
+                bool nonMsi = !nonMsiProjects.Where(x => batchFile.Contains(x)).Any();
+
+                if (output.Contains(" : error") || (nonMsi && !HasAnyMsis(dir)))
+                    failedSamples.Add(currentStep + ":" + batchFile);
+
+                DeleteAllMsis(dir);
+
+                Log(currentStep, failedSamples);
+            }
+            catch (Exception e)
+            {
+                failedSamples.Add(currentStep + ":" + batchFile + "\t" + e.Message.Replace("\r\n", "\n").Replace("\n", ""));
+            }
+            finally
+            {
+                RestorePause(batchFile);
+            }
+        }
+
 
         void Log(int currentStep, List<string> failedSamples)
         {
@@ -82,12 +90,12 @@ namespace WixSharp.Test
 
         bool HasAnyMsis(string dir)
         {
-            return Directory.GetFiles(dir, "*.msi").Any();
+            return Directory.GetFiles(dir, "*.ms?").Any();
         }
 
         void DeleteAllMsis(string dir)
         {
-            foreach (var msiFile in Directory.GetFiles(dir, "*.msi"))
+            foreach (var msiFile in Directory.GetFiles(dir, "*.ms?"))
                 System.IO.File.Delete(msiFile);
         }
 

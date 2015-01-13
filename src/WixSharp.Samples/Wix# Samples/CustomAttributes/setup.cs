@@ -18,7 +18,7 @@ class Script
                                           Attributes = new Attributes() { { "Hotkey", "0" } } 
                                       })));
 
-        notepad.Attributes = new Attributes { { "Component:SharedDllRefCount", "yes" } };
+        notepad.AttributesDefinition = "Component:SharedDllRefCount=yes";
 
         var wxsFile = Compiler.BuildWxs(project);
     }
