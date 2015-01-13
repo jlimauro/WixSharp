@@ -212,6 +212,12 @@ namespace WixSharp
         {
             return string.Format(obj, args);
         }
+
+        public static string[] GetLines(this string obj)
+        {
+            return obj.Replace("\r\n", "\n").Split('\n');
+        }
+
         /// <summary>
         /// Replaces all Wix# predefined string constants (Environment Constants) in the Wix# directory path with their WiX equivalents and escapes all WiX illegal characters (e.g. space character). 
         /// <para>
@@ -541,14 +547,21 @@ namespace WixSharp
         /// </summary>
         /// <param name="obj">The instance of the <see cref="T:System.Object"/>.</param>
         /// <returns>The WiX compatible type name.</returns>
+        [Obsolete("It is no longer used by compiler")]
         public static string GetWType(this object obj)
         {
             if (obj is String)
-                return "string";
+            {
+                    return "string";
+            }
             else if (obj is Int16 || obj is Int32)
+            {
                 return "integer";
+            }
             else
+            {
                 return "unsupported type";
+            }
         }
         /// <summary>
         /// Combines given <see cref="T:System.Array"/> items with items of another <see cref="T:System.Array"/>.

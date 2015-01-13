@@ -34,6 +34,8 @@ namespace WixSharp
 {
     internal static class AutoElements
     {
+        public static bool DisableAutoCreateFolder = false;
+
         static void InsertRemoveFolder(XElement xDir, XElement xComponent, string when = "uninstall")
         {
             xComponent.Add(new XElement("RemoveFolder",
@@ -43,7 +45,9 @@ namespace WixSharp
 
         static void InsertCreateFolder(XElement xDir, XElement xComponent)
         {
-            xComponent.Add(new XElement("CreateFolder"));
+            //"Empty Directories" sample demonstrates the need for CreateFolder
+            if (!DisableAutoCreateFolder)
+                xComponent.Add(new XElement("CreateFolder"));
         }
 
         static void InsertDummyUserProfileRegistry(XElement xComponent)

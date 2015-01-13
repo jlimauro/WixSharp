@@ -213,6 +213,11 @@ namespace WixSharp.CommonTasks
             return DigitalySign(fileToSign, pfxFile, timeURL, password, null);
         }
 
+        static public RegValue[] ImportRegFile(string regFile)
+        {
+            return RegFileImporter.ImportFrom(regFile);
+
+        }
         static public void SetConfigAttribute(string configFile, string elementPath, string value)
         {
             XDocument.Load(configFile)

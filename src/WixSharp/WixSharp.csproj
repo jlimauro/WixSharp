@@ -149,6 +149,7 @@
     <Compile Include="Project.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="QtCmdLineAction.cs" />
+    <Compile Include="RegFileImporter.cs" />
     <Compile Include="RegValueProperty.cs" />
     <Compile Include="RegValue.cs" />
     <Compile Include="ScriptAction.cs" />

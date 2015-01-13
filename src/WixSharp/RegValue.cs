@@ -1,9 +1,7 @@
 #region Licence...
 /*
 The MIT License (MIT)
-
 Copyright (c) 2014 Oleg Shilo
-
 Permission is hereby granted, 
 free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -11,10 +9,8 @@ in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,9 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-
+using System;
+using System.Linq;
 using Microsoft.Win32;
-using System.Collections.Generic;
 
 namespace WixSharp
 {
@@ -175,5 +171,50 @@ namespace WixSharp
         /// Set this attribute to 'yes' to mark the corresponding RegValue as a 64-bit component. 
         /// </summary>
         public bool Win64 = false;
+
+        internal string RegValueString
+        {
+            get
+            {
+                if (Value is byte[])
+                {
+                    string hex = BitConverter.ToString(Value as byte[]);
+                    return hex.Replace("-", "");
+                }
+                else
+                {
+                    return Value.ToString();
+                }
+            }
+        }
+
+        internal string RegTypeString
+        {
+            get
+            {
+                if (Value is String)
+                {
+                    var value = Value as string;
+                    if (value.Contains("\n"))
+                        return "multiString";
+                    else if (value.Contains("%"))
+                        return "expandable";
+                    else
+                        return "string";
+                }
+                else if (Value is byte[])
+                {
+                    return "binary";
+                }
+                else if (Value is Int16 || Value is Int32)
+                {
+                    return "integer";
+                }
+                else
+                {
+                    return "unsupported type";
+                }
+            }
+        }
     }
 }

@@ -4641,6 +4641,49 @@
             The arguments to be passed to the application during the execution.
             </summary>
         </member>
+        <member name="T:WixSharp.RegParser">
+            <summary>
+            Based on Henryk Filipowicz work http://www.codeproject.com/Articles/125573/Registry-Export-File-reg-Parser
+            Licensed under The Code Project Open License (CPOL)
+            </summary>
+        </member>
+        <member name="M:WixSharp.RegParser.Parse(System.String)">
+            <summary>
+            Parses the reg file for reg keys and reg values
+            </summary>
+            <returns>A Dictionary with reg keys as Dictionary keys and a Dictionary of (valuename, valuedata)</returns>
+        </member>
+        <member name="M:WixSharp.RegParser.NormalizeDictionary(System.String,System.String,System.Boolean)">
+            <summary>
+            Creates a flat Dictionary using given search pattern
+            </summary>
+            <param name="searchPattern">The search pattern</param>
+            <param name="content">The content string to be parsed</param>
+            <param name="stripeBraces">Flag for striping braces (true for reg keys, false for reg values)</param>
+            <returns>A Dictionary with retrieved keys and remaining content</returns>
+        </member>
+        <member name="M:WixSharp.RegParser.StripeLeadingChars(System.String,System.String)">
+            <summary>
+            Removes the leading and ending characters from the given string
+            </summary>
+            <param name="sLine">given string</param>
+            <returns>edited string</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:WixSharp.RegParser.StripeBraces(System.String)">
+            <summary>
+            Removes the leading and ending parenthesis from the given string
+            </summary>
+            <param name="sLine">given string</param>
+            <returns>edited string</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:WixSharp.RegParser.GetEncoding(System.String)">
+            <summary>
+            Retrieves the encoding of the reg file, checking the word "REGEDIT4"
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:WixSharp.RegValueProperty">
              <summary>
              Defines WiX custom property assigned by MSI runtime during the installation to the RegistrySearch result.

@@ -722,7 +722,7 @@ namespace WixSharp
         {
             //very superficial formatting
 
-            var mergeSections = new[] { "<Wix ", "<Media ", "<File " };
+            var mergeSections = new[] { "<Wix ", "<Media ", "<File ", "<MultiStringValue>" };
             var splitSections = new[] { "</Product>", "</Module>" };
 
             StringBuilder sb = new StringBuilder();
@@ -1459,15 +1459,25 @@ namespace WixSharp
                                 .AddAttributes(regVal.Condition.Attributes));
 
                     XElement regValEl;
-                    comp.Add(
+                    XElement regKeyEl;
+                    regKeyEl = comp.AddElement(
                             new XElement("RegistryKey",
                                 new XAttribute("Root", regVal.Root.ToWString()),
-                                new XAttribute("Key", regVal.Key),
                                 regValEl = new XElement("RegistryValue",
-                                               new XAttribute("Value", regVal.Value.ToString().ExpandWixEnvConsts()),
-                                               new XAttribute("Type", regVal.Value.GetWType()),
+                                               new XAttribute("Type", regVal.RegTypeString),
                                                new XAttribute("KeyPath", keyPathSet.ToYesNo()))
                                                .AddAttributes(regVal.LocalAttributes)));
+                    if (!regVal.Key.IsEmpty())
+                        regKeyEl.Add(new XAttribute("Key", regVal.Key));
+
+                    string stringValue = regVal.RegValueString.ExpandWixEnvConsts();
+                    if (regValEl.Attribute("Type").Value == "multiString")
+                    {
+                        foreach (string line in stringValue.GetLines())
+                            regValEl.Add(new XElement("MultiStringValue", line));
+                    }
+                    else
+                        regValEl.Add(new XAttribute("Value", stringValue));
 
                     if (regVal.Name != "")
                         regValEl.Add(new XAttribute("Name", regVal.Name));
