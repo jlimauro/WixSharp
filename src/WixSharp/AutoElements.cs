@@ -34,7 +34,19 @@ namespace WixSharp
 {
     internal static class AutoElements
     {
+        /// <summary>
+        /// The disable automatic insertion of <c>CreateFolder</c> element.
+        /// Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties, 
+        /// ReleaseFolder, Shortcuts and WildCardFiles samples.
+        /// </summary>
         public static bool DisableAutoCreateFolder = false;
+
+        /// <summary>
+        /// The disable automatic insertion of user profile registry elements.
+        /// Required for: AllInOne, ConditionalInstallation, CustomAttributes, ReleaseFolder, Shortcuts,
+        /// Shortcuts (advertised), Shortcuts-2, WildCardFiles samples.
+        /// </summary>
+        public static bool DisableAutoUserProfileRegistry = true;
 
         static void InsertRemoveFolder(XElement xDir, XElement xComponent, string when = "uninstall")
         {
@@ -52,14 +64,15 @@ namespace WixSharp
 
         static void InsertDummyUserProfileRegistry(XElement xComponent)
         {
-            xComponent.Add(
-                        new XElement("RegistryKey",
-                            new XAttribute("Root", "HKCU"),
-                            new XAttribute("Key", @"Software\WixSharp\Used"),
-                            new XElement("RegistryValue",
-                                new XAttribute("Value", "0"),
-                                new XAttribute("Type", "string"),
-                                new XAttribute("KeyPath", "yes"))));
+            if (!DisableAutoUserProfileRegistry)
+                xComponent.Add(
+                            new XElement("RegistryKey",
+                                new XAttribute("Root", "HKCU"),
+                                new XAttribute("Key", @"Software\WixSharp\Used"),
+                                new XElement("RegistryValue",
+                                    new XAttribute("Value", "0"),
+                                    new XAttribute("Type", "string"),
+                                    new XAttribute("KeyPath", "yes"))));
         }
 
         static void SetFileKeyPath(XElement element)
@@ -190,6 +203,21 @@ namespace WixSharp
         internal static void InjectAutoElementsHandler(XDocument doc)
         {
             InjectShortcutIcons(doc);
+
+            XElement installDir = doc.Root.Select("Product").Element("Directory").Element("Directory");
+
+            XAttribute installDirName = installDir.Attribute("Name");
+            if (IO.Path.IsPathRooted(installDirName.Value))
+            {
+                var product = installDir.Parent("Product");
+                string absolutePath = installDirName.Value;
+
+                installDirName.Value = "AbsolutePath";
+                product.Add(new XElement("CustomAction",
+                                new XAttribute("Id", "Set_INSTALLDIR_AbsolutePath"),
+                                new XAttribute("Property", installDir.Attribute("Id").Value),
+                                new XAttribute("Value", absolutePath)));
+            }
 
             foreach (XElement xDir in doc.Root.Descendants("Directory"))
             {

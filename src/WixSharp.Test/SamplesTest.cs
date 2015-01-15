@@ -12,7 +12,7 @@ namespace WixSharp.Test
 {
     public class SamplesTest
     {
-        string[] nonMsiProjects = new[] { "CustomAttributes" };
+        string[] nonMsiProjects = new[] { "CustomAttributes", "External_UI" };
 
         [Fact]
         public void CanBuildAllSamples()
@@ -28,6 +28,7 @@ namespace WixSharp.Test
                 var batchFile = IO.Path.GetFullPath(file);
                 BuildSample(batchFile, currentStep, failedSamples);
             }
+            LogAppend("--- END ---");
 
             if (failedSamples.Any())
             {
@@ -42,19 +43,24 @@ namespace WixSharp.Test
             {
                 var dir = Path.GetDirectoryName(batchFile);
 
-                DeleteAllMsis(dir);
-                Assert.False(HasAnyMsis(dir), "Cannot clear directory for the test...");
+                bool nonMsi = nonMsiProjects.Where(x => batchFile.Contains(x)).Any();
+
+                if (!nonMsi)
+                {
+                    DeleteAllMsis(dir);
+                    Assert.False(HasAnyMsis(dir), "Cannot clear directory for the test...");
+                }
 
                 DisablePause(batchFile);
 
                 string output = Run(batchFile);
 
-                bool nonMsi = !nonMsiProjects.Where(x => batchFile.Contains(x)).Any();
 
                 if (output.Contains(" : error") || (nonMsi && !HasAnyMsis(dir)))
                     failedSamples.Add(currentStep + ":" + batchFile);
-
-                DeleteAllMsis(dir);
+                
+                if (!nonMsi)
+                    DeleteAllMsis(dir);
 
                 Log(currentStep, failedSamples);
             }
@@ -74,6 +80,13 @@ namespace WixSharp.Test
             var logFile = @"..\..\..\WixSharp.Samples\test_progress.txt";
             var content = string.Format("Failed Samples ({0}/{1}):\r\n", failedSamples.Count, currentStep + 1) + string.Join(Environment.NewLine, failedSamples.ToArray());
             IO.File.WriteAllText(logFile, content);
+        }
+
+        void LogAppend(string text)
+        {
+            var logFile = @"..\..\..\WixSharp.Samples\test_progress.txt";
+            using (var writer = new StreamWriter(logFile, true))
+                writer.WriteLine(text);
         }
 
         void DisablePause(string batchFile)

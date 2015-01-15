@@ -26,6 +26,19 @@ using Microsoft.Win32;
 
 namespace WixSharp
 {
+    public partial class RegFile : WixObject
+    {
+        public string Path = null;
+        public RegFile()
+        {
+        }
+
+        public RegFile(string path)
+        {
+            Path = path;
+        }
+    }
+
     /// <summary>
     /// Defines registry value to be installed.
     /// </summary>

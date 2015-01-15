@@ -381,6 +381,13 @@
             Defines if the assembly file needs to be registered in GAC during the installation. 
             </summary>
         </member>
+        <member name="F:WixSharp.AutoElements.DisableAutoCreateFolder">
+            <summary>
+            The disable automatic insertion of <c>CreateFolder</c> element.
+            Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties, 
+            ReleaseFolder, Shortcuts, WildCardFiles samples.
+            </summary>
+        </member>
         <member name="T:WixSharp.CommonTasks.Tasks">
              <summary>
             

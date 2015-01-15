@@ -256,16 +256,23 @@ namespace WixSharp
 
         Dir ProcessTargetPath(string targetPath)
         {
-            //create nested Dirs on-fly
-            var nestedDirs = targetPath.Split("\\/".ToCharArray());
-
-            this.Name = nestedDirs.First();
             Dir currDir = this;
-            for (int i = 1; i < nestedDirs.Length; i++)
+
+            if (System.IO.Path.IsPathRooted(targetPath))
             {
-                Dir nextSubDir = new Dir(nestedDirs[i]);
-                currDir.Dirs = new Dir[] { nextSubDir };
-                currDir = nextSubDir;
+                this.Name = targetPath;
+            }
+            else
+            {
+                //create nested Dirs on-fly
+                var nestedDirs = targetPath.Split("\\/".ToCharArray());
+                this.Name = nestedDirs.First();
+                for (int i = 1; i < nestedDirs.Length; i++)
+                {
+                    Dir nextSubDir = new Dir(nestedDirs[i]);
+                    currDir.Dirs = new Dir[] { nextSubDir };
+                    currDir = nextSubDir;
+                }
             }
             return currDir;
         }
