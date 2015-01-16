@@ -46,7 +46,7 @@ namespace WixSharp
         /// Required for: AllInOne, ConditionalInstallation, CustomAttributes, ReleaseFolder, Shortcuts,
         /// Shortcuts (advertised), Shortcuts-2, WildCardFiles samples.
         /// </summary>
-        public static bool DisableAutoUserProfileRegistry = true;
+        public static bool DisableAutoUserProfileRegistry = false;
 
         static void InsertRemoveFolder(XElement xDir, XElement xComponent, string when = "uninstall")
         {

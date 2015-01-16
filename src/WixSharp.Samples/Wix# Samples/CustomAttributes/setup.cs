@@ -13,14 +13,14 @@ class Script
                           new WixGuid("6fe30b47-2577-43ad-9095-1861ba25889b"),
                           new Dir(@"%ProgramFiles%\MyApp",
                               notepad = new File(@"C:\WINDOWS\system32\notepad.exe",
-                                  new FileShortcut("Launch Notepad", @"%ProgramFiles%\MyApp") 
+                                  new FileShortcut("Launch Notepad", @"%Desktop%") 
                                       { 
                                           Attributes = new Attributes() { { "Hotkey", "0" } } 
                                       })));
 
         notepad.AttributesDefinition = "Component:SharedDllRefCount=yes";
 
-        var wxsFile = Compiler.BuildWxs(project);
+        var wxsFile = Compiler.BuildMsi(project);
     }
 }
 

@@ -385,7 +385,14 @@
             <summary>
             The disable automatic insertion of <c>CreateFolder</c> element.
             Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties, 
-            ReleaseFolder, Shortcuts, WildCardFiles samples.
+            ReleaseFolder, Shortcuts and WildCardFiles samples.
+            </summary>
+        </member>
+        <member name="F:WixSharp.AutoElements.DisableAutoUserProfileRegistry">
+            <summary>
+            The disable automatic insertion of user profile registry elements.
+            Required for: AllInOne, ConditionalInstallation, CustomAttributes, ReleaseFolder, Shortcuts,
+            Shortcuts (advertised), Shortcuts-2, WildCardFiles samples.
             </summary>
         </member>
         <member name="T:WixSharp.CommonTasks.Tasks">

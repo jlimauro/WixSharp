@@ -28,7 +28,7 @@ namespace WixSharp.Test
                 var batchFile = IO.Path.GetFullPath(file);
                 BuildSample(batchFile, currentStep, failedSamples);
             }
-            LogAppend("--- END ---");
+            LogAppend("\r\n--- END ---");
 
             if (failedSamples.Any())
             {
