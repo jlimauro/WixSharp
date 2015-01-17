@@ -27,7 +27,7 @@ THE SOFTWARE.
 namespace WixSharp
 {
     /// <summary>
-    /// This class represents range of the product versions. It is designed to be used with for
+    /// This class represents a range of product versions. It is designed to be used for
     /// Major/Minor upgrade scenarios in conjunction with Upgrade strategy classes (e.g. <see cref="MajorUpgradeStrategy"/>).
     /// <para>Version is represented as a string to allow for predefined value <c>%this%</c>, which means 
     /// "version of the product MSI being built".</para>
@@ -56,7 +56,7 @@ namespace WixSharp
 
 
         /// <summary>
-        /// Predefined "open end" range between version the product MSI being built (inclusive) and any newer version.
+        /// Predefined "open ended" range between version of the product MSI being built (inclusive) and any newer version.
         /// </summary>
         static public VersionRange ThisAndNewer = new VersionRange
         {
@@ -64,7 +64,7 @@ namespace WixSharp
             IncludeMaximum = true,
         };
         /// <summary>
-        /// Predefined "open end" range between version the product MSI being built (exclusive) and any newer version.
+        /// Predefined "open ended" range between version of the product MSI being built (exclusive) and any newer version.
         /// </summary>
         static public VersionRange NewerThanThis = new VersionRange
         {

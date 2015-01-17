@@ -31,7 +31,7 @@ namespace WixSharp
     /// <summary>
     /// Defines WiX Feature. 
     /// <para>
-    /// All installable WiX components belong to one or more features. By default, if no <see cref="Feature"/>s defined by user, Wix# creates "Complete" 
+    /// All installable WiX components belong to one or more features. By default, if no <see cref="Feature"/>s are defined by user, Wix# creates "Complete" 
     /// feature, which contains all installable components. 
     /// </para>
     /// </summary>
@@ -67,7 +67,7 @@ namespace WixSharp
     /// 
     /// <item>
     /// <description>The example of defining "Complete" <see cref="Feature"/> implicitly.
-    /// Note <see cref="File"/> constrtuctor does not use <see cref="Feature"/> argument.
+    /// Note <see cref="File"/> constructor does not use <see cref="Feature"/> argument.
     /// <code>
     /// var project =
     ///     new Project("My Product",
@@ -139,7 +139,7 @@ namespace WixSharp
         /// <param name="isEnabled">Defines if the <see cref="Feature"/> is enabled at startup. 
         /// Use this parameter if the feature should be disabled by default and only enabled after 
         /// processing the <c>Condition Table</c> or user input.</param>
-        /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state</param>
+        /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state.</param>
         public Feature(string name, string description, bool isEnabled, bool allowChange)
         {
             Name = name;
@@ -154,7 +154,7 @@ namespace WixSharp
         /// <param name="isEnabled">Defines if the <see cref="Feature"/> is enabled at startup. 
         /// Use this parameter if the feature should be disabled by default and only enabled after 
         /// processing the <c>Condition Table</c> or user input.</param>
-        /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state</param>
+        /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state.</param>
         public Feature(string name, bool isEnabled, bool allowChange)
         {
             Name = name;
@@ -166,7 +166,7 @@ namespace WixSharp
         /// </summary>
         /// <param name="name">The feature name.</param>
         /// <param name="description">The feature description.</param>
-        /// <param name="configurableDir">The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string MSI runtime will place 
+        /// <param name="configurableDir">The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string, MSI runtime will place 
         /// <c>Configure</c> button for the feature in the <c>Feature Selection</c> dialog.</param>
         public Feature(string name, string description, string configurableDir)
         {
@@ -182,8 +182,8 @@ namespace WixSharp
         /// <param name="isEnabled">Defines if the <see cref="Feature"/> is enabled at startup. 
         /// Use this parameter if the feature should be disabled by default and only enabled after 
         /// processing the <c>Condition Table</c> or user input.</param>
-        /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state</param>
-        /// <param name="configurableDir">The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string MSI runtime will place 
+        /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state.</param>
+        /// <param name="configurableDir">The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string, MSI runtime will place 
         /// <c>Configure</c> button for the feature in the <c>Feature Selection</c> dialog.</param>
         public Feature(string name, string description, bool isEnabled, bool allowChange, string configurableDir)
         {
@@ -215,7 +215,7 @@ namespace WixSharp
         /// </summary>
         public string Description = "";
         /// <summary>
-        /// The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string MSI runtime will place 
+        /// The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string, MSI runtime will place 
         /// <c>Configure</c> button for the feature in the <c>Feature Selection</c> dialog.
         /// </summary>
         public string ConfigurableDir = "";

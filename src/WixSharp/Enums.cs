@@ -113,7 +113,7 @@ namespace WixSharp
 
     /// <summary>
     /// Specifies predefined values for <see cref="Action.Execute"/> attribute, 
-    /// which controls at what stage of installtion script <c>Custom Action</c> will be executed.
+    /// which controls at what stage of installation script <c>Custom Action</c> will be executed.
     /// </summary>
     public enum Execute
     {
@@ -197,21 +197,21 @@ namespace WixSharp
         /// If <c>Custom Action</c> is the first item in item in <see cref="Project.Actions"/> it will be executed before/after
         /// MSI built-in <c>InstallFinalize</c> action.
         /// </summary>
-        PreviousActionOrInstallFinalize, //if it is a the first usage of CA the same as "InstallFinalize" if not "PreviousAction"
+        PreviousActionOrInstallFinalize, //if first usage of a CA, same as "InstallFinalize"; otherwise same as "PreviousAction"
         /// <summary>
         /// <c>Custom Action</c> is to be executed before/after the previous action item in <see cref="Project.Actions"/>.
         /// If <c>Custom Action</c> is the first item in item in <see cref="Project.Actions"/> it will be executed before/after
         /// MSI built-in <c>InstallInitialize</c> action.
         /// </summary>
-        PreviousActionOrInstallInitialize, //if it is a the first usage of CA the same as "InstallInitialize" if not "PreviousAction"
+        PreviousActionOrInstallInitialize, //if first usage of a CA, same as "InstallInitialize"; otherwise same as "PreviousAction"
 
     }
 
     /// <summary>
-    /// Specifies predefined values for <see cref="Action.When"/>, 
-    /// which controls sequence of the <c>Custom Action</c> with respect its related, order controlling 
-    /// <c>Action</c>.
-    /// <para>Order controlling action is defined by <see cref="Step"/>.</para>
+	/// Specifies predefined values for <see cref="Action.When"/>,
+	/// which controls when the <c>Custom Action</c> occurs relative to
+	/// the order controlling <c>Action</c>.
+	/// <para>The order-controlling <c>Action</c> is defined by <see cref="Step"/></para>
     /// </summary>
     public enum When
     {
@@ -318,7 +318,7 @@ namespace WixSharp
         /// </summary>
         normal,
         /// <summary>
-        //Logs the error if it is possible and the system is restarted with the last configuration known to be good. If the last-known-good configuration is being started, the startup operation fails.
+        //Logs the error if possible and the system is restarted with the last configuration known to be good. If the last-known-good configuration is being started, the startup operation fails.
         /// </summary>
         critical
     }

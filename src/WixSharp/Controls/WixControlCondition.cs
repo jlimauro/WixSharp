@@ -10,7 +10,7 @@ using System;
 namespace WixSharp
 {
     /// <summary>
-    /// Defines Forme designer compatible <c>Condition</c> associated with the WixControl action.
+    /// Defines Form designer compatible <c>Condition</c> associated with the WixControl action.
     /// </summary>
     [Serializable]
     public class WixControlCondition

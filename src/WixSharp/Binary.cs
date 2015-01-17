@@ -30,7 +30,7 @@ namespace WixSharp
     /// <summary>
     /// Defines binary file to be embedded into MSI (<c>Binary</c> table).
     /// <para>
-    /// You can use this class to embed any file (e.g. exe, dll, image) to be used in during the installation. 
+    /// You can use this class to embed any file (e.g. exe, dll, image) to be used during the installation. 
     /// Note that none of the binary files are installed on the target system. They are just available at installation time
     /// for using <c>CustomActions</c>.
     /// </para>
@@ -68,7 +68,7 @@ namespace WixSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="Binary"/> class.
         /// </summary>
-        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Assembly"/> instance.</param>
+        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Binary"/> instance.</param>
         /// <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
         public Binary(Id id, string sourcePath)
         {

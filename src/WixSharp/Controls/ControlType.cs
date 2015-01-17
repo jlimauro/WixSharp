@@ -63,10 +63,10 @@ namespace WixSharp
         string Tooltip { get; set; }
 
         /// <summary>
-        /// Gets or sets the wix attributes.
+        /// Gets or sets the WiX attributes.
         /// </summary>
         /// <value>
-        /// The wix attributes.
+        /// The WiX attributes.
         /// </value>
         string WixAttributes { get; set; }
 

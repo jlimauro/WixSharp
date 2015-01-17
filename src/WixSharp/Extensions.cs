@@ -155,7 +155,7 @@ namespace WixSharp
             return null;
         }
         /// <summary>
-        /// Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exist its velue gets reassigned.
+        /// Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exists, its value is modified.
         /// </summary>
         /// <param name="dest">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</param>
         /// <param name="src">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute from.</param>
@@ -173,7 +173,7 @@ namespace WixSharp
             return dest;
         }
         /// <summary>
-        /// Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exist its velue gets reassigned.
+        /// Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exists, its value is modified.
         /// </summary>
         /// <param name="dest">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</param>
         /// <param name="destAttributeName">Name of the destination attribute to copy.</param>
@@ -216,7 +216,7 @@ namespace WixSharp
         /// Replaces all Wix# predefined string constants (Environment Constants) in the Wix# directory path with their WiX equivalents and escapes all WiX illegal characters (e.g. space character). 
         /// <para>
         /// <para>It also replaces all "illegal" characters (e.g. !,\) with '_' character to allow the path value to be used as a WiX Id XML attribute.</para>
-        /// <example>The following is an example of expanding directory names pathes.
+        /// <example>The following is an example of expanding directory name paths.
         /// <code>
         /// @"%ProgramFiles%\My Company\My Product".Expand()       -> @"ProgramFilesFolder\My_Company\My_Product"
         /// @"ProgramFilesFolder\My Company\My Product".Expand()   -> @"ProgramFilesFolder\My_Company\My_Product"
@@ -243,7 +243,7 @@ namespace WixSharp
         /// <summary>
         /// Replaces all Wix# predefined string constants (Environment Constants) in the Wix# directory path with their WiX equivalents and escapes all WiX illegal characters (e.g. space character). 
         /// <para>
-        /// <example>The following is an example of expanding directory names pathes.
+        /// <example>The following is an example of expanding directory name paths.
         /// <code>
         /// @"%ProgramFiles%\My Company\My Product".Expand()       -> @"ProgramFilesFolder\My_Company\My_Product"
         /// @"ProgramFilesFolder\My Company\My Product".Expand()   -> @"ProgramFilesFolder\My_Company\My_Product"
@@ -325,7 +325,7 @@ namespace WixSharp
         /// Converts the given string path into the full path.
         /// </summary>
         /// <param name="s">The string path.</param>
-        /// <returns>The full string path</returns>
+        /// <returns>The full string path.</returns>
         public static string ToFullPath(this string s)
         {
             return IO.Path.GetFullPath(s);
@@ -423,7 +423,7 @@ namespace WixSharp
 
 
         /// <summary>
-        /// Flattened "view" of all element with a given name.
+        /// Flattened "view" of all elements with a given name.
         /// </summary>
         /// <param name="element">The element to be searched.</param>
         /// <param name="elementName">The element name.</param>
@@ -453,8 +453,8 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Selects from the given element child element matching the specified path.
-        /// <para>If the child element is not found it creates new element matching the path.</para>
+        /// Selects, from the given element, the child element matching the specified path.
+        /// <para>If the child element is not found, a new element is created matching the path.</para>
         /// </summary>
         /// <param name="element">The element to be searched.</param>
         /// <param name="path">The path.</param>
@@ -520,7 +520,7 @@ namespace WixSharp
         /// Converts the string into the <see cref="T:WixSharp.Condition"/> instance.
         /// </summary>
         /// <param name="value">The string value.</param>
-        /// <returns><see cref="T:WixSharp.Condition"/> instance</returns>
+        /// <returns><see cref="T:WixSharp.Condition"/> instance.</returns>
         public static Condition ToCondition(this string value)
         {
             return Condition.Create(value);
@@ -601,8 +601,8 @@ namespace WixSharp
         /// Combines given <see cref="T:System.Collections.Generic.List"/> items with items of another <see cref="T:System.Collections.Generic.List"/>.
         /// </summary>
         /// <typeparam name="T">The type of the elements of <c>obj</c>.</typeparam>
-        /// <param name="obj">A <see cref="T:System.Collections.Generic.List"/> whose elements to combine.</param>
-        /// <param name="items">Another instance of <see cref="T:System.Collections.Generic.List"/> whose elements to combine with <c>obj</c>.</param>
+        /// <param name="obj">A <see cref="T:System.Collections.Generic.List"/>.</param>
+        /// <param name="items">Another instance of <see cref="T:System.Collections.Generic.List"/> whose elements are to be combined with those of <c>obj</c>.</param>
         /// <returns>A combined <see cref="T:System.Collections.Generic.List"/>.</returns>
         public static List<T> Combine<T>(this List<T> obj, List<T> items)
         {

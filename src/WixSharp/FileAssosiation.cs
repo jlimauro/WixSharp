@@ -98,7 +98,7 @@ namespace WixSharp
         /// </summary>
         public string Description = "";
         /// <summary>
-        /// Reference to <c>Icon</c> element to be used to installl the file assosiation <c>DefaultIcon</c>. If the value is not set Wix# compiler will use the <c>Id</c> of the <c>File</c> element of the parent component.<see cref="FileAssociation"/>.
+        /// Reference to <c>Icon</c> element to be used to install the file association <c>DefaultIcon</c>. If the value is not set, Wix# compiler will use the <c>Id</c> of the <c>File</c> element of the parent component.<see cref="FileAssociation"/>.
         /// <para>Set this value to <c>null</c> if you do not want to install <c>DefaultIcon</c> at all.</para>
         /// </summary>
         public string Icon = "";

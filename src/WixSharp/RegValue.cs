@@ -33,7 +33,7 @@ namespace WixSharp
     /// <summary>
     /// Defines registry value to be installed.
     /// </summary>
-    ///<example>The following is a complete example of the setup, for installing a file and two 
+    ///<example>The following is a complete example of the setup for installing a file and two 
     ///registry values (string value <c>Message</c> and integer value <c>Count</c> ).
     ///<code>
     ///static public void Main(string[] args)
@@ -85,7 +85,7 @@ namespace WixSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="RegValue"/> class with properties initialized with specified parameters.
         /// </summary>
-        /// <param name="feature"><see cref="Feature"></see> the file should be included in.</param>
+        /// <param name="feature"><see cref="Feature"></see> the registry value should be included in.</param>
         /// <param name="root">The registry hive name.</param>
         /// <param name="key">The registry key name.</param>
         /// <param name="name">The registry entry name.</param>
@@ -132,7 +132,7 @@ namespace WixSharp
         /// Initializes a new instance of the <see cref="RegValue"/> class with properties initialized with specified parameters.
         /// </summary>
         /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="RegValue"/> instance.</param>
-        /// <param name="feature"><see cref="Feature"></see> the file should be included in.</param>
+        /// <param name="feature"><see cref="Feature"></see> the registry value should be included in.</param>
         /// <param name="root">The registry hive name.</param>
         /// <param name="key">The registry key name.</param>
         /// <param name="name">The registry entry name.</param>

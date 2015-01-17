@@ -45,19 +45,19 @@ namespace WixSharp.CommonTasks
         /// </summary>
         /// <param name="prerequisiteFile">The prerequisite file.</param>
         /// <param name="primaryFile">The primary setup file.</param>
-        /// <param name="outputFile">The output (bootsrtapper) file.</param>
+        /// <param name="outputFile">The output (bootstrapper) file.</param>
         /// <param name="prerequisiteRegKeyValue">The prerequisite registry key value.
         /// <para>This value is used to determine if the <c>PrerequisiteFile</c> should be launched.</para>
         /// <para>This value must comply with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
         /// <code>PrerequisiteRegKeyValue = @"HKLM:Software\My Company\My Product:Installed";</code>
-        /// Existence of the specified registry value at runtime is interpreted as an indication of the <c>PrerequisiteFile</c> has been alreday installed.
+        /// Existence of the specified registry value at runtime is interpreted as an indication that the <c>PrerequisiteFile</c> has been already installed.
         /// Thus bootstrapper will execute <c>PrimaryFile</c> without launching <c>PrerequisiteFile</c> first.</param>
         /// <param name="doNotPostVerifyPrerequisite">The flag which allows you to disable verification of <c>PrerequisiteRegKeyValue</c> after the prerequisite setup is completed.
-        /// <para>Normally if <c>bootstrapper</c> checks if <c>PrerequisiteRegKeyValue</c>/> exists straight after the prerequisite installation and starts
+        /// <para>Normally <c>bootstrapper</c> checks if <c>PrerequisiteRegKeyValue</c>/> exists straight after the prerequisite installation and starts
         /// the primary setup only if it does.</para>
         /// <para>It is possible to instruct bootstrapper to continue with the primary setup regardless of the prerequisite installation outcome. This can be done
         /// by setting DoNotPostVerifyPrerequisite to <c>true</c> (default is <c>false</c>)</para>
-        ///</param>
+        /// </param>
         /// <param name="optionalArguments">The optional arguments for the bootstrapper compiler.</param>
         /// <returns>Path to the built bootstrapper file. Returns <c>null</c> if bootstrapper cannot be built.</returns>
         ///
@@ -95,19 +95,19 @@ namespace WixSharp.CommonTasks
         /// </summary>
         /// <param name="prerequisiteFile">The prerequisite file.</param>
         /// <param name="primaryFile">The primary setup file.</param>
-        /// <param name="outputFile">The output (bootsrtapper) file.</param>
+        /// <param name="outputFile">The output (bootstrapper) file.</param>
         /// <param name="prerequisiteRegKeyValue">The prerequisite registry key value.
         /// <para>This value is used to determine if the <c>PrerequisiteFile</c> should be launched.</para>
         /// <para>This value must comply with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
         /// <code>PrerequisiteRegKeyValue = @"HKLM:Software\My Company\My Product:Installed";</code>
-        /// Existence of the specified registry value at runtime is interpreted as an indication of the <c>PrerequisiteFile</c> has been already installed.
+        /// Existence of the specified registry value at runtime is interpreted as an indication that the <c>PrerequisiteFile</c> has been already installed.
         /// Thus bootstrapper will execute <c>PrimaryFile</c> without launching <c>PrerequisiteFile</c> first.</param>
         /// <param name="doNotPostVerifyPrerequisite">The flag which allows you to disable verification of <c>PrerequisiteRegKeyValue</c> after the prerequisite setup is completed.
-        /// <para>Normally if <c>bootstrapper</c> checkers if <c>PrerequisiteRegKeyValue</c>/> exists straight after the prerequisite installation and starts
+        /// <para>Normally <c>bootstrapper</c> checks if <c>PrerequisiteRegKeyValue</c>/> exists straight after the prerequisite installation and starts
         /// the primary setup only if it does.</para>
         /// <para>It is possible to instruct bootstrapper to continue with the primary setup regardless of the prerequisite installation outcome. This can be done
         /// by setting DoNotPostVerifyPrerequisite to <c>true</c> (default is <c>false</c>)</para>
-        ///</param>
+        /// </param>
         /// <returns>Path to the built bootstrapper file. Returns <c>null</c> if bootstrapper cannot be built.</returns>
         ///
         /// <example>The following is an example of building bootstrapper <c>Setup.msi</c> for deploying .NET along with the <c>MyProduct.msi</c> file.
@@ -130,7 +130,7 @@ namespace WixSharp.CommonTasks
         /// </summary>
         /// <param name="prerequisiteFile">The prerequisite file.</param>
         /// <param name="primaryFile">The primary setup file.</param>
-        /// <param name="outputFile">The output (bootsrtapper) file.</param>
+        /// <param name="outputFile">The output (bootstrapper) file.</param>
         /// <param name="prerequisiteRegKeyValue">The prerequisite registry key value.
         /// <para>This value is used to determine if the <c>PrerequisiteFile</c> should be launched.</para>
         /// <para>This value must comply with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
@@ -144,15 +144,15 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
-        /// Applpies digital signature to a file (e.g. msi, exe, dll) with MS <c>SignTool.exe</c> utility.
+        /// Applies digital signature to a file (e.g. msi, exe, dll) with MS <c>SignTool.exe</c> utility.
         /// </summary>
         /// <param name="fileToSign">The file to sign.</param>
         /// <param name="pfxFile">Specify the signing certificate in a file. If this file is a PFX with a password, the password may be supplied
         /// with the <c>password</c> parameter.</param>
-        /// <param name="timeURL">The timestamp server's URL. If this option is not present (pass to null), the signed file will not be timestamped.
+        /// <param name="timeURL">The timestamp server's URL. If this option is not present (pass as null), the signed file will not be timestamped.
         /// A warning is generated if timestamping fails.</param>
         /// <param name="password">The password to use when opening the PFX file. Should be <c>null</c> if no password required.</param>
-        /// <param name="optionalArguments">The extra arguments to the .</param>
+        /// <param name="optionalArguments">Extra arguments to pass to the <c>SignTool.exe</c> utility.</param>
         /// <returns>Exit code of the <c>SignTool.exe</c> process.</returns>
         ///
         /// <example>The following is an example of signing <c>Setup.msi</c> file.
@@ -189,7 +189,7 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
-        /// Applpies digital signature to a file (e.g. msi, exe, dll) with MS <c>SignTool.exe</c> utility.
+        /// Applies digital signature to a file (e.g. msi, exe, dll) with MS <c>SignTool.exe</c> utility.
         /// </summary>
         /// <param name="fileToSign">The file to sign.</param>
         /// <param name="pfxFile">Specify the signing certificate in a file. If this file is a PFX with a password, the password may be supplied

@@ -35,7 +35,7 @@ namespace WixSharp
 {
     // Wix/Msi bug/limitation: every component that is to be placed in the user profile has to have Registry key
     // Wix# places dummy key into every component to handle the problem
-    // Wix# auto-generates components contain RemoveFolder elements for all subfolders in the path chain. 
+    // Wix# auto-generates components containing RemoveFolder elements for all subfolders in the path chain. 
     // All auto-generates components are automatically inserted in all features
 
 
@@ -70,7 +70,7 @@ namespace WixSharp
         /// Initializes a new instance of the <see cref="Project"/> class.
         /// </summary>
         /// <param name="name">The name of the project. Typically it is the name of the product to be installed.</param>
-        /// <param name="items">The project installable items (e.g. directories, files, registrty keys, Custom Actions).</param>
+        /// <param name="items">The project installable items (e.g. directories, files, registry keys, Custom Actions).</param>
         public Project(string name, params WixObject[] items)
         {
             Name = name;
@@ -98,7 +98,7 @@ namespace WixSharp
                 else if (item is WixGuid)
                     GUID = (item as WixGuid).Value;
                 else
-                    throw new Exception("Unexpected object type as among Project constructor argumentsis: " + item.GetType().Name);
+                    throw new Exception("Unexpected object type in Project constructor arguments: " + item.GetType().Name);
 
             Dirs = dirs.ToArray();
             Actions = actions.ToArray();
@@ -124,7 +124,7 @@ namespace WixSharp
 
         private string sourceBaseDir = "";
         /// <summary>
-        /// Base directory for the relative pathes of the project items (e.g. <see cref="File"></see>). 
+        /// Base directory for the relative paths of the project items (e.g. <see cref="File"></see>). 
         /// </summary>
         public string SourceBaseDir
         {
@@ -134,7 +134,7 @@ namespace WixSharp
 
         private string outDir;
         /// <summary>
-        /// The output directory. The directory where all msi and temporary files should be assembled. The <c>CurrentDirectory</c> will be used if <see cref="OutDir"/> is left unassigned.
+        /// The output directory. The directory where all MSI and temporary files should be assembled. The <c>CurrentDirectory</c> will be used if <see cref="OutDir"/> is left unassigned.
         /// </summary>
         public string OutDir
         {
@@ -149,7 +149,7 @@ namespace WixSharp
         }
         /// <summary>
         /// Generic <see cref="T:WixSharp.WixEntity"/> container for defining WiX <c>Package</c> element attributes.
-        /// <para>These attributes are the properties about the package to be placed in the Summary Information Stream. These are visible from COM through the IStream interface, and these properties can be seen on the package in Explorer. </para>
+        /// <para>These attributes are the properties of the package to be placed in the Summary Information Stream. These are visible from COM through the IStream interface, and these properties can be seen on the package in Explorer. </para>
         ///<example>The following is an example of defining the <c>Package</c> attributes.
         ///<code>
         /// var project = 
@@ -245,9 +245,9 @@ namespace WixSharp
 
         /// <summary>
         /// This is the value of the <c>UpgradeCode</c> attribute of the Wix <c>Product</c> element. 
-        /// <para>Both WiX and MSI consider this element as optional even it is the only available identifier 
-        /// for defining relationship between different versions of the same product. Wix# in contrary enforces
-        /// that value to allow any future updates of the product being installed.
+        /// <para>Both WiX and MSI consider this element as optional although it is the only available identifier 
+        /// for defining relationship between different versions of the same product. Wix#, however, makes sure
+        /// the value is set to allow any future updates of the product to be installed.
         /// </para>
         /// <para> 
         /// If user doesn't specify this value Wix# engine will use <see cref="Project.GUID"/> as <c>UpgradeCode</c>.
@@ -265,7 +265,7 @@ namespace WixSharp
         /// </para>
         /// <remarks>This value should not be confused with MSI <c>Product.Id</c>, which is in fact 
         /// not an identifier of the product but rather an identifier of the product particular version. 
-        /// MSI uses <c>UpgradeCode</c> as a common identification of the product regardless of it's version. 
+        /// MSI uses <c>UpgradeCode</c> as a common identification of the product regardless of its version. 
         /// <para>In a way <see cref="GUID"/> is an alias for <see cref="UpgradeCode"/>.</para>
         /// </remarks>
         /// </summary>
@@ -333,7 +333,7 @@ namespace WixSharp
 
         /// <summary>
         /// Generates all missing product Guids (e.g. <see cref="UpgradeCode"/> and <see cref="ProductId"/>).
-        /// <para>Wix# compiler call this method just before building the MSI. However you can call it any time 
+        /// <para>Wix# compiler calls this method just before building the MSI. However you can call it any time 
         /// if you want to preview auto-generated Guids.</para>
         /// </summary>
         public void GenerateProductGuids()
@@ -362,7 +362,7 @@ namespace WixSharp
         /// This is the value of the <c>Id</c> attribute of the Wix <c>Product</c> element. 
         /// This value is unique for any given version of a product being installed.
         /// <para></para>
-        /// If user doesn't specify this value Wix# engine will derive it from
+        /// If user doesn't specify this value, Wix# engine will derive it from
         /// project <see cref="Project.GUID"/> and the product <see cref="Project.Version"/>.
         /// </summary>
         public Guid? ProductId;
@@ -379,12 +379,12 @@ namespace WixSharp
         /// </summary>
         public RegValue[] RegValues = new RegValue[0];
         /// <summary>
-        /// Collection of WiX/MSI <see cref="Property"/> objects to be created during the installed.
+        /// Collection of WiX/MSI <see cref="Property"/> objects to be created during the installation.
         /// </summary>
         public Property[] Properties = new Property[0];
         /// <summary>
         /// Collection of WiX/MSI <see cref="Binary"/> objects to be embedded into MSI database. 
-        /// Normally you doe not need to deal with this property as <see cref="Compiler"/> will populate
+        /// Normally you do not need to deal with this property as <see cref="Compiler"/> will populate
         /// it automatically.
         /// </summary>
         public Binary[] Binaries = new Binary[0];
@@ -392,15 +392,15 @@ namespace WixSharp
         /// <summary>
         /// Collection of paths to the custom assemblies referenced by <see cref="ManagedAction"/>s.
         /// </summary>
-        [Obsolete("WixRefAssemblies is a deprecated. Use WixExtensions instead.")]
+        [Obsolete("WixRefAssemblies is deprecated. Use WixExtensions instead.")]
         public List<string> WixRefAssemblies { get { return WixExtensions; } set { WixExtensions = value; } }
         /// <summary>
         /// Collection of paths to the WiX extensions. 
-        /// <para>The items from this collection will be passed to the Candle/Light compiler as commend lien parameters.</para>
+        /// <para>The items from this collection will be passed to the Candle/Light compiler as commend line parameters.</para>
         /// </summary>
         public List<string> WixExtensions = new List<string>();
         /// <summary>
-        /// Collection of XML namepseces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root. 
+        /// Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root. 
         /// </summary>
         public List<string> WixNamespaces = new List<string>();
 
@@ -414,12 +414,12 @@ namespace WixSharp
         public string Language = "en-US";
 
         /// <summary>
-        /// Path to the file containing the image (e.g. bmp) setup dialogs banner. If not specified default image will be used.
+        /// Path to a file containing a bitmap image (483 by 58 pixels) to be used for the top banner of setup dialogs. If not specified, default image will be used.
         /// </summary>
         public string BannerImage = "";
 
         /// <summary>
-        /// Path to the file containing the image (e.g. bmp) setup dialogs background. If not specified default image will be used.
+        /// Path to file containing bitmap image (483 by 312 pixels) to be used for the background of welcome and completion dialogs. If not specified, default image will be used.
         /// </summary>
         public string BackgroundImage = "";
 
@@ -428,12 +428,12 @@ namespace WixSharp
         /// Resolves all wild card specifications if any. 
         /// <para>
         /// This method is called by <see cref="Compiler"/> during the compilation. However it might be convenient 
-        /// to call it before the compilation if any files matching the wild card mask need to be handled in special  
+        /// to call it before the compilation if any files matching the wild card mask need to be handled in a special  
         /// way (e.g. shortcuts created). See <c>WildCard Files</c> example.
         /// </para>
         /// <remarks>
         /// <see cref="ResolveWildCards"/> should be called only after <see cref="SourceBaseDir"/> is set. 
-        /// Otherwise wild card pathes may not be resolved correctly.</remarks>
+        /// Otherwise wild card paths may not be resolved correctly.</remarks>
         /// </summary>
         public void ResolveWildCards()
         {
@@ -537,11 +537,11 @@ namespace WixSharp
         ///             new Dir("My Product", 
         ///             ...
         /// </code>
-        /// In the sample above the call <c>FindDir(@"%ProgramFiles%\My Company\My Product")</c> returns the last declared <see cref="T:WixSharp.Dir"/>.
+        /// In the sample above, the call <c>FindDir(@"%ProgramFiles%\My Company\My Product")</c> returns the last declared <see cref="T:WixSharp.Dir"/>.
         /// </example>
         /// </summary>
         /// <param name="path">The path string.</param>
-        /// <returns><see cref="T:WixSharp.Dir"/> instance if the search was succesfull, otherwise return <c>null</c></returns>
+        /// <returns><see cref="T:WixSharp.Dir"/> instance if the search was successful, otherwise returns <c>null</c>.</returns>
         public Dir FindDir(string path)
         {
             int iterator = 0;
@@ -590,7 +590,7 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// <see cref="CultureInfo"/> object based on the specified <see cref="Language"/>
+        /// <see cref="CultureInfo"/> object based on the specified <see cref="Language"/>.
         /// </summary>
         public string Culture
         {

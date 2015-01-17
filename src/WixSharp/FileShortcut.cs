@@ -30,11 +30,11 @@ namespace WixSharp
     /// Defines <see cref="FileShortcut"/> to be installed.
     /// <para>
     /// <see cref="FileShortcut"/> is a specialized version of the <see cref="Shortcut"/> designed 
-    /// for using <see cref="Shortcut"/> as a <see cref="File"/> nested element
+    /// for using <see cref="Shortcut"/> as a <see cref="File"/> nested element.
     /// </para>
     /// <para>There are different ways of defining shortcuts of the Wix# project: </para>
-    /// <para> - It can be specified as a nested element of the <see cref="File"/>. In this case after 
-    /// the installation the shortcut will point to the file it belongs to.</para>
+    /// <para> - It can be specified as a nested element of the <see cref="File"/>. In this case, after 
+    /// the installation, the shortcut will point to the file it belongs to.</para>
     /// <para> - Alternatively the <c>Shortcut</c> can be specified as a <see cref="File"/> nested 
     /// element. In this case after the installation the shortcut will point to the file 
     /// will point to the file it belongs to.</para>
@@ -106,7 +106,7 @@ namespace WixSharp
         /// Initializes a new instance of the <see cref="FileShortcut"/> class with properties/fields initialized with specified parameters.
         /// <para>This constructor should be used to instantiate shortcuts, which belong to the <see cref="File"/> element.</para>
         /// </summary>
-        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Shortcut"/> instance.</param>
+        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="FileShortcut"/> instance.</param>
         /// <param name="name">The name of the shortcut to be installed.</param>
         /// <param name="location">The directory where the shortcut should be installed.</param>
         public FileShortcut(Id id, string name, string location)

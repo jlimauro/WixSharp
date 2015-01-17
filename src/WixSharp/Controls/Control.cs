@@ -87,7 +87,7 @@ namespace WixSharp
         public List<WixControlCondition> Conditions = new List<WixControlCondition>();
 
         /// <summary>
-        /// The actions
+        /// The actions.
         /// </summary>
         public List<ControlActionData> Actions = new List<ControlActionData>();
 

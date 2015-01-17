@@ -12,7 +12,7 @@ using System.Text;
 
 namespace WixSharp
 {
-    //VS designer property grid does not like if the control designer attribute type is genetic so make it concrete type 
+    //VS designer property grid does not like if the control designer attribute type is generic so make it a concrete type 
 #pragma warning disable 1591
     public class WixControlDesigner : WixControlDesigner<WixControl> { }
     public class WixButtonDesigner : WixControlDesigner<WixButton> { }

@@ -12,7 +12,7 @@ namespace WixSharp
     /// Defines <see cref="T:System.Windows.Forms" /> label control for generating WiX Label element.
     /// <para>
     /// The <see cref="T:WixSharp.WixLabel" /> can be used with the <see cref="T:System.Windows.Forms" /> designer to define custom
-    /// dialogs layout. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixLabel" /> instance at compile time
+    /// dialog layouts. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixLabel" /> instance at compile time
     /// to generate WiX Label element on the base of this instance properties.
     /// </para>
     /// </summary>

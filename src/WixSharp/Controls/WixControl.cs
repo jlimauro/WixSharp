@@ -13,11 +13,11 @@ namespace WixSharp
      * All types are squashed together
      * Actions (event handlers) are encoded as Events
      * Some properties are control type specific
-     * WixPexel != WinPixel Wix(56,17) -> Control(75,23) Wix pixels are not the same as Windows ones
+     * WixPixel != WinPixel WiX(56,17) -> Control(75,23) WiX pixels are not the same as Windows ones
      * MSI property type is defined as the control attribute (e.g. Control.CheckBox.Integer)
      * There is no way to support custom controls
      * Very convoluted way of controlling Enabled/Disabled. Through two dedicated properties.
-     * Not type safe:  prop "Integer" - YesNoType - Specifies if the property of the control is an integer. Otherwise it is tread as a string
+     * Not type safe:  prop "Integer" - YesNoType - Specifies if the property of the control is an integer. Otherwise it is treated as a string
      * Documentation is sometimes just appalling: "NoPrefix	YesNoType	Only valid for Text Controls"
      * Text style (e.g. font) is embedded into text itself as prefix.
      *     The API logic and error reporting is shocking:
@@ -32,7 +32,7 @@ namespace WixSharp
     /// Defines <see cref="T:System.Windows.Forms" /> generic control for generating WiX Control element.
     /// <para>
     /// The <see cref="T:WixSharp.WixControl" /> can be used with the <see cref="T:System.Windows.Forms" /> designer to define custom
-    /// dialogs layout. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixControl" /> instance at compile time
+    /// dialog layouts. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixControl" /> instance at compile time
     /// to generate WiX Control element on the base of this instance properties.
     /// </para>
     /// </summary>

@@ -12,7 +12,7 @@ namespace WixSharp
     /// Defines <see cref="T:System.Windows.Forms" /> button control for generating WiX Button element.
     /// <para>
     /// The <see cref="T:WixSharp.WixButton" /> can be used with the <see cref="T:System.Windows.Forms" /> designer to define custom
-    /// dialogs layout. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixButton" /> instance at compile time
+    /// dialog layouts. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixButton" /> instance at compile time
     /// to generate WiX Button element on the base of this instance properties.
     /// </para>
     /// </summary>

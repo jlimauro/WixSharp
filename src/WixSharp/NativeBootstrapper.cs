@@ -31,11 +31,11 @@ using System;
 namespace WixSharp
 {
     /// <summary>
-    /// Defines native (un-managed) bootstrapper. The promary usage of <see cref="NativeBootstrapper"/> is to built bootstrappers for automatically installing .NET 
+    /// Defines native (un-managed) bootstrapper. The primary usage of <see cref="NativeBootstrapper"/> is to build bootstrappers for automatically installing .NET 
     /// for executing MSIs containing managed Custom Actions (<see cref="ManagedAction"/>).
     /// <para></para>
     /// <remarks>
-    /// NativeBootstrapper is a subject to the following limitations:
+    /// NativeBootstrapper is subject to the following limitations:
     /// <list type="bullet">
     /// <item><description>Only Win32 native bootstrapper can be built.</description></item>
     /// <item><description>Only one <c>Prerequisite</c> cen be defined.</description></item>
@@ -69,10 +69,10 @@ namespace WixSharp
         /// <value>The primary setup file.</value>
         public string PrimaryFile { set; get; }
         /// <summary>
-        /// Gets or sets the prerequisite registry key value. This value is used to detrmine if the <see cref="PrerequisiteFile"/> should be launched.
-        /// <para>This value must complay with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
+        /// Gets or sets the prerequisite registry key value. This value is used to determine if the <see cref="PrerequisiteFile"/> should be launched.
+        /// <para>This value must comply with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
         /// <code>PrerequisiteRegKeyValue = @"HKLM:Software\My Company\My Product:Installed";</code>
-        /// Existance of the sepcified registry value at runtime is interpreted as an indication of the <see cref="PrerequisiteFile"/> has been alreday installed.
+        /// Existence of the specified registry value at runtime is interpreted as an indication that the <see cref="PrerequisiteFile"/> has been alreday installed.
         /// Thus bootstrapper will execute <see cref="PrimaryFile"/> without launching <see cref="PrerequisiteFile"/> first.
         /// </summary>
         /// <value>The prerequisite registry key value.</value>

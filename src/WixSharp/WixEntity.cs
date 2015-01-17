@@ -47,7 +47,7 @@ namespace WixSharp
     }
     /// <summary>
     /// Generic <see cref="T:WixSharp.WixEntity"/> container for defining WiX <c>Package</c> element attributes.
-    /// <para>These attributes are the properties about the package to be placed in the Summary Information Stream. These are visible from COM through the IStream interface, and these properties can be seen on the package in Explorer. </para>
+    /// <para>These attributes are the properties of the package to be placed in the Summary Information Stream. These are visible from COM through the IStream interface, and can be seen in Explorer.</para>
     ///<example>The following is an example of defining the <c>Package</c> attributes.
     ///<code>
     /// var project = 
@@ -110,8 +110,8 @@ namespace WixSharp
         /// <para> <code>new Shortcut { Attributes= new { {"Hotkey", "0"} }</code> </para>
         /// <remarks>
         /// You can also inject attributes into WiX components "related" to the <see cref="WixEntity"/> but not directly 
-        /// represented in the Wix# entities family. For example if you need to set custom attribute for the WiX <c>Component</c> 
-        /// XML element you can use corresponding <see cref="T:WixSharp.File"/> attributes. The only difference comparing to 
+        /// represented in the Wix# entities family. For example if you need to set a custom attribute for the WiX <c>Component</c> 
+        /// XML element you can use corresponding <see cref="T:WixSharp.File"/> attributes. The only difference from
         /// the <c>Hotkey</c> example is the composite (column separated) key name:
         /// <para> <code>new File { Attributes= new { {"Component:SharedDllRefCount", "yes"} }</code> </para>
         /// The code above will force the Wix# compiler to insert "SharedDllRefCount" attribute into <c>Component</c>
@@ -220,7 +220,7 @@ namespace WixSharp
         /// Gets or sets the <c>Id</c> value of the <see cref="WixEntity"/>. 
         /// <para>This value is used as a <c>Id</c> for the corresponding WiX XML element.</para>
         /// <para>If the <see cref="Id"/> value is not specified explicitly by the user the Wix# compiler
-        /// generates it automatically insuring it's uniqueness.</para>
+        /// generates it automatically insuring its uniqueness.</para>
         /// </summary>
         /// <value>The id.</value>
         public string Id

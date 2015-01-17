@@ -30,8 +30,8 @@ namespace WixSharp
     /// <summary>
     /// Defines WiX custom property assigned by MSI runtime during the installation to the RegistrySearch result.
     /// <para>
-    /// <see cref="RegValueProperty"/> is used to set property from the registry value when accessing the registry for 
-    /// custom action is inconvenient. 
+    /// <see cref="RegValueProperty"/> is used to set a property from the registry value when accessing the registry is inconvenient for 
+    /// a custom action. 
     /// 
     /// <para><c>RegistrySearch</c> returns raw data thus data will always contain prefix indicating data type: </para>
     /// <para><c>DWORD:</c> Starts with '#' optionally followed by '+' or '-'.</para>
@@ -91,7 +91,7 @@ namespace WixSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="RegValueProperty"/> class with properties/fields initialized with specified parameters.
         /// </summary>
-        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Property"/> instance.</param>
+        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="RegValueProperty"/> instance.</param>
         /// <param name="name">The name of the property.</param>
         /// <param name="root">The registry hive name.</param>
         /// <param name="key">The registry key name.</param>

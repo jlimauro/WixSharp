@@ -165,7 +165,7 @@ namespace WixSharp
         #endregion
 
         /// <summary>
-        /// Initial value to be used as a seed for Guid generation. If you want the Wix# project items contain 
+        /// Initial value to be used as a seed for Guid generation. If you want the Wix# project items to contain 
         /// not random but reproducible sequential Guids you should initialize this field.
         /// </summary>
         static public SequentialGuid ConsistentGenerationStartValue = new SequentialGuid();
@@ -245,7 +245,7 @@ namespace WixSharp
     {
         /// <summary>
         /// Returns sequentially incremented GUID. The specified seed is ignored. Every consecutive 
-        /// call to this method will return the last returned GUID by 1 and return its value. 
+        /// call to this method will increase the last returned GUID by 1 and return its value. 
         /// </summary>
         /// <param name="seed">The seed.</param>
         /// <returns></returns>

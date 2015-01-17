@@ -29,15 +29,15 @@ namespace WixSharp
 {
     /// <summary>
     /// The unique string identifier of the Wix# project item. The <c>Id</c> is automatically generated 
-    /// by Wix# engine during the MSI build unless it is explicitly specified by used as a project item 
+    /// by Wix# engine during the MSI build unless it is explicitly specified by a project item 
     /// constructor parameter.
     /// <para><c>Id</c> is used to "stamp" every XML element of the WiX source file produced by Wix#.</para>
     /// </summary>
     public partial class Id
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Id"/> class and assigns <see cref="Id.Value"/> 
-        /// to the specified with the constructor parameter.
+        /// Initializes a new instance of the <see cref="Id"/> class and assigns the constructor parameter
+		/// specified to <see cref="Id.Value"/> .
         /// </summary>
         /// <param name="value">The string Id value.</param>
         public Id(string value)

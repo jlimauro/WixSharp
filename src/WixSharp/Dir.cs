@@ -76,7 +76,7 @@ namespace WixSharp
         /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Dir"/> instance.</param>
         /// <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
         /// be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
-        /// <param name="items">Any <see cref="WixEntity"/> which can be contained by directory (e.g. file, sub-directory).</param>
+        /// <param name="items">Any <see cref="WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         public Dir(Id id, string targetPath, params WixEntity[] items)
         {
             Dir lastDir = ProcessTargetPath(targetPath);
@@ -88,7 +88,7 @@ namespace WixSharp
         /// </summary>
         /// <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
         /// be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
-        /// <param name="items">Any <see cref="WixEntity"/> which can be contained by directory (e.g. file, sub-directory).</param>
+        /// <param name="items">Any <see cref="WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         public Dir(string targetPath, params WixEntity[] items)
         {
             Dir lastDir = ProcessTargetPath(targetPath);
@@ -100,7 +100,7 @@ namespace WixSharp
         /// <param name="feature"><see cref="Feature"></see> the directory should be included in.</param>
         /// <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
         /// be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
-        /// <param name="items">Any <see cref="WixEntity"/> which can be contained by directory (e.g. file, sub-directory).</param>
+        /// <param name="items">Any <see cref="WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         public Dir(Feature feature, string targetPath, params WixEntity[] items)
         {
             Dir lastDir = ProcessTargetPath(targetPath);
@@ -175,7 +175,7 @@ namespace WixSharp
         /// <param name="feature"><see cref="Feature"></see> the directory should be included in.</param>
         /// <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
         /// be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
-        /// <param name="items">Any <see cref="WixEntity"/> which can be contained by directory (e.g. file, sub-directory).</param>
+        /// <param name="items">Any <see cref="WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         public Dir(Id id, Feature feature, string targetPath, params WixEntity[] items)
         {
             Dir lastDir = ProcessTargetPath(targetPath);
@@ -194,9 +194,10 @@ namespace WixSharp
         /// <summary>
         /// Collection of the <see cref="DirFiles"/> objects. <see cref="DirFiles"/> type is used to specify files 
         /// contained by a specific directory with wildcard character pattern.
+		/// Files in subdirectories are not included.
         /// <para>
-        /// <see cref="DirFiles"/> type is related but not identical to <see cref="Files"/>, which defines only files of 
-        /// not only a single level directory abut all subdirectories as well.
+        /// <see cref="DirFiles"/> type is related to but not identical to <see cref="Files"/>, which defines files of 
+        /// not only a single level directory but all subdirectories as well.
         /// </para>
         /// </summary>
         public DirFiles[] DirFileCollections = new DirFiles[0];
@@ -204,7 +205,7 @@ namespace WixSharp
         /// Collection of the <see cref="Files"/> objects. <see cref="Files"/> type is used to specify files 
         /// contained by a specific directory and all subdirectories with wildcard character pattern.
         /// <para>
-        /// <see cref="Files"/> type is related but not identical to <see cref="DirFiles"/>, which defines only files 
+        /// <see cref="Files"/> type is related to but not identical to <see cref="DirFiles"/>, which defines only files 
         /// of a single level directory.
         /// </para>
         /// </summary>
@@ -231,7 +232,7 @@ namespace WixSharp
 
         ///// <summary>
         ///// Defines if the <see cref="Dir"/> should be public. Public directories (e.g. INSTALL_DIR) can be set from 
-        ///// <c>msiexec.exe</c> command line or <c>setup.ini</c> file. In MSI syntax public nature of the directory
+        ///// <c>msiexec.exe</c> command line or <c>setup.ini</c> file. In MSI syntax, public nature of the directory
         ///// is encoded through using only capital characters for directory name.
         ///// </summary>
         //public bool Published

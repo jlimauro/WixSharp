@@ -53,8 +53,8 @@ namespace WixSharp
         /// <summary>
         /// Gets or sets the <c>Id</c> value of the <see cref="WixObject"/>. 
         /// <para>This value is used as a <c>Id</c> for the corresponding WiX XML element.</para>
-        /// <para>If the <see cref="Id"/> value is not specified explicitly by the user the Wix# compiler
-        /// generates it automatically insuring it's uniqueness.</para>
+        /// <para>If the <see cref="Id"/> value is not specified explicitly by the user, the Wix# compiler
+        /// generates it automatically insuring its uniqueness.</para>
         /// </summary>
         /// <value>The id.</value>
         public string Id
@@ -78,7 +78,7 @@ namespace WixSharp
                     }
                     else
                     {
-                        //The Id has been already generated for this Type with thei rawName
+                        //The Id has been already generated for this Type with the rawName
                         //so just increase the index
                         var index = idMaps[GetType()][rawName] + 1;
 
@@ -99,7 +99,7 @@ namespace WixSharp
 
         /// <summary>
         /// Resets the <see cref="Id"/> generator. This method is exercised by the Wix# compiler before any 
-        /// <c>Build</c> operations to ensure reproducibility of the <see cref="Id"/> set between <c>Build()</c> 
+        /// <c>Build</c> operations to ensure reproducibility of the <see cref="Id"/>s set between <c>Build()</c> 
         /// calls.
         /// </summary>
         static public void ResetIdGenerator()
