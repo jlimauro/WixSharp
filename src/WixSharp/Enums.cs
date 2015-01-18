@@ -318,7 +318,7 @@ namespace WixSharp
         /// </summary>
         normal,
         /// <summary>
-        //Logs the error if it is possible and the system is restarted with the last configuration known to be good. If the last-known-good configuration is being started, the startup operation fails.
+        /// Logs the error if it is possible and the system is restarted with the last configuration known to be good. If the last-known-good configuration is being started, the startup operation fails.
         /// </summary>
         critical
     }
@@ -374,10 +374,22 @@ namespace WixSharp
         systemDriver
     }
 
+    /// <summary>
+    /// Specifies whether an action occur on install, uninstall or both.
+    /// </summary>
     public enum SvcEventType
     {
+        /// <summary>
+        /// Specifies that occur on install.
+        /// </summary>
         install,
+        /// <summary>
+        /// Specifies that occur on uninstall.
+        /// </summary>
         uninstall,
+        /// <summary>
+        /// Specifies that occur on install and uninstall.
+        /// </summary>
         both
     }
 }

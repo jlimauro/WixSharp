@@ -26,13 +26,43 @@ using Microsoft.Win32;
 
 namespace WixSharp
 {
+
+    /// <summary>
+    /// Defines the registry file (*.reg) containing the entries to be installed. 
+    /// <para>
+    /// Compiler uses the data from this class to call <see cref="T:WixSharp.CommonTasks.ImportRegFile"/>
+    /// internally and inject imported <see cref="RegValue"/>s into the <see cref="Project"/>.
+    /// </para>  
+    /// </summary>
+    /// <example>The following sample demonstrates how to install Registry entries imported from 
+    /// the reg file:
+    /// <code> 
+    /// var project = 
+    ///     new Project("MyProduct", 
+    ///         new Dir(@"%ProgramFiles%\My Company\My Product", 
+    ///             new File(@"readme.txt")), 
+    ///         new RegFile("MyProduct.reg"),
+    ///         ...
+    ///
+    /// Compiler.BuildMsi(project);
+    /// </code>
+    /// </example>
     public partial class RegFile : WixObject
     {
+        /// <summary>
+        /// The path to the registry file (*.reg).
+        /// </summary>
         public string Path = null;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegFile"/> class.
+        /// </summary>
         public RegFile()
         {
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegFile"/> class with properties/fields initialized with specified parameters.
+        /// </summary>
+        /// <param name="path">The path.</param>
         public RegFile(string path)
         {
             Path = path;
@@ -47,8 +77,8 @@ namespace WixSharp
     ///<code>
     ///static public void Main(string[] args)
     ///{
-    ///     var project = new Project("MyProduct",
-    ///     
+    ///     var project = 
+    ///         new Project("MyProduct",
     ///             new Dir(@"%ProgramFiles%\My Company\My Product",
     ///                 new File(@"readme.txt")),
     ///         

@@ -142,7 +142,11 @@ namespace WixSharp
         /// Collection of the <see cref="FileAssociation"/>s associated with the file. 
         /// </summary>
         public FileAssociation[] Associations = new FileAssociation[0];
-        
+
+        /// <summary>
+        /// The service installer associated with the file. Set this field to the properly initialized
+        /// instance of <see cref="ServiceInstaller"/> if the file is a windows service module.
+        /// </summary>
         public ServiceInstaller ServiceInstaller = null;
 
         /// <summary>

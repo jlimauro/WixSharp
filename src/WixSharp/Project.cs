@@ -285,6 +285,9 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Path to the product icon file.
+        /// </summary>
         public string ProductIcon = null;
 
 

@@ -5,6 +5,8 @@ using System.Threading;
 using System.Windows.Forms;
 using WindowsInstaller;
 
+#pragma warning disable 1591
+
 namespace WixSharp.UI
 {
     /// <summary>
