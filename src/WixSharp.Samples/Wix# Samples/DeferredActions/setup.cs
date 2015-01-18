@@ -22,10 +22,7 @@ class Script
                     new Dir(@"%ProgramFiles%\My Company\My Product",
                         new File(@"Files\MyApp.exe"),
                         new File(@"Files\MyApp.exe.config")),
-                    new ElevatedManagedAction("OnInstall", Return.check, When.After, Step.InstallFiles, Condition.NOT_Installed)
-                    {
-                        UsesProperties = "CONFIG_FILE=[INSTALLDIR]\\MyApp.exe.config, APP_FILE=[INSTALLDIR]\\MyApp.exe"
-                    });
+                    new ElevatedManagedAction("OnInstall", Return.check, When.After, Step.InstallFiles, Condition.NOT_Installed));
 
             project.GUID = new Guid("6fe30b47-2577-43ad-9195-1861ba25889b");
 

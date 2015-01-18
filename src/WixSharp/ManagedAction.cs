@@ -323,14 +323,14 @@ namespace WixSharp
         /// </example>
         /// <remarks> 
         /// <para>Note that you don't even have to specify <c>UsesProperties = "INSTALLDIR"</c> as by default Wix# always maps INSTALLDIR and 
-        /// UILevel for all deferred managed actions. The default mapping is controlled by <see cref="ManagedAcyion.DefaultUsesProperties"/>.</para>
+        /// UILevel for all deferred managed actions. The default mapping is controlled by <see cref="ManagedAction.DefaultUsesProperties"/>.</para>
         /// <para>It is also possible to map the 'deferred' properties in the typical WiX way: </para>
         /// <code>UsesProperties = "CONFIG_FILE=[INSTALLDIR]MyApp.exe.config, APP_FILE=[INSTALLDIR]MyApp.exe"</code>
         /// </remarks>
         public string UsesProperties;
 
         /// <summary>
-        /// The default properties mapped for use with the deferred custom actions. See <see cref="ManagedAcyion.UsesProperties"/> for the details.
+        /// The default properties mapped for use with the deferred custom actions. See <see cref="ManagedAction.UsesProperties"/> for the details.
         /// <para>The default value is "INSTALLDIR,UILevel"</para>
         /// </summary>
         public string DefaultUsesProperties = "INSTALLDIR,UILevel";
