@@ -2357,7 +2357,7 @@
         </member>
         <member name="F:WixSharp.ManagedAction.UsesProperties">
             <summary>
-            Coma separated list of properties which the custom action is intended to use. Set this property if you are implementing the deferred action. 
+            Comma separated list of properties which the custom action is intended to use. Set this property if you are implementing the deferred action. 
             <remarks>
             <para>Deferred custom actions cannot access any session property as the session is terminated at the time of the action execution (limitation of MSI).
             The standard way of overcoming this limitation is to create a new custom action for setting the property, set the property name to the name of the deferred action,

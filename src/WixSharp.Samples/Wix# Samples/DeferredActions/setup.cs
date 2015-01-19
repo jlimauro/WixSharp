@@ -40,7 +40,6 @@ public class CustomActions
     [CustomAction]
     public static ActionResult OnInstall(Session session)
     {
-        System.Diagnostics.Debugger.Launch();
         return session.HandleErrors(() =>
         {
             string configFile = session.Property("INSTALLDIR") + "MyApp.exe.config";
