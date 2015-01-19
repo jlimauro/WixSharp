@@ -76,6 +76,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Install Files", "WixSharp.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallDir", "WixSharp.Samples\VSProjects\InstallDir.csproj", "{D0F81A0B-4FC5-4191-8CC7-00F225F82B1A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallDir_AbsolutePath", "WixSharp.Samples\VSProjects\InstallDir_AbsolutePath.csproj", "{D0F81A0B-4FC5-4191-8C34-00F225F82B1A}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinService_WiX", "WixSharp.Samples\VSProjects\WinService_WiX.csproj", "{D0F81A0B-4FC5-4192-8CC7-04F225F82B11}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinService_InstallUtil", "WixSharp.Samples\VSProjects\WinService_InstallUtil.csproj", "{D0F81A0B-4FC5-4192-8CC7-04F225F82B1A}"
@@ -132,6 +134,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WixSharp.Test", "WixSharp.Test\WixSharp.Test.csproj", "{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeferredActions", "WixSharp.Samples\VSProjects\DeferredActions.csproj", "{CFE61E75-7BED-4AFD-9862-D64E7C162F29}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{868894D5-F3D5-470D-8139-9F54B3D003EE}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -405,6 +412,16 @@ Global
 		{D0F81A0B-4FC5-4191-8CC7-00F225F82B1A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D0F81A0B-4FC5-4191-8CC7-00F225F82B1A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D0F81A0B-4FC5-4191-8CC7-00F225F82B1A}.Release|x86.ActiveCfg = Release|Any CPU
+		{D0F81A0B-4FC5-4191-8C34-00F225F82B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0F81A0B-4FC5-4191-8C34-00F225F82B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0F81A0B-4FC5-4191-8C34-00F225F82B1A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D0F81A0B-4FC5-4191-8C34-00F225F82B1A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D0F81A0B-4FC5-4191-8C34-00F225F82B1A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D0F81A0B-4FC5-4191-8C34-00F225F82B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0F81A0B-4FC5-4191-8C34-00F225F82B1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0F81A0B-4FC5-4191-8C34-00F225F82B1A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D0F81A0B-4FC5-4191-8C34-00F225F82B1A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D0F81A0B-4FC5-4191-8C34-00F225F82B1A}.Release|x86.ActiveCfg = Release|Any CPU
 		{D0F81A0B-4FC5-4192-8CC7-04F225F82B11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D0F81A0B-4FC5-4192-8CC7-04F225F82B11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0F81A0B-4FC5-4192-8CC7-04F225F82B11}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -693,6 +710,7 @@ Global
 		{A52CEA2F-E484-4993-B48E-C8ED104D6E1B} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{6EF89B33-A766-457E-8229-C87CCEC145A6} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{D0F81A0B-4FC5-4191-8CC7-00F225F82B1A} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
+		{D0F81A0B-4FC5-4191-8C34-00F225F82B1A} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{D0F81A0B-4FC5-4192-8CC7-04F225F82B11} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{D0F81A0B-4FC5-4192-8CC7-04F225F82B1A} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{9F74117F-ECF7-4B78-BCEE-978E99B3CFD0} = {DB40BEF1-64CF-4308-9740-AF22284F4491}

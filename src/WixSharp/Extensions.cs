@@ -53,7 +53,7 @@ namespace WixSharp
         /// Adds the element.
         /// </summary>
         /// <param name="obj">The object.</param>
-        /// <param name="element">The element.</param>
+        /// <param name="elementName">The element.</param>
         /// <param name="attributesDefinition">The attributes definition.</param>
         /// <returns></returns>
         public static XElement AddElement(this XElement obj, string elementName, string attributesDefinition)
@@ -64,6 +64,13 @@ namespace WixSharp
             return retval;
         }
 
+        /// <summary>
+        /// Converts key/value map into the dictionary. The map entry format
+        /// is as follows: &lt;key&gt;=&lt;value&gt;[;&lt;key&gt;=&lt;value&gt;].
+        /// </summary>
+        /// <param name="map">The map.</param>
+        /// <returns></returns>
+        /// <exception cref="System.Exception">Invalid map entry</exception>
         public static Dictionary<string, string> ToDictionary(this string map)
         {
             var retval = new Dictionary<string, string>();
@@ -101,6 +108,13 @@ namespace WixSharp
             return element;
         }
 
+        /// <summary>
+        /// Adds the attributes to the to a given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="attributesDefinition">The attributes definition. Rules of the composing the
+        /// definition are the same as for <see cref="WixEntity.AttributesDefinition"/>.</param>
+        /// <returns></returns>
         public static XElement AddAttributes(this XElement obj, string attributesDefinition)
         {
             return obj.AddAttributes(attributesDefinition.ToDictionary());
@@ -212,6 +226,17 @@ namespace WixSharp
         {
             return string.Format(obj, args);
         }
+
+        /// <summary>
+        /// Splits string by lines. The method handles both '\r\n' and '\n' line endings.
+        /// </summary>
+        /// <param name="text">The text to be split.</param>
+        /// <returns></returns>
+        public static string[] GetLines(this string text)
+        {
+            return text.Replace("\r\n", "\n").Split('\n');
+        }
+
         /// <summary>
         /// Replaces all Wix# predefined string constants (Environment Constants) in the Wix# directory path with their WiX equivalents and escapes all WiX illegal characters (e.g. space character). 
         /// <para>
@@ -541,14 +566,21 @@ namespace WixSharp
         /// </summary>
         /// <param name="obj">The instance of the <see cref="T:System.Object"/>.</param>
         /// <returns>The WiX compatible type name.</returns>
+        [Obsolete("It is no longer used by compiler")]
         public static string GetWType(this object obj)
         {
             if (obj is String)
-                return "string";
+            {
+                    return "string";
+            }
             else if (obj is Int16 || obj is Int32)
+            {
                 return "integer";
+            }
             else
+            {
                 return "unsupported type";
+            }
         }
         /// <summary>
         /// Combines given <see cref="T:System.Array"/> items with items of another <see cref="T:System.Array"/>.
@@ -625,6 +657,12 @@ namespace WixSharp
             return string.IsNullOrEmpty(obj);
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="T:Microsoft.Deployment.WindowsInstaller.Session"/> is active.
+        /// <para>It is useful for checking if the session is terminated (e.g. in deferred custom actions).</para>
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <returns></returns>
         public static bool IsActive(this Session session)
         {
             //if (!session.IsClosed) //unfortunately isClosed is always false even for the deferred actions
@@ -639,6 +677,15 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Returns the value of the named property of the specified <see cref="T:Microsoft.Deployment.WindowsInstaller.Session"/> object.
+        /// <para>It can be uses as a generic way of accessing the properties as it redirects (transparently) access to the 
+        /// <see cref="T:Microsoft.Deployment.WindowsInstaller.Session.CustomActionData"/> if the session is terminated (e.g. in deferred 
+        /// custom actions).</para>
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static string Property(this Session session, string name)
         {
             if (session.IsActive())
@@ -647,6 +694,14 @@ namespace WixSharp
                 return session.CustomActionData[name];
         }
 
+        /// <summary>
+        /// Handles the errors in the specified action being executed. The all exceptions are caught and logged to the msi log.
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <param name="action">The action.</param>
+        /// <returns><see cref="T:Microsoft.Deployment.WindowsInstaller.ActionResult.Success"/> if no errors detected, otherwise
+        /// it returns <see cref="T:Microsoft.Deployment.WindowsInstaller.ActionResult.Failure"/>.
+        /// </returns>
         public static ActionResult HandleErrors(this Session session, System.Action action)
         {
             try

@@ -8,8 +8,8 @@
     <ProjectGuid>{AF69558D-1E34-4E7F-9B4C-D08497DDC191}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CustomAttributes</RootNamespace>
-    <AssemblyName>CustomAttributes</AssemblyName>
+    <RootNamespace>CustomActions</RootNamespace>
+    <AssemblyName>CustomActions</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>

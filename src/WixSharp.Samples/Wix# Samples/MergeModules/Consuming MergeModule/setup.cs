@@ -15,8 +15,8 @@ class Script
         Project project =
                new Project("MyMergeModule",
                    new Dir(@"%ProgramFiles%\My Company",
-                       new File(featureA, "MainFile.txt"),	
-                       new Merge(featureB,"MyMergeModule.msm")));
+                       new File(featureA, @"Files\MainFile.txt"),	
+                       new Merge(featureB,@"Files\MyMergeModule.msm")));
 
         project.UI = WUI.WixUI_FeatureTree;
 

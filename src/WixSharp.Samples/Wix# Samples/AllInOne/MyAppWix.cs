@@ -58,7 +58,7 @@ class Script
             project.LicenceFile = @"AppFiles\License.rtf";
             project.UI = WUI.WixUI_Mondo;
             project.SourceBaseDir = Environment.CurrentDirectory;
-            project.MSIFileName = "MyApp";
+            project.OutFileName = "MyApp";
 
             //Compiler.PreserveTempFiles = true;
             Compiler.WixSourceGenerated += Compiler_WixSourceGenerated;

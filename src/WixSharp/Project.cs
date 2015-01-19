@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using WixSharp.CommonTasks;
 
 namespace WixSharp
 {
@@ -91,6 +92,11 @@ namespace WixSharp
                     actions.Add(item as Action);
                 else if (item is RegValue)
                     regs.Add(item as RegValue);
+                else if (item is RegFile)
+                {
+                    var file = item as RegFile;
+                    regs.AddRange(Tasks.ImportRegFile(file.Path));
+                }
                 else if (item is Property || item is PropertyRef)
                     props.Add(item as Property);
                 else if (item is Binary)
@@ -279,6 +285,9 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Path to the product icon file.
+        /// </summary>
         public string ProductIcon = null;
 
 

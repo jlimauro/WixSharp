@@ -8,7 +8,7 @@
     <ProjectGuid>{7F4BA497-018D-4FBB-B5DE-4AA896397382}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InstallFiles</RootNamespace>
+    <RootNamespace>DTF_Embedded</RootNamespace>
     <AssemblyName>DTF_Embedded</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

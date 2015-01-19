@@ -28,7 +28,6 @@ using System.Collections;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using IO = System.IO;
@@ -213,6 +212,47 @@ namespace WixSharp.CommonTasks
             return DigitalySign(fileToSign, pfxFile, timeURL, password, null);
         }
 
+        /// <summary>
+        /// Imports the reg file.
+        /// </summary>
+        /// <param name="regFile">The reg file.</param>
+        /// <returns></returns>
+        /// <example>The following is an example of importing registry entries from the *.reg file.
+        /// <code> 
+        /// var project = 
+        ///     new Project("MyProduct", 
+        ///         new Dir(@"%ProgramFiles%\My Company\My Product", 
+        ///             new File(@"readme.txt")), 
+        ///         ...
+        ///         
+        /// project.RegValues = CommonTasks.ImportRegFile("app_settings.reg"); 
+        /// 
+        /// Compiler.BuildMsi(project);
+        /// </code>
+        /// </example>
+        static public RegValue[] ImportRegFile(string regFile)
+        {
+            return RegFileImporter.ImportFrom(regFile);
+
+        }
+
+        /// <summary>
+        /// Sets the value of the attribute value in the .NET application configuration file according 
+        /// the specified XPath expression.
+        /// <para>
+        /// This simple routine is to be used for the customization of the installed config files 
+        /// (e.g. in the deferred custom actions).
+        /// </para>
+        /// </summary>
+        /// <param name="configFile">The configuration file.</param>
+        /// <param name="elementPath">The element XPath value. It should include the attribute name.</param>
+        /// <param name="value">The value to be set to the attribute.</param>
+        ///
+        /// <example>The following is an example demonstrates this simple technique:
+        /// <code> 
+        ///  Tasks.SetConfigAttribute(configFile, "//configuration/appSettings/add[@key='AppName']/@value", "My App");
+        /// </code>
+        /// </example> 
         static public void SetConfigAttribute(string configFile, string elementPath, string value)
         {
             XDocument.Load(configFile)
@@ -222,6 +262,28 @@ namespace WixSharp.CommonTasks
                      .Save(configFile);
         }
 
+        /// <summary>
+        /// Sets the value of the attribute value in the .NET application configuration file according 
+        /// the specified XPath expression.
+        /// <para>
+        /// This simple routine is to be used for the customization of the installed config files 
+        /// (e.g. in the deferred custom actions).
+        /// </para>
+        /// </summary>
+        /// <returns></returns>
+        /// <param name="config">The configuration file element.</param>
+        /// <param name="elementPath">The element XPath value. It should include the attribute name.</param>
+        /// <param name="value">The value to be set to the attribute.</param>
+        ///
+        /// <example>The following is an example demonstrates this simple technique:
+        /// <code>
+        ///  XDocument.Load(configFile).Root
+        ///           .SetConfigAttribute("//configuration/appSettings/add[@key='AppName']/@value", "My App")
+        ///           .SetConfigAttribute(...
+        ///           .SetConfigAttribute(...
+        ///           .Document.Save(configFile);
+        /// </code>
+        /// </example>
         static public XElement SetConfigAttribute(this XElement config, string elementPath, string value)
         {
             var valueAttr = ((IEnumerable)config.XPathEvaluate(elementPath)).Cast<XAttribute>().FirstOrDefault();
@@ -231,8 +293,14 @@ namespace WixSharp.CommonTasks
             return config;
         }
 
-
-
+        /// <summary>
+        /// Installs the windows service. It uses InstallUtil.exe to complete the actual installation/uninstallation.
+        /// During the run for the InstallUtil.exe console window is hidden. /// If any error occurred the console output is captured and embedded into the raised Exception object. 
+        /// </summary>
+        /// <param name="serviceFile">The service file.</param>
+        /// <param name="isInstalling">if set to <c>true</c> [is installing].</param>
+        /// <returns></returns>
+        /// <exception cref="System.Exception"></exception>
         static public string InstallService(string serviceFile, bool isInstalling)
         {
             var util = new ExternalTool
@@ -256,11 +324,25 @@ namespace WixSharp.CommonTasks
             return output;
         }
 
+        /// <summary>
+        /// Starts the windows service. It uses sc.exe to complete the action.  During the action console window is hidden. 
+        /// If any error occurred the console output is captured and embedded into the raised Exception object. 
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="throwOnError">if set to <c>true</c> [throw on error].</param>
+        /// <returns></returns>
         static public string StartService(string service, bool throwOnError = true)
         {
             return ServiceDo("start", service, throwOnError);
         }
 
+        /// <summary>
+        /// Stops the windows service. It uses sc.exe to complete the action.  During the action console window is hidden. 
+        /// If any error occurred the console output is captured and embedded into the raised Exception object. 
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="throwOnError">if set to <c>true</c> [throw on error].</param>
+        /// <returns></returns>
         static public string StopService(string service, bool throwOnError = true)
         {
             return ServiceDo("stop", service, throwOnError);
@@ -278,6 +360,12 @@ namespace WixSharp.CommonTasks
             return buf.ToString();
         }
 
+        /// <summary>
+        /// Gets the directory of the latest installed verion of .NET framework.
+        /// </summary>
+        /// <value>
+        /// The latest framework directory.
+        /// </value>
         public static string LatestFrameworkDirectory
         {
             get

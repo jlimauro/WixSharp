@@ -289,8 +289,50 @@ namespace WixSharp
         /// </summary>
         public string MethodName = "";
 
+        /// <summary>
+        /// Coma separated list of properties which the custom action is intended to use. Set this property if you are implementing the deferred action. 
+        /// <remarks>
+        /// <para>Deferred custom actions cannot access any session property as the session is terminated at the time of the action execution (limitation of MSI).
+        /// The standard way of overcoming this limitation is to create a new custom action for setting the property, set the property name to the name of the deferred action,
+        /// set the property value to the specially formatted map, schedule the execution of the custom action and access the mapped properties only via <see cref="T:Microsoft.Deployment.WindowsInstaller.Session.CustomActionData"/>. 
+        /// </para>
+        /// <para> All this can be done in a single hit with Wix# as it fully automates creation of the all mapping infrastructure. 
+        /// </para>   
+        /// </remarks>    
+        /// </summary>
+        /// <example>The following is the example of passing the location of the MyApp.exe file in the deferred managed action.
+        /// <code>
+        /// var project =
+        ///     new Project("My Product",
+        ///         new Dir(@"%ProgramFiles%\My Company\My Product",
+        ///             new File(@"Files\MyApp.exe"),
+        ///             new File(@"Files\MyApp.exe.config")),
+        ///         new ElevatedManagedAction("ConfigureProduct", Return.check, When.After, Step.InstallFiles, Condition.NOT_Installed)
+        ///         {
+        ///             UsesProperties = "INSTALLDIR"
+        ///         });
+        /// 
+        /// ...
+        /// 
+        /// [CustomAction]
+        /// public static ActionResult ConfigureProduct(Session session)
+        /// {
+        ///     string configFile = session.Property("INSTALLDIR") + "MyApp.exe.config";
+        ///     ...
+        /// </code>
+        /// </example>
+        /// <remarks> 
+        /// <para>Note that you don't even have to specify <c>UsesProperties = "INSTALLDIR"</c> as by default Wix# always maps INSTALLDIR and 
+        /// UILevel for all deferred managed actions. The default mapping is controlled by <see cref="ManagedAction.DefaultUsesProperties"/>.</para>
+        /// <para>It is also possible to map the 'deferred' properties in the typical WiX way: </para>
+        /// <code>UsesProperties = "CONFIG_FILE=[INSTALLDIR]MyApp.exe.config, APP_FILE=[INSTALLDIR]MyApp.exe"</code>
+        /// </remarks>
         public string UsesProperties;
 
+        /// <summary>
+        /// The default properties mapped for use with the deferred custom actions. See <see cref="ManagedAction.UsesProperties"/> for the details.
+        /// <para>The default value is "INSTALLDIR,UILevel"</para>
+        /// </summary>
         public string DefaultUsesProperties = "INSTALLDIR,UILevel";
 
         internal string ExpandAllUsedProperties()

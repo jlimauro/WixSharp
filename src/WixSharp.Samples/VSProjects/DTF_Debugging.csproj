@@ -8,7 +8,7 @@
     <ProjectGuid>{199BDD7F-7F8F-440F-AB5F-EBBB29BCE972}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InstallFiles</RootNamespace>
+    <RootNamespace>DTF_Debugging</RootNamespace>
     <AssemblyName>DTF_Debugging</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
