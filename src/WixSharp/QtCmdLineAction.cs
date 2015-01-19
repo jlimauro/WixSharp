@@ -91,7 +91,7 @@ namespace WixSharp
         /// <param name="appPath">Path to the application to be executed. This can be a file name only if the location of the application is well-known.</param>
         /// <param name="args">The arguments to be passed to the application during the execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="QtCmdLineAction"/>.</param>
         public QtCmdLineAction(string appPath, string args, Return returnType, When when, Step step, Condition condition)
@@ -108,7 +108,7 @@ namespace WixSharp
         /// <param name="appPath">Path to the application to be executed. This can be a file name only if the location of the application is well-known.</param>
         /// <param name="args">The arguments to be passed to the application during the execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="QtCmdLineAction"/>.</param>
         public QtCmdLineAction(Id id, string appPath, string args, Return returnType, When when, Step step, Condition condition)
@@ -124,7 +124,7 @@ namespace WixSharp
         /// <param name="appPath">Path to the application to be executed. This can be a file name only if the location of the application is well-known.</param>
         /// <param name="args">The arguments to be passed to the application during the execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="QtCmdLineAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>
@@ -142,7 +142,7 @@ namespace WixSharp
         /// <param name="appPath">Path to the application to be executed. This can be a file name only if the location of the application is well-known.</param>
         /// <param name="args">The arguments to be passed to the application during the execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="QtCmdLineAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>

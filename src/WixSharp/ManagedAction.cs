@@ -145,7 +145,7 @@ namespace WixSharp
         /// </summary>
         /// <param name="name">Name of the CustomAction. The name should match the method implementing the custom action functionality.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="ManagedAction"/>.</param>
         public ManagedAction(string name, Return returnType, When when, Step step, Condition condition)
@@ -161,7 +161,7 @@ namespace WixSharp
         /// <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
         /// is in the Wix# script.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="ManagedAction"/>.</param>
         public ManagedAction(string name, string actionAssembly, Return returnType, When when, Step step, Condition condition)
@@ -177,7 +177,7 @@ namespace WixSharp
         /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="ManagedAction"/> instance.</param>
         /// <param name="name">Name of the CustomAction. The name should match the method implementing the custom action functionality.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="ManagedAction"/>.</param>
         public ManagedAction(Id id, string name, Return returnType, When when, Step step, Condition condition)
@@ -194,7 +194,7 @@ namespace WixSharp
         /// <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
         /// is in the Wix# script.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="ManagedAction"/>.</param>
         public ManagedAction(Id id, string name, string actionAssembly, Return returnType, When when, Step step, Condition condition)
@@ -209,7 +209,7 @@ namespace WixSharp
         /// </summary>
         /// <param name="name">Name of the CustomAction. The name should match the method implementing the custom action functionality.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="ManagedAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>
@@ -226,7 +226,7 @@ namespace WixSharp
         /// <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
         /// is in the Wix# script.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="ManagedAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>
@@ -243,7 +243,7 @@ namespace WixSharp
         /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="ManagedAction"/> instance.</param>
         /// <param name="name">Name of the CustomAction. The name should match the method implementing the custom action functionality.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="ManagedAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>
@@ -261,7 +261,7 @@ namespace WixSharp
         /// <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
         /// is in the Wix# script.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="ManagedAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>

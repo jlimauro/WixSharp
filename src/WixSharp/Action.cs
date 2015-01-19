@@ -74,7 +74,7 @@ namespace WixSharp
         /// Creates instance of the <see cref="Action"></see> class with properties initialized with specified parameters.
         /// </summary>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="Action"/>.</param>
         protected Action(Return returnType, When when, Step step, Condition condition)
@@ -89,7 +89,7 @@ namespace WixSharp
         /// </summary>
         /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Action"/> instance.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="Action"/>.</param>
         protected Action(Id id, Return returnType, When when, Step step, Condition condition)
@@ -104,7 +104,7 @@ namespace WixSharp
         /// Creates instance of the <see cref="Action"></see> class with properties initialized with specified parameters.
         /// </summary>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="Action"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>
@@ -121,7 +121,7 @@ namespace WixSharp
         /// </summary>
         /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Action"/> instance.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="Action"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>

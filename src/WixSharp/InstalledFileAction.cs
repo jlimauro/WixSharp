@@ -95,7 +95,7 @@ namespace WixSharp
         /// <param name="key">The key (file name) of the installed file to be executed.</param>
         /// <param name="args">The arguments to be passed to the file during the execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="InstalledFileAction"/>.</param>
         public InstalledFileAction(string key, string args, Return returnType, When when, Step step, Condition condition)
@@ -112,7 +112,7 @@ namespace WixSharp
         /// <param name="key">The key (file name) of the installed file to be executed.</param>
         /// <param name="args">The arguments to be passed to the file during the execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="InstalledFileAction"/>.</param>
         public InstalledFileAction(Id id, string key, string args, Return returnType, When when, Step step, Condition condition)
@@ -128,7 +128,7 @@ namespace WixSharp
         /// <param name="key">The key (file name) of the installed file to be executed.</param>
         /// <param name="args">The arguments to be passed to the file during the execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="InstalledFileAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>
@@ -146,7 +146,7 @@ namespace WixSharp
         /// <param name="key">The key (file name) of the installed file to be executed.</param>
         /// <param name="args">The arguments to be passed to the file during the execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="InstalledFileAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>

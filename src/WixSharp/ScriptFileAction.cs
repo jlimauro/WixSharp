@@ -84,7 +84,7 @@ namespace WixSharp
         /// <param name="file">VBScript file to be executed.</param>
         /// <param name="procedure">Name of the procedure (from the <paramref name="file"/>) to be executed.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="ScriptFileAction"/>.</param>
         public ScriptFileAction(string file, string procedure, Return returnType, When when, Step step, Condition condition)
@@ -101,7 +101,7 @@ namespace WixSharp
         /// <param name="file">VBScript file to be executed.</param>
         /// <param name="procedure">Name of the procedure (from the <paramref name="file"/>) to be executed.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="ScriptFileAction"/>.</param>
         public ScriptFileAction(Id id, string file, string procedure, Return returnType, When when, Step step, Condition condition)
@@ -117,7 +117,7 @@ namespace WixSharp
         /// <param name="file">VBScript file to be executed.</param>
         /// <param name="procedure">Name of the procedure (from the <paramref name="file"/>) to be executed.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="ScriptFileAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>
@@ -135,7 +135,7 @@ namespace WixSharp
         /// <param name="file">VBScript file to be executed.</param>
         /// <param name="procedure">Name of the procedure (from the <paramref name="file"/>) to be executed.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="ScriptFileAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>

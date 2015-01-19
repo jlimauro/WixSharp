@@ -113,7 +113,7 @@ namespace WixSharp
         /// <param name="name">Name of the property to be assigned.</param>
         /// <param name="value">Value to be set to the property.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="SetPropertyAction"/>.</param>
         public SetPropertyAction(string name, string value, Return returnType, When when, Step step, Condition condition)
@@ -130,7 +130,7 @@ namespace WixSharp
         /// <param name="name">Name of the property to be assigned.</param>
         /// <param name="value">Value to be set to the property.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="SetPropertyAction"/>.</param>
         public SetPropertyAction(Id id, string name, string value, Return returnType, When when, Step step, Condition condition)
@@ -147,7 +147,7 @@ namespace WixSharp
         /// <param name="name">Name of the property to be assigned.</param>
         /// <param name="value">Value to be set to the property.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="SetPropertyAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>

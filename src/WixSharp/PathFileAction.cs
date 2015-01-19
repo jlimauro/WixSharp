@@ -96,7 +96,7 @@ namespace WixSharp
         /// <param name="args">The arguments to be passed to the file during the execution.</param>
         /// <param name="workingDir">Working directory for the file execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="PathFileAction"/>.</param>
         public PathFileAction(string appPath, string args, string workingDir, Return returnType, When when, Step step, Condition condition)
@@ -115,7 +115,7 @@ namespace WixSharp
         /// <param name="args">The arguments to be passed to the file during the execution.</param>
         /// <param name="workingDir">Working directory for the file execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="PathFileAction"/>.</param>
         public PathFileAction(Id id, string appPath, string args, string workingDir, Return returnType, When when, Step step, Condition condition)
@@ -133,7 +133,7 @@ namespace WixSharp
         /// <param name="args">The arguments to be passed to the file during the execution.</param>
         /// <param name="workingDir">Working directory for the file execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="PathFileAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>
@@ -153,7 +153,7 @@ namespace WixSharp
         /// <param name="args">The arguments to be passed to the file during the execution.</param>
         /// <param name="workingDir">Working directory for the file execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <see cref="step"/> parameter.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
         /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="PathFileAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>
