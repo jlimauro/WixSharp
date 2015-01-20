@@ -423,12 +423,12 @@ namespace WixSharp
         public string Language = "en-US";
 
         /// <summary>
-        /// Path to a file containing a bitmap image (483 by 58 pixels) to be used for the top banner of setup dialogs. If not specified, default image will be used.
+        /// Path to a file containing a bitmap image (493 by 58 pixels) to be used for the top banner of setup dialogs. If not specified, default image will be used.
         /// </summary>
         public string BannerImage = "";
 
         /// <summary>
-        /// Path to file containing bitmap image (483 by 312 pixels) to be used for the background of welcome and completion dialogs. If not specified, default image will be used.
+        /// Path to file containing bitmap image (493 by 312 pixels) to be used for the background of welcome and completion dialogs. If not specified, default image will be used.
         /// </summary>
         public string BackgroundImage = "";
 
