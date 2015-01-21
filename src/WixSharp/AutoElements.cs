@@ -1,10 +1,11 @@
 #region Licence...
+
 /*
 The MIT License (MIT)
 
 Copyright (c) 2014 Oleg Shilo
 
-Permission is hereby granted, 
+Permission is hereby granted,
 free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -23,12 +24,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#endregion
-using System;
-using System.Linq;
-using IO = System.IO;
-using System.Xml.Linq;
+
+#endregion Licence...
+
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using IO = System.IO;
 
 namespace WixSharp
 {
@@ -36,7 +38,7 @@ namespace WixSharp
     {
         /// <summary>
         /// The disable automatic insertion of <c>CreateFolder</c> element.
-        /// Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties, 
+        /// Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties,
         /// ReleaseFolder, Shortcuts and WildCardFiles samples.
         /// </summary>
         public static bool DisableAutoCreateFolder = false;
@@ -92,10 +94,12 @@ namespace WixSharp
         {
             return (xDir.Descendants("RemoveFolder").Count() != 0);
         }
+
         static bool ContainsFiles(this XElement xComp)
         {
             return xComp.Elements("File").Count() != 0;
         }
+
         static bool ContainsComponents(this XElement xComp)
         {
             return xComp.Elements("Component").Count() != 0;
@@ -133,7 +137,6 @@ namespace WixSharp
 
             return xComponent;
         }
-
 
         private static string[] GetUserProfileFolders()
         {
@@ -212,11 +215,26 @@ namespace WixSharp
                 var product = installDir.Parent("Product");
                 string absolutePath = installDirName.Value;
 
-                installDirName.Value = "AbsolutePath";
+                installDirName.Value = "ABSOLUTEPATH";
+
+                //<SetProperty> is an attractive approach but it doesn't allow conditional setting of 'ui' and 'execute' as required depending on UI level
+                // it is ether hard coded 'both' or hard coded both 'ui' or 'execute' 
+                // <SetProperty Id="INSTALLDIR" Value="C:\My Company\MyProduct" Sequence="both" Before="AppSearch">
+
                 product.Add(new XElement("CustomAction",
                                 new XAttribute("Id", "Set_INSTALLDIR_AbsolutePath"),
                                 new XAttribute("Property", installDir.Attribute("Id").Value),
                                 new XAttribute("Value", absolutePath)));
+
+                product.SelectOrCreate("InstallExecuteSequence").Add(
+                       new XElement("Custom", "(NOT Installed) AND (UILevel < 5)",
+                           new XAttribute("Action", "Set_INSTALLDIR_AbsolutePath"),
+                           new XAttribute("Before", "CostFinalize")));
+
+                product.SelectOrCreate("InstallUISequence").Add(
+                      new XElement("Custom", "(NOT Installed) AND (UILevel = 5)",
+                          new XAttribute("Action", "Set_INSTALLDIR_AbsolutePath"),
+                          new XAttribute("Before", "CostFinalize")));
             }
 
             foreach (XElement xDir in doc.Root.Descendants("Directory"))
@@ -251,7 +269,6 @@ namespace WixSharp
                     foreach (XElement xFile in xComp.Elements("File"))
                         if (xFile.ContainsAdvertisedShortcuts())
                             SetFileKeyPath(xFile);
-
                 }
 
                 if (!xDir.ContainsComponents() && xDir.InUserProfile())

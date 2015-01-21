@@ -390,7 +390,7 @@
         <member name="F:WixSharp.AutoElements.DisableAutoCreateFolder">
             <summary>
             The disable automatic insertion of <c>CreateFolder</c> element.
-            Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties, 
+            Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties,
             ReleaseFolder, Shortcuts and WildCardFiles samples.
             </summary>
         </member>

@@ -29,7 +29,7 @@ class Script
                                         new File("readme.txt")}}}
         };
 
-        Compiler.BuildMsi(project);
+        Compiler.BuildWxs(project);
     }
 }
 
