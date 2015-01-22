@@ -3,13 +3,14 @@
 //css_ref ..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 using System;
 using System.Configuration;
-using IO=System.IO;
+using IO = System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
 using WixSharp.CommonTasks;
+using System.Windows.Forms;
 
 class Script
 {
@@ -22,10 +23,14 @@ class Script
                     new Dir(@"%ProgramFiles%\My Company\My Product",
                         new File(@"Files\MyApp.exe"),
                         new File(@"Files\MyApp.exe.config")),
-                    new ElevatedManagedAction("OnInstall", Return.check, When.After, Step.InstallFiles, Condition.NOT_Installed));
+                    new ElevatedManagedAction("OnInstall", Return.check, When.After, Step.InstallFiles, Condition.NOT_Installed)
+                    {
+                        UsesProperties = "CONFIG_FILE=[INSTALLDIR]MyApp.exe.config, APP_FILE=[INSTALLDIR]MyApp.exe"
+                    });
 
             project.GUID = new Guid("6fe30b47-2577-43ad-9195-1861ba25889b");
 
+            Compiler.PreserveTempFiles = true;
             Compiler.BuildMsi(project);
         }
         catch (System.Exception ex)
@@ -40,13 +45,27 @@ public class CustomActions
     [CustomAction]
     public static ActionResult OnInstall(Session session)
     {
+        //Note if your custom action requires non-GAC assembly then you need deploy it too.
+        //You can do it by setting ManagedAction.RefAssemblies.
+        //See "Wix# Samples\DTF (ManagedCA)\Different Scenarios\ExternalAssembly" sample for details.
+
+        //System.Diagnostics.Debugger.Launch();
+
+        session.Log("------------- " + session.Property("INSTALLDIR"));
+        session.Log("------------- " + session.Property("CONFIG_FILE"));
+        session.Log("------------- " + session.Property("APP_FILE"));
+
         return session.HandleErrors(() =>
         {
             string configFile = session.Property("INSTALLDIR") + "MyApp.exe.config";
+            
+            //alternative ways of extracting 'deferred' properties
+            //configFile = session.Property("APP_FILE") + ".config"; 
+            //configFile = session.Property("CONFIG_FILE");
 
             UpdateAsAppConfig(configFile);
 
-            //alternative implementations
+            //alternative implementations for the config manipulations
             UpdateAsXml(configFile);
             UpdateAsText(configFile);
             UpdateWithWixSharp(configFile);
