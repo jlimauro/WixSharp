@@ -140,6 +140,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{868894
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortcuts-Advertised", "WixSharp.Samples\VSProjects\Shortcuts-Advertised.csproj", "{D79A384F-82E8-474B-8DA5-7DBD85216FD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -682,6 +684,16 @@ Global
 		{CFE61E75-7BED-4AFD-9862-D64E7C162F29}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CFE61E75-7BED-4AFD-9862-D64E7C162F29}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CFE61E75-7BED-4AFD-9862-D64E7C162F29}.Release|x86.ActiveCfg = Release|Any CPU
+		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -736,5 +748,6 @@ Global
 		{2F11B72C-38E7-4A7C-BABD-3AF6016F75FE} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{CFE61E75-7BED-4AFD-9862-D64E7C162F29} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
+		{D79A384F-82E8-474B-8DA5-7DBD85216FD3} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 	EndGlobalSection
 EndGlobal

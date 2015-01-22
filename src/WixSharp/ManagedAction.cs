@@ -342,9 +342,9 @@ namespace WixSharp
                                                   .Select(x =>
                                                       {
                                                           if (x.Contains('=')) //e.g. INSTALLDIR=[INSTALLDIR]
-                                                              return x;
+                                                              return x.Trim();
                                                           else
-                                                              return string.Format("{0}=[{0}]", x);
+                                                              return string.Format("{0}=[{0}]", x.Trim());
                                                       })
                                                   .ToArray());
             return result;

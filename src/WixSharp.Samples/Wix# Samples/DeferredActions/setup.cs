@@ -30,7 +30,7 @@ class Script
 
             project.GUID = new Guid("6fe30b47-2577-43ad-9195-1861ba25889b");
 
-            Compiler.PreserveTempFiles = true;
+            //Compiler.PreserveTempFiles = true;
             Compiler.BuildMsi(project);
         }
         catch (System.Exception ex)

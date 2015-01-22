@@ -34,7 +34,24 @@ using IO = System.IO;
 
 namespace WixSharp
 {
-    internal static class AutoElements
+    /// <summary>
+    /// Automatically insert elements required for satisfy odd MSI restrictions.
+    /// <para>- You must set KeyPath you install in the user profile.</para>
+    /// <para>- You must use a registry key under HKCU as component's KeyPath, not a file. </para>
+    /// <para>- The Component element cannot have multiple key path set.  </para>
+    /// <para>- The project must have at least one directory element.  </para>
+    /// <para>- All directories installed in the user profile must have corresponding RemoveDirectory 
+    /// elements.  </para>
+    /// <para>...</para>
+    /// <para>
+    /// The MSI always wants registry keys as the key paths for per-user components. 
+    /// It has to do with the way profiles work with advertised content in enterprise deployments.
+    /// The fact that you do not want to install any registry doesn't matter. MSI is the boss.
+    /// </para>
+    /// <para>The following link is a good example of the technique:
+    /// http://stackoverflow.com/questions/16119708/component-testcomp-installs-to-user-profile-it-must-use-a-registry-key-under-hk</para>
+    /// </summary>
+    public static class AutoElements
     {
         /// <summary>
         /// The disable automatic insertion of <c>CreateFolder</c> element.
@@ -67,6 +84,14 @@ namespace WixSharp
         static void InsertDummyUserProfileRegistry(XElement xComponent)
         {
             if (!DisableAutoUserProfileRegistry)
+            {
+                var keyPathes = xComponent.Elements()
+                          .Select(e => e.Attribute("KeyPath"))
+                          .Where(a => a != null && a.Value == "yes")
+                          .ToList();
+
+                keyPathes.ForEach(a=>a.Remove());
+
                 xComponent.Add(
                             new XElement("RegistryKey",
                                 new XAttribute("Root", "HKCU"),
@@ -75,12 +100,13 @@ namespace WixSharp
                                     new XAttribute("Value", "0"),
                                     new XAttribute("Type", "string"),
                                     new XAttribute("KeyPath", "yes"))));
+            }
         }
 
-        static void SetFileKeyPath(XElement element)
+        static void SetFileKeyPath(XElement element, bool isKeyPath = true)
         {
             if (element.Attribute("KeyPath") == null)
-                element.Add(new XAttribute("KeyPath", "yes"));
+                element.Add(new XAttribute("KeyPath", isKeyPath ? "yes" : "no"));
         }
 
         static bool ContainsDummyUserProfileRegistry(this XElement xComponent)
@@ -237,7 +263,7 @@ namespace WixSharp
                           new XAttribute("Before", "CostFinalize")));
             }
 
-            foreach (XElement xDir in doc.Root.Descendants("Directory"))
+            foreach (XElement xDir in doc.Root.Descendants("Directory").ToArray())
             {
                 var dirComponents = xDir.Elements("Component");
 
@@ -267,8 +293,8 @@ namespace WixSharp
                     }
 
                     foreach (XElement xFile in xComp.Elements("File"))
-                        if (xFile.ContainsAdvertisedShortcuts())
-                            SetFileKeyPath(xFile);
+                        if (xFile.ContainsAdvertisedShortcuts() && !xComp.ContainsDummyUserProfileRegistry())
+                            SetFileKeyPath(xFile); 
                 }
 
                 if (!xDir.ContainsComponents() && xDir.InUserProfile())
