@@ -23,6 +23,7 @@ THE SOFTWARE.
 
 #endregion Licence...
 
+using Microsoft.Win32;
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -235,6 +236,40 @@ namespace WixSharp.CommonTasks
             return RegFileImporter.ImportFrom(regFile);
 
         }
+
+        /// <summary>
+        /// Binds the LaunchCondition to the automatically created REQUIRED_NET property which is set to the value of the 
+        /// Software\Microsoft\NET Framework Setup\NDP\{version}\Install registry entry.
+        /// <para>It is a single step equivalent of the "Wix# Samples\LaunchConditions" sample.</para>
+        /// <para>Note that the value of the version parameter is a precise sub-key of the corresponding 'Install' registry entry 
+        /// (e.g. as in 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4.0\Client\Install').</para>
+        /// <para>The typical values are:</para>
+        /// <para>   v2.0.50727</para>
+        /// <para>   v3.0</para>
+        /// <para>   v3.5</para>
+        /// <para>   v4\Client</para>
+        /// <para>   v4\Full</para>
+        /// <para>   v4.0\Client</para>
+        /// <para>   ...</para>
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="version">The sub-key of the registry entry of the sub-key of the corresponding registry version of .NET to be checked.
+        /// </param>
+        /// <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
+        /// <returns></returns>
+        static public Project SetClrPrerequisite(this WixSharp.Project project, string version, string errorMessage = null)
+        {
+            string message = errorMessage ??"Please install .NET "+version+" first.";
+
+            project.LaunchConditions.Add(new LaunchCondition("REQUIRED_NET=\"#1\"", message));
+            project.Properties = project.Properties.Add(new RegValueProperty("REQUIRED_NET", 
+                                                                              RegistryHive.LocalMachine,
+                                                                              @"Software\Microsoft\NET Framework Setup\NDP\" + version, 
+                                                                              "Install", "0"));
+            return project;
+        }
+
+
 
         /// <summary>
         /// Sets the value of the attribute value in the .NET application configuration file according 

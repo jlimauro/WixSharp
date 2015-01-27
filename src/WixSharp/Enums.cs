@@ -90,8 +90,10 @@ namespace WixSharp
         ignore
     }
 
+    //good read: http://stackoverflow.com/questions/5564619/what-is-the-purpose-of-administrative-installation-initiated-using-msiexec-a
+
     /// <summary>
-    /// Specifies predefined values for <see cref="Action.Sequence"/>, 
+    /// Specifies predefined values for <see cref="Action.Sequence" />,
     /// which controls which MSI sequence contains corresponding <c>Custom Action</c>.
     /// </summary>
     public enum Sequence
@@ -104,6 +106,14 @@ namespace WixSharp
         /// <c>Custom Action</c> belongs to <c>InstallUISequence</c>.
         /// </summary>
         InstallUISequence,
+        /// <summary>
+        /// The AdminExecuteSequence table lists actions that the installer calls in sequence when the top-level ADMIN action is executed.
+        /// </summary>
+        AdminExecuteSequence,
+        /// <summary>
+        /// The AdminUISequence table lists actions that the installer calls in sequence when the top-level ADMIN action is executed and the internal user interface level is set to full UI or reduced UI. The installer skips the actions in this table if the user interface level is set to basic UI or no UI.
+        /// </summary>
+        AdminUISequence,
         /// <summary>
         /// <c>Custom Action</c> does not belong to any sequence. Use this value when you need <c>Custom Action</c>
         /// to be invoked not from the installation sequence but from another <c>Custonm Action</c>.
