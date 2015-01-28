@@ -1735,7 +1735,7 @@ namespace WixSharp
 
                     if (sequence != null)
                         sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
-                                    new XAttribute("Action", wAction.Name.Expand()),
+                                    new XAttribute("Action", wAction.Id),
                                     new XAttribute(wAction.When.ToString(), step)));
 
                     product.Add(new XElement("Binary",
@@ -1755,7 +1755,7 @@ namespace WixSharp
 
                     if (sequence != null)
                         sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
-                                    new XAttribute("Action", wAction.Name.Expand()),
+                                    new XAttribute("Action", wAction.Id),
                                     new XAttribute(wAction.When.ToString(), step)));
 
                     product.Add(new XElement("CustomAction",
@@ -1796,7 +1796,7 @@ namespace WixSharp
 
                     if (sequence != null)
                         sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
-                                        new XAttribute("Action", wAction.Name.Expand()),
+                                        new XAttribute("Action", wAction.Id),
                                         new XAttribute(wAction.When.ToString(), step)));
 
                     product.Add(new XElement("Binary",
@@ -1860,7 +1860,7 @@ namespace WixSharp
                     if (sequence != null)
                         sequence.Add(
                             new XElement("Custom", wAction.Condition.ToString(),
-                                new XAttribute("Action", wAction.Name),
+                                new XAttribute("Action", wAction.Id),
                                 new XAttribute(wAction.When.ToString(), step)));
 
                     var actionElement = product.AddElement(
@@ -1879,7 +1879,7 @@ namespace WixSharp
                     if (sequence != null)
                         sequence.Add(
                             new XElement("Custom", fileAction.Condition.ToString(),
-                                new XAttribute("Action", fileAction.Name),
+                                new XAttribute("Action", fileAction.Id),
                                 new XAttribute(fileAction.When.ToString(), step)));
 
                     var actionElement = product.AddElement(

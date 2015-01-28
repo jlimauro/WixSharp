@@ -15,21 +15,54 @@ class Script
 {
     static public void Main(string[] args)
     {
+        Test(); return;
         var project = new Project("CustomActionTest",
 
-                new ManagedAction("RunAsAdminInstall", Return.check, When.Before,Step.LaunchConditions,Condition.NOT_Installed, Sequence.InstallUISequence),
+                new ManagedAction("RunAsAdminInstall", Return.check, When.Before, Step.LaunchConditions, Condition.NOT_Installed, Sequence.InstallUISequence),
                 new ManagedAction("MyCheckSql", Return.check, When.Before, Step.LaunchConditions, Condition.NOT_Installed, Sequence.InstallUISequence),
                 new ManagedAction("MyCheckMvc4", Return.check, When.Before, Step.LaunchConditions, Condition.NOT_Installed, Sequence.InstallUISequence),
                 new ManagedAction("CompareVersionAtUpgrade", Return.check, When.Before, Step.LaunchConditions, Condition.NOT_Installed, Sequence.InstallUISequence),
-      
+
                 new ManagedAction("MyAdminAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.AdminExecuteSequence));
 
         Compiler.BuildMsi(project);
+    }
+
+    static public void Test()
+    {
+        var project = new Project("CustomActionTest",
+          new ManagedAction(new Id("First_Action"), "MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          //new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          //new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          //new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          //new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          //new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          //new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          //new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          //new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          //new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          //new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          //new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          //new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence),
+          new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallExecuteSequence)
+          );
+
+
+        var file = Compiler.BuildMsiCmd(project);
     }
 }
 
 public class CustomActions
 {
+    [CustomAction]
+    public static ActionResult MyAction(Session session)
+    {
+        MessageBox.Show("MyAction", "Embedded Managed CA");
+        session.Log("Begin MyAction Hello World");
+
+        return ActionResult.Success;
+    }
+
     [CustomAction]
     public static ActionResult RunAsAdminInstall(Session session)
     {

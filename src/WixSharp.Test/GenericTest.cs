@@ -17,8 +17,18 @@ namespace WixSharp.Test
             Compiler.GuidGenerator = (seed) => Guid.Parse("9e2974a1-9539-4c5c-bef7-80fc35b9d7b0");
             Compiler.GuidGenerator = (seed) => Guid.NewGuid();
         }
-        
-        
+
+        [Fact]
+        public void Should_Name_CustomActionsPSequentially()
+        {
+            //var project = new Project("CustomActionTest",
+            //   new ManagedAction("MyAction", Return.check, When.Before, Step.LaunchConditions, Condition.NOT_Installed, Sequence.InstallUISequence),
+            //   new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallUISequence));
+
+            //var file = Compiler.BuildWxs(project);
+        }
+
+
         void CodeFormattingTestPad()
         {
         }
