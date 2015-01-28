@@ -17,6 +17,11 @@ namespace WixSharp.Test
             Compiler.GuidGenerator = (seed) => Guid.Parse("9e2974a1-9539-4c5c-bef7-80fc35b9d7b0");
             Compiler.GuidGenerator = (seed) => Guid.NewGuid();
         }
+        
+        
+        void CodeFormattingTestPad()
+        {
+        }
     }
 
 }

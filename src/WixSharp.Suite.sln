@@ -127,6 +127,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{109F5B7D-AFE6-4923-B52F-73C5862C04A9}"
 	ProjectSection(SolutionItems) = preProject
 		agregate.cmd = agregate.cmd
+		..\bin\package.readme = ..\bin\package.readme
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Signing", "WixSharp.Samples\VSProjects\Signing.csproj", "{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}"
@@ -141,6 +142,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{868894
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortcuts-Advertised", "WixSharp.Samples\VSProjects\Shortcuts-Advertised.csproj", "{D79A384F-82E8-474B-8DA5-7DBD85216FD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminInstall", "WixSharp.Samples\VSProjects\AdminInstall.csproj", "{F9F9338C-0C08-4524-B866-82FF57CFF9B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -694,6 +697,16 @@ Global
 		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D79A384F-82E8-474B-8DA5-7DBD85216FD3}.Release|x86.ActiveCfg = Release|Any CPU
+		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -749,5 +762,6 @@ Global
 		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{CFE61E75-7BED-4AFD-9862-D64E7C162F29} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{D79A384F-82E8-474B-8DA5-7DBD85216FD3} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
+		{F9F9338C-0C08-4524-B866-82FF57CFF9B0} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 	EndGlobalSection
 EndGlobal

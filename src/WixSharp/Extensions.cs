@@ -26,9 +26,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.Xml.XPath;
 using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
 using IO = System.IO;
+using System.Xml;
 
 namespace WixSharp
 {
@@ -146,6 +148,21 @@ namespace WixSharp
         public static bool HasAttribute(this XElement obj, string name)
         {
             return obj.Attribute(name) != null;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute and the attribute value passes the test
+        /// by <c>attributeValueSelector</c>.
+        /// </summary>
+        /// <param name="obj">The obj.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="attributeValueSelector">The attribute value selector. Allows testing the attribute value.</param>
+        /// <returns>
+        /// 	<c>true</c> if the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool HasAttribute(this XElement obj, string name, Predicate<string> attributeValueSelector)
+        {
+            return obj.Attribute(name) != null && attributeValueSelector(obj.Attribute(name).Value);
         }
 
         /// <summary>

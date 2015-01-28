@@ -572,6 +572,28 @@
             </code>
             </example>
         </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.SetClrPrerequisite(WixSharp.Project,System.String,System.String)">
+            <summary>
+            Binds the LaunchCondition to the automatically created REQUIRED_NET property which is set to the value of the 
+            Software\Microsoft\NET Framework Setup\NDP\{version}\Install registry entry.
+            <para>It is a single step equivalent of the "Wix# Samples\LaunchConditions" sample.</para>
+            <para>Note that the value of the version parameter is a precise sub-key of the corresponding 'Install' registry entry 
+            (e.g. as in 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4.0\Client\Install').</para>
+            <para>The typical values are:</para>
+            <para>   v2.0.50727</para>
+            <para>   v3.0</para>
+            <para>   v3.5</para>
+            <para>   v4\Client</para>
+            <para>   v4\Full</para>
+            <para>   v4.0\Client</para>
+            <para>   ...</para>
+            </summary>
+            <param name="project">The project.</param>
+            <param name="version">The sub-key of the registry entry of the sub-key of the corresponding registry version of .NET to be checked.
+            </param>
+            <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.CommonTasks.Tasks.SetConfigAttribute(System.String,System.String,System.String)">
              <summary>
              Sets the value of the attribute value in the .NET application configuration file according 
@@ -1217,6 +1239,18 @@
             </summary>
             <param name="obj">The obj.</param>
             <param name="name">The name.</param>
+            <returns>
+            	<c>true</c> if the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WixSharp.Extensions.HasAttribute(System.Xml.Linq.XElement,System.String,System.Predicate{System.String})">
+            <summary>
+            Determines whether the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute and the attribute value passes the test
+            by <c>attributeValueSelector</c>.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="name">The name.</param>
+            <param name="attributeValueSelector">The attribute value selector. Allows testing the attribute value.</param>
             <returns>
             	<c>true</c> if the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute; otherwise, <c>false</c>.
             </returns>
@@ -6328,7 +6362,7 @@
         </member>
         <member name="T:WixSharp.Sequence">
             <summary>
-            Specifies predefined values for <see cref="F:WixSharp.Action.Sequence"/>, 
+            Specifies predefined values for <see cref="F:WixSharp.Action.Sequence"/>,
             which controls which MSI sequence contains corresponding <c>Custom Action</c>.
             </summary>
         </member>
@@ -6340,6 +6374,16 @@
         <member name="F:WixSharp.Sequence.InstallUISequence">
             <summary>
             <c>Custom Action</c> belongs to <c>InstallUISequence</c>.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Sequence.AdminExecuteSequence">
+            <summary>
+            The AdminExecuteSequence table lists actions that the installer calls in sequence when the top-level ADMIN action is executed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Sequence.AdminUISequence">
+            <summary>
+            The AdminUISequence table lists actions that the installer calls in sequence when the top-level ADMIN action is executed and the internal user interface level is set to full UI or reduced UI. The installer skips the actions in this table if the user interface level is set to basic UI or no UI.
             </summary>
         </member>
         <member name="F:WixSharp.Sequence.NotInSequence">
