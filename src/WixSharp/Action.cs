@@ -163,5 +163,9 @@ namespace WixSharp
         /// determine if the actions should be executed.
         /// </summary>
         public Condition Condition = Condition.NOT_Installed;
+        /// <summary>
+        /// The sequence number for this action. Mutually exclusive with Before, After, and OnExit of <see cref="When"/> field.
+        /// </summary>
+        public int? SequenceNumber;
     }
 }

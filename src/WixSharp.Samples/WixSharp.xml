@@ -209,6 +209,11 @@
             determine if the actions should be executed.
             </summary>
         </member>
+        <member name="F:WixSharp.Action.SequenceNumber">
+            <summary>
+            The sequence number for this action. Mutually exclusive with Before, After, and OnExit of <see cref="F:WixSharp.Action.When"/> field.
+            </summary>
+        </member>
         <member name="T:WixSharp.Assembly">
              <summary>
              Defines assembly file to be installed.
