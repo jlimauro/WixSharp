@@ -144,7 +144,7 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
-        /// Applpies digital signature to a file (e.g. msi, exe, dll) with MS <c>SignTool.exe</c> utility.
+        /// Applies digital signature to a file (e.g. msi, exe, dll) with MS <c>SignTool.exe</c> utility.
         /// </summary>
         /// <param name="fileToSign">The file to sign.</param>
         /// <param name="pfxFile">Specify the signing certificate in a file. If this file is a PFX with a password, the password may be supplied
@@ -152,7 +152,9 @@ namespace WixSharp.CommonTasks
         /// <param name="timeURL">The timestamp server's URL. If this option is not present (pass to null), the signed file will not be timestamped.
         /// A warning is generated if timestamping fails.</param>
         /// <param name="password">The password to use when opening the PFX file. Should be <c>null</c> if no password required.</param>
-        /// <param name="optionalArguments">The extra arguments to the .</param>
+        /// <param name="optionalArguments">The optional extra arguments to the SignTool.exe.</param>
+        /// <param name="wellKnownLocations">The optional ';' separated list of directories where SignTool.exe can be located.
+        /// If this parameter is not specified WixSharp will try to locate the SignTool in the built-in well-known locations (syatem PATH)</param>
         /// <returns>Exit code of the <c>SignTool.exe</c> process.</returns>
         ///
         /// <example>The following is an example of signing <c>Setup.msi</c> file.
@@ -165,7 +167,7 @@ namespace WixSharp.CommonTasks
         ///     null);
         /// </code>
         /// </example>
-        static public int DigitalySign(string fileToSign, string pfxFile, string timeURL, string password, string optionalArguments = null)
+        static public int DigitalySign(string fileToSign, string pfxFile, string timeURL, string password, string optionalArguments = null, string wellKnownLocations = null)
         {
             //"C:\Program Files\\Microsoft SDKs\Windows\v6.0A\bin\signtool.exe" sign /f "pfxFile" /p password /v "fileToSign" /t timeURL
             //string args = "sign /v /f \"" + pfxFile + "\" \"" + fileToSign + "\"";
@@ -181,7 +183,7 @@ namespace WixSharp.CommonTasks
 
             var tool = new ExternalTool
             {
-                WellKnownLocations = @"C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin",
+                WellKnownLocations = wellKnownLocations??@"C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin",
                 ExePath = "signtool.exe",
                 Arguments = args
             };
@@ -189,7 +191,8 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
-        /// Applpies digital signature to a file (e.g. msi, exe, dll) with MS <c>SignTool.exe</c> utility.
+        /// Applies digital signature to a file (e.g. msi, exe, dll) with MS <c>SignTool.exe</c> utility.
+        /// <para>If you need to specify extra SignTool.exe parameters or the location of the tool use the overloaded <c>DigitalySign</c> signature </para>
         /// </summary>
         /// <param name="fileToSign">The file to sign.</param>
         /// <param name="pfxFile">Specify the signing certificate in a file. If this file is a PFX with a password, the password may be supplied
@@ -455,14 +458,14 @@ namespace WixSharp.CommonTasks
             string systemPathOriginal = Environment.GetEnvironmentVariable("PATH");
             try
             {
-                Environment.SetEnvironmentVariable("PATH", systemPathOriginal + ";" + Environment.ExpandEnvironmentVariables(this.WellKnownLocations ?? "") + ";" + "%WIXSHARP_PATH%");
+                Environment.SetEnvironmentVariable("PATH", Environment.ExpandEnvironmentVariables(this.WellKnownLocations ?? "") + ";" + "%WIXSHARP_PATH%;" +systemPathOriginal);
 
                 string exePath = GetFullPath(this.ExePath);
 
                 if (exePath == null)
                 {
                     Console.WriteLine("Error: Cannot find " + this.ExePath);
-                    Console.WriteLine("Make sure it is in the System PATH or WIXSHARP_PATH environment variables.");
+                    Console.WriteLine("Make sure it is in the System PATH or WIXSHARP_PATH environment variables or WellKnownLocations member/parameter is initialized properly. ");
                     return 1;
                 }
 
