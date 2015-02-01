@@ -241,6 +241,21 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
+        /// Gets the file version.
+        /// </summary>
+        /// <param name="file">The path to the file.</param>
+        /// <returns></returns>
+        static public Version GetFileVersion(string file)
+        {
+            var info = FileVersionInfo.GetVersionInfo(file);
+            //cannot use info.FileVersion as it can include description string
+            return new Version(info.FileMajorPart,
+                               info.FileMinorPart, 
+                               info.FileBuildPart, 
+                               info.FilePrivatePart);
+        }
+
+        /// <summary>
         /// Binds the LaunchCondition to the automatically created REQUIRED_NET property which is set to the value of the 
         /// Software\Microsoft\NET Framework Setup\NDP\{version}\Install registry entry.
         /// <para>It is a single step equivalent of the "Wix# Samples\LaunchConditions" sample.</para>
