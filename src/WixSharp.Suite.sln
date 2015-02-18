@@ -145,6 +145,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortcuts-Advertised", "Wix
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminInstall", "WixSharp.Samples\VSProjects\AdminInstall.csproj", "{F9F9338C-0C08-4524-B866-82FF57CFF9B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InjectXML", "WixSharp.Samples\VSProjects\InjectXML.csproj", "{281C808B-95B6-4B38-9205-BC025F95678D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -707,6 +709,16 @@ Global
 		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F9F9338C-0C08-4524-B866-82FF57CFF9B0}.Release|x86.ActiveCfg = Release|Any CPU
+		{281C808B-95B6-4B38-9205-BC025F95678D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{281C808B-95B6-4B38-9205-BC025F95678D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{281C808B-95B6-4B38-9205-BC025F95678D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{281C808B-95B6-4B38-9205-BC025F95678D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{281C808B-95B6-4B38-9205-BC025F95678D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{281C808B-95B6-4B38-9205-BC025F95678D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{281C808B-95B6-4B38-9205-BC025F95678D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{281C808B-95B6-4B38-9205-BC025F95678D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{281C808B-95B6-4B38-9205-BC025F95678D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{281C808B-95B6-4B38-9205-BC025F95678D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -763,5 +775,6 @@ Global
 		{CFE61E75-7BED-4AFD-9862-D64E7C162F29} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{D79A384F-82E8-474B-8DA5-7DBD85216FD3} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{F9F9338C-0C08-4524-B866-82FF57CFF9B0} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
+		{281C808B-95B6-4B38-9205-BC025F95678D} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 	EndGlobalSection
 EndGlobal

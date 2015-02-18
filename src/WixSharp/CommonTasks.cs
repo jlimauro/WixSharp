@@ -183,7 +183,7 @@ namespace WixSharp.CommonTasks
 
             var tool = new ExternalTool
             {
-                WellKnownLocations = wellKnownLocations??@"C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin",
+                WellKnownLocations = wellKnownLocations ?? @"C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin",
                 ExePath = "signtool.exe",
                 Arguments = args
             };
@@ -229,7 +229,7 @@ namespace WixSharp.CommonTasks
         ///             new File(@"readme.txt")), 
         ///         ...
         ///         
-        /// project.RegValues = CommonTasks.ImportRegFile("app_settings.reg"); 
+        /// project.RegValues = CommonTasks.Tasks.ImportRegFile("app_settings.reg"); 
         /// 
         /// Compiler.BuildMsi(project);
         /// </code>
@@ -238,6 +238,30 @@ namespace WixSharp.CommonTasks
         {
             return RegFileImporter.ImportFrom(regFile);
 
+        }
+        /// <summary>
+        /// Imports the reg file. It is nothing else but an extension method version of the 'plain' <see cref="T:WixSharp.CommonTasks.Tasks.ImportRegFile"/>.
+        /// </summary>
+        /// <param name="project">The project object.</param>
+        /// <param name="regFile">The reg file.</param>
+        /// <returns></returns>
+        /// <example>The following is an example of importing registry entries from the *.reg file.
+        /// <code> 
+        /// var project = 
+        ///     new Project("MyProduct", 
+        ///         new Dir(@"%ProgramFiles%\My Company\My Product", 
+        ///             new File(@"readme.txt")), 
+        ///         ...
+        ///         
+        /// project.ImportRegFile("app_settings.reg"); 
+        /// 
+        /// Compiler.BuildMsi(project);
+        /// </code>
+        /// </example>
+        static public Project ImportRegFile(this Project project, string regFile)
+        {
+            project.RegValues = ImportRegFile(regFile);
+            return project;
         }
 
         /// <summary>
@@ -250,8 +274,8 @@ namespace WixSharp.CommonTasks
             var info = FileVersionInfo.GetVersionInfo(file);
             //cannot use info.FileVersion as it can include description string
             return new Version(info.FileMajorPart,
-                               info.FileMinorPart, 
-                               info.FileBuildPart, 
+                               info.FileMinorPart,
+                               info.FileBuildPart,
                                info.FilePrivatePart);
         }
 
@@ -275,15 +299,43 @@ namespace WixSharp.CommonTasks
         /// </param>
         /// <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
         /// <returns></returns>
+        [Obsolete("SetClrPrerequisite is obsolete. Please use more reliable SetNetFxPrerequisite instead.")]
         static public Project SetClrPrerequisite(this WixSharp.Project project, string version, string errorMessage = null)
         {
-            string message = errorMessage ??"Please install .NET "+version+" first.";
+            string message = errorMessage ?? "Please install .NET " + version + " first.";
 
             project.LaunchConditions.Add(new LaunchCondition("REQUIRED_NET=\"#1\"", message));
-            project.Properties = project.Properties.Add(new RegValueProperty("REQUIRED_NET", 
-                                                                              RegistryHive.LocalMachine,
-                                                                              @"Software\Microsoft\NET Framework Setup\NDP\" + version, 
-                                                                              "Install", "0"));
+            project.Properties = project.Properties.Add(new RegValueProperty("REQUIRED_NET",
+                                                                                RegistryHive.LocalMachine,
+                                                                                @"Software\Microsoft\NET Framework Setup\NDP\" + version,
+                                                                                "Install", "0"));
+            return project;
+        }
+
+        /// <summary>
+        /// Binds the LaunchCondition to the <c>version</c> property name of WiXNetFxExtension.
+        /// <para>The typical values are:</para>
+        /// <para>   NETFRAMEWORK20</para>
+        /// <para>   NETFRAMEWORK40FULL</para>
+        /// <para>   NETFRAMEWORK40CLIENT</para>
+        /// <para>   ...</para>
+        /// The full list of values can be found here http://wixtoolset.org/documentation/manual/v3/customactions/wixnetfxextension.html
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="version">Name of the WiXNetFxExtension property, which corresponds to the .NET deployment package.
+        /// </param>
+        /// <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
+        /// <returns></returns>
+        static public Project SetNetFxPrerequisite(this WixSharp.Project project, string version, string errorMessage = null)
+        {
+            string message = errorMessage ?? "Please install .NET ('" + version + "') first.";
+
+            project.LaunchConditions.Add(new LaunchCondition(version + "=\"#1\"", message));
+
+            project.Properties = project.Properties.Add(new PropertyRef(version));
+            project.WixExtensions.Add("WiXNetFxExtension");
+            project.WixNamespaces.Add("netfx=\"http://schemas.microsoft.com/wix/NetFxExtension\"");
+
             return project;
         }
 
@@ -341,7 +393,7 @@ namespace WixSharp.CommonTasks
         {
             var valueAttr = ((IEnumerable)config.XPathEvaluate(elementPath)).Cast<XAttribute>().FirstOrDefault();
 
-            if (valueAttr!= null)
+            if (valueAttr != null)
                 valueAttr.Value = value;
             return config;
         }
@@ -473,7 +525,7 @@ namespace WixSharp.CommonTasks
             string systemPathOriginal = Environment.GetEnvironmentVariable("PATH");
             try
             {
-                Environment.SetEnvironmentVariable("PATH", Environment.ExpandEnvironmentVariables(this.WellKnownLocations ?? "") + ";" + "%WIXSHARP_PATH%;" +systemPathOriginal);
+                Environment.SetEnvironmentVariable("PATH", Environment.ExpandEnvironmentVariables(this.WellKnownLocations ?? "") + ";" + "%WIXSHARP_PATH%;" + systemPathOriginal);
 
                 string exePath = GetFullPath(this.ExePath);
 

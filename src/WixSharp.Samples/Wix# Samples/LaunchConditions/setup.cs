@@ -10,10 +10,11 @@ class Script
     static public void Main(string[] args)
     {
         //Both methods produce the sameWiX/MSI 
-        CheckDotNetByAnalysingRegistryValue();
-        //CheckDotNetWithBuildinTast(); 
+        //CheckDotNetByAnalysingRegistryValue();
+        //CheckDotNetWithBuildinTasObsolete(); 
 
         //And of course you can use PropertyRef("NETFRAMEWORK20"), see PropertyRef sample for details
+        CheckDotNetWithBuildinTask();
     }
 
     static void CheckDotNetByAnalysingRegistryValue()
@@ -30,15 +31,26 @@ class Script
         Compiler.BuildMsi(project);
     }
 
-    static public void CheckDotNetWithBuildinTast()
+    static public void CheckDotNetWithBuildinTaskObsolete()
     {
         var project = new Project("Setup",
            new Dir(@"%ProgramFiles%\My Company\My Product",
                 new File(@"Files\MyApp.exe")));
 
-        //Tasks.SetClrPrerequisite(project, "v2.0.50727");
         project.SetClrPrerequisite("v2.0.50727", null);
         
+        Compiler.BuildMsi(project);
+    }
+    
+    static public void CheckDotNetWithBuildinTask()
+    {
+        var project = new Project("Setup",
+           new Dir(@"%ProgramFiles%\My Company\My Product",
+                new File(@"Files\MyApp.exe")));
+
+        project.SetNetFxPrerequisite("NETFRAMEWORK20", "Please install .NET 2.0 first.");
+
+        Compiler.PreserveTempFiles = true;
         Compiler.BuildMsi(project);
     }
 }

@@ -203,6 +203,22 @@ namespace WixSharp
             }
             return dest;
         }
+
+        /// <summary>
+        /// A generic LINQ equivalent of C# foreach loop.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <param name="action">The action.</param>
+        /// <returns></returns>
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        {
+            foreach (T item in collection)
+            {
+                action(item);
+            }
+            return collection;
+        }
         /// <summary>
         /// Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exist its velue gets reassigned.
         /// </summary>

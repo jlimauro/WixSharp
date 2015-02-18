@@ -4,6 +4,7 @@ using System;
 using WixSharp;
 using System.Xml;
 using System.Xml.Linq;
+using System.Linq;
 
 class Script
 {
@@ -18,19 +19,26 @@ class Script
 
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
+        Compiler.WixSourceGenerated += document =>
+            {
+                document.Descendants("Components")
+                        .ForEach(e => e.Add(new XAttribute("Win64", "yes")));
+            };
+        
         Compiler.WixSourceGenerated += InjectImages;
+
         Compiler.BuildMsi(project);
     }
 
     static void InjectImages(System.Xml.Linq.XDocument document)
     {
         var productElement = document.Root.Select("Product");
-        
-        productElement.Add(new XElement("WixVariable", 
+
+        productElement.Add(new XElement("WixVariable",
                                new XAttribute("Id", "WixUIBannerBmp"),
                                new XAttribute("Value", @"Images\bannrbmp.bmp")));
 
-        productElement.Add(new XElement("WixVariable", 
+        productElement.Add(new XElement("WixVariable",
                                new XAttribute("Id", "WixUIDialogBmp"),
                                new XAttribute("Value", @"Images\dlgbmp.bmp")));
     }
