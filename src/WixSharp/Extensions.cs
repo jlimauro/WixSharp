@@ -748,5 +748,19 @@ namespace WixSharp
             }
             return ActionResult.Success;
         }
+
+        public static WixObject ToWObject<T>(this IEnumerable<T> items) where T: WixObject 
+        {
+            return new WixItems(items.Cast<WixObject>());
+        }
+    }
+
+    class WixItems : WixObject
+    {
+        public IEnumerable<WixObject> Items;
+        public WixItems(IEnumerable<WixObject> items)
+        {
+            Items = items;
+        }
     }
 }

@@ -574,11 +574,39 @@
                         new File(@"readme.txt")), 
                     ...
                     
-            project.RegValues = CommonTasks.ImportRegFile("app_settings.reg"); 
+            project.RegValues = CommonTasks.Tasks.ImportRegFile("app_settings.reg"); 
             
             Compiler.BuildMsi(project);
             </code>
             </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.ImportRegFile(WixSharp.Project,System.String)">
+            <summary>
+            Imports the reg file. It is nothing else but an extension method version of the 'plain' <see cref="T:WixSharp.CommonTasks.Tasks.ImportRegFile"/>.
+            </summary>
+            <param name="project">The project object.</param>
+            <param name="regFile">The reg file.</param>
+            <returns></returns>
+            <example>The following is an example of importing registry entries from the *.reg file.
+            <code> 
+            var project = 
+                new Project("MyProduct", 
+                    new Dir(@"%ProgramFiles%\My Company\My Product", 
+                        new File(@"readme.txt")), 
+                    ...
+                    
+            project.ImportRegFile("app_settings.reg"); 
+            
+            Compiler.BuildMsi(project);
+            </code>
+            </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.GetFileVersion(System.String)">
+            <summary>
+            Gets the file version.
+            </summary>
+            <param name="file">The path to the file.</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.CommonTasks.Tasks.SetClrPrerequisite(WixSharp.Project,System.String,System.String)">
             <summary>
@@ -598,6 +626,22 @@
             </summary>
             <param name="project">The project.</param>
             <param name="version">The sub-key of the registry entry of the sub-key of the corresponding registry version of .NET to be checked.
+            </param>
+            <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.SetNetFxPrerequisite(WixSharp.Project,System.String,System.String)">
+            <summary>
+            Binds the LaunchCondition to the <c>version</c> property name of WiXNetFxExtension.
+            <para>The typical values are:</para>
+            <para>   NETFRAMEWORK20</para>
+            <para>   NETFRAMEWORK40FULL</para>
+            <para>   NETFRAMEWORK40CLIENT</para>
+            <para>   ...</para>
+            The full list of values can be found here http://wixtoolset.org/documentation/manual/v3/customactions/wixnetfxextension.html
+            </summary>
+            <param name="project">The project.</param>
+            <param name="version">Name of the WiXNetFxExtension property, which corresponds to the .NET deployment package.
             </param>
             <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
             <returns></returns>
@@ -1279,6 +1323,15 @@
             <param name="src">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute from.</param>
             <param name="attributeName">Name of the source attribute to copy.</param>
             <returns>The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            A generic LINQ equivalent of C# foreach loop.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="collection">The collection.</param>
+            <param name="action">The action.</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.Extensions.CopyAttributeFrom(System.Xml.Linq.XElement,System.String,System.Xml.Linq.XElement,System.String)">
             <summary>
@@ -5092,6 +5145,18 @@
             </summary>
             <param name="path">The path.</param>
         </member>
+        <member name="M:WixSharp.RegFile.#ctor(WixSharp.Feature,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.RegFile"/> class.
+            </summary>
+            <param name="feature"><see cref="F:WixSharp.RegFile.Feature"></see> the registry value should be included in.</param>
+            <param name="path">The path.</param>
+        </member>
+        <member name="F:WixSharp.RegFile.Feature">
+            <summary>
+            <see cref="F:WixSharp.RegFile.Feature"></see> the registry value is included in.
+            </summary>
+        </member>
         <member name="T:WixSharp.RegValue">
              <summary>
              Defines registry value to be installed.
@@ -5140,7 +5205,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.RegValue"/> class with properties initialized with specified parameters.
             </summary>
-            <param name="feature"><see cref="F:WixSharp.RegValue.Feature"></see> the file should be included in.</param>
+            <param name="feature"><see cref="F:WixSharp.RegValue.Feature"></see> the registry value should be included in.</param>
             <param name="root">The registry hive name.</param>
             <param name="key">The registry key name.</param>
             <param name="name">The registry entry name.</param>

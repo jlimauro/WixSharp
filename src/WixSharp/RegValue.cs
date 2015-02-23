@@ -67,6 +67,22 @@ namespace WixSharp
         {
             Path = path;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegFile"/> class.
+        /// </summary>
+        /// <param name="feature"><see cref="Feature"></see> the registry value should be included in.</param>
+        /// <param name="path">The path.</param>
+        public RegFile(Feature feature, string path)
+        {
+            Path = path;
+            Feature = feature;
+        }
+
+        /// <summary>
+        /// <see cref="Feature"></see> the registry value is included in.
+        /// </summary>
+        public Feature Feature;
     }
 
     /// <summary>
@@ -124,7 +140,7 @@ namespace WixSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="RegValue"/> class with properties initialized with specified parameters.
         /// </summary>
-        /// <param name="feature"><see cref="Feature"></see> the file should be included in.</param>
+        /// <param name="feature"><see cref="Feature"></see> the registry value should be included in.</param>
         /// <param name="root">The registry hive name.</param>
         /// <param name="key">The registry key name.</param>
         /// <param name="name">The registry entry name.</param>

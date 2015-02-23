@@ -10,7 +10,7 @@ class Script
     {
         var project =
             new Project("MyProduct",
-                new Dir(@"C:\My Company\MyProduct",
+                new Dir(@"test",
                     new File("readme.txt")));
 
         project.UI = WUI.WixUI_InstallDir;

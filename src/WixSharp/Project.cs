@@ -83,28 +83,44 @@ namespace WixSharp
             var props = new List<Property>();
             var bins = new List<Binary>();
 
-            foreach (WixObject item in items)
-                if (item is LaunchCondition)
-                    LaunchConditions.Add(item as LaunchCondition);
-                else if (item is Dir)
-                    dirs.Add(item as Dir);
-                else if (item is Action)
-                    actions.Add(item as Action);
-                else if (item is RegValue)
-                    regs.Add(item as RegValue);
-                else if (item is RegFile)
-                {
-                    var file = item as RegFile;
-                    regs.AddRange(Tasks.ImportRegFile(file.Path));
-                }
-                else if (item is Property || item is PropertyRef)
-                    props.Add(item as Property);
-                else if (item is Binary)
-                    bins.Add(item as Binary);
-                else if (item is WixGuid)
-                    GUID = (item as WixGuid).Value;
+            //var collections = items.Where(x=>x is WixItems).Sel
+
+            foreach (WixObject obj in items)
+            {
+                var rawItems = new List<WixObject>();
+                if (obj is WixItems)
+                    rawItems.AddRange((obj as WixItems).Items);
                 else
-                    throw new Exception("Unexpected object type as among Project constructor argumentsis: " + item.GetType().Name);
+                    rawItems.Add(obj);
+
+                foreach (WixObject item in rawItems)
+                {
+                    if (item is LaunchCondition)
+                        LaunchConditions.Add(item as LaunchCondition);
+                    else if (item is Dir)
+                        dirs.Add(item as Dir);
+                    else if (item is Action)
+                        actions.Add(item as Action);
+                    else if (item is RegValue)
+                        regs.Add(item as RegValue);
+                    else if (item is RegFile)
+                    {
+                        var file = item as RegFile;
+                        var values = Tasks.ImportRegFile(file.Path);
+                        if (file.Feature != null)
+                            values.ForEach(x=>x.Feature = file.Feature); 
+                        regs.AddRange(values);
+                    }
+                    else if (item is Property || item is PropertyRef)
+                        props.Add(item as Property);
+                    else if (item is Binary)
+                        bins.Add(item as Binary);
+                    else if (item is WixGuid)
+                        GUID = (item as WixGuid).Value;
+                    else
+                        throw new Exception("Unexpected object type as among Project constructor argumentsis: " + item.GetType().Name);
+                }
+            }
 
             Dirs = dirs.ToArray();
             Actions = actions.ToArray();
@@ -122,7 +138,7 @@ namespace WixSharp
         /// The product full name or description.
         /// </summary>
         public string Description = "";
-       
+
         /// <summary>
         /// Optional comments for browsing.
         /// </summary>
