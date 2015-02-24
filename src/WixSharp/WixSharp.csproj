@@ -166,7 +166,6 @@
     <Compile Include="WixEntity.cs" />
     <Compile Include="Id.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="XAtribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
