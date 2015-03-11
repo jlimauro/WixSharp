@@ -144,6 +144,49 @@ namespace WixSharp
     }
 
     /// <summary>
+    /// Simple class that defines custom UI (WiX <c>UI</c> element). This is a specialized version of <see cref="T:WixSharp.CustomUI"/> class
+    /// designed to allow simple customization of the dialogs sequence without the introduction of any custom dialogs. 
+    /// <example>The following is an example demonstrates how to skip <c>License Agreement</c> dialog, 
+    /// which is otherwise displayed between <c>Welcome</c> and <c>InstallDir</c> dialogs.
+    /// <code>
+    /// project.CustomUI = new DialogSequence()
+    ///                            .On(Dialogs.WelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.InstallDirDlg))
+    ///                            .On(Dialogs.InstallDirDlg, Buttons.Back, new ShowDialog(Dialogs.WelcomeDlg)); 
+    /// </code>
+    /// </example>
+    /// </summary>
+    public class DialogSequence : CustomUI
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DialogSequence"/> class.
+        /// </summary>
+        public DialogSequence()
+        {
+            TextStyles.Clear();
+            DialogRefs.Clear();
+            Properties.Clear();
+        }
+
+        /// <summary>
+        /// Defines the WiX Dialog UI control Action (event handler).
+        /// <para>Note that all handlers will have <c>Order</c> field automatically assigned '5' 
+        /// to ensure the overriding the default WiX event handlers</para>
+        /// </summary>
+        /// <param name="dialog">The dialog.</param>
+        /// <param name="control">The control.</param>
+        /// <param name="handlers">The handlers.</param>
+        /// <returns></returns>
+        public DialogSequence On(string dialog, string control, params DialogAction[] handlers)
+        {
+            handlers.Where(h => !h.Order.HasValue)
+                    .ForEach(h => h.Order = 5); //something high enough to have the highest priority at runtime
+
+            base.On(dialog, control, handlers);
+            return this;
+        }
+    }
+
+    /// <summary>
     /// Defines custom UI (WiX <c>UI</c> element). This class is to be used to define the customization of the standard MSI UI. 
     /// The usual scenario of the customization is the injection of the custom <see cref="T:WixSharp.Dialog"/> 
     /// into the sequence of the standard dialogs. This can be accomplished by defining the custom dialog as  
