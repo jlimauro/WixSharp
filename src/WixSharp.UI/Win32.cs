@@ -8,14 +8,15 @@ namespace WixSharp
 {
     internal class Win32
     {
-        private const int SW_HIDE = 0;
-        private const int SW_SHOW = 1;
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 1;
+        public const int SW_RESTORE = 9;
 
         [DllImport("user32", EntryPoint = "SendMessage")]
         public extern static int SendMessage(IntPtr hwnd, uint msg, uint wParam, uint lParam);
 
         [DllImport("user32.dll")]
-        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         public static string GetWindowText(IntPtr wnd)
         {
@@ -44,6 +45,9 @@ namespace WixSharp
 
         [DllImport("user32.dll")]
         internal static extern IntPtr GetForegroundWindow();
+
+        [DllImport("User32.dll")]
+        internal static extern int SetForegroundWindow(IntPtr hwnd);
 
         [DllImport("user32.dll", EntryPoint = "GetWindowLongA", SetLastError = true)]
         public static extern long GetWindowLong(IntPtr hwnd, int nIndex);

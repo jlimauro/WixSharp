@@ -23,8 +23,6 @@ namespace WixSharp.Test
             var featureA = new Feature("Feature A");
             var featureB = new Feature("Feature B");
 
-            Console.WriteLine("!!!!!!!!!!!!!!!!!");
-
             var ex = Assert.Throws<ApplicationException>(() =>
             {
                 var project = new Project("SetupLettersDiagnostics",

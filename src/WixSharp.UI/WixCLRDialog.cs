@@ -1,10 +1,11 @@
-using Microsoft.Deployment.WindowsInstaller;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
+using Microsoft.Deployment.WindowsInstaller;
 
 namespace WixSharp
 {
@@ -148,7 +149,8 @@ namespace WixSharp
         /// </summary>
         protected void Init()
         {
-            this.hostWindow = Win32.GetForegroundWindow();
+            this.hostWindow = GetMsiForegroundWindow();
+            //this.hostWindow = Win32.GetForegroundWindow();
 
             this.Opacity = 0.0005;
             this.Text = Win32.GetWindowText(this.hostWindow);
@@ -164,6 +166,19 @@ namespace WixSharp
                     break;
                 }
                 catch { }
+        }
+
+
+        IntPtr GetMsiForegroundWindow()
+        {
+            var proc = Process.GetProcessesByName("msiexec").Where(p => p.MainWindowHandle != IntPtr.Zero).FirstOrDefault();
+            if (proc != null)
+            {
+                Win32.ShowWindow(proc.MainWindowHandle, Win32.SW_RESTORE);
+                Win32.SetForegroundWindow(proc.MainWindowHandle);
+                return proc.MainWindowHandle;
+            }
+            else return IntPtr.Zero;
         }
 
         /// <summary>
