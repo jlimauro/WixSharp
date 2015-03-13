@@ -118,7 +118,7 @@ namespace WixSharp
                     else if (item is WixGuid)
                         GUID = (item as WixGuid).Value;
                     else
-                        throw new Exception("Unexpected object type as among Project constructor argumentsis: " + item.GetType().Name);
+                        throw new Exception("Unexpected object type as among Project constructor arguments: " + item.GetType().Name);
                 }
             }
 

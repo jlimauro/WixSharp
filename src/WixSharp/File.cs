@@ -127,15 +127,23 @@ namespace WixSharp
 
         void AddItems(WixEntity[] items)
         {
-            Shortcuts = (from i in items where i is FileShortcut select i as FileShortcut).ToArray();
-            Associations = (from i in items where i is FileAssociation select i as FileAssociation).ToArray();
-            IISVirtualDirs = (from i in items where i is IISVirtualDir select i as IISVirtualDir).ToArray();
-            ServiceInstaller = items.Where(i => i is ServiceInstaller).FirstOrDefault() as ServiceInstaller; 
-            if ((Associations.Length + Shortcuts.Length + IISVirtualDirs.Length + (ServiceInstaller != null ? 1 : 0)) != items.Length)
-                throw new ApplicationException("Only {0},{1} and {2} items can be added to {2}".Format(typeof(FileShortcut), 
+            Shortcuts = items.OfType<FileShortcut>().ToArray();
+            Associations = items.OfType<FileAssociation>().ToArray();
+            IISVirtualDirs = items.OfType<IISVirtualDir>().ToArray();
+            ServiceInstaller = items.OfType<ServiceInstaller>().FirstOrDefault();
+
+            var firstUnExpectedItem = items.Except(Shortcuts)
+                                           .Except(Associations)
+                                           .Except(IISVirtualDirs)
+                                           .Where(x=>x != ServiceInstaller)
+                                           .ToArray();
+
+            if (firstUnExpectedItem.Any())
+                throw new ApplicationException("{4} is unexpected. Only {0}, {1} and {2} items can be added to {3}".Format(typeof(FileShortcut), 
                                                                                                        typeof(FileAssociation), 
                                                                                                        typeof(ServiceInstaller), 
-                                                                                                       this.GetType()));
+                                                                                                       this.GetType(),
+                                                                                                       firstUnExpectedItem.First().GetType()));
         }
 
         /// <summary>
