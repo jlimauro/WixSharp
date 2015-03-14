@@ -1795,7 +1795,7 @@ namespace WixSharp
 
                     if (existingBinary == null)
                     {
-                        PackageManagedAsm(asmFile, packageFile, wManagedAction.RefAssemblies);
+                        PackageManagedAsm(asmFile, packageFile, wManagedAction.RefAssemblies.Concat(wProject.DefaultRefAssemblies).Distinct().ToArray());
                     
                         bynaryKey = wAction.Name.Expand() + "_File";
                         product.Add(new XElement("Binary",
@@ -1985,6 +1985,7 @@ namespace WixSharp
             }
 
             var requiredAsms = new List<string>(refAssemblies);
+            //requiredAsms.Add();
 
             //if WixSharp was "linked" with the client assembly not as script file but as external assembly
             if (ClientAssembly.ToLower() != System.Reflection.Assembly.GetExecutingAssembly().Location.ToLower())

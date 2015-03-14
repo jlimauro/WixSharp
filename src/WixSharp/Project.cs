@@ -415,17 +415,16 @@ namespace WixSharp
         public Binary[] Binaries = new Binary[0];
 
         /// <summary>
-        /// Collection of paths to the custom assemblies referenced by <see cref="ManagedAction"/>s.
+        /// Collection of paths to the assemblies referenced by <see cref="ManagedAction"/>s.
         /// </summary>
-        [Obsolete("WixRefAssemblies is a deprecated. Use WixExtensions instead.")]
-        public List<string> WixRefAssemblies { get { return WixExtensions; } set { WixExtensions = value; } }
+        public List<string> DefaultRefAssemblies { get { return WixExtensions; } set { WixExtensions = value; } }
         /// <summary>
         /// Collection of paths to the WiX extensions. 
-        /// <para>The items from this collection will be passed to the Candle/Light compiler as commend lien parameters.</para>
+        /// <para>The items from this collection will be passed to the Candle/Light compiler as command line parameters.</para>
         /// </summary>
         public List<string> WixExtensions = new List<string>();
         /// <summary>
-        /// Collection of XML namepseces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root. 
+        /// Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root. 
         /// </summary>
         public List<string> WixNamespaces = new List<string>();
 
