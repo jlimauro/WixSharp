@@ -459,7 +459,7 @@ namespace WixSharp
         /// <see cref="ResolveWildCards"/> should be called only after <see cref="SourceBaseDir"/> is set. 
         /// Otherwise wild card pathes may not be resolved correctly.</remarks>
         /// </summary>
-        public void ResolveWildCards()
+        public Project ResolveWildCards()
         {
             int iterator = 0;
             var dirList = new List<Dir>();
@@ -488,6 +488,8 @@ namespace WixSharp
 
                 iterator++;
             }
+
+            return this;
         }
         /// <summary>
         /// Returns all <see cref="File"/>s of the <see cref="Project"/> matching the <paramref name="match"/> pattern.
