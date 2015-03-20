@@ -220,6 +220,22 @@ namespace WixSharp
             return collection;
         }
         /// <summary>
+        /// Gets the combined hash code of all items in the collection. This method is convenient to use to 
+        /// verify that the collections have identical items.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <returns></returns>
+        public static int GetItemsHashCode<T>(this IEnumerable<T> collection)
+        {
+            var hash = new StringBuilder();
+            foreach (T item in collection)
+            {
+                hash.Append((item == null ? "null".GetHashCode() : item.GetHashCode()).ToString());
+            }
+            return hash.ToString().GetHashCode();
+        }
+        /// <summary>
         /// Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exist its velue gets reassigned.
         /// </summary>
         /// <param name="dest">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</param>

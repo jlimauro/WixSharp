@@ -1363,6 +1363,15 @@
             <param name="action">The action.</param>
             <returns></returns>
         </member>
+        <member name="M:WixSharp.Extensions.GetItemsHashCode``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Gets the combined hash code of all items in the collection. This method is convenient to use to 
+            verify that the collections have identical items.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="collection">The collection.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.CopyAttributeFrom(System.Xml.Linq.XElement,System.String,System.Xml.Linq.XElement,System.String)">
             <summary>
             Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exist its velue gets reassigned.
@@ -3486,7 +3495,7 @@
             Gets or sets the location WiX binaries (compiler/linker/dlls).
             The default value is a content of environment variable <c>WIXSHARP_WIXDIR</c>.
             <para>If user does not set this property explicitly and WIXSHARP_WIXDIR is not defined
-            <see cref="T:WixSharp.Compiler"/> will try to locate WiX binaries in <c>ProgramFiles\Windows Installer XML v3\bin</c>
+            <see cref="T:WixSharp.Compiler"/> will try to locate WiX binaries in <c>Program Files\Windows Installer XML v&lt;max_of 3*&gt;\bin</c>
             </para>
             </summary>
             <value>The WiX binaries location.</value>
@@ -4647,12 +4656,12 @@
         <member name="F:WixSharp.Project.WixExtensions">
             <summary>
             Collection of paths to the WiX extensions. 
-            <para>The items from this collection will be passed to the Candle/Light compiler as commend lien parameters.</para>
+            <para>The items from this collection will be passed to the Candle/Light compiler as command line parameters.</para>
             </summary>
         </member>
         <member name="F:WixSharp.Project.WixNamespaces">
             <summary>
-            Collection of XML namepseces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root. 
+            Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root. 
             </summary>
         </member>
         <member name="F:WixSharp.Project.LaunchConditions">
@@ -4751,9 +4760,9 @@
             </remarks>
             </summary>
         </member>
-        <member name="P:WixSharp.Project.WixRefAssemblies">
+        <member name="P:WixSharp.Project.DefaultRefAssemblies">
             <summary>
-            Collection of paths to the custom assemblies referenced by <see cref="T:WixSharp.ManagedAction"/>s.
+            Collection of paths to the assemblies referenced by <see cref="T:WixSharp.ManagedAction"/>s.
             </summary>
         </member>
         <member name="P:WixSharp.Project.AllFiles">

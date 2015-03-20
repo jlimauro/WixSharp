@@ -27,6 +27,7 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -79,11 +80,31 @@ namespace WixSharp
                 }
             }
 
-            foreach(Dir dir in project.AllDirs)
+            foreach (Dir dir in project.AllDirs)
                 if (dir.Name.StartsWith("%") || dir.Name.EndsWith("%"))
-                    if(!Compiler.EnvironmentConstantsMapping.ContainsKey(dir.Name))
-                        throw new ValidationException("WixSharp.Dir.Name is set to unknown environment constant '"+dir.Name+"'.\n"+
-                                                      "For the list of supported constants analyse WixSharp.Compiler.EnvironmentConstantsMapping.Keys.");
+                    if (!Compiler.EnvironmentConstantsMapping.ContainsKey(dir.Name))
+                        throw new ValidationException("WixSharp.Dir.Name is set to unknown environment constant '" + dir.Name + "'.\n" +
+                                                      "For the list of supported constants analyze WixSharp.Compiler.EnvironmentConstantsMapping.Keys.");
+
+
+
+            var incosnistentRefAsmActions =
+                      project.Actions.OfType<ManagedAction>()
+                                     .GroupBy(a => a.ActionAssembly)
+                                     .Where(g => g.Count() > 1)
+                                     .Select(g => new
+                                     {
+                                         Assembly = g.Key,
+                                         //RefAsmHashes = g.Select(action => action.GetRefAssembliesHashCode(project.DefaultRefAssemblies)).ToArray(), //enable if needed for troubleshooting
+                                         IsInconsistent = g.Select(action => action.GetRefAssembliesHashCode(project.DefaultRefAssemblies)).Distinct().Count() > 1,
+                                     })
+                                     .Where(x=>x.IsInconsistent)
+                                     .FirstOrDefault();
+
+            if (incosnistentRefAsmActions != null)
+                throw new ApplicationException(string.Format("ManagedAction assembly '{0}' is declared multiple times with the different (inconsistent) set of referenced assemblies. "+
+                                                             "Ensure that all declarations have the same referenced assemblies by either using identical declarations or by using "+
+                                                             "Project.DefaultRefAssemblies.", incosnistentRefAsmActions.Assembly));
         }
     }
 }

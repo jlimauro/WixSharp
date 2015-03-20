@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 #endregion
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WixSharp
@@ -278,6 +279,16 @@ namespace WixSharp
         /// depends on any assembly, which will not be registered with GAC on the target system.
         /// </summary>
         public string[] RefAssemblies = new string[0];
+
+        internal int GetRefAssembliesHashCode(IEnumerable<string> defaultAssemblies)
+        {
+            return RefAssemblies.Concat(defaultAssemblies)
+                                .Select(a => System.IO.Path.GetFullPath(a).ToLower())
+                                .Distinct()
+                                .OrderBy(a => a)
+                                .GetItemsHashCode();
+        }
+
         /// <summary>
         /// Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
         /// is in the Wix# script. 

@@ -150,7 +150,6 @@ namespace WixSharp
         protected void Init()
         {
             this.hostWindow = GetMsiForegroundWindow();
-            //this.hostWindow = Win32.GetForegroundWindow();
 
             this.Opacity = 0.0005;
             this.Text = Win32.GetWindowText(this.hostWindow);

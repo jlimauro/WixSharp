@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using Xunit;
 
 namespace WixSharp.Test
@@ -17,6 +19,19 @@ namespace WixSharp.Test
             Compiler.GuidGenerator = (seed) => Guid.Parse("9e2974a1-9539-4c5c-bef7-80fc35b9d7b0");
             Compiler.GuidGenerator = (seed) => Guid.NewGuid();
         }
+
+        [Fact]
+        public void Should_Compare_CollectionByItems()
+        {
+            var itemsA = new[] { "a", "b" };
+            var itemsC = new[] { "b", "c" };
+            var itemsB = new List<string>(new [] { "a", "b" });
+            
+            Assert.Equal(itemsB.GetItemsHashCode(), itemsA.GetItemsHashCode());
+            Assert.NotEqual(itemsC.GetItemsHashCode(), itemsA.GetItemsHashCode());
+            Assert.NotEqual(new[] { "a" }.GetItemsHashCode(), itemsA.GetItemsHashCode());
+        }
+
 
         [Fact]
         public void Should_Name_CustomActionsPSequentially()
