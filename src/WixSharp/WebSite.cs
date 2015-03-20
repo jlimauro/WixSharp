@@ -43,13 +43,13 @@ namespace WixSharp
         /// <summary>
         /// Indicates if the WebSite is to be installed (created on IIS) or existing WebSite should be used to install the corresponding
         /// WebApplication. The default <see cref="InstallWebSite"/> value is <c>false</c>
-        /// <para>Developers should be aware about the WebSite installation model imposed by WiX/MSI and use <see cref="InstallWebSite"/> carefully.</para>
+        /// <para>Developers should be aware of the WebSite installation model imposed by WiX/MSI and use <see cref="InstallWebSite"/> carefully.</para>
         /// <para>If <see cref="InstallWebSite"/> value is set to <c>false</c> the parent WebApplication (<see cref="T:WixSharp.IISVirtualDir"/>)
-        /// will be installed in the brand new (freshly created) WebSite or in the existing if the one with the same address/port combination already exists 
+        /// will be installed in the brand new (freshly created) WebSite or in the existing one if a site with the same address/port combination already exists 
         /// on IIS). The undesirable side affect of this deployment scenario is that if the existing WebSite was used to install the WebApplication it will be 
         /// deleted on IIS during uninstallation even if this WebSite has other WebApplications installed.</para>
-        /// <para>The "safer" option is to set <see cref="InstallWebSite"/> value is set to <c>true</c> (default value). In this case the WebApplication will 
-        /// be installed in to existing WebSite with matching address/port. If the match is not found the installation will fail. During the uninstallation 
+        /// <para>The "safer" option is to set <see cref="InstallWebSite"/> value to <c>true</c> (default value). In this case the WebApplication will 
+        /// be installed in an existing WebSite with matching address/port. If the match is not found the installation will fail. During the uninstallation 
         /// only installed WebApplication will be removed from IIS.</para>
         /// </summary>
         public bool InstallWebSite = false;
@@ -146,11 +146,11 @@ namespace WixSharp
 
         /// <summary>
         /// Specification for auto-generating the <see cref="T:WebSite.WebAddresses"/> collection. 
-        /// <para>If <see cref="AddressesDefinition"/> is specified the existing content of <see cref="Addresses"/> will be ignored 
-        /// and replaced with the auto-generated one at the compile time.</para>
+        /// <para>If <see cref="AddressesDefinition"/> is specified, the existing content of <see cref="Addresses"/> will be ignored 
+        /// and replaced with the auto-generated one at compile time.</para>
         /// </summary>
         /// <example>
-        /// <c>webSite.AddressesDefinition = "*:80;*90";</c> will be parsed and converted to the array of <see cref="T:WixSharp.WebSite.WebAddress"/> as following: 
+        /// <c>webSite.AddressesDefinition = "*:80;*90";</c> will be parsed and converted to an array of <see cref="T:WixSharp.WebSite.WebAddress"/> as follows: 
         /// <code>
         /// ...
         /// webSite.Addresses = new []
@@ -172,8 +172,8 @@ namespace WixSharp
         /// <summary>
         /// Collection of <see cref="T:WebSite.WebAddresses"/> associated with website.
         /// <para>
-        /// The user specified values of <see cref="Addresses"/> will be ignored and replaced witrh the 
-        /// auto-generated addresses if If <see cref="AddressesDefinition"/> is specified either directly or via appropriate <see cref="WebSite"/> constructor.
+        /// The user specified values of <see cref="Addresses"/> will be ignored and replaced with the 
+        /// auto-generated addresses if <see cref="AddressesDefinition"/> is specified either directly or via appropriate <see cref="WebSite"/> constructor.
         /// </para>
         /// </summary>
         public WebAddress[] Addresses
@@ -299,7 +299,7 @@ namespace WixSharp
 
         #region WebVirtualDir Element Attributes
         /// <summary>
-        /// Sets the application name, which is the URL relative path used to access this virtual directory. If not set the <see cref="AppName"/> will be used.
+        /// Sets the application name, which is the URL relative path used to access this virtual directory. If not set, the <see cref="AppName"/> will be used.
         /// </summary>
         public string Alias = "";
         #endregion

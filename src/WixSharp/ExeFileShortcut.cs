@@ -34,7 +34,7 @@ namespace WixSharp
     /// the installation the shortcut will point to the file it belongs to.</para>
     /// <para> - Alternatively the <c>Shortcut</c> can be specified as a <see cref="Dir"/> nested 
     /// element. In this case after the installation the shortcut will point to the file 
-    /// will point to the file it belongs to.</para>
+    /// it belongs to.</para>
     /// </summary>
     /// 
     /// <example>
@@ -64,8 +64,8 @@ namespace WixSharp
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExeFileShortcut"/> class with properties/fields initialized with specified parameters.
-        /// <para>This constructor should be used to instantiate shortcuts, which belong to the <see cref="Dir"/> element.</para>
-        /// <para>The shortcut will be installed in the directory, defined by the parent <see cref="Dir"/> element</para>
+        /// <para>This constructor should be used to instantiate shortcuts which belong to the <see cref="Dir"/> element.</para>
+        /// <para>The shortcut will be installed in the directory defined by the parent <see cref="Dir"/> element.</para>
         /// </summary>
         /// <param name="name">The name of the shortcut to be installed.</param>
         /// <param name="target">The path to the executable the shortcut is associated with.</param>
@@ -78,8 +78,8 @@ namespace WixSharp
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ExeFileShortcut"/> class with properties/fields initialized with specified parameters.
-        /// <para>This constructor should be used to instantiate shortcuts, which belong to the <see cref="Dir"/> element.</para>
-        /// <para>The shortcut will be installed in the directory, defined by the parent <see cref="Dir"/> element</para>
+        /// <para>This constructor should be used to instantiate shortcuts which belong to the <see cref="Dir"/> element.</para>
+        /// <para>The shortcut will be installed in the directory defined by the parent <see cref="Dir"/> element.</para>
         /// </summary>
         /// <param name="feature"><see cref="Feature"></see> the shortcut should be included in.</param>
         /// <param name="name">The name of the shortcut to be installed.</param>
@@ -94,10 +94,10 @@ namespace WixSharp
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ExeFileShortcut"/> class with properties/fields initialized with specified parameters.
-        /// <para>This constructor should be used to instantiate shortcuts, which belong to the <see cref="Dir"/> element.</para>
-        /// <para>The shortcut will be installed in the directory, defined by the parent <see cref="Dir"/> element</para>
+        /// <para>This constructor should be used to instantiate shortcuts which belong to the <see cref="Dir"/> element.</para>
+        /// <para>The shortcut will be installed in the directory defined by the parent <see cref="Dir"/> element.</para>
         /// </summary>
-        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Shortcut"/> instance.</param>
+        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="ExeFileShortcut"/> instance.</param>
         /// <param name="name">The name of the shortcut to be installed.</param>
         /// <param name="target">The path to the executable the shortcut is associated with.</param>
         /// <param name="arguments">The shortcut arguments.</param>
@@ -110,10 +110,10 @@ namespace WixSharp
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ExeFileShortcut"/> class with properties/fields initialized with specified parameters.
-        /// <para>This constructor should be used to instantiate shortcuts, which belong to the <see cref="Dir"/> element.</para>
-        /// <para>The shortcut will be installed in the directory, defined by the parent <see cref="Dir"/> element</para>
+        /// <para>This constructor should be used to instantiate shortcuts which belong to the <see cref="Dir"/> element.</para>
+        /// <para>The shortcut will be installed in the directory defined by the parent <see cref="Dir"/> element</para>
         /// </summary>
-        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Shortcut"/> instance.</param>
+        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="ExeFileShortcut"/> instance.</param>
         /// <param name="feature"><see cref="Feature"></see> the shortcut should be included in.</param>
         /// <param name="name">The name of the shortcut to be installed.</param>
         /// <param name="target">The path to the executable the shortcut is associated with.</param>

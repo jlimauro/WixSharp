@@ -31,21 +31,21 @@ using IO = System.IO;
 namespace WixSharp
 {
     /// <summary>
-    /// Defines all files of a given source directory and subdirectory to be installed on target system.
+    /// Defines all files of a given source directory and all subdirectories to be installed on target system.
     /// <para>
     /// Use this class to define files to be automatically included into the deployment solution
-    /// if they name complain with specified wildcard character pattern (<see cref="DirFiles.IncludeMask"/>).
+    /// if their name matches specified wildcard character pattern (<see cref="Files.IncludeMask"/>).
     /// </para>
     /// <para>
-    /// You can use <see cref="DirFiles.ExcludeMasks"/> if it is required to exclude certain files from
-    /// being included into setup.
+    /// You can use <see cref="Files.ExcludeMasks"/> to exclude certain files from setup if required.
     /// </para>
     /// <para>
-    /// This class is a logical equivalent of <see cref="DirFiles"/> except it also analyses all files in subdirectories.
+    /// This class is a logical equivalent of <see cref="DirFiles"/> except it also analyses all files in all subdirectories.
+    /// <see cref="DirFiles"/> excludes files in subdirectories.
     /// </para>
     /// </summary>
     /// <remarks>
-    /// Note that all files matching wildcard are resolwed into absolute path thus it may not always be suitable 
+    /// Note that all files matching wildcard are resolved into absolute path thus it may not always be suitable 
     /// if the Wix# script is to be compiled into WiX XML source only (Compiler.<see cref="WixSharp.Compiler.BuildWxs(WixSharp.Project)"/>). Though it is not a problem at all if the Wix# script 
     /// is compiled into MSI file (Compiler.<see cref="Compiler.BuildMsi(WixSharp.Project)"/>).
     /// </remarks>b
@@ -61,13 +61,12 @@ namespace WixSharp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Files"/> class.
-        /// with properties/fields initialized with specified parameters
         /// </summary>
         public Files() { }
         /// <summary>
         /// Initializes a new instance of the <see cref="Files"/> class with properties/fields initialized with specified parameters.
         /// </summary>
-        /// <param name="sourcePath">The relative path to directory source directory. It must include wildcard pattern for files to be included
+        /// <param name="sourcePath">The relative path to source directory. It must include wildcard pattern for files to be included
         /// into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
         public Files(string sourcePath)
         {
@@ -77,7 +76,7 @@ namespace WixSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="Files"/> class with properties/fields initialized with specified parameters.
         /// </summary>
-        /// <param name="sourcePath">The relative path to directory source directory. It must include wildcard pattern for files to be included
+        /// <param name="sourcePath">The relative path to source directory. It must include wildcard pattern for files to be included
         /// into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
         /// <param name="excludeFileMasks">Wildcard pattern(s) for files to be excluded from MSI 
         /// (e.g. <c>new Files(typical, @"Release\Bin\*.dll", "*.Test.dll", "*.UnitTest.dll")</c>).</param>
@@ -91,7 +90,7 @@ namespace WixSharp
         /// Initializes a new instance of the <see cref="Files"/> class with properties/fields initialized with specified parameters.
         /// </summary>
         /// <param name="feature"><see cref="Feature"></see> the directory files should be included in.</param>
-        /// <param name="sourcePath">The relative path to directory source directory. It must include wildcard pattern for files to be included
+        /// <param name="sourcePath">The relative path to source directory. It must include wildcard pattern for files to be included
         /// into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
         public Files(Feature feature, string sourcePath)
         {
@@ -103,7 +102,7 @@ namespace WixSharp
         /// Initializes a new instance of the <see cref="Files"/> class with properties/fields initialized with specified parameters.
         /// </summary>
         /// <param name="feature"><see cref="Feature"></see> the directory files should be included in.</param>
-        /// <param name="sourcePath">The relative path to directory source directory. It must include wildcard pattern for files to be included
+        /// <param name="sourcePath">The relative path to source directory. It must include wildcard pattern for files to be included
         /// into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
         /// <param name="excludeFileMasks">Wildcard pattern(s) for files to be excluded from MSI 
         /// (e.g. <c>new Files(typical, @"Release\Bin\*.dll", "*.Test.dll", "*.UnitTest.dll")</c>).</param>
@@ -120,7 +119,7 @@ namespace WixSharp
         /// </summary>
         public Feature Feature;
         /// <summary>
-        /// The relative path to directory source directory. To lookup for files matching the <see cref="Files.IncludeMask"/>.
+        /// The relative path to source directory to search for files matching the <see cref="Files.IncludeMask"/>.
         /// </summary>
         public string Directory = "";
         /// <summary>

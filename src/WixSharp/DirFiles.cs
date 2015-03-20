@@ -34,24 +34,25 @@ namespace WixSharp
 {
     /// <summary>
     /// Defines files of a given source directory to be installed on target system.
+	/// Note that files in subdirectories are not included.
     /// <para>
     /// Use this class to define files to be automatically included into the deployment solution
-    /// if they name complain with specified wildcard character pattern (<see cref="DirFiles.IncludeMask"/>).
+    /// if their name matches specified wildcard character pattern (<see cref="DirFiles.IncludeMask"/>).
     /// </para>
     /// <para>
-    /// You can use <see cref="DirFiles.ExcludeMasks"/> if it is required to exclude certain files from
-    /// being included into setup.
+    /// You can use <see cref="DirFiles.ExcludeMasks"/> to exclude certain files from setup if required.
     /// </para>
     /// <para>
-    /// This class is a logical equivalent of <see cref="Files"/> except it analyses files in as single directory.
+    /// This class is a logical equivalent of <see cref="Files"/> except that it analyses files in a single directory.
     /// </para>
     /// </summary>
     /// <remarks>
-    /// Note that all files matching wildcard are resolwed into absolute path thus it may not always be suitable 
-    /// if the Wix# script is to be compiled into WiX XML source only (Compiler.<see cref="WixSharp.Compiler.BuildWxs(WixSharp.Project)"/>). Though it is not a problem at all if the Wix# script 
+    /// Note that all files matching the wildcard are resolved into absolute paths, so it may not always be suitable 
+    /// if the Wix# script is to be compiled into WiX XML source only (Compiler.<see cref="WixSharp.Compiler.BuildWxs(WixSharp.Project)"/>).
+	/// This is not a problem if the Wix# script 
     /// is compiled into MSI file (Compiler.<see cref="Compiler.BuildMsi(WixSharp.Project)"/>).
     /// </remarks>
-    /// <example>The following is an example of defining installation files with wildcard character pattern.
+    /// <example>The following is an example of defining installation files with a wildcard character pattern.
     /// <code>
     /// new Project("MyProduct",
     ///     new Dir(@"%ProgramFiles%\MyCompany\MyProduct",
@@ -124,7 +125,7 @@ namespace WixSharp
         /// </summary>
         public Feature Feature;
         /// <summary>
-        /// The relative path to directory source directory. To lookup for files matching the <see cref="DirFiles.IncludeMask"/>.
+        /// The relative path from source directory to directory to lookup for files matching the <see cref="DirFiles.IncludeMask"/>.
         /// </summary>
         public string Directory = "";
         /// <summary>
@@ -143,7 +144,7 @@ namespace WixSharp
         /// </summary>
         /// <param name="baseDirectory">The base directory for file analysis. It is used in conjunction with 
         /// relative <see cref="DirFiles.Directory"/>.</param>
-        /// <returns>Array of <see cref="File"/>s</returns>
+        /// <returns>Array of <see cref="File"/>s.</returns>
         public File[] GetFiles(string baseDirectory)
         {
             if (baseDirectory.IsEmpty())

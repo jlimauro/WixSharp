@@ -152,7 +152,11 @@ namespace WixSharp.CommonTasks
         /// <param name="timeURL">The timestamp server's URL. If this option is not present (pass to null), the signed file will not be timestamped.
         /// A warning is generated if timestamping fails.</param>
         /// <param name="password">The password to use when opening the PFX file. Should be <c>null</c> if no password required.</param>
+<<<<<<< .mine
         /// <param name="optionalArguments">The optional extra arguments to the SignTool.exe.</param>
+=======
+        /// <param name="optionalArguments">Extra arguments to pass to the <c>SignTool.exe</c> utility.</param>
+>>>>>>> .theirs
         /// <param name="wellKnownLocations">The optional ';' separated list of directories where SignTool.exe can be located.
         /// If this parameter is not specified WixSharp will try to locate the SignTool in the built-in well-known locations (syatem PATH)</param>
         /// <returns>Exit code of the <c>SignTool.exe</c> process.</returns>

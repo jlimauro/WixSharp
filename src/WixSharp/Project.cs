@@ -413,21 +413,18 @@ namespace WixSharp
         /// it automatically.
         /// </summary>
         public Binary[] Binaries = new Binary[0];
-
         /// <summary>
         /// Collection of paths to the assemblies referenced by <see cref="ManagedAction"/>s.
         /// </summary>
         public List<string> DefaultRefAssemblies { get { return WixExtensions; } set { WixExtensions = value; } }
         /// <summary>
         /// Collection of paths to the WiX extensions. 
-        /// <para>The items from this collection will be passed to the Candle/Light compiler as command line parameters.</para>
         /// </summary>
         public List<string> WixExtensions = new List<string>();
         /// <summary>
         /// Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root. 
         /// </summary>
         public List<string> WixNamespaces = new List<string>();
-
         /// <summary>
         /// Collection of the <see cref="T:WixSharp.LaunchCondition"/>s associated with the setup.
         /// </summary>

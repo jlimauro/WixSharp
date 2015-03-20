@@ -87,7 +87,7 @@ namespace WixSharp
             }
         }
 
-        //needed to have reliable HASH as x64 and x32 have different algorithms; This leads to the inability of script clients calculate cache directory correctly  
+        //needed to have reliable HASH as x64 and x32 have different algorithms; This leads to the inability of script clients to calculate cache directory correctly  
         public static int GetHashCode32(this string s)
         {
             char[] chars = s.ToCharArray();

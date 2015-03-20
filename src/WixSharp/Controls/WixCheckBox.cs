@@ -50,7 +50,7 @@ namespace WixSharp
     /// Defines <see cref="T:System.Windows.Forms" /> CheckBox control for generating WiX Button element.
     /// <para>
     /// The <see cref="T:WixSharp.WixButton" /> can be used with the <see cref="T:System.Windows.Forms" /> designer to define custom
-    /// dialogs layout. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixCheckBox" /> instance at compile time
+    /// dialog layouts. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixCheckBox" /> instance at compile time
     /// to generate WiX CheckBox element on the base of this instance properties.
     /// </para>
     /// </summary>
@@ -134,10 +134,10 @@ namespace WixSharp
         public bool Hidden { get; set; }
 
         /// <summary>
-        /// Gets or sets the wix attributes.
+        /// Gets or sets the WiX attributes.
         /// </summary>
         /// <value>
-        /// The wix attributes.
+        /// The WiX attributes.
         /// </value>
         [Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
         public string WixAttributes { get; set; }

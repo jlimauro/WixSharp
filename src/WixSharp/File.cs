@@ -57,7 +57,7 @@ namespace WixSharp
     {
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the <see cref="File"/>.
-        /// <para>This property is designed to produce friendlier string representation of the <see cref="File"/>
+        /// <para>This property is designed to produce a friendlier string representation of the <see cref="File"/>
         /// for debugging purposes.</para>
         /// </summary>
         /// <returns>

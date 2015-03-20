@@ -38,7 +38,7 @@ namespace WixSharp
     /// </para>
     /// </summary>
     /// <remarks>
-    /// <see cref="PropertyRef"/> is inherited from <see cref="Property"/> as a recognition their logical relationship and usability pattern but not as their "Parent/Child" nature 
+    /// <see cref="PropertyRef"/> inherits from <see cref="Property"/> because of their logical relationship and usability pattern, not because of any "Parent/Child" connection.
     /// </remarks>
     ///<example>The following is an example of using <c>NETFRAMEWORK20</c> property defined in the <c>WiXNetFxExtension</c> WiX extension.
     ///<code>

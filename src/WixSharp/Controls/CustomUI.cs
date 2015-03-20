@@ -194,7 +194,7 @@ namespace WixSharp
     /// <para>
     /// When <see cref="T:WixSharp.WixForm"/> is complete it can be converted into <see cref="T:WixSharp.Dialog"/> 
     /// with the <see cref="T:WixSharp.Dialog.ToWDialog"/>() call. And at compile time Wix# compiler converts 
-    /// <see cref="T:WixSharp.Dialog"/> into the final WiX <c>UI</c> element XML definition .
+    /// <see cref="T:WixSharp.Dialog"/> into the final WiX <c>UI</c> element XML definition.
     /// </para>
     /// <para>
     /// While it is possible to construct <see cref="T:WixSharp.CustomUI"/> instance manually it is preferred to use 
@@ -445,7 +445,7 @@ namespace WixSharp
         /// <param name="onNextActions">The on next actions.</param>
         /// <param name="onBackActions">The on back actions.</param>
         /// <param name="onCancelActions">The on cancel actions.</param>
-        /// <returns><see cref="T:WixSharp.CustomUI"/> instance</returns>
+        /// <returns><see cref="T:WixSharp.CustomUI"/> instance.</returns>
         public static CustomUI BuildPostLicenseDialogUI(Dialog customDialog,
             DialogAction[] onNextActions = null,
             DialogAction[] onBackActions = null,

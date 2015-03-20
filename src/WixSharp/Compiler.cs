@@ -41,7 +41,7 @@ using IO = System.IO;
 namespace WixSharp
 {
     /// <summary>
-    /// This class hold the settings for Wix# XML auto-generation: generation of WiX XML elements, which do not have direct
+    /// This class holds the settings for Wix# XML auto-generation: generation of WiX XML elements, which do not have direct
     /// representation in the Wix# script. The detailed information about Wix# auto-generation can be found here: http://www.csscript.net/WixSharp/ID_Allocation.html.
     /// </summary>
     public class AutoGenerationOptions
@@ -129,7 +129,7 @@ namespace WixSharp
         /// </summary>
         static public event XDocumentSavedDlgt WixSourceSaved;
         /// <summary>
-        /// Occurs when WiX source file formatted and ready to be saved. Use this event if you need to do any custom formatting of the XML content before
+        /// Occurs when WiX source file is formatted and ready to be saved. Use this event if you need to do any custom formatting of the XML content before
         /// it is saved by the compiler.
         /// </summary>
         static public event XDocumentFormatedDlgt WixSourceFormated;
@@ -154,7 +154,7 @@ namespace WixSharp
         ///// This is one of the WiX/MSI limitations. Under some conditions every directory must contain <c>Component</c> (e.g. "no files" installation).
         ///// Interestingly enough WiX returns error for "no files" installation but builds good MSI.
         ///// </para>
-        ///// <para>This is a "work around" of this limitation and it is required only under certain circumstances. Note that normally
+        ///// <para>This is a "work around" for this limitation and it is required only under certain circumstances. Note that normally
         ///// such circumstances are identified by the <see cref="Compiler"/> and this flag is set automatically during the
         ///// <c>BuildMsi</c>, <c>BuildWxs</c> or <c>BuildMsiCmd</c> calls.
         ///// </para>
@@ -163,19 +163,19 @@ namespace WixSharp
         ///// <summary>
         ///// Forces <see cref="Compiler"/> to insert <c>RemoveFolder</c> element into all directories.
         ///// <para>
-        ///// This is one of the WiX/MSI limitations. Under some absence of <c>RemoveFolder</c> element can
+        ///// This is one of the WiX/MSI limitations. Under some circumstances, absence of <c>RemoveFolder</c> element can
         ///// prevent WiX compiler/linker from building MSI.
         ///// </para>
         ///// </summary>
         ///// <remarks>
         ///// <para>
-        ///// This is a "work around" of this limitation and it is required only under certain circumstances. Note that normally
+        ///// This is a "work around" for this limitation and it is required only under certain circumstances. Note that normally
         ///// such circumstances are identified by the <see cref="Compiler"/> and this flag is set automatically during the
         ///// <c>BuildMsi</c>, <c>BuildWxs</c> or <c>BuildMsiCmd</c> calls.
         ///// </para>
         ///// <para>
-        ///// Interestingly enough on practice using of WiX <c>RemoveFolder</c> is optional as it seems to
-        ///// make no difference on installation behaviour (during uninstall folders are removed even if RemoveFolder is not used).
+        ///// Interestingly enough, in practice, using of WiX <c>RemoveFolder</c> is optional as it seems to
+        ///// make no difference to installation behaviour (during uninstall folders are removed even if RemoveFolder is not used).
         ///// </para>
         ///// </remarks>
         //static public bool insertRemoveDir = false;
@@ -245,13 +245,13 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Gets or sets the location WiX binaries (compiler/linker/dlls).
-        /// The default value is a content of environment variable <c>WIXSHARP_WIXDIR</c>.
+        /// Gets or sets the location of WiX binaries (compiler/linker/dlls).
+        /// The default value is the content of environment variable <c>WIXSHARP_WIXDIR</c>.
         /// <para>If user does not set this property explicitly and WIXSHARP_WIXDIR is not defined
         /// <see cref="Compiler"/> will try to locate WiX binaries in <c>Program Files\Windows Installer XML v&lt;max_of 3*&gt;\bin</c>
         /// </para>
         /// </summary>
-        /// <value>The WiX binaries location.</value>
+        /// <value>The WiX binaries' location.</value>
         static public string WixLocation
         {
             get
@@ -285,14 +285,14 @@ namespace WixSharp
 
         static string wixSdkLocation;
         /// <summary>
-        /// Gets or sets the location WiX SDK binaries (e.g. MakeSfxCA.exe).
-        /// The default value is a 'SDK' sub-directory of WixSharp.Compiler.WixLocation directory.
+        /// Gets or sets the location of WiX SDK binaries (e.g. MakeSfxCA.exe).
+        /// The default value is the 'SDK' sub-directory of WixSharp.Compiler.WixLocation directory.
         /// <para>
-        /// If for whatever reason the default location is invalid you can always set this property to the location of your choice.
+        /// If for whatever reason the default location is invalid, you can always set this property to the location of your choice.
         /// </para>
         /// </summary>
         /// <value>
-        /// The wix SDK location.
+        /// The WiX SDK location.
         /// </value>
         /// <exception cref="System.Exception">WiX SDK binaries cannot be found. Please set WixSharp.Compiler.WixSdkLocation to valid path to the Wix SDK binaries.</exception>
         public static string WixSdkLocation
@@ -315,16 +315,16 @@ namespace WixSharp
 
         /// <summary>
         /// Forces <see cref="Compiler"/> to preserve all temporary build files (e.g. *.wxs).
-        /// <para>The default value is <c>False</c>: all temporary files are deleted at the end of the build/compilation.</para>
+        /// <para>The default value is <c>false</c>: all temporary files are deleted at the end of the build/compilation.</para>
         /// <para>Note: if <see cref="Compiler"/> fails to build MSI the <c>PreserveTempFiles</c>
-        /// value is ignored and all temporary files are preserved and value </para>
+        /// value is ignored and all temporary files are preserved.</para>
         /// </summary>
         static public bool PreserveTempFiles = false;
 
         /// <summary>
         /// Gets or sets the GUID generator algorithm. You can use either one of the built-in algorithms or define your own.
         /// The default value is <see cref="GuidGenerators.Default"/>.
-        /// <description>Possible  WiX source file only:
+        /// <description>Possible WiX source file only:
         /// <code>
         /// //default built-in seeded GUID generator
         /// Compiler.GuidGenerator = GuidGenerators.Default;
@@ -355,7 +355,7 @@ namespace WixSharp
         /// Builds the MSI file from the specified <see cref="Project"/> instance.
         /// </summary>
         /// <param name="project">The <see cref="Project"/> instance.</param>
-        /// <returns>Path to the built MSI file. Returns <c>null</c> if <c>msi</c> cannot be built.</returns>
+        /// <returns>Path to the built MSI file. Returns <c>null</c> if <c>MSI</c> cannot be built.</returns>
         static public string BuildMsi(Project project)
         {
             if (ClientAssembly.IsEmpty())
@@ -2014,7 +2014,7 @@ namespace WixSharp
         //}
 
         /// <summary>
-        /// Falg indicating whether to include PDB file of the assembly implementing ManagedCustomAction into MSI.Default value is <c>false</c>.
+        /// Flag indicating whether to include PDB file of the assembly implementing ManagedCustomAction into MSI.  Default value is <c>False</c>.
         /// <para>If set to <c>false</c> PDB file will not be included and debugging of such CustomAction will not be possible.</para>
         /// </summary>
         static public bool IgnoreClientAssemblyPDB = false;

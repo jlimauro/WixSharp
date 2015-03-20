@@ -30,7 +30,7 @@ namespace WixSharp
     /// This class defines the Major Upgrade scenario.
     /// </summary>
     ///
-    ///<example>The following is an example of building product MSI with auto uninstalling any older version of the product
+    ///<example>The following is an example of building product MSI with auto uninstalling of any older version of the product
     ///and preventing downgrading.
     ///<code>
     /// var project = new Project("My Product",
@@ -56,7 +56,7 @@ namespace WixSharp
     public partial class MajorUpgradeStrategy
     {
         /// <summary>
-        /// Range of versions, which should be automatically uninstalled during the installation of the product MSI being built.
+        /// Range of versions which should be automatically uninstalled during the installation of the product MSI being built.
         /// <para>Typically these are all versions older then the version being installed. </para>
         /// </summary>
         public VersionRange UpgradeVersions;
@@ -75,8 +75,8 @@ namespace WixSharp
         /// </summary>
         public string NewerProductInstalledErrorMessage;
         /// <summary>
-        /// Default <see cref="MajorUpgradeStrategy"/>. Ensures that all alder versions of the product are automatically uninstalled and if
-        /// newer version is detected <c>"Newer version already installed"</c> message is displayed.
+        /// Default <see cref="MajorUpgradeStrategy"/>. Ensures that all older versions of the product are automatically uninstalled and if
+        /// a newer version is detected, <c>"Newer version already installed"</c> message is displayed.
         /// </summary>
         public static MajorUpgradeStrategy Default = new MajorUpgradeStrategy
                                                      {

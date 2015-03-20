@@ -43,7 +43,7 @@ namespace WixSharp
 
         /// <summary>
         /// The path to the executable the shortcut is associated with.
-        /// <para>This value is a processed only for shortcuts, which belong to the <see cref="Dir"/> element.</para>
+        /// <para>This value is a processed only for shortcuts which belong to the <see cref="Dir"/> element.</para>
         /// </summary>
         public string Target = "";
         /// <summary>
@@ -52,7 +52,7 @@ namespace WixSharp
         public string Arguments = "";
         /// <summary>
         /// The directory where the shortcut should be installed.
-        /// <para>This value is a processed only for shortcuts, which belong to the <see cref="File"/> element.</para>
+        /// <para>This value is a processed only for shortcuts which belong to the <see cref="File"/> element.</para>
         /// </summary>
         public string Location = "";
         /// <summary>
@@ -65,12 +65,12 @@ namespace WixSharp
         /// </summary>
         public string WorkingDirectory = "";
         /// <summary>
-        /// Defines the launch <see cref="Condition"/>, which is to be checked during the installation to
+        /// Defines the launch <see cref="Condition"/> which is to be checked during the installation to
         /// determine if the shortcut should be installed.
         /// </summary>
         public Condition Condition;
         /// <summary>
-        /// Defines icon file for the shortcut. It has to be relative or absolute path to the source file containing icons (exe, dll or ico).
+        /// Defines icon file for the shortcut. Relative or absolute path to the source file containing icons (exe, dll or ico).
         /// </summary>
         public string IconFile = "";
         /// <summary>

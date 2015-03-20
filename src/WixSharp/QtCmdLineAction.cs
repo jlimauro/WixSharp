@@ -32,7 +32,7 @@ namespace WixSharp
     /// <summary>
     /// Defines WiX <c>QtExecCmdLineAction</c> CustomAction. 
     /// <para><see cref="QtCmdLineAction"/> executes specified application with optional arguments.
-    /// You do not have to specify full path to the application to be executed as long as it's directory
+    /// You do not have to specify full path to the application to be executed as long as its directory
     /// is well-known (e.g. listed in system environment variable <c>PATH</c>) on the target system.</para>
     /// <remarks>
     /// <see cref="QtCmdLineAction"/> often needs to be executed with the elevated privileges. Thus after instantiation it will have 
@@ -91,8 +91,8 @@ namespace WixSharp
         /// <param name="appPath">Path to the application to be executed. This can be a file name only if the location of the application is well-known.</param>
         /// <param name="args">The arguments to be passed to the application during the execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when">The order of the action it should be executed with respect to the <see cref="Step"/> parameter.</param>
-        /// <param name="step">The step the action should be executed during the installation.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+        /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="QtCmdLineAction"/>.</param>
         public QtCmdLineAction(string appPath, string args, Return returnType, When when, Step step, Condition condition)
             : base(returnType, when, step, condition)
@@ -108,8 +108,8 @@ namespace WixSharp
         /// <param name="appPath">Path to the application to be executed. This can be a file name only if the location of the application is well-known.</param>
         /// <param name="args">The arguments to be passed to the application during the execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when">The order of the action it should be executed with respect to the <see cref="Step"/> parameter.</param>
-        /// <param name="step">The step the action should be executed during the installation.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+        /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="QtCmdLineAction"/>.</param>
         public QtCmdLineAction(Id id, string appPath, string args, Return returnType, When when, Step step, Condition condition)
             : base(id, returnType, when, step, condition)
@@ -124,8 +124,8 @@ namespace WixSharp
         /// <param name="appPath">Path to the application to be executed. This can be a file name only if the location of the application is well-known.</param>
         /// <param name="args">The arguments to be passed to the application during the execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when">The order of the action it should be executed with respect to the <see cref="Step"/> parameter.</param>
-        /// <param name="step">The step the action should be executed during the installation.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+        /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="QtCmdLineAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>
         public QtCmdLineAction(string appPath, string args, Return returnType, When when, Step step, Condition condition, Sequence sequence)
@@ -142,8 +142,8 @@ namespace WixSharp
         /// <param name="appPath">Path to the application to be executed. This can be a file name only if the location of the application is well-known.</param>
         /// <param name="args">The arguments to be passed to the application during the execution.</param>
         /// <param name="returnType">The return type of the action.</param>
-        /// <param name="when">The order of the action it should be executed with respect to the <see cref="Step"/> parameter.</param>
-        /// <param name="step">The step the action should be executed during the installation.</param>
+        /// <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+        /// <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
         /// <param name="condition">The launch condition for the <see cref="QtCmdLineAction"/>.</param>
         /// <param name="sequence">The MSI sequence the action belongs to.</param>
         public QtCmdLineAction(Id id, string appPath, string args, Return returnType, When when, Step step, Condition condition, Sequence sequence)

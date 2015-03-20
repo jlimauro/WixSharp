@@ -13,7 +13,7 @@ namespace WixSharp
     /// Defines <see cref="T:System.Windows.Forms" /> text box control for generating WiX TextBox element.
     /// <para>
     /// The <see cref="T:WixSharp.WixTextBox" /> can be used with the <see cref="T:System.Windows.Forms" /> designer to define custom
-    /// dialogs layout. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixTextBox" /> instance at compile time
+    /// dialog layouts. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixTextBox" /> instance at compile time
     /// to generate WiX textBox element on the base of this instance properties.
     /// </para>
     /// </summary>
