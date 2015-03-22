@@ -8,13 +8,13 @@
             <summary>
             Defines generic WiX CustomAction. 
             <para>
-            This class does not contain any public constructor and it is only to be used 
+            This class does not contain any public constructor and is only to be used 
             as a base class for deriving specialized CustomActions (e.g. <see cref="T:WixSharp.ManagedAction"></see>)
             or for declaring heterogeneous collections.
             </para>
             </summary>
             
-            <example>The following is an example of initializing a 
+            <example>The following is an example of initializing an
             <c>Action</c> type:
             <code>
             var project = new Project()
@@ -67,8 +67,8 @@
             <para> <code>new Shortcut { Attributes= new { {"Hotkey", "0"} }</code> </para>
             <remarks>
             You can also inject attributes into WiX components "related" to the <see cref="T:WixSharp.WixEntity"/> but not directly 
-            represented in the Wix# entities family. For example if you need to set custom attribute for the WiX <c>Component</c> 
-            XML element you can use corresponding <see cref="T:WixSharp.File"/> attributes. The only difference comparing to 
+            represented in the Wix# entities family. For example if you need to set a custom attribute for the WiX <c>Component</c> 
+            XML element you can use corresponding <see cref="T:WixSharp.File"/> attributes. The only difference from
             the <c>Hotkey</c> example is the composite (column separated) key name:
             <para> <code>new File { Attributes= new { {"Component:SharedDllRefCount", "yes"} }</code> </para>
             The code above will force the Wix# compiler to insert "SharedDllRefCount" attribute into <c>Component</c>
@@ -112,13 +112,13 @@
             Gets or sets the <c>Id</c> value of the <see cref="T:WixSharp.WixEntity"/>. 
             <para>This value is used as a <c>Id</c> for the corresponding WiX XML element.</para>
             <para>If the <see cref="P:WixSharp.WixEntity.Id"/> value is not specified explicitly by the user the Wix# compiler
-            generates it automatically insuring it's uniqueness.</para>
+            generates it automatically insuring its uniqueness.</para>
             </summary>
             <value>The id.</value>
         </member>
         <member name="F:WixSharp.Action.count">
             <summary>
-            Global counter, which is used as suffix for the automatically generated action name. This counter is used by
+            Global counter which is used as suffix for the automatically generated action name. This counter is used by
             Wix# engine to avoid naming collision and indicate <c>CustomActions</c> declaration order.
             </summary>
         </member>
@@ -138,8 +138,8 @@
             Creates instance of the <see cref="T:WixSharp.Action"></see> class with properties initialized with specified parameters.
             </summary>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="F:WixSharp.Action.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.Action"/>.</param>
         </member>
         <member name="M:WixSharp.Action.#ctor(WixSharp.Id,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
@@ -148,8 +148,8 @@
             </summary>
             <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Action"/> instance.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="F:WixSharp.Action.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.Action"/>.</param>
         </member>
         <member name="M:WixSharp.Action.#ctor(WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
@@ -157,8 +157,8 @@
             Creates instance of the <see cref="T:WixSharp.Action"></see> class with properties initialized with specified parameters.
             </summary>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="F:WixSharp.Action.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.Action"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -168,8 +168,8 @@
             </summary>
             <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Action"/> instance.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="F:WixSharp.Action.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.Action"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -266,7 +266,7 @@
         <member name="M:WixSharp.File.ToString">
             <summary>
             Returns a <see cref="T:System.String"/> that represents the <see cref="T:WixSharp.File"/>.
-            <para>This property is designed to produce friendlier string representation of the <see cref="T:WixSharp.File"/>
+            <para>This property is designed to produce a friendlier string representation of the <see cref="T:WixSharp.File"/>
             for debugging purposes.</para>
             </summary>
             <returns>
@@ -521,7 +521,7 @@
              <param name="timeURL">The timestamp server's URL. If this option is not present (pass to null), the signed file will not be timestamped.
              A warning is generated if timestamping fails.</param>
              <param name="password">The password to use when opening the PFX file. Should be <c>null</c> if no password required.</param>
-             <param name="optionalArguments">The optional extra arguments to the SignTool.exe.</param>
+             <param name="optionalArguments">Extra arguments to pass to the <c>SignTool.exe</c> utility.</param>
              <param name="wellKnownLocations">The optional ';' separated list of directories where SignTool.exe can be located.
              If this parameter is not specified WixSharp will try to locate the SignTool in the built-in well-known locations (syatem PATH)</param>
              <returns>Exit code of the <c>SignTool.exe</c> process.</returns>
@@ -805,7 +805,7 @@
         </member>
         <member name="F:WixSharp.Control.Actions">
             <summary>
-            The actions
+            The actions.
             </summary>
         </member>
         <member name="M:WixSharp.Control.ToXElement">
@@ -880,10 +880,10 @@
         </member>
         <member name="P:WixSharp.IWixControl.WixAttributes">
             <summary>
-            Gets or sets the wix attributes.
+            Gets or sets the WiX attributes.
             </summary>
             <value>
-            The wix attributes.
+            The WiX attributes.
             </value>
         </member>
         <member name="P:WixSharp.IWixControl.WixSize">
@@ -1038,7 +1038,7 @@
             <para>
             When <see cref="T:WixSharp.WixForm"/> is complete it can be converted into <see cref="T:WixSharp.Dialog"/> 
             with the <see cref="T:WixSharp.Dialog.ToWDialog"/>() call. And at compile time Wix# compiler converts 
-            <see cref="T:WixSharp.Dialog"/> into the final WiX <c>UI</c> element XML definition .
+            <see cref="T:WixSharp.Dialog"/> into the final WiX <c>UI</c> element XML definition.
             </para>
             <para>
             While it is possible to construct <see cref="T:WixSharp.CustomUI"/> instance manually it is preferred to use 
@@ -1169,7 +1169,7 @@
             <param name="onNextActions">The on next actions.</param>
             <param name="onBackActions">The on back actions.</param>
             <param name="onCancelActions">The on cancel actions.</param>
-            <returns><see cref="T:WixSharp.CustomUI"/> instance</returns>
+            <returns><see cref="T:WixSharp.CustomUI"/> instance.</returns>
         </member>
         <member name="M:WixSharp.CustomUIBuilder.InjectPostLicenseClrDialog(System.String,System.String)">
             <summary>
@@ -1347,7 +1347,7 @@
         </member>
         <member name="M:WixSharp.Extensions.CopyAttributeFrom(System.Xml.Linq.XElement,System.Xml.Linq.XElement,System.String)">
             <summary>
-            Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exist its velue gets reassigned.
+            Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exists, its value is modified.
             </summary>
             <param name="dest">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</param>
             <param name="src">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute from.</param>
@@ -1374,7 +1374,7 @@
         </member>
         <member name="M:WixSharp.Extensions.CopyAttributeFrom(System.Xml.Linq.XElement,System.String,System.Xml.Linq.XElement,System.String)">
             <summary>
-            Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exist its velue gets reassigned.
+            Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exists, its value is modified.
             </summary>
             <param name="dest">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</param>
             <param name="destAttributeName">Name of the destination attribute to copy.</param>
@@ -1411,7 +1411,7 @@
             Replaces all Wix# predefined string constants (Environment Constants) in the Wix# directory path with their WiX equivalents and escapes all WiX illegal characters (e.g. space character). 
             <para>
             <para>It also replaces all "illegal" characters (e.g. !,\) with '_' character to allow the path value to be used as a WiX Id XML attribute.</para>
-            <example>The following is an example of expanding directory names pathes.
+            <example>The following is an example of expanding directory name paths.
             <code>
             @"%ProgramFiles%\My Company\My Product".Expand()       -> @"ProgramFilesFolder\My_Company\My_Product"
             @"ProgramFilesFolder\My Company\My Product".Expand()   -> @"ProgramFilesFolder\My_Company\My_Product"
@@ -1428,7 +1428,7 @@
             <summary>
             Replaces all Wix# predefined string constants (Environment Constants) in the Wix# directory path with their WiX equivalents and escapes all WiX illegal characters (e.g. space character). 
             <para>
-            <example>The following is an example of expanding directory names pathes.
+            <example>The following is an example of expanding directory name paths.
             <code>
             @"%ProgramFiles%\My Company\My Product".Expand()       -> @"ProgramFilesFolder\My_Company\My_Product"
             @"ProgramFilesFolder\My Company\My Product".Expand()   -> @"ProgramFilesFolder\My_Company\My_Product"
@@ -1464,7 +1464,7 @@
             Converts the given string path into the full path.
             </summary>
             <param name="s">The string path.</param>
-            <returns>The full string path</returns>
+            <returns>The full string path.</returns>
         </member>
         <member name="M:WixSharp.Extensions.ConcatItems(System.Collections.Generic.IEnumerable{System.String},System.String)">
             <summary>
@@ -1492,7 +1492,7 @@
         </member>
         <member name="M:WixSharp.Extensions.AllElements(System.Xml.Linq.XElement,System.String)">
             <summary>
-            Flattened "view" of all element with a given name.
+            Flattened "view" of all elements with a given name.
             </summary>
             <param name="element">The element to be searched.</param>
             <param name="elementName">The element name.</param>
@@ -1500,8 +1500,8 @@
         </member>
         <member name="M:WixSharp.Extensions.SelectOrCreate(System.Xml.Linq.XElement,System.String)">
             <summary>
-            Selects from the given element child element matching the specified path.
-            <para>If the child element is not found it creates new element matching the path.</para>
+            Selects, from the given element, the child element matching the specified path.
+            <para>If the child element is not found, a new element is created matching the path.</para>
             </summary>
             <param name="element">The element to be searched.</param>
             <param name="path">The path.</param>
@@ -1533,7 +1533,7 @@
             Converts the string into the <see cref="T:WixSharp.Condition"/> instance.
             </summary>
             <param name="value">The string value.</param>
-            <returns><see cref="T:WixSharp.Condition"/> instance</returns>
+            <returns><see cref="T:WixSharp.Condition"/> instance.</returns>
         </member>
         <member name="M:WixSharp.Extensions.ToNoRevisionString(System.Version)">
             <summary>
@@ -1573,8 +1573,8 @@
             Combines given <see cref="T:System.Collections.Generic.List"/> items with items of another <see cref="T:System.Collections.Generic.List"/>.
             </summary>
             <typeparam name="T">The type of the elements of <c>obj</c>.</typeparam>
-            <param name="obj">A <see cref="T:System.Collections.Generic.List"/> whose elements to combine.</param>
-            <param name="items">Another instance of <see cref="T:System.Collections.Generic.List"/> whose elements to combine with <c>obj</c>.</param>
+            <param name="obj">A <see cref="T:System.Collections.Generic.List"/>.</param>
+            <param name="items">Another instance of <see cref="T:System.Collections.Generic.List"/> whose elements are to be combined with those of <c>obj</c>.</param>
             <returns>A combined <see cref="T:System.Collections.Generic.List"/>.</returns>
         </member>
         <member name="M:WixSharp.Extensions.IsNullOrEmpty(System.String)">
@@ -1619,7 +1619,7 @@
             Defines <see cref="T:System.Windows.Forms" /> button control for generating WiX Button element.
             <para>
             The <see cref="T:WixSharp.WixButton" /> can be used with the <see cref="T:System.Windows.Forms" /> designer to define custom
-            dialogs layout. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixButton" /> instance at compile time
+            dialog layouts. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixButton" /> instance at compile time
             to generate WiX Button element on the base of this instance properties.
             </para>
             </summary>
@@ -1733,7 +1733,7 @@
             Defines <see cref="T:System.Windows.Forms" /> CheckBox control for generating WiX Button element.
             <para>
             The <see cref="T:WixSharp.WixButton" /> can be used with the <see cref="T:System.Windows.Forms" /> designer to define custom
-            dialogs layout. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixCheckBox" /> instance at compile time
+            dialog layouts. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixCheckBox" /> instance at compile time
             to generate WiX CheckBox element on the base of this instance properties.
             </para>
             </summary>
@@ -1818,10 +1818,10 @@
         </member>
         <member name="P:WixSharp.WixCheckBox.WixAttributes">
             <summary>
-            Gets or sets the wix attributes.
+            Gets or sets the WiX attributes.
             </summary>
             <value>
-            The wix attributes.
+            The WiX attributes.
             </value>
         </member>
         <member name="T:WixSharp.WixControl">
@@ -1829,7 +1829,7 @@
             Defines <see cref="T:System.Windows.Forms" /> generic control for generating WiX Control element.
             <para>
             The <see cref="T:WixSharp.WixControl" /> can be used with the <see cref="T:System.Windows.Forms" /> designer to define custom
-            dialogs layout. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixControl" /> instance at compile time
+            dialog layouts. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixControl" /> instance at compile time
             to generate WiX Control element on the base of this instance properties.
             </para>
             </summary>
@@ -1956,7 +1956,7 @@
         </member>
         <member name="T:WixSharp.WixControlCondition">
             <summary>
-            Defines Forme designer compatible <c>Condition</c> associated with the WixControl action.
+            Defines Form designer compatible <c>Condition</c> associated with the WixControl action.
             </summary>
         </member>
         <member name="P:WixSharp.WixControlCondition.Action">
@@ -2016,7 +2016,7 @@
             Defines <see cref="T:System.Windows.Forms" /> Form for generating WiX Dialog element.
             <para>
             The <see cref="T:WixSharp.WixForm" /> can be used with the <see cref="T:System.Windows.Forms" /> designer to define custom
-            dialogs layout. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixForm" /> instance at compile time
+            dialog layouts. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixForm" /> instance at compile time
             to generate WiX Dialog element on the base of this instance properties.
             </para>
             </summary>
@@ -2115,7 +2115,7 @@
             Defines <see cref="T:System.Windows.Forms" /> label control for generating WiX Label element.
             <para>
             The <see cref="T:WixSharp.WixLabel" /> can be used with the <see cref="T:System.Windows.Forms" /> designer to define custom
-            dialogs layout. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixLabel" /> instance at compile time
+            dialog layouts. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixLabel" /> instance at compile time
             to generate WiX Label element on the base of this instance properties.
             </para>
             </summary>
@@ -2202,7 +2202,7 @@
             Defines <see cref="T:System.Windows.Forms" /> text box control for generating WiX TextBox element.
             <para>
             The <see cref="T:WixSharp.WixTextBox" /> can be used with the <see cref="T:System.Windows.Forms" /> designer to define custom
-            dialogs layout. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixTextBox" /> instance at compile time
+            dialog layouts. The <see cref="T:WixSharp.Compiler" /> uses <see cref="T:WixSharp.WixTextBox" /> instance at compile time
             to generate WiX textBox element on the base of this instance properties.
             </para>
             </summary>
@@ -2287,7 +2287,7 @@
         </member>
         <member name="T:WixSharp.ElevatedManagedAction">
             <summary>
-            Defines WiX Managed CustomAction, which is to be run with elevated priveledges (UAC). 
+            Defines WiX Managed CustomAction, which is to be run with elevated privileges (UAC). 
             <para>
             Any CustomAction, which needs elevation must be run with  <see cref="F:WixSharp.Action.Impersonate"/> set to 
             <c>false</c> and <see cref="F:WixSharp.Action.Execute"/> set to <c>Execute.deferred</c>. Thus <see cref="T:WixSharp.ElevatedManagedAction"/> is 
@@ -2400,8 +2400,8 @@
             </summary>
             <param name="name">Name of the CustomAction. The name should match the method implementing the custom action functionality.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
         </member>
         <member name="M:WixSharp.ManagedAction.#ctor(System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
@@ -2412,8 +2412,8 @@
             <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
             is in the Wix# script.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
         </member>
         <member name="M:WixSharp.ManagedAction.#ctor(WixSharp.Id,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
@@ -2423,8 +2423,8 @@
             <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.ManagedAction"/> instance.</param>
             <param name="name">Name of the CustomAction. The name should match the method implementing the custom action functionality.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
         </member>
         <member name="M:WixSharp.ManagedAction.#ctor(WixSharp.Id,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
@@ -2436,8 +2436,8 @@
             <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
             is in the Wix# script.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
         </member>
         <member name="M:WixSharp.ManagedAction.#ctor(System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
@@ -2446,8 +2446,8 @@
             </summary>
             <param name="name">Name of the CustomAction. The name should match the method implementing the custom action functionality.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -2459,8 +2459,8 @@
             <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
             is in the Wix# script.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -2471,8 +2471,8 @@
             <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.ManagedAction"/> instance.</param>
             <param name="name">Name of the CustomAction. The name should match the method implementing the custom action functionality.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -2485,8 +2485,8 @@
             <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
             is in the Wix# script.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -2595,8 +2595,8 @@
             </summary>
             <param name="name">Name of the CustomAction. The name should match the method implementing the custom action functionality.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
         </member>
         <member name="M:WixSharp.ElevatedManagedAction.#ctor(System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
@@ -2607,8 +2607,8 @@
             <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
             is in the Wix# script.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
         </member>
         <member name="M:WixSharp.ElevatedManagedAction.#ctor(WixSharp.Id,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
@@ -2618,8 +2618,8 @@
             <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.ElevatedManagedAction"/> instance.</param>
             <param name="name">Name of the CustomAction. The name should match the method implementing the custom action functionality.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
         </member>
         <member name="M:WixSharp.ElevatedManagedAction.#ctor(WixSharp.Id,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
@@ -2631,8 +2631,8 @@
             <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
             is in the Wix# script.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
         </member>
         <member name="M:WixSharp.ElevatedManagedAction.#ctor(System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
@@ -2641,8 +2641,8 @@
             </summary>
             <param name="name">Name of the CustomAction. The name should match the method implementing the custom action functionality.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -2654,8 +2654,8 @@
             <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
             is in the Wix# script.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -2666,8 +2666,8 @@
             <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.ElevatedManagedAction"/> instance.</param>
             <param name="name">Name of the CustomAction. The name should match the method implementing the custom action functionality.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -2680,8 +2680,8 @@
             <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly 
             is in the Wix# script.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ManagedAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -2694,7 +2694,7 @@
             the installation the shortcut will point to the file it belongs to.</para>
             <para> - Alternatively the <c>Shortcut</c> can be specified as a <see cref="T:WixSharp.Dir"/> nested 
             element. In this case after the installation the shortcut will point to the file 
-            will point to the file it belongs to.</para>
+            it belongs to.</para>
             </summary>
             
             <example>
@@ -2728,7 +2728,7 @@
         <member name="F:WixSharp.Shortcut.Target">
             <summary>
             The path to the executable the shortcut is associated with.
-            <para>This value is a processed only for shortcuts, which belong to the <see cref="T:WixSharp.Dir"/> element.</para>
+            <para>This value is a processed only for shortcuts which belong to the <see cref="T:WixSharp.Dir"/> element.</para>
             </summary>
         </member>
         <member name="F:WixSharp.Shortcut.Arguments">
@@ -2739,7 +2739,7 @@
         <member name="F:WixSharp.Shortcut.Location">
             <summary>
             The directory where the shortcut should be installed.
-            <para>This value is a processed only for shortcuts, which belong to the <see cref="T:WixSharp.File"/> element.</para>
+            <para>This value is a processed only for shortcuts which belong to the <see cref="T:WixSharp.File"/> element.</para>
             </summary>
         </member>
         <member name="F:WixSharp.Shortcut.Feature">
@@ -2755,13 +2755,13 @@
         </member>
         <member name="F:WixSharp.Shortcut.Condition">
             <summary>
-            Defines the launch <see cref="F:WixSharp.Shortcut.Condition"/>, which is to be checked during the installation to
+            Defines the launch <see cref="F:WixSharp.Shortcut.Condition"/> which is to be checked during the installation to
             determine if the shortcut should be installed.
             </summary>
         </member>
         <member name="F:WixSharp.Shortcut.IconFile">
             <summary>
-            Defines icon file for the shortcut. It has to be relative or absolute path to the source file containing icons (exe, dll or ico).
+            Defines icon file for the shortcut. Relative or absolute path to the source file containing icons (exe, dll or ico).
             </summary>
         </member>
         <member name="F:WixSharp.Shortcut.IconIndex">
@@ -2782,8 +2782,8 @@
         <member name="M:WixSharp.ExeFileShortcut.#ctor(System.String,System.String,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.ExeFileShortcut"/> class with properties/fields initialized with specified parameters.
-            <para>This constructor should be used to instantiate shortcuts, which belong to the <see cref="T:WixSharp.Dir"/> element.</para>
-            <para>The shortcut will be installed in the directory, defined by the parent <see cref="T:WixSharp.Dir"/> element</para>
+            <para>This constructor should be used to instantiate shortcuts which belong to the <see cref="T:WixSharp.Dir"/> element.</para>
+            <para>The shortcut will be installed in the directory defined by the parent <see cref="T:WixSharp.Dir"/> element.</para>
             </summary>
             <param name="name">The name of the shortcut to be installed.</param>
             <param name="target">The path to the executable the shortcut is associated with.</param>
@@ -2792,8 +2792,8 @@
         <member name="M:WixSharp.ExeFileShortcut.#ctor(WixSharp.Feature,System.String,System.String,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.ExeFileShortcut"/> class with properties/fields initialized with specified parameters.
-            <para>This constructor should be used to instantiate shortcuts, which belong to the <see cref="T:WixSharp.Dir"/> element.</para>
-            <para>The shortcut will be installed in the directory, defined by the parent <see cref="T:WixSharp.Dir"/> element</para>
+            <para>This constructor should be used to instantiate shortcuts which belong to the <see cref="T:WixSharp.Dir"/> element.</para>
+            <para>The shortcut will be installed in the directory defined by the parent <see cref="T:WixSharp.Dir"/> element.</para>
             </summary>
             <param name="feature"><see cref="T:WixSharp.Feature"></see> the shortcut should be included in.</param>
             <param name="name">The name of the shortcut to be installed.</param>
@@ -2803,10 +2803,10 @@
         <member name="M:WixSharp.ExeFileShortcut.#ctor(WixSharp.Id,System.String,System.String,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.ExeFileShortcut"/> class with properties/fields initialized with specified parameters.
-            <para>This constructor should be used to instantiate shortcuts, which belong to the <see cref="T:WixSharp.Dir"/> element.</para>
-            <para>The shortcut will be installed in the directory, defined by the parent <see cref="T:WixSharp.Dir"/> element</para>
+            <para>This constructor should be used to instantiate shortcuts which belong to the <see cref="T:WixSharp.Dir"/> element.</para>
+            <para>The shortcut will be installed in the directory defined by the parent <see cref="T:WixSharp.Dir"/> element.</para>
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Shortcut"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.ExeFileShortcut"/> instance.</param>
             <param name="name">The name of the shortcut to be installed.</param>
             <param name="target">The path to the executable the shortcut is associated with.</param>
             <param name="arguments">The shortcut arguments.</param>
@@ -2814,10 +2814,10 @@
         <member name="M:WixSharp.ExeFileShortcut.#ctor(WixSharp.Id,WixSharp.Feature,System.String,System.String,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.ExeFileShortcut"/> class with properties/fields initialized with specified parameters.
-            <para>This constructor should be used to instantiate shortcuts, which belong to the <see cref="T:WixSharp.Dir"/> element.</para>
-            <para>The shortcut will be installed in the directory, defined by the parent <see cref="T:WixSharp.Dir"/> element</para>
+            <para>This constructor should be used to instantiate shortcuts which belong to the <see cref="T:WixSharp.Dir"/> element.</para>
+            <para>The shortcut will be installed in the directory defined by the parent <see cref="T:WixSharp.Dir"/> element</para>
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Shortcut"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.ExeFileShortcut"/> instance.</param>
             <param name="feature"><see cref="T:WixSharp.Feature"></see> the shortcut should be included in.</param>
             <param name="name">The name of the shortcut to be installed.</param>
             <param name="target">The path to the executable the shortcut is associated with.</param>
@@ -2881,7 +2881,7 @@
         </member>
         <member name="F:WixSharp.FileAssociation.Icon">
             <summary>
-            Reference to <c>Icon</c> element to be used to installl the file assosiation <c>DefaultIcon</c>. If the value is not set Wix# compiler will use the <c>Id</c> of the <c>File</c> element of the parent component.<see cref="T:WixSharp.FileAssociation"/>.
+            Reference to <c>Icon</c> element to be used to install the file association <c>DefaultIcon</c>. If the value is not set, Wix# compiler will use the <c>Id</c> of the <c>File</c> element of the parent component.<see cref="T:WixSharp.FileAssociation"/>.
             <para>Set this value to <c>null</c> if you do not want to install <c>DefaultIcon</c> at all.</para>
             </summary>
         </member>
@@ -2911,11 +2911,11 @@
             Defines <see cref="T:WixSharp.FileShortcut"/> to be installed.
             <para>
             <see cref="T:WixSharp.FileShortcut"/> is a specialized version of the <see cref="T:WixSharp.Shortcut"/> designed 
-            for using <see cref="T:WixSharp.Shortcut"/> as a <see cref="T:WixSharp.File"/> nested element
+            for using <see cref="T:WixSharp.Shortcut"/> as a <see cref="T:WixSharp.File"/> nested element.
             </para>
             <para>There are different ways of defining shortcuts of the Wix# project: </para>
-            <para> - It can be specified as a nested element of the <see cref="T:WixSharp.File"/>. In this case after 
-            the installation the shortcut will point to the file it belongs to.</para>
+            <para> - It can be specified as a nested element of the <see cref="T:WixSharp.File"/>. In this case, after 
+            the installation, the shortcut will point to the file it belongs to.</para>
             <para> - Alternatively the <c>Shortcut</c> can be specified as a <see cref="T:WixSharp.File"/> nested 
             element. In this case after the installation the shortcut will point to the file 
             will point to the file it belongs to.</para>
@@ -2975,7 +2975,7 @@
             Initializes a new instance of the <see cref="T:WixSharp.FileShortcut"/> class with properties/fields initialized with specified parameters.
             <para>This constructor should be used to instantiate shortcuts, which belong to the <see cref="T:WixSharp.File"/> element.</para>
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Shortcut"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.FileShortcut"/> instance.</param>
             <param name="name">The name of the shortcut to be installed.</param>
             <param name="location">The directory where the shortcut should be installed.</param>
         </member>
@@ -3129,11 +3129,11 @@
         </member>
         <member name="T:WixSharp.NativeBootstrapper">
             <summary>
-            Defines native (un-managed) bootstrapper. The promary usage of <see cref="T:WixSharp.NativeBootstrapper"/> is to built bootstrappers for automatically installing .NET 
+            Defines native (un-managed) bootstrapper. The primary usage of <see cref="T:WixSharp.NativeBootstrapper"/> is to build bootstrappers for automatically installing .NET 
             for executing MSIs containing managed Custom Actions (<see cref="T:WixSharp.ManagedAction"/>).
             <para></para>
             <remarks>
-            NativeBootstrapper is a subject to the following limitations:
+            NativeBootstrapper is subject to the following limitations:
             <list type="bullet">
             <item><description>Only Win32 native bootstrapper can be built.</description></item>
             <item><description>Only one <c>Prerequisite</c> cen be defined.</description></item>
@@ -3175,10 +3175,10 @@
         </member>
         <member name="P:WixSharp.NativeBootstrapper.PrerequisiteRegKeyValue">
             <summary>
-            Gets or sets the prerequisite registry key value. This value is used to detrmine if the <see cref="P:WixSharp.NativeBootstrapper.PrerequisiteFile"/> should be launched.
-            <para>This value must complay with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
+            Gets or sets the prerequisite registry key value. This value is used to determine if the <see cref="P:WixSharp.NativeBootstrapper.PrerequisiteFile"/> should be launched.
+            <para>This value must comply with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
             <code>PrerequisiteRegKeyValue = @"HKLM:Software\My Company\My Product:Installed";</code>
-            Existance of the sepcified registry value at runtime is interpreted as an indication of the <see cref="P:WixSharp.NativeBootstrapper.PrerequisiteFile"/> has been alreday installed.
+            Existence of the specified registry value at runtime is interpreted as an indication that the <see cref="P:WixSharp.NativeBootstrapper.PrerequisiteFile"/> has been alreday installed.
             Thus bootstrapper will execute <see cref="P:WixSharp.NativeBootstrapper.PrimaryFile"/> without launching <see cref="P:WixSharp.NativeBootstrapper.PrerequisiteFile"/> first.
             </summary>
             <value>The prerequisite registry key value.</value>
@@ -3209,7 +3209,7 @@
             <summary>
             Defines binary file to be embedded into MSI (<c>Binary</c> table).
             <para>
-            You can use this class to embed any file (e.g. exe, dll, image) to be used in during the installation. 
+            You can use this class to embed any file (e.g. exe, dll, image) to be used during the installation. 
             Note that none of the binary files are installed on the target system. They are just available at installation time
             for using <c>CustomActions</c>.
             </para>
@@ -3246,12 +3246,12 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.Binary"/> class.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Assembly"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Binary"/> instance.</param>
             <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
         </member>
         <member name="T:WixSharp.AutoGenerationOptions">
             <summary>
-            This class hold the settings for Wix# XML auto-generation: generation of WiX XML elements, which do not have direct
+            This class holds the settings for Wix# XML auto-generation: generation of WiX XML elements, which do not have direct
             representation in the Wix# script. The detailed information about Wix# auto-generation can be found here: http://www.csscript.net/WixSharp/ID_Allocation.html.
             </summary>
         </member>
@@ -3343,9 +3343,9 @@
         <member name="F:WixSharp.Compiler.PreserveTempFiles">
             <summary>
             Forces <see cref="T:WixSharp.Compiler"/> to preserve all temporary build files (e.g. *.wxs).
-            <para>The default value is <c>False</c>: all temporary files are deleted at the end of the build/compilation.</para>
+            <para>The default value is <c>false</c>: all temporary files are deleted at the end of the build/compilation.</para>
             <para>Note: if <see cref="T:WixSharp.Compiler"/> fails to build MSI the <c>PreserveTempFiles</c>
-            value is ignored and all temporary files are preserved and value </para>
+            value is ignored and all temporary files are preserved.</para>
             </summary>
         </member>
         <member name="M:WixSharp.Compiler.BuildMsi(WixSharp.Project)">
@@ -3353,7 +3353,7 @@
             Builds the MSI file from the specified <see cref="T:WixSharp.Project"/> instance.
             </summary>
             <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <returns>Path to the built MSI file. Returns <c>null</c> if <c>msi</c> cannot be built.</returns>
+            <returns>Path to the built MSI file. Returns <c>null</c> if <c>MSI</c> cannot be built.</returns>
         </member>
         <member name="M:WixSharp.Compiler.BuildMsm(WixSharp.Project)">
             <summary>
@@ -3469,7 +3469,7 @@
         </member>
         <member name="F:WixSharp.Compiler.IgnoreClientAssemblyPDB">
             <summary>
-            Falg indicating whether to include PDB file of the assembly implementing ManagedCustomAction into MSI.Default value is <c>false</c>.
+            Flag indicating whether to include PDB file of the assembly implementing ManagedCustomAction into MSI.  Default value is <c>False</c>.
             <para>If set to <c>false</c> PDB file will not be included and debugging of such CustomAction will not be possible.</para>
             </summary>
         </member>
@@ -3486,30 +3486,30 @@
         </member>
         <member name="E:WixSharp.Compiler.WixSourceFormated">
             <summary>
-            Occurs when WiX source file formatted and ready to be saved. Use this event if you need to do any custom formatting of the XML content before
+            Occurs when WiX source file is formatted and ready to be saved. Use this event if you need to do any custom formatting of the XML content before
             it is saved by the compiler.
             </summary>
         </member>
         <member name="P:WixSharp.Compiler.WixLocation">
             <summary>
-            Gets or sets the location WiX binaries (compiler/linker/dlls).
-            The default value is a content of environment variable <c>WIXSHARP_WIXDIR</c>.
+            Gets or sets the location of WiX binaries (compiler/linker/dlls).
+            The default value is the content of environment variable <c>WIXSHARP_WIXDIR</c>.
             <para>If user does not set this property explicitly and WIXSHARP_WIXDIR is not defined
             <see cref="T:WixSharp.Compiler"/> will try to locate WiX binaries in <c>Program Files\Windows Installer XML v&lt;max_of 3*&gt;\bin</c>
             </para>
             </summary>
-            <value>The WiX binaries location.</value>
+            <value>The WiX binaries' location.</value>
         </member>
         <member name="P:WixSharp.Compiler.WixSdkLocation">
             <summary>
-            Gets or sets the location WiX SDK binaries (e.g. MakeSfxCA.exe).
-            The default value is a 'SDK' sub-directory of WixSharp.Compiler.WixLocation directory.
+            Gets or sets the location of WiX SDK binaries (e.g. MakeSfxCA.exe).
+            The default value is the 'SDK' sub-directory of WixSharp.Compiler.WixLocation directory.
             <para>
-            If for whatever reason the default location is invalid you can always set this property to the location of your choice.
+            If for whatever reason the default location is invalid, you can always set this property to the location of your choice.
             </para>
             </summary>
             <value>
-            The wix SDK location.
+            The WiX SDK location.
             </value>
             <exception cref="T:System.Exception">WiX SDK binaries cannot be found. Please set WixSharp.Compiler.WixSdkLocation to valid path to the Wix SDK binaries.</exception>
         </member>
@@ -3517,7 +3517,7 @@
             <summary>
             Gets or sets the GUID generator algorithm. You can use either one of the built-in algorithms or define your own.
             The default value is <see cref="M:WixSharp.GuidGenerators.Default(System.Object)"/>.
-            <description>Possible  WiX source file only:
+            <description>Possible WiX source file only:
             <code>
             //default built-in seeded GUID generator
             Compiler.GuidGenerator = GuidGenerators.Default;
@@ -3746,7 +3746,7 @@
             <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Dir"/> instance.</param>
             <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
             be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
-            <param name="items">Any <see cref="T:WixSharp.WixEntity"/> which can be contained by directory (e.g. file, sub-directory).</param>
+            <param name="items">Any <see cref="T:WixSharp.WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         </member>
         <member name="M:WixSharp.Dir.#ctor(System.String,WixSharp.WixEntity[])">
             <summary>
@@ -3754,7 +3754,7 @@
             </summary>
             <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
             be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
-            <param name="items">Any <see cref="T:WixSharp.WixEntity"/> which can be contained by directory (e.g. file, sub-directory).</param>
+            <param name="items">Any <see cref="T:WixSharp.WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         </member>
         <member name="M:WixSharp.Dir.#ctor(WixSharp.Feature,System.String,WixSharp.WixEntity[])">
             <summary>
@@ -3763,7 +3763,7 @@
             <param name="feature"><see cref="F:WixSharp.Dir.Feature"></see> the directory should be included in.</param>
             <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
             be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
-            <param name="items">Any <see cref="T:WixSharp.WixEntity"/> which can be contained by directory (e.g. file, sub-directory).</param>
+            <param name="items">Any <see cref="T:WixSharp.WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         </member>
         <member name="M:WixSharp.Dir.#ctor(WixSharp.Id,WixSharp.Feature,System.String,WixSharp.WixEntity[])">
             <summary>
@@ -3773,7 +3773,7 @@
             <param name="feature"><see cref="F:WixSharp.Dir.Feature"></see> the directory should be included in.</param>
             <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
             be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
-            <param name="items">Any <see cref="T:WixSharp.WixEntity"/> which can be contained by directory (e.g. file, sub-directory).</param>
+            <param name="items">Any <see cref="T:WixSharp.WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         </member>
         <member name="F:WixSharp.Dir.Dirs">
             <summary>
@@ -3789,9 +3789,10 @@
             <summary>
             Collection of the <see cref="T:WixSharp.DirFiles"/> objects. <see cref="T:WixSharp.DirFiles"/> type is used to specify files 
             contained by a specific directory with wildcard character pattern.
+            Files in subdirectories are not included.
             <para>
-            <see cref="T:WixSharp.DirFiles"/> type is related but not identical to <see cref="F:WixSharp.Dir.Files"/>, which defines only files of 
-            not only a single level directory abut all subdirectories as well.
+            <see cref="T:WixSharp.DirFiles"/> type is related to but not identical to <see cref="F:WixSharp.Dir.Files"/>, which defines files of 
+            not only a single level directory but all subdirectories as well.
             </para>
             </summary>
         </member>
@@ -3800,7 +3801,7 @@
             Collection of the <see cref="F:WixSharp.Dir.Files"/> objects. <see cref="F:WixSharp.Dir.Files"/> type is used to specify files 
             contained by a specific directory and all subdirectories with wildcard character pattern.
             <para>
-            <see cref="F:WixSharp.Dir.Files"/> type is related but not identical to <see cref="T:WixSharp.DirFiles"/>, which defines only files 
+            <see cref="F:WixSharp.Dir.Files"/> type is related to but not identical to <see cref="T:WixSharp.DirFiles"/>, which defines only files 
             of a single level directory.
             </para>
             </summary>
@@ -3828,21 +3829,21 @@
         </member>
         <member name="T:WixSharp.Files">
             <summary>
-            Defines all files of a given source directory and subdirectory to be installed on target system.
+            Defines all files of a given source directory and all subdirectories to be installed on target system.
             <para>
             Use this class to define files to be automatically included into the deployment solution
-            if they name complain with specified wildcard character pattern (<see cref="F:WixSharp.DirFiles.IncludeMask"/>).
+            if their name matches specified wildcard character pattern (<see cref="F:WixSharp.Files.IncludeMask"/>).
             </para>
             <para>
-            You can use <see cref="F:WixSharp.DirFiles.ExcludeMasks"/> if it is required to exclude certain files from
-            being included into setup.
+            You can use <see cref="F:WixSharp.Files.ExcludeMasks"/> to exclude certain files from setup if required.
             </para>
             <para>
-            This class is a logical equivalent of <see cref="T:WixSharp.DirFiles"/> except it also analyses all files in subdirectories.
+            This class is a logical equivalent of <see cref="T:WixSharp.DirFiles"/> except it also analyses all files in all subdirectories.
+            <see cref="T:WixSharp.DirFiles"/> excludes files in subdirectories.
             </para>
             </summary>
             <remarks>
-            Note that all files matching wildcard are resolwed into absolute path thus it may not always be suitable 
+            Note that all files matching wildcard are resolved into absolute path thus it may not always be suitable 
             if the Wix# script is to be compiled into WiX XML source only (Compiler.<see cref="M:WixSharp.Compiler.BuildWxs(WixSharp.Project)"/>). Though it is not a problem at all if the Wix# script 
             is compiled into MSI file (Compiler.<see cref="M:WixSharp.Compiler.BuildMsi(WixSharp.Project)"/>).
             </remarks>b
@@ -3858,21 +3859,20 @@
         <member name="M:WixSharp.Files.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.Files"/> class.
-            with properties/fields initialized with specified parameters
             </summary>
         </member>
         <member name="M:WixSharp.Files.#ctor(System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.Files"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="sourcePath">The relative path to directory source directory. It must include wildcard pattern for files to be included
+            <param name="sourcePath">The relative path to source directory. It must include wildcard pattern for files to be included
             into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
         </member>
         <member name="M:WixSharp.Files.#ctor(System.String,System.String[])">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.Files"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="sourcePath">The relative path to directory source directory. It must include wildcard pattern for files to be included
+            <param name="sourcePath">The relative path to source directory. It must include wildcard pattern for files to be included
             into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
             <param name="excludeFileMasks">Wildcard pattern(s) for files to be excluded from MSI 
             (e.g. <c>new Files(typical, @"Release\Bin\*.dll", "*.Test.dll", "*.UnitTest.dll")</c>).</param>
@@ -3882,7 +3882,7 @@
             Initializes a new instance of the <see cref="T:WixSharp.Files"/> class with properties/fields initialized with specified parameters.
             </summary>
             <param name="feature"><see cref="F:WixSharp.Files.Feature"></see> the directory files should be included in.</param>
-            <param name="sourcePath">The relative path to directory source directory. It must include wildcard pattern for files to be included
+            <param name="sourcePath">The relative path to source directory. It must include wildcard pattern for files to be included
             into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
         </member>
         <member name="M:WixSharp.Files.#ctor(WixSharp.Feature,System.String,System.String[])">
@@ -3890,7 +3890,7 @@
             Initializes a new instance of the <see cref="T:WixSharp.Files"/> class with properties/fields initialized with specified parameters.
             </summary>
             <param name="feature"><see cref="F:WixSharp.Files.Feature"></see> the directory files should be included in.</param>
-            <param name="sourcePath">The relative path to directory source directory. It must include wildcard pattern for files to be included
+            <param name="sourcePath">The relative path to source directory. It must include wildcard pattern for files to be included
             into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
             <param name="excludeFileMasks">Wildcard pattern(s) for files to be excluded from MSI 
             (e.g. <c>new Files(typical, @"Release\Bin\*.dll", "*.Test.dll", "*.UnitTest.dll")</c>).</param>
@@ -3902,7 +3902,7 @@
         </member>
         <member name="F:WixSharp.Files.Directory">
             <summary>
-            The relative path to directory source directory. To lookup for files matching the <see cref="F:WixSharp.Files.IncludeMask"/>.
+            The relative path to source directory to search for files matching the <see cref="F:WixSharp.Files.IncludeMask"/>.
             </summary>
         </member>
         <member name="F:WixSharp.Files.IncludeMask">
@@ -3929,7 +3929,7 @@
              <summary>
              Defines WiX Feature. 
              <para>
-             All installable WiX components belong to one or more features. By default, if no <see cref="T:WixSharp.Feature"/>s defined by user, Wix# creates "Complete" 
+             All installable WiX components belong to one or more features. By default, if no <see cref="T:WixSharp.Feature"/>s are defined by user, Wix# creates "Complete" 
              feature, which contains all installable components. 
              </para>
              </summary>
@@ -3965,7 +3965,7 @@
              
              <item>
              <description>The example of defining "Complete" <see cref="T:WixSharp.Feature"/> implicitly.
-             Note <see cref="T:WixSharp.File"/> constrtuctor does not use <see cref="T:WixSharp.Feature"/> argument.
+             Note <see cref="T:WixSharp.File"/> constructor does not use <see cref="T:WixSharp.Feature"/> argument.
              <code>
              var project =
                  new Project("My Product",
@@ -4024,7 +4024,7 @@
             <param name="isEnabled">Defines if the <see cref="T:WixSharp.Feature"/> is enabled at startup. 
             Use this parameter if the feature should be disabled by default and only enabled after 
             processing the <c>Condition Table</c> or user input.</param>
-            <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state</param>
+            <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state.</param>
         </member>
         <member name="M:WixSharp.Feature.#ctor(System.String,System.Boolean,System.Boolean)">
             <summary>
@@ -4034,7 +4034,7 @@
             <param name="isEnabled">Defines if the <see cref="T:WixSharp.Feature"/> is enabled at startup. 
             Use this parameter if the feature should be disabled by default and only enabled after 
             processing the <c>Condition Table</c> or user input.</param>
-            <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state</param>
+            <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state.</param>
         </member>
         <member name="M:WixSharp.Feature.#ctor(System.String,System.String,System.String)">
             <summary>
@@ -4042,7 +4042,7 @@
             </summary>
             <param name="name">The feature name.</param>
             <param name="description">The feature description.</param>
-            <param name="configurableDir">The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string MSI runtime will place 
+            <param name="configurableDir">The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string, MSI runtime will place 
             <c>Configure</c> button for the feature in the <c>Feature Selection</c> dialog.</param>
         </member>
         <member name="M:WixSharp.Feature.#ctor(System.String,System.String,System.Boolean,System.Boolean,System.String)">
@@ -4054,8 +4054,8 @@
             <param name="isEnabled">Defines if the <see cref="T:WixSharp.Feature"/> is enabled at startup. 
             Use this parameter if the feature should be disabled by default and only enabled after 
             processing the <c>Condition Table</c> or user input.</param>
-            <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state</param>
-            <param name="configurableDir">The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string MSI runtime will place 
+            <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state.</param>
+            <param name="configurableDir">The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string, MSI runtime will place 
             <c>Configure</c> button for the feature in the <c>Feature Selection</c> dialog.</param>
         </member>
         <member name="F:WixSharp.Feature.IsEnabled">
@@ -4083,7 +4083,7 @@
         </member>
         <member name="F:WixSharp.Feature.ConfigurableDir">
             <summary>
-            The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string MSI runtime will place 
+            The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string, MSI runtime will place 
             <c>Configure</c> button for the feature in the <c>Feature Selection</c> dialog.
             </summary>
         </member>
@@ -4095,24 +4095,25 @@
         <member name="T:WixSharp.DirFiles">
             <summary>
             Defines files of a given source directory to be installed on target system.
+            Note that files in subdirectories are not included.
             <para>
             Use this class to define files to be automatically included into the deployment solution
-            if they name complain with specified wildcard character pattern (<see cref="F:WixSharp.DirFiles.IncludeMask"/>).
+            if their name matches specified wildcard character pattern (<see cref="F:WixSharp.DirFiles.IncludeMask"/>).
             </para>
             <para>
-            You can use <see cref="F:WixSharp.DirFiles.ExcludeMasks"/> if it is required to exclude certain files from
-            being included into setup.
+            You can use <see cref="F:WixSharp.DirFiles.ExcludeMasks"/> to exclude certain files from setup if required.
             </para>
             <para>
-            This class is a logical equivalent of <see cref="T:WixSharp.Files"/> except it analyses files in as single directory.
+            This class is a logical equivalent of <see cref="T:WixSharp.Files"/> except that it analyses files in a single directory.
             </para>
             </summary>
             <remarks>
-            Note that all files matching wildcard are resolwed into absolute path thus it may not always be suitable 
-            if the Wix# script is to be compiled into WiX XML source only (Compiler.<see cref="M:WixSharp.Compiler.BuildWxs(WixSharp.Project)"/>). Though it is not a problem at all if the Wix# script 
+            Note that all files matching the wildcard are resolved into absolute paths, so it may not always be suitable 
+            if the Wix# script is to be compiled into WiX XML source only (Compiler.<see cref="M:WixSharp.Compiler.BuildWxs(WixSharp.Project)"/>).
+            This is not a problem if the Wix# script 
             is compiled into MSI file (Compiler.<see cref="M:WixSharp.Compiler.BuildMsi(WixSharp.Project)"/>).
             </remarks>
-            <example>The following is an example of defining installation files with wildcard character pattern.
+            <example>The following is an example of defining installation files with a wildcard character pattern.
             <code>
             new Project("MyProduct",
                 new Dir(@"%ProgramFiles%\MyCompany\MyProduct",
@@ -4169,7 +4170,7 @@
         </member>
         <member name="F:WixSharp.DirFiles.Directory">
             <summary>
-            The relative path to directory source directory. To lookup for files matching the <see cref="F:WixSharp.DirFiles.IncludeMask"/>.
+            The relative path from source directory to directory to lookup for files matching the <see cref="F:WixSharp.DirFiles.IncludeMask"/>.
             </summary>
         </member>
         <member name="F:WixSharp.DirFiles.IncludeMask">
@@ -4190,7 +4191,7 @@
             </summary>
             <param name="baseDirectory">The base directory for file analysis. It is used in conjunction with 
             relative <see cref="F:WixSharp.DirFiles.Directory"/>.</param>
-            <returns>Array of <see cref="T:WixSharp.File"/>s</returns>
+            <returns>Array of <see cref="T:WixSharp.File"/>s.</returns>
         </member>
         <member name="T:WixSharp.InstalledFileAction">
             <summary>
@@ -4251,8 +4252,8 @@
             <param name="key">The key (file name) of the installed file to be executed.</param>
             <param name="args">The arguments to be passed to the file during the execution.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.InstalledFileAction"/>.</param>
         </member>
         <member name="M:WixSharp.InstalledFileAction.#ctor(WixSharp.Id,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
@@ -4263,8 +4264,8 @@
             <param name="key">The key (file name) of the installed file to be executed.</param>
             <param name="args">The arguments to be passed to the file during the execution.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.InstalledFileAction"/>.</param>
         </member>
         <member name="M:WixSharp.InstalledFileAction.#ctor(System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
@@ -4274,8 +4275,8 @@
             <param name="key">The key (file name) of the installed file to be executed.</param>
             <param name="args">The arguments to be passed to the file during the execution.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.InstalledFileAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -4287,8 +4288,8 @@
             <param name="key">The key (file name) of the installed file to be executed.</param>
             <param name="args">The arguments to be passed to the file during the execution.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.InstalledFileAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -4345,7 +4346,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.PathFileAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.PathFileAction"/> instance.</param>
             <param name="appPath">Path to the file to be executed on the target system.</param>
             <param name="args">The arguments to be passed to the file during the execution.</param>
             <param name="workingDir">Working directory for the file execution.</param>
@@ -4358,21 +4359,21 @@
             <param name="args">The arguments to be passed to the file during the execution.</param>
             <param name="workingDir">Working directory for the file execution.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.PathFileAction"/>.</param>
         </member>
         <member name="M:WixSharp.PathFileAction.#ctor(WixSharp.Id,System.String,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.PathFileAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.PathFileAction"/> instance.</param>
             <param name="appPath">Path to the file to be executed on the target system.</param>
             <param name="args">The arguments to be passed to the file during the execution.</param>
             <param name="workingDir">Working directory for the file execution.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.PathFileAction"/>.</param>
         </member>
         <member name="M:WixSharp.PathFileAction.#ctor(System.String,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
@@ -4383,8 +4384,8 @@
             <param name="args">The arguments to be passed to the file during the execution.</param>
             <param name="workingDir">Working directory for the file execution.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.PathFileAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -4392,13 +4393,13 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.PathFileAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.PathFileAction"/> instance.</param>
             <param name="appPath">Path to the file to be executed on the target system.</param>
             <param name="args">The arguments to be passed to the file during the execution.</param>
             <param name="workingDir">Working directory for the file execution.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.PathFileAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -4653,10 +4654,14 @@
             it automatically.
             </summary>
         </member>
+        <member name="F:WixSharp.Project.DefaultRefAssemblies">
+            <summary>
+            Collection of paths to the assemblies referenced by <see cref="T:WixSharp.ManagedAction"/>s.
+            </summary>
+        </member>
         <member name="F:WixSharp.Project.WixExtensions">
             <summary>
             Collection of paths to the WiX extensions. 
-            <para>The items from this collection will be passed to the Candle/Light compiler as command line parameters.</para>
             </summary>
         </member>
         <member name="F:WixSharp.Project.WixNamespaces">
@@ -4760,11 +4765,6 @@
             </remarks>
             </summary>
         </member>
-        <member name="P:WixSharp.Project.DefaultRefAssemblies">
-            <summary>
-            Collection of paths to the assemblies referenced by <see cref="T:WixSharp.ManagedAction"/>s.
-            </summary>
-        </member>
         <member name="P:WixSharp.Project.AllFiles">
             <summary>
             Flattened "view" of all <see cref="T:WixSharp.File"/>s of the <see cref="T:WixSharp.Project"/>.
@@ -4807,7 +4807,7 @@
              </para>
              </summary>
              <remarks>
-             <see cref="T:WixSharp.PropertyRef"/> is inherited from <see cref="T:WixSharp.Property"/> as a recognition their logical relationship and usability pattern but not as their "Parent/Child" nature 
+             <see cref="T:WixSharp.PropertyRef"/> inherits from <see cref="T:WixSharp.Property"/> because of their logical relationship and usability pattern, not because of any "Parent/Child" connection.
              </remarks>
             <example>The following is an example of using <c>NETFRAMEWORK20</c> property defined in the <c>WiXNetFxExtension</c> WiX extension.
             <code>
@@ -4920,7 +4920,7 @@
              <summary>
              Defines WiX <c>QtExecCmdLineAction</c> CustomAction. 
              <para><see cref="T:WixSharp.QtCmdLineAction"/> executes specified application with optional arguments.
-             You do not have to specify full path to the application to be executed as long as it's directory
+             You do not have to specify full path to the application to be executed as long as its directory
              is well-known (e.g. listed in system environment variable <c>PATH</c>) on the target system.</para>
              <remarks>
              <see cref="T:WixSharp.QtCmdLineAction"/> often needs to be executed with the elevated privileges. Thus after instantiation it will have 
@@ -4967,8 +4967,8 @@
             <param name="appPath">Path to the application to be executed. This can be a file name only if the location of the application is well-known.</param>
             <param name="args">The arguments to be passed to the application during the execution.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.QtCmdLineAction"/>.</param>
         </member>
         <member name="M:WixSharp.QtCmdLineAction.#ctor(WixSharp.Id,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
@@ -4979,8 +4979,8 @@
             <param name="appPath">Path to the application to be executed. This can be a file name only if the location of the application is well-known.</param>
             <param name="args">The arguments to be passed to the application during the execution.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.QtCmdLineAction"/>.</param>
         </member>
         <member name="M:WixSharp.QtCmdLineAction.#ctor(System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
@@ -4990,8 +4990,8 @@
             <param name="appPath">Path to the application to be executed. This can be a file name only if the location of the application is well-known.</param>
             <param name="args">The arguments to be passed to the application during the execution.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.QtCmdLineAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -5003,8 +5003,8 @@
             <param name="appPath">Path to the application to be executed. This can be a file name only if the location of the application is well-known.</param>
             <param name="args">The arguments to be passed to the application during the execution.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.QtCmdLineAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -5067,8 +5067,8 @@
              <summary>
              Defines WiX custom property assigned by MSI runtime during the installation to the RegistrySearch result.
              <para>
-             <see cref="T:WixSharp.RegValueProperty"/> is used to set property from the registry value when accessing the registry for 
-             custom action is inconvenient. 
+             <see cref="T:WixSharp.RegValueProperty"/> is used to set a property from the registry value when accessing the registry is inconvenient for 
+             a custom action. 
              
              <para><c>RegistrySearch</c> returns raw data thus data will always contain prefix indicating data type: </para>
              <para><c>DWORD:</c> Starts with '#' optionally followed by '+' or '-'.</para>
@@ -5121,7 +5121,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.RegValueProperty"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Property"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.RegValueProperty"/> instance.</param>
             <param name="name">The name of the property.</param>
             <param name="root">The registry hive name.</param>
             <param name="key">The registry key name.</param>
@@ -5200,7 +5200,7 @@
              <summary>
              Defines registry value to be installed.
              </summary>
-            <example>The following is a complete example of the setup, for installing a file and two 
+            <example>The following is a complete example of the setup for installing a file and two 
             registry values (string value <c>Message</c> and integer value <c>Count</c> ).
             <code>
             static public void Main(string[] args)
@@ -5274,7 +5274,7 @@
             Initializes a new instance of the <see cref="T:WixSharp.RegValue"/> class with properties initialized with specified parameters.
             </summary>
             <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.RegValue"/> instance.</param>
-            <param name="feature"><see cref="F:WixSharp.RegValue.Feature"></see> the file should be included in.</param>
+            <param name="feature"><see cref="F:WixSharp.RegValue.Feature"></see> the registry value should be included in.</param>
             <param name="root">The registry hive name.</param>
             <param name="key">The registry key name.</param>
             <param name="name">The registry entry name.</param>
@@ -5351,7 +5351,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.ScriptAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.ScriptAction"/> instance.</param>
             <param name="code">VBScript code to be executed.</param>
         </member>
         <member name="M:WixSharp.ScriptAction.#ctor(System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
@@ -5360,19 +5360,19 @@
             </summary>
             <param name="code">VBScript code to be executed.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ScriptAction"/>.</param>
         </member>
         <member name="M:WixSharp.ScriptAction.#ctor(WixSharp.Id,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.ScriptAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.ScriptAction"/> instance.</param>
             <param name="code">VBScript code to be executed.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ScriptAction"/>.</param>
         </member>
         <member name="M:WixSharp.ScriptAction.#ctor(System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
@@ -5381,8 +5381,8 @@
             </summary>
             <param name="code">VBScript code to be executed.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ScriptAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -5390,11 +5390,11 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.ScriptAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.ScriptAction"/> instance.</param>
             <param name="code">VBScript code to be executed.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ScriptAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -5441,7 +5441,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.ScriptFileAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.ScriptFileAction"/> instance.</param>
             <param name="file">VBScript file to be executed.</param>
             <param name="procedure">Name of the procedure (from the <paramref name="file"/>) to be executed.</param>
         </member>
@@ -5452,20 +5452,20 @@
             <param name="file">VBScript file to be executed.</param>
             <param name="procedure">Name of the procedure (from the <paramref name="file"/>) to be executed.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ScriptFileAction"/>.</param>
         </member>
         <member name="M:WixSharp.ScriptFileAction.#ctor(WixSharp.Id,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.ScriptFileAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.ScriptFileAction"/> instance.</param>
             <param name="file">VBScript file to be executed.</param>
             <param name="procedure">Name of the procedure (from the <paramref name="file"/>) to be executed.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ScriptFileAction"/>.</param>
         </member>
         <member name="M:WixSharp.ScriptFileAction.#ctor(System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
@@ -5475,8 +5475,8 @@
             <param name="file">VBScript file to be executed.</param>
             <param name="procedure">Name of the procedure (from the <paramref name="file"/>) to be executed.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ScriptFileAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -5484,12 +5484,12 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.ScriptFileAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.ScriptFileAction"/> instance.</param>
             <param name="file">VBScript file to be executed.</param>
             <param name="procedure">Name of the procedure (from the <paramref name="file"/>) to be executed.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.ScriptFileAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
@@ -5686,7 +5686,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.SetPropertyAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.SetPropertyAction"/> instance.</param>
             <param name="name">Name of the property to be assigned.</param>
             <param name="value">Value to be set to the property.</param>
         </member>
@@ -5702,7 +5702,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.SetPropertyAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.SetPropertyAction"/> instance.</param>
             <param name="name">Name of the property to be assigned.</param>
             <param name="value">Value to be set to the property.</param>
             <param name="returnType">The return type of the action.</param>
@@ -5714,43 +5714,43 @@
             <param name="name">Name of the property to be assigned.</param>
             <param name="value">Value to be set to the property.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.SetPropertyAction"/>.</param>
         </member>
         <member name="M:WixSharp.SetPropertyAction.#ctor(WixSharp.Id,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.SetPropertyAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.SetPropertyAction"/> instance.</param>
             <param name="name">Name of the property to be assigned.</param>
             <param name="value">Value to be set to the property.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.SetPropertyAction"/>.</param>
         </member>
         <member name="M:WixSharp.SetPropertyAction.#ctor(WixSharp.Id,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.SetPropertyAction"/> class with properties/fields initialized with specified parameters.
             </summary>
-            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.InstalledFileAction"/> instance.</param>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.SetPropertyAction"/> instance.</param>
             <param name="name">Name of the property to be assigned.</param>
             <param name="value">Value to be set to the property.</param>
             <param name="returnType">The return type of the action.</param>
-            <param name="when">The order of the action it should be executed with respect to the <see cref="T:WixSharp.Step"/> parameter.</param>
-            <param name="step">The step the action should be executed during the installation.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
             <param name="condition">The launch condition for the <see cref="T:WixSharp.SetPropertyAction"/>.</param>
             <param name="sequence">The MSI sequence the action belongs to.</param>
         </member>
         <member name="F:WixSharp.SetPropertyAction.Value">
             <summary>
-            Value to be set to the property.
+            Value to set the property to.
             </summary>
         </member>
         <member name="F:WixSharp.SetPropertyAction.PropName">
             <summary>
-            Name of the property to be assigned.
+            Name of the property to be set.
             </summary>
         </member>
         <member name="T:WixSharp.MajorUpgradeStrategy">
@@ -5758,7 +5758,7 @@
              This class defines the Major Upgrade scenario.
              </summary>
             
-            <example>The following is an example of building product MSI with auto uninstalling any older version of the product
+            <example>The following is an example of building product MSI with auto uninstalling of any older version of the product
             and preventing downgrading.
             <code>
              var project = new Project("My Product",
@@ -5784,7 +5784,7 @@
         </member>
         <member name="F:WixSharp.MajorUpgradeStrategy.UpgradeVersions">
             <summary>
-            Range of versions, which should be automatically uninstalled during the installation of the product MSI being built.
+            Range of versions which should be automatically uninstalled during the installation of the product MSI being built.
             <para>Typically these are all versions older then the version being installed. </para>
             </summary>
         </member>
@@ -5807,8 +5807,8 @@
         </member>
         <member name="F:WixSharp.MajorUpgradeStrategy.Default">
             <summary>
-            Default <see cref="T:WixSharp.MajorUpgradeStrategy"/>. Ensures that all alder versions of the product are automatically uninstalled and if
-            newer version is detected <c>"Newer version already installed"</c> message is displayed.
+            Default <see cref="T:WixSharp.MajorUpgradeStrategy"/>. Ensures that all older versions of the product are automatically uninstalled and if
+            a newer version is detected, <c>"Newer version already installed"</c> message is displayed.
             </summary>
         </member>
         <member name="T:WixSharp.UpgradeStrategyValidationException">
@@ -5843,7 +5843,7 @@
         </member>
         <member name="T:WixSharp.VersionRange">
             <summary>
-            This class represents range of the product versions. It is designed to be used with for
+            This class represents a range of product versions. It is designed to be used for
             Major/Minor upgrade scenarios in conjunction with Upgrade strategy classes (e.g. <see cref="T:WixSharp.MajorUpgradeStrategy"/>).
             <para>Version is represented as a string to allow for predefined value <c>%this%</c>, which means 
             "version of the product MSI being built".</para>
@@ -5874,12 +5874,12 @@
         </member>
         <member name="F:WixSharp.VersionRange.ThisAndNewer">
             <summary>
-            Predefined "open end" range between version the product MSI being built (inclusive) and any newer version.
+            Predefined "open ended" range between version of the product MSI being built (inclusive) and any newer version.
             </summary>
         </member>
         <member name="F:WixSharp.VersionRange.NewerThanThis">
             <summary>
-            Predefined "open end" range between version the product MSI being built (exclusive) and any newer version.
+            Predefined "open ended" range between version of the product MSI being built (exclusive) and any newer version.
             </summary>
         </member>
         <member name="F:WixSharp.VersionRange.OlderThanThis">
@@ -5906,13 +5906,13 @@
             <summary>
             Indicates if the WebSite is to be installed (created on IIS) or existing WebSite should be used to install the corresponding
             WebApplication. The default <see cref="F:WixSharp.WebSite.InstallWebSite"/> value is <c>false</c>
-            <para>Developers should be aware about the WebSite installation model imposed by WiX/MSI and use <see cref="F:WixSharp.WebSite.InstallWebSite"/> carefully.</para>
+            <para>Developers should be aware of the WebSite installation model imposed by WiX/MSI and use <see cref="F:WixSharp.WebSite.InstallWebSite"/> carefully.</para>
             <para>If <see cref="F:WixSharp.WebSite.InstallWebSite"/> value is set to <c>false</c> the parent WebApplication (<see cref="T:WixSharp.IISVirtualDir"/>)
-            will be installed in the brand new (freshly created) WebSite or in the existing if the one with the same address/port combination already exists 
+            will be installed in the brand new (freshly created) WebSite or in the existing one if a site with the same address/port combination already exists 
             on IIS). The undesirable side affect of this deployment scenario is that if the existing WebSite was used to install the WebApplication it will be 
             deleted on IIS during uninstallation even if this WebSite has other WebApplications installed.</para>
-            <para>The "safer" option is to set <see cref="F:WixSharp.WebSite.InstallWebSite"/> value is set to <c>true</c> (default value). In this case the WebApplication will 
-            be installed in to existing WebSite with matching address/port. If the match is not found the installation will fail. During the uninstallation 
+            <para>The "safer" option is to set <see cref="F:WixSharp.WebSite.InstallWebSite"/> value to <c>true</c> (default value). In this case the WebApplication will 
+            be installed in an existing WebSite with matching address/port. If the match is not found the installation will fail. During the uninstallation 
             only installed WebApplication will be removed from IIS.</para>
             </summary>
         </member>
@@ -5940,11 +5940,11 @@
         <member name="F:WixSharp.WebSite.AddressesDefinition">
             <summary>
             Specification for auto-generating the <see cref="T:WebSite.WebAddresses"/> collection. 
-            <para>If <see cref="F:WixSharp.WebSite.AddressesDefinition"/> is specified the existing content of <see cref="P:WixSharp.WebSite.Addresses"/> will be ignored 
-            and replaced with the auto-generated one at the compile time.</para>
+            <para>If <see cref="F:WixSharp.WebSite.AddressesDefinition"/> is specified, the existing content of <see cref="P:WixSharp.WebSite.Addresses"/> will be ignored 
+            and replaced with the auto-generated one at compile time.</para>
             </summary>
             <example>
-            <c>webSite.AddressesDefinition = "*:80;*90";</c> will be parsed and converted to the array of <see cref="T:WixSharp.WebSite.WebAddress"/> as following: 
+            <c>webSite.AddressesDefinition = "*:80;*90";</c> will be parsed and converted to an array of <see cref="T:WixSharp.WebSite.WebAddress"/> as follows: 
             <code>
             ...
             webSite.Addresses = new []
@@ -5967,8 +5967,8 @@
             <summary>
             Collection of <see cref="T:WebSite.WebAddresses"/> associated with website.
             <para>
-            The user specified values of <see cref="P:WixSharp.WebSite.Addresses"/> will be ignored and replaced witrh the 
-            auto-generated addresses if If <see cref="F:WixSharp.WebSite.AddressesDefinition"/> is specified either directly or via appropriate <see cref="T:WixSharp.WebSite"/> constructor.
+            The user specified values of <see cref="P:WixSharp.WebSite.Addresses"/> will be ignored and replaced with the 
+            auto-generated addresses if <see cref="F:WixSharp.WebSite.AddressesDefinition"/> is specified either directly or via appropriate <see cref="T:WixSharp.WebSite"/> constructor.
             </para>
             </summary>
         </member>
@@ -6096,7 +6096,7 @@
         </member>
         <member name="F:WixSharp.IISVirtualDir.Alias">
             <summary>
-            Sets the application name, which is the URL relative path used to access this virtual directory. If not set the <see cref="F:WixSharp.IISVirtualDir.AppName"/> will be used.
+            Sets the application name, which is the URL relative path used to access this virtual directory. If not set, the <see cref="F:WixSharp.IISVirtualDir.AppName"/> will be used.
             </summary>
         </member>
         <member name="F:WixSharp.IISVirtualDir.AppName">
@@ -6178,7 +6178,7 @@
         </member>
         <member name="F:WixSharp.WixGuid.ConsistentGenerationStartValue">
             <summary>
-            Initial value to be used as a seed for Guid generation. If you want the Wix# project items contain 
+            Initial value to be used as a seed for Guid generation. If you want the Wix# project items to contain 
             not random but reproducible sequential Guids you should initialize this field.
             </summary>
         </member>
@@ -6267,7 +6267,7 @@
         <member name="M:WixSharp.GuidGenerators.Sequential(System.Object)">
             <summary>
             Returns sequentially incremented GUID. The specified seed is ignored. Every consecutive 
-            call to this method will return the last returned GUID by 1 and return its value. 
+            call to this method will increase the last returned GUID by 1 and return its value. 
             </summary>
             <param name="seed">The seed.</param>
             <returns></returns>
@@ -6287,7 +6287,7 @@
         <member name="T:WixSharp.Package">
              <summary>
              Generic <see cref="T:WixSharp.WixEntity"/> container for defining WiX <c>Package</c> element attributes.
-             <para>These attributes are the properties about the package to be placed in the Summary Information Stream. These are visible from COM through the IStream interface, and these properties can be seen on the package in Explorer. </para>
+             <para>These attributes are the properties of the package to be placed in the Summary Information Stream. These are visible from COM through the IStream interface, and can be seen in Explorer.</para>
             <example>The following is an example of defining the <c>Package</c> attributes.
             <code>
              var project = 
@@ -6333,15 +6333,15 @@
         <member name="T:WixSharp.Id">
             <summary>
             The unique string identifier of the Wix# project item. The <c>Id</c> is automatically generated 
-            by Wix# engine during the MSI build unless it is explicitly specified by used as a project item 
+            by Wix# engine during the MSI build unless it is explicitly specified by a project item 
             constructor parameter.
             <para><c>Id</c> is used to "stamp" every XML element of the WiX source file produced by Wix#.</para>
             </summary>
         </member>
         <member name="M:WixSharp.Id.#ctor(System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.Id"/> class and assigns <see cref="F:WixSharp.Id.Value"/> 
-            to the specified with the constructor parameter.
+            Initializes a new instance of the <see cref="T:WixSharp.Id"/> class and assigns the constructor parameter
+            specified to <see cref="F:WixSharp.Id.Value"/> .
             </summary>
             <param name="value">The string Id value.</param>
         </member>
@@ -6507,7 +6507,7 @@
         <member name="T:WixSharp.Execute">
             <summary>
             Specifies predefined values for <see cref="F:WixSharp.Action.Execute"/> attribute, 
-            which controls at what stage of installtion script <c>Custom Action</c> will be executed.
+            which controls at what stage of installation script <c>Custom Action</c> will be executed.
             </summary>
         </member>
         <member name="F:WixSharp.Execute.commit">
@@ -6613,10 +6613,10 @@
         </member>
         <member name="T:WixSharp.When">
             <summary>
-            Specifies predefined values for <see cref="F:WixSharp.Action.When"/>, 
-            which controls sequence of the <c>Custom Action</c> with respect its related, order controlling 
-            <c>Action</c>.
-            <para>Order controlling action is defined by <see cref="T:WixSharp.Step"/>.</para>
+            Specifies predefined values for <see cref="F:WixSharp.Action.When"/>,
+            which controls when the <c>Custom Action</c> occurs relative to
+            the order controlling <c>Action</c>.
+            <para>The order-controlling <c>Action</c> is defined by <see cref="T:WixSharp.Step"/></para>
             </summary>
         </member>
         <member name="F:WixSharp.When.After">
@@ -6732,7 +6732,7 @@
         </member>
         <member name="F:WixSharp.SvcErrorControl.critical">
             <summary>
-            Logs the error if it is possible and the system is restarted with the last configuration known to be good. If the last-known-good configuration is being started, the startup operation fails.
+            Logs the error if possible and the system is restarted with the last configuration known to be good. If the last-known-good configuration is being started, the startup operation fails.
             </summary>
         </member>
         <member name="T:WixSharp.SvcStartType">

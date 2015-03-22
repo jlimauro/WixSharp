@@ -416,7 +416,7 @@ namespace WixSharp
         /// <summary>
         /// Collection of paths to the assemblies referenced by <see cref="ManagedAction"/>s.
         /// </summary>
-        public List<string> DefaultRefAssemblies { get { return WixExtensions; } set { WixExtensions = value; } }
+        public List<string> DefaultRefAssemblies = new List<string>();
         /// <summary>
         /// Collection of paths to the WiX extensions. 
         /// </summary>
