@@ -6217,12 +6217,24 @@
             <para>This class is used by Wix# engine internally to emit reproducible WiX code.</para>
             </summary>
         </member>
+        <member name="M:WixSharp.WixGuid.SequentialGuid.Next">
+            <summary>
+            Increments and returns the current GUID.
+            </summary>
+            <value>The current GUID.</value>
+        </member>
         <member name="M:WixSharp.WixGuid.SequentialGuid.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.WixGuid.SequentialGuid"/> class.
             </summary>
         </member>
         <member name="M:WixSharp.WixGuid.SequentialGuid.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.WixGuid.SequentialGuid"/> class.
+            </summary>
+            <param name="previousGuid">The previous GUID.</param>
+        </member>
+        <member name="M:WixSharp.WixGuid.SequentialGuid.#ctor(System.Nullable{System.Guid})">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.WixGuid.SequentialGuid"/> class.
             </summary>

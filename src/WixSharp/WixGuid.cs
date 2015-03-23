@@ -65,6 +65,16 @@ namespace WixSharp
             public Guid CurrentGuid { get; private set; }
 
             /// <summary>
+            /// Increments and returns the current GUID.
+            /// </summary>
+            /// <value>The current GUID.</value>
+            public Guid Next()
+            {
+                SequentialGuid s = this;
+                return (s++).CurrentGuid;
+            }
+
+            /// <summary>
             /// Initializes a new instance of the <see cref="SequentialGuid"/> class.
             /// </summary>
             public SequentialGuid()
@@ -79,6 +89,15 @@ namespace WixSharp
             public SequentialGuid(Guid previousGuid)
             {
                 CurrentGuid = previousGuid;
+            }
+            
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SequentialGuid"/> class.
+            /// </summary>
+            /// <param name="previousGuid">The previous GUID.</param>
+            public SequentialGuid(Guid? previousGuid)
+            {
+                CurrentGuid = previousGuid.Value;
             }
 
             /// <summary>
