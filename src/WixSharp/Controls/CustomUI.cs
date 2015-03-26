@@ -179,11 +179,13 @@ namespace WixSharp
         public DialogSequence On(string dialog, string control, params DialogAction[] handlers)
         {
             handlers.Where(h => !h.Order.HasValue)
-                    .ForEach(h => h.Order = 5); //something high enough to have the highest priority at runtime
+                    .ForEach(h => h.Order = DefaultOrder); 
 
             base.On(dialog, control, handlers);
             return this;
         }
+
+        static public int DefaultOrder = 5; //something high enough to have the highest priority at runtime
     }
 
     /// <summary>

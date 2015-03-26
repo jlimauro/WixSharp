@@ -127,6 +127,7 @@
     <Compile Include="ElevatedManagedAction.cs" />
     <Compile Include="EmbeddedFileAction.cs" />
     <Compile Include="ExeFileShortcut.cs" />
+    <Compile Include="EnvironmentVariable.cs" />
     <Compile Include="FileAssosiation.cs" />
     <Compile Include="FileShortcut.cs" />
     <Compile Include="LaunchCondition.cs" />

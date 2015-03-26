@@ -337,6 +337,12 @@ namespace WixSharp
                            .Replace("[" + Compiler.EnvironmentConstantsMapping[key] + "]", Compiler.EnvironmentConstantsMapping[key]);
             return path;
         }
+        
+        public static string ExpandEnvVars(this string path)
+        {
+            return Environment.ExpandEnvironmentVariables(path);
+        }
+
         internal static string EscapeIllegalCharacters(this string data)
         {
             string retval = data;

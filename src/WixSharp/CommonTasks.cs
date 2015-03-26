@@ -264,6 +264,17 @@ namespace WixSharp.CommonTasks
             return project;
         }
 
+        static public Project RemoveDialogsBetween(this Project project, string start, string end)
+        {
+            if(project.CustomUI ==null)
+                project.CustomUI = new DialogSequence();
+
+            project.CustomUI.On(start, Buttons.Next, new ShowDialog(end) { Order = DialogSequence.DefaultOrder });
+            project.CustomUI.On(end, Buttons.Back, new ShowDialog(start) { Order = DialogSequence.DefaultOrder });
+            return project;
+        }
+
+
         /// <summary>
         /// Gets the file version.
         /// </summary>

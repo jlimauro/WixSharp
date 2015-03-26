@@ -80,6 +80,7 @@ namespace WixSharp
             var dirs = new List<Dir>();
             var actions = new List<Action>();
             var regs = new List<RegValue>();
+            var envvars = new List<EnvironmentVariable>();
             var props = new List<Property>();
             var bins = new List<Binary>();
 
@@ -103,6 +104,8 @@ namespace WixSharp
                         actions.Add(item as Action);
                     else if (item is RegValue)
                         regs.Add(item as RegValue);
+                    else if (item is EnvironmentVariable)
+                        envvars.Add(item as EnvironmentVariable);
                     else if (item is RegFile)
                     {
                         var file = item as RegFile;
@@ -118,7 +121,7 @@ namespace WixSharp
                     else if (item is WixGuid)
                         GUID = (item as WixGuid).Value;
                     else
-                        throw new Exception("Unexpected object type as among Project constructor arguments: " + item.GetType().Name);
+                        throw new Exception("Unexpected object type is among Project constructor arguments: " + item.GetType().Name);
                 }
             }
 
@@ -127,6 +130,7 @@ namespace WixSharp
             RegValues = regs.ToArray();
             Properties = props.ToArray();
             Binaries = bins.ToArray();
+            EnvironmentVariables = envvars.ToArray();
         }
 
         /// <summary>
@@ -146,11 +150,11 @@ namespace WixSharp
 
         private string sourceBaseDir = "";
         /// <summary>
-        /// Base directory for the relative pathes of the project items (e.g. <see cref="File"></see>). 
+        /// Base directory for the relative paths of the project items (e.g. <see cref="File"></see>). 
         /// </summary>
         public string SourceBaseDir
         {
-            get { return sourceBaseDir; }
+            get { return sourceBaseDir.ExpandEnvVars(); }
             set { sourceBaseDir = value; }
         }
 
@@ -162,7 +166,7 @@ namespace WixSharp
         {
             get
             {
-                return outDir.IsEmpty() ? Environment.CurrentDirectory : outDir;
+                return outDir.IsEmpty() ? Environment.CurrentDirectory : outDir.ExpandEnvVars();
             }
             set
             {
@@ -403,6 +407,10 @@ namespace WixSharp
         /// Collection of <see cref="RegValue"/>s to be set during the installation.
         /// </summary>
         public RegValue[] RegValues = new RegValue[0];
+        /// <summary>
+        /// Collection of <see cref="EnvironmentVariable"/>s to be set during the installation.
+        /// </summary>
+        public EnvironmentVariable[] EnvironmentVariables = new EnvironmentVariable[0];
         /// <summary>
         /// Collection of WiX/MSI <see cref="Property"/> objects to be created during the installed.
         /// </summary>

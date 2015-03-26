@@ -23,17 +23,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+
 #endregion
-using Microsoft.Deployment.WindowsInstaller;
+
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
 using IO = System.IO;
 
 namespace WixSharp
@@ -43,21 +37,24 @@ namespace WixSharp
         //fix for unexpected behavior: System.IO.Path.Combine(@"C:\Test", @"\Docs\readme.txt") return @"\Docs\readme.txt";
         internal static string PathCombine(string path1, string path2)
         {
-            if (path2.Length == 0)
+            var p1 = path1.ExpandEnvVars();
+            var p2 = path2.ExpandEnvVars();
+
+            if (p2.Length == 0)
             {
-                return path1;
+                return p1;
             }
-            else if (path2.Length == 1 && path2[0] == IO.Path.DirectorySeparatorChar)
+            else if (p2.Length == 1 && p2[0] == IO.Path.DirectorySeparatorChar)
             {
-                return path1;
+                return p1;
             }
-            else if (path2[0] == IO.Path.DirectorySeparatorChar)
+            else if (p2[0] == IO.Path.DirectorySeparatorChar)
             {
-                if (path2[0] != path2[1])
-                    return IO.Path.Combine(path1, path2.Substring(1));
+                if (p2[0] != p2[1])
+                    return IO.Path.Combine(p1, p2.Substring(1));
             }
 
-            return IO.Path.Combine(path1, path2);
+            return IO.Path.Combine(p1, p2);
         }
 
         internal static string[] AllConstStringValues<T>()
@@ -68,6 +65,13 @@ namespace WixSharp
                                   .ToArray();
 
             return fields;
+        }
+        
+        internal static void EnsureFileDir(string file)
+        {
+            var dir = IO.Path.GetDirectoryName(file);
+            if (!IO.Directory.Exists(dir))
+                IO.Directory.CreateDirectory(dir);
         }
 
         /// <summary>

@@ -218,10 +218,10 @@ namespace WixSharp
     }
 
     /// <summary>
-	/// Specifies predefined values for <see cref="Action.When"/>,
-	/// which controls when the <c>Custom Action</c> occurs relative to
-	/// the order controlling <c>Action</c>.
-	/// <para>The order-controlling <c>Action</c> is defined by <see cref="Step"/></para>
+    /// Specifies predefined values for <see cref="Action.When"/>,
+    /// which controls when the <c>Custom Action</c> occurs relative to
+    /// the order controlling <c>Action</c>.
+    /// <para>The order-controlling <c>Action</c> is defined by <see cref="Step"/></para>
     /// </summary>
     public enum When
     {
@@ -402,4 +402,48 @@ namespace WixSharp
         /// </summary>
         both
     }
+
+    /// <summary>
+    /// Indicates how value of the environment variable should be set.
+    /// </summary>
+    public enum EnvVarPart
+    {
+        /// <summary>
+        /// This value is the entire environmental variable. This is the default.
+        /// </summary>
+        all,
+        /// <summary>
+        ///This value is prefixed.
+        /// </summary>
+        first,
+        /// <summary>
+        ///This value is appended.
+        /// </summary>
+        last
+    }
+
+    /// <summary>
+    /// Specifies whether the environmental variable should be created, set or removed when the parent component is installed.
+    /// </summary>
+    public enum EnvVarAction
+    {
+        /// <summary>
+        /// Creates the environment variable if it does not exist, then set it during installation. This has no effect on the value of 
+        /// the environment variable if it already exists.
+        /// </summary>
+        create,
+        /// <summary>
+        /// Creates the environment variable if it does not exist, and then set it during installation. If the environment variable exists, 
+        /// set it during the installation.
+        /// </summary>
+        set,
+        /// <summary>
+        /// Removes the environment variable during an installation. The installer only removes an environment variable 
+        /// during an installation if the name and value of the variable match the entries in the Name and Value attributes. 
+        /// If you want to remove an environment variable, regardless of its value, do not set the Value attribute.
+        /// </summary>
+        remove
+    }
+
+
 }
