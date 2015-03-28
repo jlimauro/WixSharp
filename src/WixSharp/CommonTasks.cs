@@ -264,9 +264,25 @@ namespace WixSharp.CommonTasks
             return project;
         }
 
+        /// <summary>
+        /// Removes the dialogs between specified two dialogs. It simply connects 'next' button of the start dialog with the 
+        /// 'NewDialog' action associated with the end dialog. And vise versa for the 'back' button.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="start">The start.</param>
+        /// <param name="end">The end.</param>
+        /// <returns></returns>
+        /// <example>The following is an example of the setup that skips License dialog.
+        /// <code> 
+        /// project.UI = WUI.WixUI_InstallDir;
+        /// project.RemoveDialogsBetween(Dialogs.WelcomeDlg, Dialogs.InstallDirDlg);
+        /// ...
+        /// Compiler.BuildMsi(project);
+        /// </code>
+        /// </example>
         static public Project RemoveDialogsBetween(this Project project, string start, string end)
         {
-            if(project.CustomUI ==null)
+            if (project.CustomUI == null)
                 project.CustomUI = new DialogSequence();
 
             project.CustomUI.On(start, Buttons.Next, new ShowDialog(end) { Order = DialogSequence.DefaultOrder });
@@ -274,6 +290,68 @@ namespace WixSharp.CommonTasks
             return project;
         }
 
+        /// <summary>
+        /// Injects CLR dialog between MSI dialogs 'prevDialog' and 'nextDialog'.
+        /// Passes custom action CLR method name (showDialogMethod) for instantiating and popping up the CLR dialog.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="showDialogMethod">The show dialog method.</param>
+        /// <param name="prevDialog">The previous dialog.</param>
+        /// <param name="nextDialog">The next dialog.</param>
+        /// <returns></returns>
+        /// <example>The following is an example of inserting CustomDialog dialog into the UI sequence between MSI dialogs InsallDirDlg and VerifyReadyDlg.
+        /// <code> 
+        /// public class static Script
+        /// {
+        ///     public static void Main()
+        ///     {
+        ///         var project = new Project("CustomDialogTest");
+        ///         
+        ///         project.InjectClrDialog("ShowCustomDialog", Dialogs.InstallDirDlg, Dialogs.VerifyReadyDlg);
+        ///         Compiler.BuildMsi(project);
+        ///     }
+        ///     
+        ///     [CustomAction]
+        ///     public static ActionResult ShowCustomDialog(Session session)
+        ///     {
+        ///         return WixCLRDialog.ShowAsMsiDialog(new CustomDialog(session));
+        ///     }
+        ///}
+        /// </code>
+        /// </example>
+        static public Project InjectClrDialog(this Project project, string showDialogMethod, string prevDialog, string nextDialog)
+        {
+            string wixSharpAsm = typeof(Project).Assembly.Location;
+            string wixSharpUIAsm = IO.Path.ChangeExtension(wixSharpAsm, ".UI.dll");
+
+            var showClrDialog = new ManagedAction(showDialogMethod)
+            {
+                Sequence = Sequence.NotInSequence,
+                RefAssemblies = new[] { wixSharpAsm, wixSharpUIAsm }
+            };
+
+            project.UI = WUI.WixUI_Common;
+
+            if (project.CustomUI != null)
+                throw new ApplicationException("Project.CustomUI is already initialized. Ensure InjectClrDialog is invoked before any adjustments made to CustomUI.");
+
+            project.CustomUI = new CommomDialogsUI();
+            project.Actions = project.Actions.Add(showClrDialog);
+
+            //disconnect prev and next dialogs
+            project.CustomUI.UISequence.RemoveAll(x => (x.Dialog == prevDialog && x.Control == Buttons.Next) ||
+                                                 (x.Dialog == nextDialog && x.Control == Buttons.Back));
+
+            //create new dialogs connection with showAction in between
+            project.CustomUI.On(prevDialog, Buttons.Next, new ExecuteCustomAction(showClrDialog))
+                            .On(prevDialog, Buttons.Next, new ShowDialog(nextDialog, Condition.ClrDialog_NextPressed))
+                            .On(prevDialog, Buttons.Next, new CloseDialog("Exit", Condition.ClrDialog_CancelPressed) { Order = 2 })
+
+                            .On(nextDialog, Buttons.Back, new ExecuteCustomAction(showClrDialog))
+                            .On(nextDialog, Buttons.Back, new ShowDialog(prevDialog, Condition.ClrDialog_BackPressed));
+
+            return project;
+        }
 
         /// <summary>
         /// Gets the file version.

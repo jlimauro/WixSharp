@@ -29,7 +29,7 @@ class Script
         project.UI = WUI.WixUI_Common;
         project.CustomUI = CustomUIBuilder.BuildPostLicenseDialogUI(customDialog: productActivationDialog,
                                                                     onNextActions: new DialogAction[]{
-                                                                                       new ExecueteCustomAction ("ValidateLicenceKey"),
+                                                                                       new ExecuteCustomAction ("ValidateLicenceKey"),
                                                                                        new ShowDialog(Dialogs.InstallDirDlg, "SERIALNUMBER_VALIDATED = \"TRUE\"")});
         
         //In this sample we are using built-in BuildPostLicenseDialogUI but if it is not suitable for

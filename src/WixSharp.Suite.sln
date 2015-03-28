@@ -151,6 +151,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skip_UIDialog", "WixSharp.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultipleInstances Install", "WixSharp.Samples\VSProjects\MultipleInstances Install.csproj", "{924669A9-6C3A-4748-9BB4-4513B3E56E91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvVariables", "WixSharp.Samples\VSProjects\EnvVariables.csproj", "{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -743,6 +745,16 @@ Global
 		{924669A9-6C3A-4748-9BB4-4513B3E56E91}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{924669A9-6C3A-4748-9BB4-4513B3E56E91}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{924669A9-6C3A-4748-9BB4-4513B3E56E91}.Release|x86.ActiveCfg = Release|Any CPU
+		{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -802,5 +814,6 @@ Global
 		{281C808B-95B6-4B38-9205-BC025F95678D} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{54567BA6-0E46-47B4-B880-86F4E46A55AA} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{924669A9-6C3A-4748-9BB4-4513B3E56E91} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
+		{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 	EndGlobalSection
 EndGlobal

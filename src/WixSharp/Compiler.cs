@@ -2097,9 +2097,12 @@ namespace WixSharp
             //requiredAsms.Add();
 
             //if WixSharp was "linked" with the client assembly not as script file but as external assembly
-            if (ClientAssembly.ToLower() != System.Reflection.Assembly.GetExecutingAssembly().Location.ToLower())
-                if (!requiredAsms.Contains(System.Reflection.Assembly.GetExecutingAssembly().Location))
-                    requiredAsms.Add(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string wixSharpAsm = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            if (ClientAssembly.ToLower() != wixSharpAsm.ToLower())
+            {
+                if (!requiredAsms.Contains(wixSharpAsm))
+                    requiredAsms.Add(wixSharpAsm);
+            }
 
             var referencedAssemblies = "";
             foreach (string file in requiredAsms)

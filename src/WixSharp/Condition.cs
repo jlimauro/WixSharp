@@ -109,6 +109,18 @@ namespace WixSharp
             return new XCData(Value);
         }
         /// <summary>
+        /// String representation of the <c>Custom_UI_Command = "back"</c> condition. This condition is triggered when user presses 'Back' button in the CLR Dialog.
+        /// </summary>
+        public readonly static Condition ClrDialog_BackPressed = new Condition(" Custom_UI_Command = \"back\" ");
+        /// <summary>
+        /// String representation of the <c>Custom_UI_Command = "next"</c> condition. This condition is triggered when user presses 'Next' button in the CLR Dialog.
+        /// </summary>
+        public readonly static Condition ClrDialog_NextPressed = new Condition(" Custom_UI_Command = \"next\" ");
+        /// <summary>
+        /// String representation of the <c>Custom_UI_Command = "abort"</c> condition. This condition is triggered when user presses 'Cancel' button in the CLR Dialog.
+        /// </summary>
+        public readonly static Condition ClrDialog_CancelPressed = new Condition(" Custom_UI_Command = \"abort\" ");
+        /// <summary>
         /// String representation of the <c>NOT Installed</c> condition of the WiX <c>Condition</c>.
         /// </summary>
         public readonly static Condition NOT_Installed = new Condition(" (NOT Installed) ");

@@ -601,6 +601,55 @@
             </code>
             </example>
         </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.RemoveDialogsBetween(WixSharp.Project,System.String,System.String)">
+            <summary>
+            Removes the dialogs between specified two dialogs. It simply connects 'next' button of the start dialog with the 
+            'NewDialog' action associated with the end dialog. And vise versa for the 'back' button.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="start">The start.</param>
+            <param name="end">The end.</param>
+            <returns></returns>
+            <example>The following is an example of the setup that skips License dialog.
+            <code> 
+            project.UI = WUI.WixUI_InstallDir;
+            project.RemoveDialogsBetween(Dialogs.WelcomeDlg, Dialogs.InstallDirDlg);
+            ...
+            Compiler.BuildMsi(project);
+            </code>
+            </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.InjectClrDialog(WixSharp.Project,System.String,System.String,System.String)">
+             <summary>
+             Injects CLR dialog between MSI dialogs 'prevDialog' and 'nextDialog'.
+             Passes custom action CLR method name (showDialogMethod) for instantiating and popping up the CLR dialog.
+             </summary>
+             <param name="project">The project.</param>
+             <param name="showDialogMethod">The show dialog method.</param>
+             <param name="prevDialog">The previous dialog.</param>
+             <param name="nextDialog">The next dialog.</param>
+             <returns></returns>
+             <example>The following is an example of inserting CustomDialog dialog into the UI sequence between MSI dialogs InsallDirDlg and VerifyReadyDlg.
+             <code> 
+             public class static Script
+             {
+                 public static void Main()
+                 {
+                     var project = new Project("CustomDialogTest");
+                     
+                     project.InjectClrDialog("ShowCustomDialog", Dialogs.InstallDirDlg, Dialogs.VerifyReadyDlg);
+                     Compiler.BuildMsi(project);
+                 }
+                 
+                 [CustomAction]
+                 public static ActionResult ShowCustomDialog(Session session)
+                 {
+                     return WixCLRDialog.ShowAsMsiDialog(new CustomDialog(session));
+                 }
+            }
+             </code>
+             </example>
+        </member>
         <member name="M:WixSharp.CommonTasks.Tasks.GetFileVersion(System.String)">
             <summary>
             Gets the file version.
@@ -966,16 +1015,49 @@
             <param name="dialogName">Name of the dialog.</param>
             <param name="condition">The condition.</param>
         </member>
-        <member name="T:WixSharp.ExecueteCustomAction">
+        <member name="M:WixSharp.ShowDialog.#ctor(System.String,WixSharp.Condition)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.ShowDialog"/> class.
+            </summary>
+            <param name="dialogName">Name of the dialog.</param>
+            <param name="condition">The condition.</param>
+        </member>
+        <member name="T:WixSharp.SpawnDialog">
+            <summary>
+            Defines <see cref="T:WixSharp.DialogAction"/> for creating a child of a modal dialog box while keeping the present dialog box running. 
+            </summary>
+        </member>
+        <member name="M:WixSharp.SpawnDialog.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.SpawnDialog"/> class.
+            </summary>
+            <param name="dialogName">Name of the dialog.</param>
+            <param name="condition">The condition.</param>
+        </member>
+        <member name="M:WixSharp.SpawnDialog.#ctor(System.String,WixSharp.Condition)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.SpawnDialog"/> class.
+            </summary>
+            <param name="dialogName">Name of the dialog.</param>
+            <param name="condition">The condition.</param>
+        </member>
+        <member name="T:WixSharp.ExecuteCustomAction">
             <summary>
             Defines <see cref="T:WixSharp.DialogAction"/> for executing MSI CustomAction ("DoAction").
             </summary>
         </member>
-        <member name="M:WixSharp.ExecueteCustomAction.#ctor(System.String,System.String)">
+        <member name="M:WixSharp.ExecuteCustomAction.#ctor(System.String,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.ExecueteCustomAction"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.ExecuteCustomAction"/> class.
             </summary>
             <param name="actionName">Name of the action.</param>
+            <param name="condition">The condition.</param>
+        </member>
+        <member name="M:WixSharp.ExecuteCustomAction.#ctor(WixSharp.Action,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.ExecuteCustomAction"/> class.
+            </summary>
+            <param name="action">The action.</param>
             <param name="condition">The condition.</param>
         </member>
         <member name="T:WixSharp.SetTargetPath">
@@ -1015,18 +1097,24 @@
             <param name="returnValue">The return value.</param>
             <param name="condition">The condition.</param>
         </member>
+        <member name="M:WixSharp.CloseDialog.#ctor(System.String,WixSharp.Condition)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.CloseDialog"/> class.
+            </summary>
+            <param name="returnValue">The return value.</param>
+            <param name="condition">The condition.</param>
+        </member>
         <member name="T:WixSharp.DialogSequence">
             <summary>
-            Simple class that defines custom UI (WiX <c>UI</c> element). This is a specialized version of <see cref="T:WixSharp.CustomUI"/> class
-            designed to allow simple customization of the dialogs sequence without the introduction of any custom dialogs. 
-            <example>The following is an example demonstrates how to skip <c>License Agreement</c> dialog, 
+            Simple class that defines custom UI (WiX <c>UI</c> element). This is a specialized version of <see cref="T:WixSharp.CustomUI" /> class
+            designed to allow simple customization of the dialogs sequence without the introduction of any custom dialogs.
+            <example>The following is an example demonstrates how to skip <c>License Agreement</c> dialog,
             which is otherwise displayed between <c>Welcome</c> and <c>InstallDir</c> dialogs.
             <code>
             project.CustomUI = new DialogSequence()
-                                       .On(Dialogs.WelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.InstallDirDlg))
-                                       .On(Dialogs.InstallDirDlg, Buttons.Back, new ShowDialog(Dialogs.WelcomeDlg)); 
-            </code>
-            </example>
+            .On(Dialogs.WelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.InstallDirDlg))
+            .On(Dialogs.InstallDirDlg, Buttons.Back, new ShowDialog(Dialogs.WelcomeDlg));
+            </code></example>
             </summary>
         </member>
         <member name="T:WixSharp.CustomUI">
@@ -1089,10 +1177,11 @@
             <param name="dialog">The dialog.</param>
             <param name="control">The control.</param>
             <param name="handlers">The handlers.</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.CustomUI.On(WixSharp.Dialog,System.String,WixSharp.DialogAction[])">
             <summary>
-            Defines the <see cref="T:WixSharp.Dialog"/> UI control Action (event handler).
+            Defines the <see cref="T:WixSharp.Dialog" /> UI control Action (event handler).
             <code>
             customUI.On(activationDialog, Buttons.Cancel, new CloseDialog("Exit"));
             </code>
@@ -1100,6 +1189,7 @@
             <param name="dialog">The dialog.</param>
             <param name="control">The control.</param>
             <param name="handlers">The handlers.</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.CustomUI.ToXElement">
             <summary>
@@ -1122,6 +1212,22 @@
             <param name="control">The control.</param>
             <param name="handlers">The handlers.</param>
             <returns></returns>
+        </member>
+        <member name="F:WixSharp.DialogSequence.DefaultOrder">
+            <summary>
+            The default value of the Order of the DialogAction. It is automatically assigned of handler doesn't have it set.
+            </summary>
+        </member>
+        <member name="T:WixSharp.CommomDialogsUI">
+            <summary>
+            Class defining all <c>Publish</c> declarations associated with the <c>WixUI_Common</c> dialogs. This class is used as a starting point for 
+            UI customization with injection of CLR Dialog (WinForms). 
+            </summary>
+        </member>
+        <member name="M:WixSharp.CommomDialogsUI.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.CommomDialogsUI"/> class.
+            </summary>
         </member>
         <member name="T:WixSharp.CommonDialogs">
             <summary>
@@ -1182,7 +1288,7 @@
             project.CustomUI = CustomUIBuilder.InjectPostLicenseClrDialog(customDialog.Id, " LicenseAccepted = \"1\"");
             </code>
             </summary>
-            <param name="showClrDialogAction">The show CLR dialog action.</param>
+            <param name="showAction">The show CLR dialog action id.</param>
             <param name="clrDialogGoNextCondition">The CLR dialog go next condition.</param>
             <returns></returns>
         </member>
@@ -1441,6 +1547,13 @@
             <param name="path">The Wix# directory path.</param>
             <returns>Replacement result.</returns>
         </member>
+        <member name="M:WixSharp.Extensions.ExpandEnvVars(System.String)">
+            <summary>
+            Expands the EnvironmentVariable It is nothing else but a an extension method wrapping Environment.ExpandEnvironmentVariables to allow fluent API.
+            </summary>
+            <param name="path">The path.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.IsEmpty(System.String)">
             <summary>
             Determines whether the given string is empty.
@@ -1613,6 +1726,14 @@
             <returns><see cref="T:Microsoft.Deployment.WindowsInstaller.ActionResult.Success"/> if no errors detected, otherwise
             it returns <see cref="T:Microsoft.Deployment.WindowsInstaller.ActionResult.Failure"/>.
             </returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToWObject``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            To a collection into WixObject that can be passed in the Project constructor.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="items">The items.</param>
+            <returns></returns>
         </member>
         <member name="T:WixSharp.WixButton">
             <summary>
@@ -2823,6 +2944,96 @@
             <param name="target">The path to the executable the shortcut is associated with.</param>
             <param name="arguments">The shortcut arguments.</param>
         </member>
+        <member name="T:WixSharp.EnvironmentVariable">
+             <summary>
+             Defines FileType association to be created for the file extension and the installed file/application (parent  <see cref="T:WixSharp.File"/>).
+             </summary>
+            <example>The following is an example of associating file extension ".my" with installed application MyViewer.exe.
+            <code>
+             var project = 
+                 new Project("My Product",
+                     new Dir(@"%ProgramFiles%\My Company\My Product",
+                         new Dir(@"Notepad",
+                             new File("MyViewer.exe",
+                                 new FileAssociation("my", "application/my", "open", "\"%1\"")))),
+                     new EnvironmentVariable("MYPRODUCT_DIR", "[INSTALLDIR]"),
+                     new EnvironmentVariable("PATH", "[INSTALLDIR]") { Part = EnvVarPart.last });
+                     ...
+                     
+             Compiler.BuildMsi(project);
+             </code>
+             </example>
+        </member>
+        <member name="M:WixSharp.EnvironmentVariable.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.EnvironmentVariable"/> class.
+            </summary>
+            <param name="name">The name of the environment variable.</param>
+            <param name="value">The value of the environment variable.</param>
+        </member>
+        <member name="M:WixSharp.EnvironmentVariable.#ctor(WixSharp.Id,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.EnvironmentVariable"/> class.
+            </summary>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.EnvironmentVariable"/> instance.</param>
+            <param name="name">The name of the environment variable.</param>
+            <param name="value">The value of the environment variable.</param>
+        </member>
+        <member name="M:WixSharp.EnvironmentVariable.#ctor(WixSharp.Feature,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.EnvironmentVariable"/> class.
+            </summary>
+            <param name="feature"><see cref="F:WixSharp.EnvironmentVariable.Feature"></see> the environment variable should be included in.</param>
+            <param name="name">The name of the environment variable.</param>
+            <param name="value">The value of the environment variable.</param>
+        </member>
+        <member name="M:WixSharp.EnvironmentVariable.#ctor(WixSharp.Id,WixSharp.Feature,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.EnvironmentVariable"/> class.
+            </summary>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.EnvironmentVariable"/> instance.</param>
+            <param name="feature"><see cref="F:WixSharp.EnvironmentVariable.Feature"></see> the environment variable should be included in.</param>
+            <param name="name">The name.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="F:WixSharp.EnvironmentVariable.System">
+            <summary>
+            Specifies that the environment variable should be added to the system environment space. The default is 'no' which 
+            indicates the environment variable is added to the user environment space.
+            </summary>
+        </member>
+        <member name="F:WixSharp.EnvironmentVariable.Permanent">
+            <summary>
+            Specifies that the environment variable should not be removed on uninstall.
+            </summary>
+        </member>
+        <member name="F:WixSharp.EnvironmentVariable.Value">
+            <summary>
+            The value to set into the environment variable. If this attribute is not set, the environment variable is removed 
+            during installation if it exists on the machine.
+            </summary>
+        </member>
+        <member name="F:WixSharp.EnvironmentVariable.Feature">
+            <summary>
+            <see cref="F:WixSharp.EnvironmentVariable.Feature"></see> the environment variable is included in.
+            </summary>
+        </member>
+        <member name="F:WixSharp.EnvironmentVariable.Action">
+            <summary>
+            Specifies whether the environmental variable should be created, set or removed when the parent component is installed. <see cref="T:WixSharp.EnvironmentVariable.Action"/>.
+            </summary>
+        </member>
+        <member name="F:WixSharp.EnvironmentVariable.Part">
+            <summary>
+            Indicates how value should be set.
+            </summary>
+        </member>
+        <member name="F:WixSharp.EnvironmentVariable.Condition">
+            <summary>
+            Defines the installation <see cref="F:WixSharp.EnvironmentVariable.Condition"/>, which is to be checked during the installation to 
+            determine if the registry value should be created on the target system.
+            </summary>
+        </member>
         <member name="T:WixSharp.FileAssociation">
              <summary>
              Defines FileType association to be created for the file extension and the installed file/application (parent  <see cref="T:WixSharp.File"/>).
@@ -3649,6 +3860,21 @@
             </code> 
             </summary>
             <returns>A CDATA string representing the condition.</returns>
+        </member>
+        <member name="F:WixSharp.Condition.ClrDialog_BackPressed">
+            <summary>
+            String representation of the <c>Custom_UI_Command = "back"</c> condition. This condition is triggered when user presses 'Back' button in the CLR Dialog.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Condition.ClrDialog_NextPressed">
+            <summary>
+            String representation of the <c>Custom_UI_Command = "next"</c> condition. This condition is triggered when user presses 'Next' button in the CLR Dialog.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Condition.ClrDialog_CancelPressed">
+            <summary>
+            String representation of the <c>Custom_UI_Command = "abort"</c> condition. This condition is triggered when user presses 'Cancel' button in the CLR Dialog.
+            </summary>
         </member>
         <member name="F:WixSharp.Condition.NOT_Installed">
             <summary>
@@ -4642,6 +4868,11 @@
             Collection of <see cref="T:WixSharp.RegValue"/>s to be set during the installation.
             </summary>
         </member>
+        <member name="F:WixSharp.Project.EnvironmentVariables">
+            <summary>
+            Collection of <see cref="T:WixSharp.EnvironmentVariable"/>s to be set during the installation.
+            </summary>
+        </member>
         <member name="F:WixSharp.Project.Properties">
             <summary>
             Collection of WiX/MSI <see cref="T:WixSharp.Property"/> objects to be created during the installed.
@@ -4733,7 +4964,7 @@
         </member>
         <member name="P:WixSharp.Project.SourceBaseDir">
             <summary>
-            Base directory for the relative pathes of the project items (e.g. <see cref="T:WixSharp.File"></see>). 
+            Base directory for the relative paths of the project items (e.g. <see cref="T:WixSharp.File"></see>). 
             </summary>
         </member>
         <member name="P:WixSharp.Project.OutDir">
@@ -6820,6 +7051,50 @@
         <member name="F:WixSharp.SvcEventType.both">
             <summary>
             Specifies that occur on install and uninstall.
+            </summary>
+        </member>
+        <member name="T:WixSharp.EnvVarPart">
+            <summary>
+            Indicates how value of the environment variable should be set.
+            </summary>
+        </member>
+        <member name="F:WixSharp.EnvVarPart.all">
+            <summary>
+            This value is the entire environmental variable. This is the default.
+            </summary>
+        </member>
+        <member name="F:WixSharp.EnvVarPart.first">
+             <summary>
+            This value is prefixed.
+             </summary>
+        </member>
+        <member name="F:WixSharp.EnvVarPart.last">
+             <summary>
+            This value is appended.
+             </summary>
+        </member>
+        <member name="T:WixSharp.EnvVarAction">
+            <summary>
+            Specifies whether the environmental variable should be created, set or removed when the parent component is installed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.EnvVarAction.create">
+            <summary>
+            Creates the environment variable if it does not exist, then set it during installation. This has no effect on the value of 
+            the environment variable if it already exists.
+            </summary>
+        </member>
+        <member name="F:WixSharp.EnvVarAction.set">
+            <summary>
+            Creates the environment variable if it does not exist, and then set it during installation. If the environment variable exists, 
+            set it during the installation.
+            </summary>
+        </member>
+        <member name="F:WixSharp.EnvVarAction.remove">
+            <summary>
+            Removes the environment variable during an installation. The installer only removes an environment variable 
+            during an installation if the name and value of the variable match the entries in the Name and Value attributes. 
+            If you want to remove an environment variable, regardless of its value, do not set the Value attribute.
             </summary>
         </member>
     </members>

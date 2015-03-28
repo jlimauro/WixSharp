@@ -43,7 +43,8 @@ namespace WixSharp
     ///             new Dir(@"Notepad",
     ///                 new File("MyViewer.exe",
     ///                     new FileAssociation("my", "application/my", "open", "\"%1\"")))),
-    ///         new EnvironmentVariable("MYPRODUCT_DIR", "%ProgramFiles%\My Company\My Product"));  
+    ///         new EnvironmentVariable("MYPRODUCT_DIR", "[INSTALLDIR]"),
+    ///         new EnvironmentVariable("PATH", "[INSTALLDIR]") { Part = EnvVarPart.last });
     ///         ...
     ///         
     /// Compiler.BuildMsi(project);

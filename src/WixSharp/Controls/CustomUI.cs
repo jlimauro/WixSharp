@@ -45,8 +45,50 @@ namespace WixSharp
         /// <param name="condition">The condition.</param>
         public ShowDialog(string dialogName, string condition = "1")
         {
-            this.Name = ControlAction.NewDialog.ToString();
+            this.Name = ControlAction.NewDialog;
             this.Condition = condition;
+            this.Value = dialogName;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShowDialog"/> class.
+        /// </summary>
+        /// <param name="dialogName">Name of the dialog.</param>
+        /// <param name="condition">The condition.</param>
+        public ShowDialog(string dialogName, Condition condition)
+        {
+            this.Name = ControlAction.NewDialog;
+            this.Condition = condition.ToString();
+            this.Value = dialogName;
+        }
+    }
+   
+    /// <summary>
+    /// Defines <see cref="T:WixSharp.DialogAction"/> for creating a child of a modal dialog box while keeping the present dialog box running. 
+    /// </summary>
+    public partial class SpawnDialog : DialogAction
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpawnDialog"/> class.
+        /// </summary>
+        /// <param name="dialogName">Name of the dialog.</param>
+        /// <param name="condition">The condition.</param>
+        public SpawnDialog(string dialogName, string condition = "1")
+        {
+            this.Name = ControlAction.SpawnDialog;
+            this.Condition = condition;
+            this.Value = dialogName;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpawnDialog"/> class.
+        /// </summary>
+        /// <param name="dialogName">Name of the dialog.</param>
+        /// <param name="condition">The condition.</param>
+        public SpawnDialog(string dialogName, Condition condition)
+        {
+            this.Name = ControlAction.SpawnDialog;
+            this.Condition = condition.ToString();
             this.Value = dialogName;
         }
     }
@@ -55,18 +97,30 @@ namespace WixSharp
     /// <summary>
     /// Defines <see cref="T:WixSharp.DialogAction"/> for executing MSI CustomAction ("DoAction").
     /// </summary>
-    public partial class ExecueteCustomAction : DialogAction
+    public partial class ExecuteCustomAction : DialogAction
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExecueteCustomAction"/> class.
+        /// Initializes a new instance of the <see cref="ExecuteCustomAction"/> class.
         /// </summary>
         /// <param name="actionName">Name of the action.</param>
         /// <param name="condition">The condition.</param>
-        public ExecueteCustomAction(string actionName, string condition = "1")
+        public ExecuteCustomAction(string actionName, string condition = "1")
         {
             this.Name = "DoAction";
             this.Condition = condition;
             this.Value = actionName;
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExecuteCustomAction"/> class.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <param name="condition">The condition.</param>
+        public ExecuteCustomAction(Action action, string condition = "1")
+        {
+            this.Name = "DoAction";
+            this.Condition = condition;
+            this.Value = action.Id;
         }
     }
 
@@ -123,6 +177,18 @@ namespace WixSharp
             this.Name = ControlAction.EndDialog.ToString();
             this.Condition = condition;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:WixSharp.CloseDialog"/> class.
+        /// </summary>
+        /// <param name="returnValue">The return value.</param>
+        /// <param name="condition">The condition.</param>
+        public CloseDialog(string returnValue, Condition condition)
+        {
+            this.Value = returnValue;
+            this.Name = ControlAction.EndDialog.ToString();
+            this.Condition = condition.ToString();
+        }
     }
 
     /// <summary>
@@ -144,16 +210,15 @@ namespace WixSharp
     }
 
     /// <summary>
-    /// Simple class that defines custom UI (WiX <c>UI</c> element). This is a specialized version of <see cref="T:WixSharp.CustomUI"/> class
-    /// designed to allow simple customization of the dialogs sequence without the introduction of any custom dialogs. 
-    /// <example>The following is an example demonstrates how to skip <c>License Agreement</c> dialog, 
+    /// Simple class that defines custom UI (WiX <c>UI</c> element). This is a specialized version of <see cref="T:WixSharp.CustomUI" /> class
+    /// designed to allow simple customization of the dialogs sequence without the introduction of any custom dialogs.
+    /// <example>The following is an example demonstrates how to skip <c>License Agreement</c> dialog,
     /// which is otherwise displayed between <c>Welcome</c> and <c>InstallDir</c> dialogs.
     /// <code>
     /// project.CustomUI = new DialogSequence()
-    ///                            .On(Dialogs.WelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.InstallDirDlg))
-    ///                            .On(Dialogs.InstallDirDlg, Buttons.Back, new ShowDialog(Dialogs.WelcomeDlg)); 
-    /// </code>
-    /// </example>
+    /// .On(Dialogs.WelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.InstallDirDlg))
+    /// .On(Dialogs.InstallDirDlg, Buttons.Back, new ShowDialog(Dialogs.WelcomeDlg));
+    /// </code></example>
     /// </summary>
     public class DialogSequence : CustomUI
     {
@@ -176,15 +241,18 @@ namespace WixSharp
         /// <param name="control">The control.</param>
         /// <param name="handlers">The handlers.</param>
         /// <returns></returns>
-        public DialogSequence On(string dialog, string control, params DialogAction[] handlers)
+        public new DialogSequence On(string dialog, string control, params DialogAction[] handlers)
         {
             handlers.Where(h => !h.Order.HasValue)
-                    .ForEach(h => h.Order = DefaultOrder); 
+                    .ForEach(h => h.Order = DefaultOrder);
 
             base.On(dialog, control, handlers);
             return this;
         }
 
+        /// <summary>
+        /// The default value of the Order of the DialogAction. It is automatically assigned of handler doesn't have it set.
+        /// </summary>
         static public int DefaultOrder = 5; //something high enough to have the highest priority at runtime
     }
 
@@ -258,7 +326,8 @@ namespace WixSharp
         /// <param name="dialog">The dialog.</param>
         /// <param name="control">The control.</param>
         /// <param name="handlers">The handlers.</param>
-        public void On(string dialog, string control, params DialogAction[] handlers)
+        /// <returns></returns>
+        public CustomUI On(string dialog, string control, params DialogAction[] handlers)
         {
             var actionInfo = UISequence.Where(x => x.Dialog == dialog && x.Control == control)
                                        .Select(x => x)
@@ -273,10 +342,11 @@ namespace WixSharp
             }
 
             actionInfo.Actions.AddRange(handlers);
+            return this;
         }
 
         /// <summary>
-        /// Defines the <see cref="T:WixSharp.Dialog"/> UI control Action (event handler).
+        /// Defines the <see cref="T:WixSharp.Dialog" /> UI control Action (event handler).
         /// <code>
         /// customUI.On(activationDialog, Buttons.Cancel, new CloseDialog("Exit"));
         /// </code>
@@ -284,9 +354,10 @@ namespace WixSharp
         /// <param name="dialog">The dialog.</param>
         /// <param name="control">The control.</param>
         /// <param name="handlers">The handlers.</param>
-        public void On(Dialog dialog, string control, params DialogAction[] handlers)
+        /// <returns></returns>
+        public CustomUI On(Dialog dialog, string control, params DialogAction[] handlers)
         {
-            On(dialog.Id, control, handlers);
+            return On(dialog.Id, control, handlers);
         }
 
         /// <summary>
@@ -361,6 +432,43 @@ namespace WixSharp
         }
     }
 
+    /// <summary>
+    /// Class defining all <c>Publish</c> declarations associated with the <c>WixUI_Common</c> dialogs. This class is used as a starting point for 
+    /// UI customization with injection of CLR Dialog (WinForms). 
+    /// </summary>
+    public class CommomDialogsUI : CustomUI
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommomDialogsUI"/> class.
+        /// </summary>
+        public CommomDialogsUI()
+        {
+            On(Dialogs.ExitDialog, Buttons.Finish, new CloseDialog() { Order = 9999 });
+
+            On(Dialogs.WelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.LicenseAgreementDlg));
+
+            On(Dialogs.LicenseAgreementDlg, Buttons.Back, new ShowDialog(Dialogs.WelcomeDlg));
+            On(Dialogs.LicenseAgreementDlg, Buttons.Next, new ShowDialog(Dialogs.InstallDirDlg));
+
+            On(Dialogs.InstallDirDlg, Buttons.Back, new ShowDialog(Dialogs.LicenseAgreementDlg));
+
+            On(Dialogs.InstallDirDlg, Buttons.Next, new SetTargetPath(),
+                                                    new ShowDialog(Dialogs.VerifyReadyDlg));
+
+            On(Dialogs.InstallDirDlg, Buttons.ChangeFolder,
+                                                    new SetProperty("_BrowseProperty", "[WIXUI_INSTALLDIR]"),
+                                                    new SpawnDialog(CommonDialogs.BrowseDlg));
+
+            On(Dialogs.VerifyReadyDlg, Buttons.Back, new ShowDialog(Dialogs.InstallDirDlg, Condition.NOT_Installed),
+                                                     new ShowDialog(Dialogs.MaintenanceTypeDlg, Condition.Installed));
+
+            On(Dialogs.MaintenanceWelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.MaintenanceTypeDlg));
+
+            On(Dialogs.MaintenanceTypeDlg, Buttons.Back, new ShowDialog(Dialogs.MaintenanceWelcomeDlg));
+            On(Dialogs.MaintenanceTypeDlg, Buttons.Repair, new ShowDialog(Dialogs.VerifyReadyDlg));
+            On(Dialogs.MaintenanceTypeDlg, Buttons.Remove, new ShowDialog(Dialogs.VerifyReadyDlg));
+        }
+    }
 
     /// <summary>
     /// Defines values (names) for the WiX custom UI predefined dialog types. 
@@ -421,6 +529,8 @@ namespace WixSharp
         public const string Remove = "RemoveButton";
 #pragma warning restore 1591
     }
+
+
 
     /// <summary>
     /// The Factory class for building <see cref="T:WixSharp.CustomUI"/>. 
@@ -499,41 +609,66 @@ namespace WixSharp
         /// project.CustomUI = CustomUIBuilder.InjectPostLicenseClrDialog(customDialog.Id, " LicenseAccepted = \"1\"");
         /// </code>
         /// </summary>
-        /// <param name="showClrDialogAction">The show CLR dialog action.</param>
+        /// <param name="showAction">The show CLR dialog action id.</param>
         /// <param name="clrDialogGoNextCondition">The CLR dialog go next condition.</param>
         /// <returns></returns>
-        public static CustomUI InjectPostLicenseClrDialog(string showClrDialogAction, string clrDialogGoNextCondition = null)
+        [Obsolete("This method was originally introduced for demo purposes only. Use WixSharp.CommonTasks.Tasks.InjectClrDialog(this Project project,...) extension method for more practical scenarios.")]
+        public static CustomUI InjectPostLicenseClrDialog(string showAction, string clrDialogGoNextCondition = null)
         {
-            var customUI = new CustomUI();
+            var customUI = new CommomDialogsUI();
+            var prevDialog = Dialogs.LicenseAgreementDlg;
+            var nextDialog = Dialogs.InstallDirDlg;
 
-            customUI.On(Dialogs.ExitDialog, Buttons.Finish, new CloseDialog() { Order = 9999 });
+            //disconnect prev and next dialogs
+            customUI.UISequence.RemoveAll(x => (x.Dialog == prevDialog && x.Control == Buttons.Next) ||
+                                             (x.Dialog == nextDialog && x.Control == Buttons.Back));
 
-            customUI.On(Dialogs.WelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.LicenseAgreementDlg));
+            //create new dialogs connection with showAction in between
+            customUI.On(prevDialog, Buttons.Next, new ExecuteCustomAction(showAction));
+            customUI.On(prevDialog, Buttons.Next, new ShowDialog(nextDialog, Condition.ClrDialog_NextPressed + " AND " + (clrDialogGoNextCondition ?? "\"1\"")));
+            customUI.On(prevDialog, Buttons.Next, new CloseDialog("Exit", Condition.ClrDialog_CancelPressed) { Order = 2 });
 
-            customUI.On(Dialogs.LicenseAgreementDlg, Buttons.Back, new ShowDialog(Dialogs.WelcomeDlg));
-            customUI.On(Dialogs.LicenseAgreementDlg, Buttons.Next, new ExecueteCustomAction(showClrDialogAction));
-            customUI.On(Dialogs.LicenseAgreementDlg, Buttons.Next, new ShowDialog(Dialogs.InstallDirDlg, "Custom_UI_Command = \"next\" AND  " + (clrDialogGoNextCondition ?? "\"1\"")));
-            customUI.On(Dialogs.LicenseAgreementDlg, Buttons.Next, new CloseDialog("Exit", "Custom_UI_Command = \"abort\"") {Order=2});
-
-            customUI.On(Dialogs.InstallDirDlg, Buttons.Back, new ExecueteCustomAction(showClrDialogAction));
-            customUI.On(Dialogs.InstallDirDlg, Buttons.Back, new ShowDialog(Dialogs.LicenseAgreementDlg, "Custom_UI_Command = \"back\""));
-            customUI.On(Dialogs.InstallDirDlg, Buttons.Next, new SetTargetPath(),
-                                                             new ShowDialog(Dialogs.VerifyReadyDlg));
-
-            customUI.On(Dialogs.InstallDirDlg, Buttons.ChangeFolder,
-                                                             new SetProperty("_BrowseProperty", "[WIXUI_INSTALLDIR]"),
-                                                             new ShowDialog(CommonDialogs.BrowseDlg));
-
-            customUI.On(Dialogs.VerifyReadyDlg, Buttons.Back, new ShowDialog(Dialogs.InstallDirDlg, Condition.NOT_Installed),
-                                                              new ShowDialog(Dialogs.MaintenanceTypeDlg, Condition.Installed));
-
-            customUI.On(Dialogs.MaintenanceWelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.MaintenanceTypeDlg));
-
-            customUI.On(Dialogs.MaintenanceTypeDlg, Buttons.Back, new ShowDialog(Dialogs.MaintenanceWelcomeDlg));
-            customUI.On(Dialogs.MaintenanceTypeDlg, Buttons.Repair, new ShowDialog(Dialogs.VerifyReadyDlg));
-            customUI.On(Dialogs.MaintenanceTypeDlg, Buttons.Remove, new ShowDialog(Dialogs.VerifyReadyDlg));
+            customUI.On(nextDialog, Buttons.Back, new ExecuteCustomAction(showAction));
+            customUI.On(nextDialog, Buttons.Back, new ShowDialog(prevDialog, Condition.ClrDialog_BackPressed));
 
             return customUI;
         }
+
+        //public static CustomUI InjectClrDialogBetween(string showAction, string prevDialog, string nextDialog)
+        //{
+        //    var customUI = new CommomDialogsUI();
+
+        //    //disconnect prev and next dialogs
+        //    customUI.UISequence.RemoveAll(x => (x.Dialog == prevDialog && x.Control == Buttons.Next) ||
+        //                                     (x.Dialog == nextDialog && x.Control == Buttons.Back));
+
+        //    //create new dialogs connection with showAction in between
+        //    customUI.On(prevDialog, Buttons.Next, new ExecuteCustomAction(showAction));
+        //    customUI.On(prevDialog, Buttons.Next, new ShowDialog(nextDialog, Condition.ClrDialog_NextPressed));
+        //    customUI.On(prevDialog, Buttons.Next, new CloseDialog("Exit", Condition.ClrDialog_CancelPressed) { Order = 2 });
+
+        //    customUI.On(nextDialog, Buttons.Back, new ExecuteCustomAction(showAction));
+        //    customUI.On(nextDialog, Buttons.Back, new ShowDialog(prevDialog, Condition.ClrDialog_BackPressed));
+
+        //    return customUI;
+        //}
+
+        //public static CustomUI InjectClrDialogBetween1(string showAction, string prevDialox, string nextDialog)
+        //{
+        //    var customUI = new CustomUI();
+
+        //    customUI.TextStyles.Clear();
+        //    customUI.DialogRefs.Clear();
+        //    customUI.Properties.Clear();
+
+        //    customUI.On(prevDialox, Buttons.Next, new ExecueteCustomAction(showAction));
+        //    customUI.On(prevDialox, Buttons.Next, new ShowDialog(nextDialog, "Custom_UI_Command = \"next\""));
+        //    customUI.On(prevDialox, Buttons.Next, new CloseDialog("Exit", "Custom_UI_Command = \"abort\"") { Order = 2 });
+
+        //    customUI.On(nextDialog, Buttons.Back, new ExecueteCustomAction(showAction));
+        //    customUI.On(nextDialog, Buttons.Back, new ShowDialog(prevDialox, "Custom_UI_Command = \"back\""));
+
+        //    return customUI;
+        //}
     }
 }

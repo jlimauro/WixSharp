@@ -337,7 +337,12 @@ namespace WixSharp
                            .Replace("[" + Compiler.EnvironmentConstantsMapping[key] + "]", Compiler.EnvironmentConstantsMapping[key]);
             return path;
         }
-        
+
+        /// <summary>
+        /// Expands the EnvironmentVariable It is nothing else but a an extension method wrapping Environment.ExpandEnvironmentVariables to allow fluent API.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
         public static string ExpandEnvVars(this string path)
         {
             return Environment.ExpandEnvironmentVariables(path);
@@ -771,6 +776,12 @@ namespace WixSharp
             return ActionResult.Success;
         }
 
+        /// <summary>
+        /// To a collection into WixObject that can be passed in the Project constructor.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
         public static WixObject ToWObject<T>(this IEnumerable<T> items) where T: WixObject 
         {
             return new WixItems(items.Cast<WixObject>());
