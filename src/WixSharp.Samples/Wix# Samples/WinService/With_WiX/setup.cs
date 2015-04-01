@@ -2,17 +2,10 @@
 //css_ref System.Core.dll;
 //css_ref ..\..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 
-using WixSharp.CommonTasks;
 using System;
-using System.Xml;
-using System.Xml.Linq;
+using System.Data;
 using System.Linq;
-using Microsoft.Win32;
-using System.Windows.Forms;
-using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
-using System.Security.Principal;
-using System.Diagnostics;
 
 class Script
 {
@@ -21,10 +14,15 @@ class Script
         try
         {
             File service;
+            
             var project =
                 new Project("My Product",
                     new Dir(@"%ProgramFiles%\My Company\My Product",
                         service = new File(@"..\SimpleService\MyApp.exe")));
+
+            //The service file element can also be located as in the following commented code
+            //File service = project.FindFile(f => f.Name.EndsWith("MyApp.exe"));
+            //File service = project.AllFiles.Single(f => f.Name.EndsWith("MyApp.exe"));
 
             service.ServiceInstaller = new ServiceInstaller
                                        {
@@ -37,6 +35,7 @@ class Script
             project.GUID = new Guid("6fe30b47-2577-43ad-9195-1861ba25889b");
             project.OutFileName = "setup";
 
+            Compiler.PreserveTempFiles = true;
             Compiler.BuildMsi(project);
         }
         catch (System.Exception ex)

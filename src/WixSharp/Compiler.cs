@@ -27,9 +27,11 @@ THE SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -134,51 +136,6 @@ namespace WixSharp
         /// </summary>
         static public event XDocumentFormatedDlgt WixSourceFormated;
 
-        ///// <summary>
-        ///// Forces <see cref="Compiler"/> to insert "dummy registry" (HKCU\Software\WixSharp\Used\Value=0") element in the MSI component(s).
-        ///// <para>
-        ///// This is one of the WiX/MSI limitations. For not obvious reason WiX does not allow file components to have shortcuts
-        ///// defined in the same WiX <c>File</c> element unless it also contains a <c>RegistryKey</c> element.
-        ///// </para>
-        ///// </summary>
-        ///// <remarks>This is a "work around" of this limitation and it is required only under certain circumstances. Note that normally
-        ///// such circumstances are identified by the <see cref="Compiler"/> and this flag is set automatically during the
-        ///// <c>BuildMsi</c>, <c>BuildWxs</c> or <c>BuildMsiCmd</c> calls.
-        ///// </remarks>
-        //static public bool insertDummyRegkey = false;
-        ///// <summary>
-        ///// Forces <see cref="Compiler"/> to insert "dummy" <c>Component</c> element into all directories.
-        ///// </summary>
-        ///// <remarks>
-        ///// <para>
-        ///// This is one of the WiX/MSI limitations. Under some conditions every directory must contain <c>Component</c> (e.g. "no files" installation).
-        ///// Interestingly enough WiX returns error for "no files" installation but builds good MSI.
-        ///// </para>
-        ///// <para>This is a "work around" for this limitation and it is required only under certain circumstances. Note that normally
-        ///// such circumstances are identified by the <see cref="Compiler"/> and this flag is set automatically during the
-        ///// <c>BuildMsi</c>, <c>BuildWxs</c> or <c>BuildMsiCmd</c> calls.
-        ///// </para>
-        ///// </remarks>
-        //static public bool insertComponentInAllDirs = false;
-        ///// <summary>
-        ///// Forces <see cref="Compiler"/> to insert <c>RemoveFolder</c> element into all directories.
-        ///// <para>
-        ///// This is one of the WiX/MSI limitations. Under some circumstances, absence of <c>RemoveFolder</c> element can
-        ///// prevent WiX compiler/linker from building MSI.
-        ///// </para>
-        ///// </summary>
-        ///// <remarks>
-        ///// <para>
-        ///// This is a "work around" for this limitation and it is required only under certain circumstances. Note that normally
-        ///// such circumstances are identified by the <see cref="Compiler"/> and this flag is set automatically during the
-        ///// <c>BuildMsi</c>, <c>BuildWxs</c> or <c>BuildMsiCmd</c> calls.
-        ///// </para>
-        ///// <para>
-        ///// Interestingly enough, in practice, using of WiX <c>RemoveFolder</c> is optional as it seems to
-        ///// make no difference to installation behaviour (during uninstall folders are removed even if RemoveFolder is not used).
-        ///// </para>
-        ///// </remarks>
-        //static public bool insertRemoveDir = false;
         /// <summary>
         /// WiX linker <c>Light.exe</c> options.
         /// <para>The default value is "-sw1076 -sw1079" (disable warning 1076 and 1079).</para>
@@ -2040,19 +1997,38 @@ namespace WixSharp
             }
         }
 
+        static string clientAssembly;
         /// <summary>
         /// Path to the <c>WixSharp.dll</c> client assembly. Typically it is the Wix# setup script assembly.
         /// <para>This value is used to resolve <c>%this%</c> of the <see cref="ManagedAction"/>. If this value is not specified
         /// <see cref="Compiler"/> will set it to the caller of its <c>Build</c> method.</para>
         /// </summary>
-        static public string ClientAssembly = null;
-        //static string clientAssembly;
+        static public string ClientAssembly
+        {
+            get { return clientAssembly; }
+            set
+            {
+                //Debug.Assert(false);
+                clientAssembly = value;
 
-        //static public string ClientAssembly
-        //{
-        //    get { return clientAssembly; }
-        //    set { clientAssembly = value;  }
-        //}
+                var isCSScriptExecution = Environment.GetEnvironmentVariable("CSScriptRuntime") != null;
+
+                if (isCSScriptExecution && clientAssembly.EndsWith("cscs.exe", StringComparison.OrdinalIgnoreCase))
+                {
+                    foreach (var item in AppDomain.CurrentDomain.GetAssemblies())
+                        try
+                        {
+                            var attr = (System.Reflection.AssemblyDescriptionAttribute)item.GetCustomAttributes(typeof(System.Reflection.AssemblyDescriptionAttribute), false).FirstOrDefault();
+                            if (attr != null && IO.File.Exists(attr.Description))
+                            {
+                                clientAssembly = item.Location;
+                                break;
+                            }
+                        }
+                        catch { }
+                }
+            }
+        }
 
         /// <summary>
         /// Flag indicating whether to include PDB file of the assembly implementing ManagedCustomAction into MSI.  Default value is <c>False</c>.
@@ -2142,6 +2118,8 @@ namespace WixSharp
                         (pdbFileArgument ?? " ") +
                         referencedAssemblies +
                         "\"" + Utils.PathCombine(WixSdkLocation, "Microsoft.Deployment.WindowsInstaller.dll") + "\"";
+
+            ValidateCAAssembly(asmFile);
 #if DEBUG
             Console.WriteLine("<- Packing managed CA:");
             Console.WriteLine(makeSfxCA + " " + makeSfxCA_args);
@@ -2153,6 +2131,55 @@ namespace WixSharp
                 throw new ApplicationException("Cannot package ManagedCA assembly(" + asm + ")");
 
             tempFiles.Add(outDll);
+        }
+
+        internal static void ValidateCAAssembly(string file)
+        {
+            //Debug.Assert(false);
+            try
+            {
+                BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static;
+                var assembly = System.Reflection.Assembly.LoadFrom(file);
+                var caMembers = assembly.GetTypes().SelectMany(t => 
+                                        t.GetMembers(bf).Where(mem =>
+                                        {
+                                            return mem.GetCustomAttributes(false)
+                                                      .Where(x => x.ToString() == "Microsoft.Deployment.WindowsInstaller.CustomActionAttribute").Any();
+                                        }))
+                                        .ToArray();
+
+                var invalidMembers = new List<string>();
+                foreach (MemberInfo mi in caMembers)
+                {
+                    string fullName = mi.DeclaringType.FullName + "." + mi.Name;
+
+                    if (!mi.DeclaringType.IsPublic)
+                        if (!invalidMembers.Contains(fullName))
+                            invalidMembers.Add(fullName);
+
+                    if (mi.MemberType != MemberTypes.Method)
+                    {
+                        if (!invalidMembers.Contains(fullName))
+                            invalidMembers.Add(fullName);
+                    }
+                    else
+                    {
+                        var method = (mi as MethodInfo);
+                        if (!method.IsPublic || !method.IsStatic)
+                            if (!invalidMembers.Contains(fullName))
+                                invalidMembers.Add(fullName);
+                    }
+                }
+                if (invalidMembers.Any())
+                {
+                    Console.Write("Warning: some of the type members are marked with [CustomAction] attribute but they don't meet the MakeSfxCA criteria of being public static method of a public type:\n");
+                    foreach(var member in invalidMembers)
+                        Console.WriteLine("  " + member);
+                        Console.WriteLine();
+                }
+            }
+            catch { }
+
         }
 
         internal static Dictionary<string, string> EnvironmentConstantsMapping = new Dictionary<string, string>

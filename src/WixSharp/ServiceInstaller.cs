@@ -126,7 +126,7 @@ namespace WixSharp
         XElement SvcEventToXml(string controlType, SvcEvent value)
         {
             return new XElement("ServiceControl",
-                       new XAttribute("Id", controlType + this.Name),
+                       new XAttribute("Id", controlType + this.Id),
                        new XAttribute("Name", this.Name),
                        new XAttribute(controlType, value.Type),
                        new XAttribute("Wait", value.Wait.ToYesNo()));

@@ -16,7 +16,7 @@ public class Script
     {
         // to install a one of the predefined instances, run from commandline
         // msiexec /i "My Product.msi" MSINEWINSTANCE=1 TRANSFORMS=":SecondInstance"
-        // SecondInstance is the name of the instance, has to be one of the instancenames defined in the WixSourceGenerated event below.
+        // SecondInstance is the name of the instance, has to be one of the instance names defined in the WixSourceGenerated event below.
 
         var project =
             new Project("My Product",

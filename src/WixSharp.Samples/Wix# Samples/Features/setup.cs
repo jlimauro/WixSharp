@@ -10,7 +10,7 @@ class Script
         Feature binaries = new Feature("MyApp Binaries");
         Feature docs = new Feature("MyApp Documentation");
 		binaries.Children.Add(docs);
-        
+
 		Project project =
             new Project("MyProduct",
                 new Dir(@"%ProgramFiles%\My Company\My Product",

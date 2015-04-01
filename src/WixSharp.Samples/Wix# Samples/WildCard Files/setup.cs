@@ -15,8 +15,10 @@ class Script
             new Project("MyProduct",
                 new Dir(@"%ProgramFiles%\MyCompany\MyProduct",
                     new DirFiles(@"Release\Bin\*.*"),
-                    new Dir("GlobalResources", new DirFiles(@"Release\Bin\GlobalResources\*.*")),
-                    new Dir("Images", new DirFiles(@"Release\Bin\Images\*.*")),
+                    new Dir("GlobalResources", 
+                        new DirFiles(@"Release\Bin\GlobalResources\*.*")),
+                    new Dir("Images", 
+                        new DirFiles(@"Release\Bin\Images\*.*")),
                     new ExeFileShortcut("Uninstall MyProduct", "[System64Folder]msiexec.exe", "/x [ProductCode]")));
         
         project.UI = WUI.WixUI_FeatureTree;

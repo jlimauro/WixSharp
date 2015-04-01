@@ -10,13 +10,14 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Xml;
+using System.Diagnostics;
 
 class Script
 {
     static public void Main(string[] args)
     {
         var project = new Project("CustomActionTest",
-
+ 
                 new ManagedAction("RunAsAdminInstall", Return.check, When.Before, Step.LaunchConditions, Condition.NOT_Installed, Sequence.InstallUISequence),
                 new ManagedAction("MyCheckSql", Return.check, When.Before, Step.LaunchConditions, Condition.NOT_Installed, Sequence.InstallUISequence),
                 new ManagedAction("MyCheckMvc4", Return.check, When.Before, Step.LaunchConditions, Condition.NOT_Installed, Sequence.InstallUISequence),
@@ -26,7 +27,6 @@ class Script
 
         Compiler.BuildMsi(project);
     }
-    
 }
 
 public class CustomActions

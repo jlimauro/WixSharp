@@ -221,6 +221,17 @@ namespace WixSharp
         /// <para>This value is used as a <c>Id</c> for the corresponding WiX XML element.</para>
         /// <para>If the <see cref="Id"/> value is not specified explicitly by the user the Wix# compiler
         /// generates it automatically insuring its uniqueness.</para>
+        /// <remarks>
+        /// <para>
+        ///  Note: The ID auto-generation is triggered on the first access (evaluation) and in order to make the id 
+        ///  allocation deterministic the compiler resets ID generator just before the build starts. However if you 
+        ///  accessing any auto-id before the Build*() is called you can it interferes with the ID auto generation and eventually 
+        ///  lead to the WiX ID duplications. To prevent this from happening either:\n" 
+        ///  - Avoid evaluating the auto-generated IDs values before the call to Build*() 
+        ///  - Set the IDs (to be evaluated) explicitly  
+        ///  - Prevent resetting auto-ID generator by setting WixEntity.DoNotResetIdGenerator to true";
+        /// </para>
+        /// </remarks>
         /// </summary>
         /// <value>The id.</value>
         public string Id
@@ -271,6 +282,11 @@ namespace WixSharp
         /// </summary>
         protected string id;
 
+        /// <summary>
+        /// The do not reset auto-ID generator before starting the build.
+        /// </summary>
+        static public bool DoNotResetIdGenerator = true;
+
         static Dictionary<Type, Dictionary<string, int>> idMaps = new Dictionary<Type, Dictionary<string, int>>();
 
         /// <summary>
@@ -280,7 +296,20 @@ namespace WixSharp
         /// </summary>
         static public void ResetIdGenerator()
         {
-            idMaps.Clear();
+            if (!DoNotResetIdGenerator)
+            {
+                if (idMaps.Count > 0)
+                {
+                    Console.WriteLine("----------------------------");
+                    Console.WriteLine("Warning: Wix# compiler detected that some IDs has been auto-generated before the build started. " +
+                                      "This can lead to the WiX ID duplications. To prevent this from happening either:\n" +
+                                      "   - Avoid evaluating the auto-generated IDs values before the call to Build*\n" +
+                                      "   - Set the IDs (to be evaluated) explicitly\n" +
+                                      "   - Prevent resetting auto-ID generator by setting WixEntity.DoNotResetIdGenerator to true");
+                    Console.WriteLine("----------------------------");
+                }
+                idMaps.Clear();
+            }
         }
 
         internal bool IsIdSet()

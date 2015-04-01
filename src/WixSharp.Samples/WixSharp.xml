@@ -49,6 +49,11 @@
             Backing value of <see cref="P:WixSharp.WixEntity.Id"/>.
             </summary>
         </member>
+        <member name="F:WixSharp.WixEntity.DoNotResetIdGenerator">
+            <summary>
+            The do not reset auto-ID generator before starting the build.
+            </summary>
+        </member>
         <member name="M:WixSharp.WixEntity.ResetIdGenerator">
             <summary>
             Resets the <see cref="P:WixSharp.WixEntity.Id"/> generator. This method is exercised by the Wix# compiler before any 
@@ -113,6 +118,17 @@
             <para>This value is used as a <c>Id</c> for the corresponding WiX XML element.</para>
             <para>If the <see cref="P:WixSharp.WixEntity.Id"/> value is not specified explicitly by the user the Wix# compiler
             generates it automatically insuring its uniqueness.</para>
+            <remarks>
+            <para>
+             Note: The ID auto-generation is triggered on the first access (evaluation) and in order to make the id 
+             allocation deterministic the compiler resets ID generator just before the build starts. However if you 
+             accessing any auto-id before the Build*() is called you can it interferes with the ID auto generation and eventually 
+             lead to the WiX ID duplications. To prevent this from happening either:\n" 
+             - Avoid evaluating the auto-generated IDs values before the call to Build*() 
+             - Set the IDs (to be evaluated) explicitly  
+             - Prevent resetting auto-ID generator by setting WixEntity.DoNotResetIdGenerator to true";
+            </para>
+            </remarks>
             </summary>
             <value>The id.</value>
         </member>
@@ -3671,13 +3687,6 @@
             Defines if license file can be have non RTF extension. 
             </summary>
         </member>
-        <member name="F:WixSharp.Compiler.ClientAssembly">
-            <summary>
-            Path to the <c>WixSharp.dll</c> client assembly. Typically it is the Wix# setup script assembly.
-            <para>This value is used to resolve <c>%this%</c> of the <see cref="T:WixSharp.ManagedAction"/>. If this value is not specified
-            <see cref="T:WixSharp.Compiler"/> will set it to the caller of its <c>Build</c> method.</para>
-            </summary>
-        </member>
         <member name="F:WixSharp.Compiler.IgnoreClientAssemblyPDB">
             <summary>
             Flag indicating whether to include PDB file of the assembly implementing ManagedCustomAction into MSI.  Default value is <c>False</c>.
@@ -3747,6 +3756,13 @@
             <value>
             The GUID generator algorithm. 
             </value>
+        </member>
+        <member name="P:WixSharp.Compiler.ClientAssembly">
+            <summary>
+            Path to the <c>WixSharp.dll</c> client assembly. Typically it is the Wix# setup script assembly.
+            <para>This value is used to resolve <c>%this%</c> of the <see cref="T:WixSharp.ManagedAction"/>. If this value is not specified
+            <see cref="T:WixSharp.Compiler"/> will set it to the caller of its <c>Build</c> method.</para>
+            </summary>
         </member>
         <member name="T:WixSharp.Compiler.OutputType">
             <summary>
@@ -4250,7 +4266,7 @@
             <param name="isEnabled">Defines if the <see cref="T:WixSharp.Feature"/> is enabled at startup. 
             Use this parameter if the feature should be disabled by default and only enabled after 
             processing the <c>Condition Table</c> or user input.</param>
-            <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state.</param>
+            <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state to Absent.</param>
         </member>
         <member name="M:WixSharp.Feature.#ctor(System.String,System.Boolean,System.Boolean)">
             <summary>
@@ -4260,7 +4276,7 @@
             <param name="isEnabled">Defines if the <see cref="T:WixSharp.Feature"/> is enabled at startup. 
             Use this parameter if the feature should be disabled by default and only enabled after 
             processing the <c>Condition Table</c> or user input.</param>
-            <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state.</param>
+            <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state to Absent.</param>
         </member>
         <member name="M:WixSharp.Feature.#ctor(System.String,System.String,System.String)">
             <summary>
@@ -4280,7 +4296,7 @@
             <param name="isEnabled">Defines if the <see cref="T:WixSharp.Feature"/> is enabled at startup. 
             Use this parameter if the feature should be disabled by default and only enabled after 
             processing the <c>Condition Table</c> or user input.</param>
-            <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state.</param>
+            <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state to Absent.</param>
             <param name="configurableDir">The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string, MSI runtime will place 
             <c>Configure</c> button for the feature in the <c>Feature Selection</c> dialog.</param>
         </member>
@@ -4297,8 +4313,9 @@
         <member name="F:WixSharp.Feature.AllowChange">
             <summary>
             <para>
-            Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state. 
+            Defines if setup allows the user interface to display an option to change the <see cref="T:WixSharp.Feature"/> state to Absent. 
             </para>
+            <para>This property is translated into WiX Feature.Absent attribute.</para>
             The default value is <c>true</c>.
             </summary>
         </member>

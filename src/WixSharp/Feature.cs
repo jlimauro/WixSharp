@@ -139,7 +139,7 @@ namespace WixSharp
         /// <param name="isEnabled">Defines if the <see cref="Feature"/> is enabled at startup. 
         /// Use this parameter if the feature should be disabled by default and only enabled after 
         /// processing the <c>Condition Table</c> or user input.</param>
-        /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state.</param>
+        /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state to Absent.</param>
         public Feature(string name, string description, bool isEnabled, bool allowChange)
         {
             Name = name;
@@ -154,7 +154,7 @@ namespace WixSharp
         /// <param name="isEnabled">Defines if the <see cref="Feature"/> is enabled at startup. 
         /// Use this parameter if the feature should be disabled by default and only enabled after 
         /// processing the <c>Condition Table</c> or user input.</param>
-        /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state.</param>
+        /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state to Absent.</param>
         public Feature(string name, bool isEnabled, bool allowChange)
         {
             Name = name;
@@ -182,7 +182,7 @@ namespace WixSharp
         /// <param name="isEnabled">Defines if the <see cref="Feature"/> is enabled at startup. 
         /// Use this parameter if the feature should be disabled by default and only enabled after 
         /// processing the <c>Condition Table</c> or user input.</param>
-        /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state.</param>
+        /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state to Absent.</param>
         /// <param name="configurableDir">The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string, MSI runtime will place 
         /// <c>Configure</c> button for the feature in the <c>Feature Selection</c> dialog.</param>
         public Feature(string name, string description, bool isEnabled, bool allowChange, string configurableDir)
@@ -205,8 +205,9 @@ namespace WixSharp
         public bool IsEnabled = true;
         /// <summary>
         /// <para>
-        /// Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state. 
+        /// Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state to Absent. 
         /// </para>
+        /// <para>This property is translated into WiX Feature.Absent attribute.</para>
         /// The default value is <c>true</c>.
         /// </summary>
         public bool AllowChange = true;
