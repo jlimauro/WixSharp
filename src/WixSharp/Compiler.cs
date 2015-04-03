@@ -153,10 +153,6 @@ namespace WixSharp
         static Compiler()
         {
             //Debug.Assert(false);
-            //WixSourceFormated += DefaultWixSourceFormatedHandler;
-            //WixSourceGenerated += DefaultWixSourceGeneratedHandler;
-            //WixSourceGenerated += AutoElements.InjectAutoElementsHandler;
-
             EnsureVSIntegration();
         }
 
