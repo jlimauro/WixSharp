@@ -27,6 +27,7 @@ class Script
         
         Compiler.WixSourceGenerated += InjectImages;
 
+
         Compiler.BuildMsi(project);
     }
 

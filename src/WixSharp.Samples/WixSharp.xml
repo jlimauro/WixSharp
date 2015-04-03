@@ -2428,7 +2428,7 @@
             <para>
             Any CustomAction, which needs elevation must be run with  <see cref="F:WixSharp.Action.Impersonate"/> set to 
             <c>false</c> and <see cref="F:WixSharp.Action.Execute"/> set to <c>Execute.deferred</c>. Thus <see cref="T:WixSharp.ElevatedManagedAction"/> is 
-            a full equivalent of <see cref="T:WixSharp.ManagedAction"/> with appropriatelly adjusted <see cref="F:WixSharp.Action.Execute"/> and 
+            a full equivalent of <see cref="T:WixSharp.ManagedAction"/> with appropriately adjusted <see cref="F:WixSharp.Action.Execute"/> and 
             <see cref="F:WixSharp.Action.Impersonate"/> during the instantiation:
             </para>
             <code>
@@ -6663,7 +6663,7 @@
         </member>
         <member name="T:WixSharp.WUI">
             <summary>
-            Specifies predefined values for <see cref="F:WixSharp.Project.UI"/>, 
+            Specifies predefined values for <see cref="F:WixSharp.Project.UI"/>,
             which control type of User Interface used to interact with user during the installation.
             </summary>
         </member>
@@ -6679,19 +6679,19 @@
         </member>
         <member name="F:WixSharp.WUI.WixUI_InstallDir">
             <summary>
-            WixUI_InstallDir does not allow the user to choose what features to install, but it adds a dialog to 
+            WixUI_InstallDir does not allow the user to choose what features to install, but it adds a dialog to
             let the user choose a directory where the product will be installed.
             </summary>
         </member>
         <member name="F:WixSharp.WUI.WixUI_Common">
             <summary>
-            WixUI_Common is defines "common" built-in dialog set. It is used to define additional 
+            WixUI_Common is defines "common" built-in dialog set. It is used to define additional
             custom dialogs.
             </summary>
         </member>
         <member name="F:WixSharp.WUI.WixUI_FeatureTree">
             <summary>
-            WixUI_FeatureTree built-in dialog set. 
+            WixUI_FeatureTree built-in dialog set.
             <para>WixUI_FeatureTree is a simpler version of WixUI_Mondo that omits the setup type dialog.</para>
             </summary>
         </member>
@@ -6702,24 +6702,24 @@
         </member>
         <member name="F:WixSharp.WUI.WixUI_Advanced">
             <summary>
-            WixUI_Advanced provides the option of a one-click install like WixUI_Minimal, but it also allows directory and feature 
+            WixUI_Advanced provides the option of a one-click install like WixUI_Minimal, but it also allows directory and feature
             selection like other dialog sets if the user chooses to configure advanced options.
             </summary>
         </member>
         <member name="T:WixSharp.Return">
             <summary>
-            Specifies predefined values for <see cref="F:WixSharp.Action.Return"/>, 
+            Specifies predefined values for <see cref="F:WixSharp.Action.Return"/>,
             which controls invoking type of <c>Custom Actions</c>.
             </summary>
         </member>
         <member name="F:WixSharp.Return.asyncWait">
             <summary>
-            Indicates that the custom action will run asynchronously but the installer will wait for the return code at sequence end. 
+            Indicates that the custom action will run asynchronously but the installer will wait for the return code at sequence end.
             </summary>
         </member>
         <member name="F:WixSharp.Return.asyncNoWait">
             <summary>
-            Indicates that the custom action will run asynchronously and execution may continue after the installer terminates. 
+            Indicates that the custom action will run asynchronously and execution may continue after the installer terminates.
             </summary>
         </member>
         <member name="F:WixSharp.Return.check">
@@ -6729,7 +6729,7 @@
         </member>
         <member name="F:WixSharp.Return.ignore">
             <summary>
-            Indicates that the custom action will run synchronously and the return code will not be checked. 
+            Indicates that the custom action will run synchronously and the return code will not be checked.
             </summary>
         </member>
         <member name="T:WixSharp.Sequence">
@@ -6761,12 +6761,59 @@
         <member name="F:WixSharp.Sequence.NotInSequence">
             <summary>
             <c>Custom Action</c> does not belong to any sequence. Use this value when you need <c>Custom Action</c>
-            to be invoked not from the installation sequence but from another <c>Custonm Action</c>.
+            to be invoked not from the installation sequence but from another <c>Custom Action</c>.
             </summary>
+        </member>
+        <member name="M:WixSharp.Sequence.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.Sequence"/> class.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="F:WixSharp.Sequence.Value">
+            <summary>
+            The string value of the Sequence object
+            </summary>
+        </member>
+        <member name="M:WixSharp.Sequence.GetValues">
+            <summary>
+            Gets the string values of the Sequence object. Note there can be more that a single value. For example
+            Sequence.InstallExecuteSequence | Sequence.InstallUISequence will yield "InstallExecuteSequence" and
+            "InstallExecuteSequence"
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Sequence.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:WixSharp.Sequence.op_Addition(WixSharp.Sequence,WixSharp.Sequence)">
+            <summary>
+            Implements the operator +.
+            </summary>
+            <param name="first">The first.</param>
+            <param name="second">The second.</param>
+            <returns>
+            The result of the operator.
+            </returns>
+        </member>
+        <member name="M:WixSharp.Sequence.op_BitwiseOr(WixSharp.Sequence,WixSharp.Sequence)">
+            <summary>
+            Implements the operator |.
+            </summary>
+            <param name="first">The first.</param>
+            <param name="second">The second.</param>
+            <returns>
+            The result of the operator.
+            </returns>
         </member>
         <member name="T:WixSharp.Execute">
             <summary>
-            Specifies predefined values for <see cref="F:WixSharp.Action.Execute"/> attribute, 
+            Specifies predefined values for <see cref="F:WixSharp.Action.Execute"/> attribute,
             which controls at what stage of installation script <c>Custom Action</c> will be executed.
             </summary>
         </member>
@@ -6777,27 +6824,27 @@
         </member>
         <member name="F:WixSharp.Execute.deferred">
             <summary>
-            Indicates that the custom action runs in-script (possibly with elevated privileges). 
+            Indicates that the custom action runs in-script (possibly with elevated privileges).
             </summary>
         </member>
         <member name="F:WixSharp.Execute.firstSequence">
             <summary>
-            Indicates that the custom action will only run in the first sequence that runs it. 
+            Indicates that the custom action will only run in the first sequence that runs it.
             </summary>
         </member>
         <member name="F:WixSharp.Execute.immediate">
             <summary>
-            Indicates that the custom action will run during normal processing time with user privileges. This is the default. 
+            Indicates that the custom action will run during normal processing time with user privileges. This is the default.
             </summary>
         </member>
         <member name="F:WixSharp.Execute.oncePerProcess">
             <summary>
-            Indicates that the custom action will only run in the first sequence that runs it in the same process. 
+            Indicates that the custom action will only run in the first sequence that runs it in the same process.
             </summary>
         </member>
         <member name="F:WixSharp.Execute.rollback">
             <summary>
-            Indicates that a custom action will run in the rollback sequence when a failure occurs during installation, usually to undo changes made by a deferred custom action. 
+            Indicates that a custom action will run in the rollback sequence when a failure occurs during installation, usually to undo changes made by a deferred custom action.
             </summary>
         </member>
         <member name="F:WixSharp.Execute.secondSequence">
@@ -6807,7 +6854,7 @@
         </member>
         <member name="T:WixSharp.Step">
             <summary>
-            Specifies predefined values for <see cref="F:WixSharp.Action.Step"/>, 
+            Specifies predefined values for <see cref="F:WixSharp.Action.Step"/>,
             which controls order of <c>Custom Action</c> to be executed.
             <para><c>Before</c> or <c>After</c> switch for <c>Custom Action</c> is controlled by <see cref="T:WixSharp.When"/>.</para>
             </summary>
@@ -6871,6 +6918,25 @@
             MSI built-in <c>InstallInitialize</c> action.
             </summary>
         </member>
+        <member name="M:WixSharp.Step.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.Sequence"/> class.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="F:WixSharp.Step.Value">
+            <summary>
+            The string value of the Step object
+            </summary>
+        </member>
+        <member name="M:WixSharp.Step.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
         <member name="T:WixSharp.When">
             <summary>
             Specifies predefined values for <see cref="F:WixSharp.Action.When"/>,
@@ -6881,12 +6947,12 @@
         </member>
         <member name="F:WixSharp.When.After">
             <summary>
-            Execute after order controlling action. 
+            Execute after order controlling action.
             </summary>
         </member>
         <member name="F:WixSharp.When.Before">
             <summary>
-            Execute before order controlling action. 
+            Execute before order controlling action.
             </summary>
         </member>
         <member name="T:WixSharp.DefaultScript">
@@ -6895,29 +6961,29 @@
             </summary>
         </member>
         <member name="F:WixSharp.DefaultScript.VBScript">
-            <summary>
+             <summary>
             
-            </summary>
+             </summary>
         </member>
         <member name="F:WixSharp.DefaultScript.JScript">
-            <summary>
+             <summary>
             
-            </summary>
+             </summary>
         </member>
         <member name="T:WixSharp.StoreLocation">
             <summary>
-            Sets the (<see cref="T:IISVirtualDir.Certificate.StoreLocation"/>) for the Web site certificate. 
+            Sets the (<see cref="T:IISVirtualDir.Certificate.StoreLocation"/>) for the Web site certificate.
             </summary>
         </member>
         <member name="F:WixSharp.StoreLocation.currentUser">
-            <summary>
+             <summary>
             
-            </summary>
+             </summary>
         </member>
         <member name="F:WixSharp.StoreLocation.localMachine">
-            <summary>
+             <summary>
             
-            </summary>
+             </summary>
         </member>
         <member name="T:WixSharp.StoreName">
             <summary>
@@ -6926,33 +6992,33 @@
         </member>
         <member name="F:WixSharp.StoreName.ca">
             <summary>
-            Contains the certificates of certificate authorities that the user trusts to issue certificates to others. Certificates 
-            in these stores are normally supplied with the operating system or by the user's network administrator. 
+            Contains the certificates of certificate authorities that the user trusts to issue certificates to others. Certificates
+            in these stores are normally supplied with the operating system or by the user's network administrator.
             </summary>
         </member>
         <member name="F:WixSharp.StoreName.my">
             <summary>
-            Use the "personal" value instead. 
+            Use the "personal" value instead.
             </summary>
         </member>
         <member name="F:WixSharp.StoreName.personal">
             <summary>
-            Contains personal certificates. These certificates will usually have an associated private key. This store is often referred to as the "MY" certificate store. 
+            Contains personal certificates. These certificates will usually have an associated private key. This store is often referred to as the "MY" certificate store.
             </summary>
         </member>
         <member name="F:WixSharp.StoreName.request">
-            <summary>
+             <summary>
             
-            </summary>
+             </summary>
         </member>
         <member name="F:WixSharp.StoreName.root">
             <summary>
-            Contains the certificates of certificate authorities that the user trusts to issue certificates to others. Certificates in these stores are normally supplied with the operating system or by the user's network administrator. Certificates in this store are typically self-signed. 
+            Contains the certificates of certificate authorities that the user trusts to issue certificates to others. Certificates in these stores are normally supplied with the operating system or by the user's network administrator. Certificates in this store are typically self-signed.
             </summary>
         </member>
         <member name="F:WixSharp.StoreName.otherPeople">
             <summary>
-            Contains the certificates of those that the user normally sends enveloped messages to or receives signed messages from. See MSDN documentation for more information. 
+            Contains the certificates of those that the user normally sends enveloped messages to or receives signed messages from. See MSDN documentation for more information.
             </summary>
         </member>
         <member name="T:WixSharp.Isolation">
@@ -6962,22 +7028,22 @@
         </member>
         <member name="F:WixSharp.Isolation.low">
             <summary>
-            Means the application executes within the IIS process. 
+            Means the application executes within the IIS process.
             </summary>
         </member>
         <member name="F:WixSharp.Isolation.medium">
             <summary>
-            Executes pooled in a separate process. 
+            Executes pooled in a separate process.
             </summary>
         </member>
         <member name="F:WixSharp.Isolation.high">
             <summary>
-            Means execution alone in a separate process. 
+            Means execution alone in a separate process.
             </summary>
         </member>
         <member name="T:WixSharp.SvcErrorControl">
             <summary>
-            Determines what service action should be taken on an error. 
+            Determines what service action should be taken on an error.
             </summary>
         </member>
         <member name="F:WixSharp.SvcErrorControl.ignore">
@@ -6997,7 +7063,7 @@
         </member>
         <member name="T:WixSharp.SvcStartType">
             <summary>
-            Determines when the service should be started. The Windows Installer does not support boot or system. 
+            Determines when the service should be started. The Windows Installer does not support boot or system.
             </summary>
         </member>
         <member name="F:WixSharp.SvcStartType.auto">
@@ -7007,7 +7073,7 @@
         </member>
         <member name="F:WixSharp.SvcStartType.demand">
              <summary>
-            The service will start when the service control manager calls the StartService function.        
+            The service will start when the service control manager calls the StartService function.
              </summary>
         </member>
         <member name="F:WixSharp.SvcStartType.disabled">
@@ -7097,20 +7163,20 @@
         </member>
         <member name="F:WixSharp.EnvVarAction.create">
             <summary>
-            Creates the environment variable if it does not exist, then set it during installation. This has no effect on the value of 
+            Creates the environment variable if it does not exist, then set it during installation. This has no effect on the value of
             the environment variable if it already exists.
             </summary>
         </member>
         <member name="F:WixSharp.EnvVarAction.set">
             <summary>
-            Creates the environment variable if it does not exist, and then set it during installation. If the environment variable exists, 
+            Creates the environment variable if it does not exist, and then set it during installation. If the environment variable exists,
             set it during the installation.
             </summary>
         </member>
         <member name="F:WixSharp.EnvVarAction.remove">
             <summary>
-            Removes the environment variable during an installation. The installer only removes an environment variable 
-            during an installation if the name and value of the variable match the entries in the Name and Value attributes. 
+            Removes the environment variable during an installation. The installer only removes an environment variable
+            during an installation if the name and value of the variable match the entries in the Name and Value attributes.
             If you want to remove an environment variable, regardless of its value, do not set the Value attribute.
             </summary>
         </member>

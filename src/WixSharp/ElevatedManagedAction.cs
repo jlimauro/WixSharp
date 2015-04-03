@@ -34,7 +34,7 @@ namespace WixSharp
     /// <para>
     /// Any CustomAction, which needs elevation must be run with  <see cref="Action.Impersonate"/> set to 
     /// <c>false</c> and <see cref="Action.Execute"/> set to <c>Execute.deferred</c>. Thus <see cref="ElevatedManagedAction"/> is 
-    /// a full equivalent of <see cref="T:WixSharp.ManagedAction"/> with appropriatelly adjusted <see cref="Action.Execute"/> and 
+    /// a full equivalent of <see cref="T:WixSharp.ManagedAction"/> with appropriately adjusted <see cref="Action.Execute"/> and 
     /// <see cref="Action.Impersonate"/> during the instantiation:
     /// </para>
     /// <code>

@@ -54,6 +54,11 @@ namespace WixSharp
         /// </summary>
         public bool IncludeMinimum;
 
+        /// <summary>
+        /// Set to true to migrate feature states from upgraded products by enabling the logic in the MigrateFeatureStates action
+        /// </summary>
+        //public bool? MigrateFeatures; //not ready yet
+
 
         /// <summary>
         /// Predefined "open ended" range between version of the product MSI being built (inclusive) and any newer version.

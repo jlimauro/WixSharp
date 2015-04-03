@@ -1062,7 +1062,7 @@ namespace WixSharp
 
                 if (project.MajorUpgradeStrategy.UpgradeVersions != null)
                 {
-                    upgradeElement.AddElement(
+                    var upVer = upgradeElement.AddElement(
                         new XElement("UpgradeVersion",
                            new XAttribute("Minimum", ExpandVersion(project.MajorUpgradeStrategy.UpgradeVersions.Minimum)),
                            new XAttribute("IncludeMinimum", project.MajorUpgradeStrategy.UpgradeVersions.IncludeMinimum.ToYesNo()),
@@ -1721,9 +1721,9 @@ namespace WixSharp
                     var rvProp = (prop as RegValueProperty);
 
                     XElement RegistrySearchElement;
-                    product.Add(new XElement("Property",
+                    XElement xProp = product.AddElement(
+                                new XElement("Property",
                                     new XAttribute("Id", rvProp.Name),
-                                    new XAttribute("Value", rvProp.Value),
                                     RegistrySearchElement = new XElement("RegistrySearch",
                                         new XAttribute("Id", rvProp.Name + "_RegSearch"),
                                         new XAttribute("Root", rvProp.Root.ToWString()),
@@ -1731,6 +1731,9 @@ namespace WixSharp
                                         new XAttribute("Type", "raw")
                                         ))
                                     .AddAttributes(rvProp.Attributes));
+                                    
+                    if(!rvProp.Value.IsEmpty())
+                        xProp.Add(new XAttribute("Value", rvProp.Value));
 
                     if (rvProp.EntryName != "")
                         RegistrySearchElement.Add(new XAttribute("Name", rvProp.EntryName));
@@ -1776,10 +1779,13 @@ namespace WixSharp
 
                 lastActionName = wAction.Name.Expand();
 
-                XElement sequence = null;
+                List<XElement> sequences = new List<XElement>();
 
                 if (wAction.Sequence != Sequence.NotInSequence)
-                    sequence = product.SelectOrCreate(wAction.Sequence.ToWString());
+                {
+                    foreach (var item in wAction.Sequence.GetValues())
+                        sequences.Add(product.SelectOrCreate(item));
+                }
 
                 XAttribute sequenceNumberAttr = wAction.SequenceNumber.HasValue ?
                                                     new XAttribute("Sequence", wAction.SequenceNumber.Value) :
@@ -1799,22 +1805,19 @@ namespace WixSharp
                             new XAttribute("Value", wSetPropAction.Value))
                             .AddAttributes(wSetPropAction.Attributes));
 
-                    if (sequence != null)
-                        sequence.Add(
-                            new XElement("Custom", wAction.Condition.ToString(),
-                                new XAttribute("Action", actionId),
-                                sequenceNumberAttr));
+                    sequences.ForEach(sequence =>
+                        sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
+                                         new XAttribute("Action", actionId),
+                                         sequenceNumberAttr)));
                 }
                 else if (wAction is ScriptFileAction)
                 {
                     var wScriptAction = (ScriptFileAction)wAction;
 
-                    if (sequence != null)
-                    {
-                        sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
-                                        new XAttribute("Action", wAction.Id),
-                                        sequenceNumberAttr));
-                    }
+                    sequences.ForEach(sequence =>
+                         sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
+                                          new XAttribute("Action", wAction.Id),
+                                          sequenceNumberAttr)));
 
                     product.Add(new XElement("Binary",
                                     new XAttribute("Id", wAction.Name.Expand() + "_File"),
@@ -1831,10 +1834,10 @@ namespace WixSharp
                 {
                     var wScriptAction = (ScriptAction)wAction;
 
-                    if (sequence != null)
-                        sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
+                     sequences.ForEach(sequence=>
+                         sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
                                         new XAttribute("Action", wAction.Id),
-                                        sequenceNumberAttr));
+                                        sequenceNumberAttr)));
 
                     product.Add(new XElement("CustomAction",
                                     new XCData(wScriptAction.Code),
@@ -1882,20 +1885,20 @@ namespace WixSharp
                                             new XAttribute("Property", wAction.Id),
                                             new XAttribute("Value", mapping)));
 
-                            if (sequence != null)
+                            sequences.ForEach(sequence=>
                                 sequence.Add(
                                     new XElement("Custom",
                                         new XAttribute("Action", setPropValuesId),
                                         wAction.SequenceNumber.HasValue ?
                                             new XAttribute("Sequence", wAction.SequenceNumber.Value) :
-                                            new XAttribute("After", "InstallInitialize")));
+                                            new XAttribute("After", "InstallInitialize"))));
                         }
                     }
 
-                    if (sequence != null)
+                    sequences.ForEach(sequence=>
                         sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
-                                        new XAttribute("Action", wAction.Id),
-                                        sequenceNumberAttr));
+                                         new XAttribute("Action", wAction.Id),
+                                         sequenceNumberAttr)));
 
 
                     product.Add(new XElement("CustomAction",
@@ -1932,17 +1935,17 @@ namespace WixSharp
 
                     lastActionName = cmdLineActionId;
 
-                    if (sequence != null)
+                    sequences.ForEach(sequence=>
                         sequence.Add(
                             new XElement("Custom", wAction.Condition.ToString(),
                                 new XAttribute("Action", setCmdLineActionId),
-                                sequenceNumberAttr));
+                                sequenceNumberAttr)));
 
-                    if (sequence != null)
+                    sequences.ForEach(sequence=>
                         sequence.Add(
                             new XElement("Custom", wAction.Condition.ToString(),
                                 new XAttribute("Action", cmdLineActionId),
-                                new XAttribute("After", setCmdLineActionId)));
+                                new XAttribute("After", setCmdLineActionId))));
 
                     var extensionAssembly = Utils.PathCombine(WixLocation, @"WixUtilExtension.dll");
                     if (wProject.WixExtensions.Find(x => x == extensionAssembly) == null)
@@ -1952,11 +1955,11 @@ namespace WixSharp
                 {
                     var fileAction = (InstalledFileAction)wAction;
 
-                    if (sequence != null)
+                    sequences.ForEach(sequence=>
                         sequence.Add(
                             new XElement("Custom", wAction.Condition.ToString(),
                                 new XAttribute("Action", wAction.Id),
-                                sequenceNumberAttr));
+                                sequenceNumberAttr)));
 
                     var actionElement = product.AddElement(
                         new XElement("CustomAction",
@@ -1971,11 +1974,11 @@ namespace WixSharp
                 {
                     var fileAction = (PathFileAction)wAction;
 
-                    if (sequence != null)
+                    sequences.ForEach(sequence=>
                         sequence.Add(
                             new XElement("Custom", fileAction.Condition.ToString(),
                                 new XAttribute("Action", fileAction.Id),
-                                sequenceNumberAttr));
+                                sequenceNumberAttr)));
 
                     var actionElement = product.AddElement(
                         new XElement("CustomAction",

@@ -31,6 +31,19 @@ namespace WixSharp.Test
             Assert.NotEqual(itemsC.GetItemsHashCode(), itemsA.GetItemsHashCode());
             Assert.NotEqual(new[] { "a" }.GetItemsHashCode(), itemsA.GetItemsHashCode());
         }
+       
+        [Fact]
+        public void Should_Combine_Sequences()
+        {
+            var s1 = Sequence.InstallUISequence;
+            var s2 = Sequence.InstallExecuteSequence;
+
+            var result1 = s1 + s2;
+            Assert.Equal("InstallUISequence|InstallExecuteSequence", result1.ToString());
+            
+            var result2 = s1 | s2;
+            Assert.Equal("InstallUISequence|InstallExecuteSequence", result2.ToString());
+        }
 
 
         [Fact]

@@ -14,7 +14,7 @@ class Script
         //RegFileImporter.SkipUnknownTypes = true;
 
         var fullSetup = new Feature("MyApp Binaries");
-        
+
         Project project =
             new Project("MyProduct",
                 new Dir(@"%ProgramFiles%\My Company\My Product",

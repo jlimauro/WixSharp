@@ -1,10 +1,11 @@
 #region Licence...
+
 /*
 The MIT License (MIT)
 
 Copyright (c) 2014 Oleg Shilo
 
-Permission is hereby granted, 
+Permission is hereby granted,
 free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -23,12 +24,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#endregion
+
+#endregion Licence...
 
 namespace WixSharp
 {
     /// <summary>
-    /// Specifies predefined values for <see cref="Project.UI"/>, 
+    /// Specifies predefined values for <see cref="Project.UI"/>,
     /// which control type of User Interface used to interact with user during the installation.
     /// </summary>
     public enum WUI
@@ -37,55 +39,65 @@ namespace WixSharp
         /// WixUI_ProgressOnly is "no-UI" dialog set which includes only progress bar.
         /// </summary>
         WixUI_ProgressOnly,
+
         /// <summary>
         /// WixUI_Minimal is the simplest of the built-in WixUI dialog sets.
         /// </summary>
         WixUI_Minimal,
+
         /// <summary>
-        /// WixUI_InstallDir does not allow the user to choose what features to install, but it adds a dialog to 
+        /// WixUI_InstallDir does not allow the user to choose what features to install, but it adds a dialog to
         /// let the user choose a directory where the product will be installed.
         /// </summary>
         WixUI_InstallDir,
+
         /// <summary>
-        /// WixUI_Common is defines "common" built-in dialog set. It is used to define additional 
+        /// WixUI_Common is defines "common" built-in dialog set. It is used to define additional
         /// custom dialogs.
         /// </summary>
         WixUI_Common,
+
         /// <summary>
-        /// WixUI_FeatureTree built-in dialog set. 
+        /// WixUI_FeatureTree built-in dialog set.
         /// <para>WixUI_FeatureTree is a simpler version of WixUI_Mondo that omits the setup type dialog.</para>
         /// </summary>
         WixUI_FeatureTree,
+
         /// <summary>
         /// WixUI_Mondo includes the full set of dialogs (hence "Mondo").
         /// </summary>
         WixUI_Mondo,
+
         /// <summary>
-        /// WixUI_Advanced provides the option of a one-click install like WixUI_Minimal, but it also allows directory and feature 
+        /// WixUI_Advanced provides the option of a one-click install like WixUI_Minimal, but it also allows directory and feature
         /// selection like other dialog sets if the user chooses to configure advanced options.
         /// </summary>
         WixUI_Advanced
     }
+
     /// <summary>
-    /// Specifies predefined values for <see cref="Action.Return"/>, 
+    /// Specifies predefined values for <see cref="Action.Return"/>,
     /// which controls invoking type of <c>Custom Actions</c>.
     /// </summary>
     public enum Return
     {
         /// <summary>
-        /// Indicates that the custom action will run asynchronously but the installer will wait for the return code at sequence end. 
+        /// Indicates that the custom action will run asynchronously but the installer will wait for the return code at sequence end.
         /// </summary>
         asyncWait,
+
         /// <summary>
-        /// Indicates that the custom action will run asynchronously and execution may continue after the installer terminates. 
+        /// Indicates that the custom action will run asynchronously and execution may continue after the installer terminates.
         /// </summary>
         asyncNoWait,
+
         /// <summary>
         /// Indicates that the custom action will run synchronously and the return code will be checked for success.
         /// </summary>
         check,
+
         /// <summary>
-        /// Indicates that the custom action will run synchronously and the return code will not be checked. 
+        /// Indicates that the custom action will run synchronously and the return code will not be checked.
         /// </summary>
         ignore
     }
@@ -96,33 +108,99 @@ namespace WixSharp
     /// Specifies predefined values for <see cref="Action.Sequence" />,
     /// which controls which MSI sequence contains corresponding <c>Custom Action</c>.
     /// </summary>
-    public enum Sequence
+    public class Sequence
     {
         /// <summary>
         /// <c>Custom Action</c> belongs to <c>InstallExecuteSequence</c>.
         /// </summary>
-        InstallExecuteSequence,
+        public static Sequence InstallExecuteSequence = new Sequence("InstallExecuteSequence");
+
         /// <summary>
         /// <c>Custom Action</c> belongs to <c>InstallUISequence</c>.
         /// </summary>
-        InstallUISequence,
+        public static Sequence InstallUISequence = new Sequence("InstallUISequence");
+
         /// <summary>
         /// The AdminExecuteSequence table lists actions that the installer calls in sequence when the top-level ADMIN action is executed.
         /// </summary>
-        AdminExecuteSequence,
+        public static Sequence AdminExecuteSequence = new Sequence("AdminExecuteSequence");
+
         /// <summary>
         /// The AdminUISequence table lists actions that the installer calls in sequence when the top-level ADMIN action is executed and the internal user interface level is set to full UI or reduced UI. The installer skips the actions in this table if the user interface level is set to basic UI or no UI.
         /// </summary>
-        AdminUISequence,
+        public static Sequence AdminUISequence = new Sequence("AdminUISequence");
+
         /// <summary>
         /// <c>Custom Action</c> does not belong to any sequence. Use this value when you need <c>Custom Action</c>
-        /// to be invoked not from the installation sequence but from another <c>Custonm Action</c>.
+        /// to be invoked not from the installation sequence but from another <c>Custom Action</c>.
         /// </summary>
-        NotInSequence
+        public static Sequence NotInSequence = new Sequence("NotInSequence");
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Sequence"/> class.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public Sequence(string value)
+        {
+            Value = value;
+        }
+
+        /// <summary>
+        /// The string value of the Sequence object
+        /// </summary>
+        protected string Value;
+
+        /// <summary>
+        /// Gets the string values of the Sequence object. Note there can be more that a single value. For example
+        /// Sequence.InstallExecuteSequence | Sequence.InstallUISequence will yield "InstallExecuteSequence" and
+        /// "InstallExecuteSequence"
+        /// </summary>
+        /// <returns></returns>
+        public string[] GetValues()
+        {
+            return (Value ?? "").Split('|');
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Value;
+        }
+
+        /// <summary>
+        /// Implements the operator +.
+        /// </summary>
+        /// <param name="first">The first.</param>
+        /// <param name="second">The second.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static Sequence operator +(Sequence first, Sequence second)
+        {
+            return new Sequence(first.Value + "|" + second.Value);
+        }
+
+        /// <summary>
+        /// Implements the operator |.
+        /// </summary>
+        /// <param name="first">The first.</param>
+        /// <param name="second">The second.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static Sequence operator |(Sequence first, Sequence second)
+        {
+            return new Sequence(first.Value + "|" + second.Value);
+        }
     }
 
     /// <summary>
-    /// Specifies predefined values for <see cref="Action.Execute"/> attribute, 
+    /// Specifies predefined values for <see cref="Action.Execute"/> attribute,
     /// which controls at what stage of installation script <c>Custom Action</c> will be executed.
     /// </summary>
     public enum Execute
@@ -131,90 +209,128 @@ namespace WixSharp
         /// Indicates that the custom action will run after successful completion of the installation script (at the end of the installation).
         /// </summary>
         commit,
+
         /// <summary>
-        /// Indicates that the custom action runs in-script (possibly with elevated privileges). 
+        /// Indicates that the custom action runs in-script (possibly with elevated privileges).
         /// </summary>
         deferred,
+
         /// <summary>
-        /// Indicates that the custom action will only run in the first sequence that runs it. 
+        /// Indicates that the custom action will only run in the first sequence that runs it.
         /// </summary>
         firstSequence,
 
         /// <summary>
-        /// Indicates that the custom action will run during normal processing time with user privileges. This is the default. 
+        /// Indicates that the custom action will run during normal processing time with user privileges. This is the default.
         /// </summary>
         immediate,
+
         /// <summary>
-        /// Indicates that the custom action will only run in the first sequence that runs it in the same process. 
+        /// Indicates that the custom action will only run in the first sequence that runs it in the same process.
         /// </summary>
         oncePerProcess,
+
         /// <summary>
-        /// Indicates that a custom action will run in the rollback sequence when a failure occurs during installation, usually to undo changes made by a deferred custom action. 
+        /// Indicates that a custom action will run in the rollback sequence when a failure occurs during installation, usually to undo changes made by a deferred custom action.
         /// </summary>
         rollback,
+
         /// <summary>
         /// Indicates that a custom action should be run a second time if it was previously run in an earlier sequence.
         /// </summary>
         secondSequence
-
     }
 
     /// <summary>
-    /// Specifies predefined values for <see cref="Action.Step"/>, 
+    /// Specifies predefined values for <see cref="Action.Step"/>,
     /// which controls order of <c>Custom Action</c> to be executed.
     /// <para><c>Before</c> or <c>After</c> switch for <c>Custom Action</c> is controlled by <see cref="When"/>.</para>
     /// </summary>
-    public enum Step
+    public class Step
     {
         /// <summary>
         /// <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallInitialize</c> action.
         /// </summary>
-        InstallInitialize,
+        public static Step InstallInitialize = new Step("InstallInitialize");
+
         /// <summary>
         /// <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallFinalize</c> action.
         /// </summary>
-        InstallFinalize,
+        public static Step InstallFinalize = new Step("InstallFinalize");
+
         /// <summary>
         /// <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallFiles</c> action.
         /// </summary>
-        InstallFiles,
+        public static Step InstallFiles = new Step("InstallFiles");
+
         /// <summary>
         /// <c>Custom Action</c> is to be executed before/after MSI built-in <c>RemoveFiles</c> action.
         /// </summary>
-        RemoveFiles,
+        public static Step RemoveFiles = new Step("RemoveFiles");
+
         /// <summary>
         /// <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallExecute</c> action.
         /// </summary>
-        InstallExecute,
+        public static Step InstallExecute = new Step("InstallExecute");
+
         /// <summary>
         /// <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallExecuteAgain</c> action.
         /// </summary>
-        InstallExecuteAgain,
+        public static Step InstallExecuteAgain = new Step("InstallExecuteAgain");
+
         /// <summary>
         /// <c>Custom Action</c> is to be executed before/after the previous action declared in <see cref="Project.Actions"/>.
         /// </summary>
-        PreviousAction,
+        public static Step PreviousAction = new Step("PreviousAction");
+
         /// <summary>
         /// <c>Custom Action</c> is to be executed before/after MSI built-in <c>LaunchConditions</c> action.
         /// </summary>
-        LaunchConditions,
+        public static Step LaunchConditions = new Step("LaunchConditions");
+
         /// <summary>
         /// <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallValidate</c> action.
         /// </summary>
-        InstallValidate,
+        public static Step InstallValidate = new Step("InstallValidate");
+
         /// <summary>
         /// <c>Custom Action</c> is to be executed before/after the previous action item in <see cref="Project.Actions"/>.
         /// If <c>Custom Action</c> is the first item in item in <see cref="Project.Actions"/> it will be executed before/after
         /// MSI built-in <c>InstallFinalize</c> action.
         /// </summary>
-        PreviousActionOrInstallFinalize, //if first usage of a CA, same as "InstallFinalize"; otherwise same as "PreviousAction"
+        public static Step PreviousActionOrInstallFinalize = new Step("PreviousActionOrInstallFinalize"); //if first usage of a CA, same as "InstallFinalize"; otherwise same as "PreviousAction"
+
         /// <summary>
         /// <c>Custom Action</c> is to be executed before/after the previous action item in <see cref="Project.Actions"/>.
         /// If <c>Custom Action</c> is the first item in item in <see cref="Project.Actions"/> it will be executed before/after
         /// MSI built-in <c>InstallInitialize</c> action.
         /// </summary>
-        PreviousActionOrInstallInitialize, //if first usage of a CA, same as "InstallInitialize"; otherwise same as "PreviousAction"
+        public static Step PreviousActionOrInstallInitialize = new Step("PreviousActionOrInstallInitialize"); //if first usage of a CA, same as "InstallInitialize"; otherwise same as "PreviousAction"
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Sequence"/> class.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public Step(string value)
+        {
+            Value = value;
+        }
+
+        /// <summary>
+        /// The string value of the Step object
+        /// </summary>
+        protected string Value;
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Value;
+        }
     }
 
     /// <summary>
@@ -226,11 +342,12 @@ namespace WixSharp
     public enum When
     {
         /// <summary>
-        /// Execute after order controlling action. 
+        /// Execute after order controlling action.
         /// </summary>
         After,
+
         /// <summary>
-        /// Execute before order controlling action. 
+        /// Execute before order controlling action.
         /// </summary>
         Before
     }
@@ -241,81 +358,92 @@ namespace WixSharp
     public enum DefaultScript
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         VBScript,
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         JScript
     }
 
     /// <summary>
-    /// Sets the (<see cref="T:IISVirtualDir.Certificate.StoreLocation"/>) for the Web site certificate. 
+    /// Sets the (<see cref="T:IISVirtualDir.Certificate.StoreLocation"/>) for the Web site certificate.
     /// </summary>
     public enum StoreLocation
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         currentUser,
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         localMachine
     }
+
     /// <summary>
     /// Sets the (<see cref="T:IISVirtualDir.Certificate.StoreName"/>) for the Web site certificate.
     /// </summary>
     public enum StoreName
     {
         /// <summary>
-        /// Contains the certificates of certificate authorities that the user trusts to issue certificates to others. Certificates 
-        /// in these stores are normally supplied with the operating system or by the user's network administrator. 
+        /// Contains the certificates of certificate authorities that the user trusts to issue certificates to others. Certificates
+        /// in these stores are normally supplied with the operating system or by the user's network administrator.
         /// </summary>
         ca,
+
         /// <summary>
-        /// Use the "personal" value instead. 
+        /// Use the "personal" value instead.
         /// </summary>
         my,
+
         /// <summary>
-        /// Contains personal certificates. These certificates will usually have an associated private key. This store is often referred to as the "MY" certificate store. 
+        /// Contains personal certificates. These certificates will usually have an associated private key. This store is often referred to as the "MY" certificate store.
         /// </summary>
         personal,
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         request,
+
         /// <summary>
-        /// Contains the certificates of certificate authorities that the user trusts to issue certificates to others. Certificates in these stores are normally supplied with the operating system or by the user's network administrator. Certificates in this store are typically self-signed. 
+        /// Contains the certificates of certificate authorities that the user trusts to issue certificates to others. Certificates in these stores are normally supplied with the operating system or by the user's network administrator. Certificates in this store are typically self-signed.
         /// </summary>
         root,
+
         /// <summary>
-        /// Contains the certificates of those that the user normally sends enveloped messages to or receives signed messages from. See MSDN documentation for more information. 
+        /// Contains the certificates of those that the user normally sends enveloped messages to or receives signed messages from. See MSDN documentation for more information.
         /// </summary>
         otherPeople
     }
+
     /// <summary>
     /// Values of the application isolation level of <see cref="IISVirtualDir.Isolation"/> for pre-IIS 6 applications
     /// </summary>
     public enum Isolation
     {
         /// <summary>
-        /// Means the application executes within the IIS process. 
+        /// Means the application executes within the IIS process.
         /// </summary>
         low,
+
         /// <summary>
-        /// Executes pooled in a separate process. 
+        /// Executes pooled in a separate process.
         /// </summary>
         medium,
+
         /// <summary>
-        /// Means execution alone in a separate process. 
+        /// Means execution alone in a separate process.
         /// </summary>
         high
     }
 
     /// <summary>
-    /// Determines what service action should be taken on an error. 
+    /// Determines what service action should be taken on an error.
     /// </summary>
     public enum SvcErrorControl
     {
@@ -323,10 +451,12 @@ namespace WixSharp
         ///Logs the error and continues with the startup operation.
         /// </summary>
         ignore,
+
         /// <summary>
         ///Logs the error, displays a message box and continues the startup operation.
         /// </summary>
         normal,
+
         /// <summary>
         /// Logs the error if possible and the system is restarted with the last configuration known to be good. If the last-known-good configuration is being started, the startup operation fails.
         /// </summary>
@@ -334,7 +464,7 @@ namespace WixSharp
     }
 
     /// <summary>
-    /// Determines when the service should be started. The Windows Installer does not support boot or system. 
+    /// Determines when the service should be started. The Windows Installer does not support boot or system.
     /// </summary>
     public enum SvcStartType
     {
@@ -342,24 +472,27 @@ namespace WixSharp
         /// The service will start during startup of the system.
         /// </summary>
         auto,
+
         /// <summary>
-        ///The service will start when the service control manager calls the StartService function.        
+        ///The service will start when the service control manager calls the StartService function.
         /// </summary>
         demand,
+
         /// <summary>
         /// The service can no longer be started.
         /// </summary>
         disabled,
+
         /// <summary>
         /// The service is a device driver that will be started by the operating system boot loader. This value is not currently supported by the Windows Installer.
         /// </summary>
         boot,
+
         /// <summary>
         /// The service is a device driver that will be started by the IoInitSystem function. This value is not currently supported by the Windows Installer.
         /// </summary>
         system
     }
-
 
     /// <summary>
     /// The Windows Installer does not currently support kernelDriver or systemDriver. This attribute's value must be one of the following:
@@ -370,14 +503,17 @@ namespace WixSharp
         /// A Win32 service that runs its own process.
         /// </summary>
         ownProcess,
+
         /// <summary>
         /// A Win32 service that shares a process.
         /// </summary>
         shareProcess,
+
         /// <summary>
         /// A kernel driver service. This value is not currently supported by the Windows Installer.
         /// </summary>
         kernelDriver,
+
         /// <summary>
         /// A file system driver service. This value is not currently supported by the Windows Installer.
         /// </summary>
@@ -393,10 +529,12 @@ namespace WixSharp
         /// Specifies that occur on install.
         /// </summary>
         install,
+
         /// <summary>
         /// Specifies that occur on uninstall.
         /// </summary>
         uninstall,
+
         /// <summary>
         /// Specifies that occur on install and uninstall.
         /// </summary>
@@ -412,10 +550,12 @@ namespace WixSharp
         /// This value is the entire environmental variable. This is the default.
         /// </summary>
         all,
+
         /// <summary>
         ///This value is prefixed.
         /// </summary>
         first,
+
         /// <summary>
         ///This value is appended.
         /// </summary>
@@ -428,22 +568,22 @@ namespace WixSharp
     public enum EnvVarAction
     {
         /// <summary>
-        /// Creates the environment variable if it does not exist, then set it during installation. This has no effect on the value of 
+        /// Creates the environment variable if it does not exist, then set it during installation. This has no effect on the value of
         /// the environment variable if it already exists.
         /// </summary>
         create,
+
         /// <summary>
-        /// Creates the environment variable if it does not exist, and then set it during installation. If the environment variable exists, 
+        /// Creates the environment variable if it does not exist, and then set it during installation. If the environment variable exists,
         /// set it during the installation.
         /// </summary>
         set,
+
         /// <summary>
-        /// Removes the environment variable during an installation. The installer only removes an environment variable 
-        /// during an installation if the name and value of the variable match the entries in the Name and Value attributes. 
+        /// Removes the environment variable during an installation. The installer only removes an environment variable
+        /// during an installation if the name and value of the variable match the entries in the Name and Value attributes.
         /// If you want to remove an environment variable, regardless of its value, do not set the Value attribute.
         /// </summary>
         remove
     }
-
-
 }

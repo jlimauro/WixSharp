@@ -80,7 +80,7 @@ namespace WixSharp
         /// <param name="key">The registry key name.</param>
         /// <param name="entryName">The registry entry name.</param>
         /// <param name="defaultValue">The registry entry default value.</param>
-        public RegValueProperty(string name, RegistryHive root, string key, string entryName, string defaultValue)
+        public RegValueProperty(string name, RegistryHive root, string key, string entryName, string defaultValue = "")
         {
             Name = name;
             Root = root;
@@ -97,7 +97,7 @@ namespace WixSharp
         /// <param name="key">The registry key name.</param>
         /// <param name="entryName">The registry entry name.</param>
         /// <param name="defaultValue">The registry entry default value.</param>
-        public RegValueProperty(Id id, string name, RegistryHive root, string key, string entryName, string defaultValue)
+        public RegValueProperty(Id id, string name, RegistryHive root, string key, string entryName, string defaultValue = "")
         {
             Id = id.Value;
             Name = name;
