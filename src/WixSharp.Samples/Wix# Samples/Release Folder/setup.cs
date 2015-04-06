@@ -11,7 +11,9 @@ class Script
         var project =
             new Project("MyProduct",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
-                    new Files(@"Release\*.*", "*.obj", "*.pdb"), //all but first are the excludeFileMasks values 
+                    new Files(@"Release\*.*", 
+                              f => !f.EndsWith(".obj") && 
+                                   !f.EndsWith(".pdb")), 
                     new ExeFileShortcut("Uninstall My Product", "[System64Folder]msiexec.exe", "/x [ProductCode]")));
 
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1561ba25889b");
@@ -23,7 +25,7 @@ class Script
                                        new FileShortcut("MyApp.exe", "INSTALLDIR"),
                                        new FileShortcut("MyApp.exe", "%Desktop%")
                                   };
-
+        
         Compiler.BuildMsi(project);
     }
 }

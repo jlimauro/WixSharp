@@ -177,39 +177,6 @@ namespace WixSharp
             }
         }
 
-        ///// <summary>
-        ///// Returns all attributes of the <see cref="Attributes"/> directly associated with <see cref="WixEntity"/>.
-        ///// </summary>
-        //internal Dictionary<string, string> LocalAttributes
-        //{
-        //    get
-        //    {
-        //        var retval = new Dictionary<string, string>();
-
-        //        foreach (var key in Attributes.Keys)
-        //            if (!key.Contains(":"))
-        //                retval.Add(key, Attributes[key]);
-
-        //        return retval;
-        //    }
-        //}
-        ///// <summary>
-        ///// Returns all attributes of the <see cref="Attributes"/> associated with <see cref="WixEntity"/>
-        ///// "related" element XML <c>Component</c>.
-        ///// </summary>
-        //internal Dictionary<string, string> ComponentAttributes
-        //{
-        //    get
-        //    {
-        //        var retval = new Dictionary<string, string>();
-
-        //        foreach (var key in Attributes.Keys)
-        //            if (key.Contains("Component:"))
-        //                retval.Add(key.Replace("Component:", ""), Attributes[key]);
-
-        //        return retval;
-        //    }
-        //}
         /// <summary>
         /// Name of the <see cref="WixEntity"/>. 
         /// <para>This value is used as a <c>Name</c> for the corresponding WiX XML element.</para>

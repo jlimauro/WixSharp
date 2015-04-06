@@ -1,10 +1,11 @@
 #region Licence...
+
 /*
 The MIT License (MIT)
 
 Copyright (c) 2014 Oleg Shilo
 
-Permission is hereby granted, 
+Permission is hereby granted,
 free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -23,7 +24,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#endregion
+
+#endregion Licence...
+
 using System;
 using System.Collections.Generic;
 using IO = System.IO;
@@ -45,8 +48,8 @@ namespace WixSharp
     /// </para>
     /// </summary>
     /// <remarks>
-    /// Note that all files matching wildcard are resolved into absolute path thus it may not always be suitable 
-    /// if the Wix# script is to be compiled into WiX XML source only (Compiler.<see cref="WixSharp.Compiler.BuildWxs(WixSharp.Project)"/>). Though it is not a problem at all if the Wix# script 
+    /// Note that all files matching wildcard are resolved into absolute path thus it may not always be suitable
+    /// if the Wix# script is to be compiled into WiX XML source only (Compiler.<see cref="WixSharp.Compiler.BuildWxs(WixSharp.Project)"/>). Though it is not a problem at all if the Wix# script
     /// is compiled into MSI file (Compiler.<see cref="Compiler.BuildMsi(WixSharp.Project)"/>).
     /// </remarks>b
     /// <example>The following is an example of defining installation files with wildcard character pattern.
@@ -62,7 +65,10 @@ namespace WixSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="Files"/> class.
         /// </summary>
-        public Files() { }
+        public Files()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Files"/> class with properties/fields initialized with specified parameters.
         /// </summary>
@@ -73,19 +79,36 @@ namespace WixSharp
             IncludeMask = IO.Path.GetFileName(sourcePath);
             Directory = IO.Path.GetDirectoryName(sourcePath);
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Files"/> class with properties/fields initialized with specified parameters.
         /// </summary>
         /// <param name="sourcePath">The relative path to source directory. It must include wildcard pattern for files to be included
         /// into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
-        /// <param name="excludeFileMasks">Wildcard pattern(s) for files to be excluded from MSI 
+        /// <param name="excludeFileMasks">Wildcard pattern(s) for files to be excluded from MSI
         /// (e.g. <c>new Files(typical, @"Release\Bin\*.dll", "*.Test.dll", "*.UnitTest.dll")</c>).</param>
+        [Obsolete("Use more versatile constructor, which takes Predicate<string> filter.")]
         public Files(string sourcePath, params string[] excludeFileMasks)
         {
             IncludeMask = IO.Path.GetFileName(sourcePath);
             Directory = IO.Path.GetDirectoryName(sourcePath);
             ExcludeMasks = excludeFileMasks;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Files"/> class with properties/fields initialized with specified parameters.
+        /// </summary>
+        /// <param name="sourcePath">The relative path to source directory. It must include wildcard pattern for files to be included
+        /// into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
+        /// <param name="filter">Filter to be applied for every file to be evaluated for the inclusion into MSI.
+        /// (e.g. <c>new Files(typical, @"Release\Bin\*.dll", f => !f.EndsWith(".Test.dll"))</c>).</param>
+        public Files(string sourcePath, Predicate<string> filter)
+        {
+            IncludeMask = IO.Path.GetFileName(sourcePath);
+            Directory = IO.Path.GetDirectoryName(sourcePath);
+            Filter = filter;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Files"/> class with properties/fields initialized with specified parameters.
         /// </summary>
@@ -98,13 +121,14 @@ namespace WixSharp
             Directory = IO.Path.GetDirectoryName(sourcePath);
             Feature = feature;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Files"/> class with properties/fields initialized with specified parameters.
         /// </summary>
         /// <param name="feature"><see cref="Feature"></see> the directory files should be included in.</param>
         /// <param name="sourcePath">The relative path to source directory. It must include wildcard pattern for files to be included
         /// into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
-        /// <param name="excludeFileMasks">Wildcard pattern(s) for files to be excluded from MSI 
+        /// <param name="excludeFileMasks">Wildcard pattern(s) for files to be excluded from MSI
         /// (e.g. <c>new Files(typical, @"Release\Bin\*.dll", "*.Test.dll", "*.UnitTest.dll")</c>).</param>
         public Files(Feature feature, string sourcePath, params string[] excludeFileMasks)
         {
@@ -115,19 +139,41 @@ namespace WixSharp
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Files"/> class with properties/fields initialized with specified parameters.
+        /// </summary>
+        /// <param name="feature"><see cref="Feature"></see> the directory files should be included in.</param>
+        /// <param name="sourcePath">The relative path to source directory. It must include wildcard pattern for files to be included
+        /// into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
+        /// <param name="filter">Filter to be applied for every file to be evaluated for the inclusion into MSI.
+        /// (e.g. <c>new Files(typical, @"Release\Bin\*.dll", f => !f.EndsWith(".Test.dll"))</c>).</param>
+        public Files(Feature feature, string sourcePath, Predicate<string> filter)
+        {
+            IncludeMask = IO.Path.GetFileName(sourcePath);
+            Directory = IO.Path.GetDirectoryName(sourcePath);
+            Filter = filter;
+            Feature = feature;
+        }
+
+        /// <summary>
         /// <see cref="Feature"></see> the directory files are included in.
         /// </summary>
         public Feature Feature;
+
         /// <summary>
         /// The relative path to source directory to search for files matching the <see cref="Files.IncludeMask"/>.
         /// </summary>
         public string Directory = "";
+
         /// <summary>
-        /// Wildcard pattern for files to be included into MSI. 
+        /// The filter delegate. It is applied for every file to be evaluated for the inclusion into MSI.   
+        /// </summary>
+        public Predicate<string> Filter = (file => true);
+
+        /// <summary>
+        /// Wildcard pattern for files to be included into MSI.
         /// <para>Default value is <c>*.*</c>.</para>
         /// </summary>
         public string IncludeMask = "*.*";
-
 
         /// <summary>
         /// Wildcard patterns for files to be excluded from MSI.
@@ -138,16 +184,11 @@ namespace WixSharp
         /// Analyses <paramref name="baseDirectory"/> and returns all files (including subdirectories) matching <see cref="Files.IncludeMask"/>,
         /// which are not matching any <see cref="Files.ExcludeMasks"/>.
         /// </summary>
-        /// <param name="baseDirectory">The base directory for file analysis. It is used in conjunction with 
+        /// <param name="baseDirectory">The base directory for file analysis. It is used in conjunction with
         /// relative <see cref="DirFiles.Directory"/>.</param>
         /// <returns>Array of <see cref="WixEntity"/> instances, which are either <see cref="File"/> or/and <see cref="Dir"/> objects.</returns>
         public WixEntity[] GetAllItems(string baseDirectory)
         {
-            //Func<string, string> ToRelativePath = delegate(string dirPath)
-            //                     {
-            //                         return dirPath.Substring(baseDirectory.Length);
-            //                     };
-
             if (baseDirectory.IsEmpty())
                 baseDirectory = Environment.CurrentDirectory;
 
@@ -157,14 +198,31 @@ namespace WixSharp
                                     foreach (var subDirPath in IO.Directory.GetDirectories(dirPath))
                                     {
                                         var dirName = IO.Path.GetFileName(subDirPath);
-                                        var subDir = new Dir(dirName, new DirFiles(Feature, ToRelativePath(subDirPath, baseDirectory) + "\\" + IncludeMask, ExcludeMasks));
+                                        var subDir = new Dir(dirName, new DirFiles
+                                                                      { 
+                                                                          Feature = this.Feature,
+                                                                          Directory = ToRelativePath(subDirPath, baseDirectory),
+                                                                          IncludeMask = this.IncludeMask,
+                                                                          ExcludeMasks = this.ExcludeMasks, 
+                                                                          Filter = this.Filter 
+                                                                      });
                                         AgregateSubDirs(subDir, subDirPath);
 
                                         parentDir.Dirs = parentDir.Dirs.Add<Dir>(subDir);
                                     }
                                 };
 
-            var items = new List<WixEntity> { new DirFiles(Feature, Utils.PathCombine(Directory, IncludeMask), ExcludeMasks) };
+            var items = new List<WixEntity> 
+            {
+                new DirFiles 
+                {
+                    Feature=this.Feature, 
+                    Directory = this.Directory,
+                    IncludeMask = this.IncludeMask,
+                    ExcludeMasks = this.ExcludeMasks, 
+                    Filter = this.Filter 
+                }
+            };
 
             string rootDirPath = Utils.PathCombine(baseDirectory, Directory);
 
@@ -174,7 +232,14 @@ namespace WixSharp
             foreach (var subDirPath in System.IO.Directory.GetDirectories(rootDirPath))
             {
                 var dirName = IO.Path.GetFileName(subDirPath);
-                var subDir = new Dir(dirName, new DirFiles(Feature, ToRelativePath(subDirPath, baseDirectory) + "\\" + IncludeMask, ExcludeMasks));
+                var subDir = new Dir(dirName, new DirFiles 
+                                              { 
+                                                  Feature=this.Feature, 
+                                                  Directory = ToRelativePath(subDirPath, baseDirectory) ,
+                                                  IncludeMask = this.IncludeMask,
+                                                  ExcludeMasks = this.ExcludeMasks, 
+                                                  Filter = this.Filter
+                                              });
                 AgregateSubDirs(subDir, subDirPath);
 
                 items.Add(subDir);
@@ -224,6 +289,5 @@ namespace WixSharp
             ttt = ToRelativePath(@"\\gg\yy\test.txt", @"\\gg\");
             ttt = ToRelativePath(@"\\gg\yy\test.txt", @"\\gg");
         }
-
     }
 }
