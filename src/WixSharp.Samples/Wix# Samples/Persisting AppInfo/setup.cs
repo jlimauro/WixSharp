@@ -26,14 +26,14 @@ class Script
                         new File(@"Files\Docs\Manual.txt"))),
 
                 new RegValueProperty("INSTALLDIR", RegistryHive.LocalMachine, @"Software\My Company\My Product", "InstallationDirectory"),
-                new RegValue(RegistryHive.LocalMachine, @"Software\My Company\My Product", "InstallationDirectory", "[INSTALLDIR]") { AttributesDefinition = "Component:Permanent=yes" });  
+                new RegValue(RegistryHive.LocalMachine, @"Software\My Company\My Product", "InstallationDirectory", "[INSTALLDIR]") { AttributesDefinition = "Component:Permanent=yes" });
 
         project.UI = WUI.WixUI_InstallDir;
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
         Compiler.BuildMsi(project);
     }
-    
+
     static void ManagedSetup()
     {
         var project =
@@ -44,13 +44,14 @@ class Script
                     new Dir(@"Docs\Manual",
                         new File(@"Files\Docs\Manual.txt"))),
 
-                new ManagedAction("ReadInstallDir", Return.ignore, When.Before, new Step("AppSearch"), Condition.NOT_Installed, Sequence.InstallExecuteSequence | Sequence.InstallUISequence) { Execute=Execute.firstSequence },
+                new ManagedAction("ReadInstallDir", Return.ignore, When.Before, new Step("AppSearch"), Condition.NOT_Installed, Sequence.InstallExecuteSequence | Sequence.InstallUISequence) { Execute = Execute.firstSequence },
                 new ElevatedManagedAction("SaveInstallDir", Return.check, When.After, Step.InstallFiles, Condition.NOT_Installed));
 
         project.UI = WUI.WixUI_InstallDir;
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
-        Compiler.BuildMsi(project);
+        var ttt = Compiler.BuildWxs(project);
+        //Compiler.BuildMsi(project);
     }
 }
 

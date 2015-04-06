@@ -40,7 +40,7 @@ namespace WixSharp
     ///                                 {
     ///                                     UpgradeVersions = VersionRange.OlderThanThis,
     ///                                     PreventDowngradingVersions = VersionRange.NewerThanThis,
-    ///                                     NewerProductInstalledErrorMessage = "Newer version already installed",
+    ///                                     NewerProductInstalledErrorMessage = "Newer version already installed"
     ///                                 };
     /// Compiler.BuildMsi(project);
     /// </code>

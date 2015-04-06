@@ -87,7 +87,7 @@ namespace WixSharp
     {
         static public void EmitAttributes(this Shortcut shortcut, XElement shortcutElement)
         {
-            shortcutElement.AddAttributes(shortcut.LocalAttributes);
+            shortcutElement.AddAttributes(shortcut.Attributes);
 
             if (shortcut.Arguments == "" && shortcutElement.Attribute("Arguments") != null)
                 shortcutElement.Attribute("Arguments").Remove();

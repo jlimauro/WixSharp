@@ -121,6 +121,19 @@ namespace WixSharp
         {
             return obj.AddAttributes(attributesDefinition.ToDictionary());
         }
+
+        /// <summary>
+        /// Sets the vaule of the attribute. This is a fluent version of XElement.SetAttributeValue. 
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public static XElement SetAttribute(this XElement obj, string name, string value)
+        {
+            obj.SetAttributeValue(name, value);
+            return obj;
+        }
         /// <summary>
         /// Adds the attributes to the to a given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
         /// </summary>
@@ -129,11 +142,17 @@ namespace WixSharp
         /// <returns><see cref="T:System.Xml.Linq.XElement"/> with added attributes.</returns>
         public static XElement AddAttributes(this XElement obj, Dictionary<string, string> attributes)
         {
-            foreach (var key in attributes.Keys)
-                if (obj.Attribute(key) == null)
-                    obj.Add(new XAttribute(key, attributes[key]));
-                else
-                    obj.Attribute(key).Value = attributes[key];
+            if (attributes.Any())
+            {
+                var optimizedAttributes = attributes.Where(x => !x.Key.Contains(":")).ToDictionary(t => t.Key, t => t.Value);
+
+                var compositValues = string.Join(";", attributes.Where(x => x.Key.Contains(":")).Select(x => x.Key + "=" + x.Value).ToArray());
+                if (compositValues.IsNotEmpty())
+                    optimizedAttributes.Add("WixSharpCustomAttributes", compositValues);
+
+                foreach (var key in optimizedAttributes.Keys)
+                    obj.SetAttributeValue(key, optimizedAttributes[key]);
+            }
             return obj;
         }
 
@@ -396,6 +415,17 @@ namespace WixSharp
             return string.IsNullOrEmpty(s);
         }
         /// <summary>
+        /// Determines whether the given string is empty or not.
+        /// </summary>
+        /// <param name="s">The string to analyse.</param>
+        /// <returns>
+        /// 	<c>true</c> if the specified string is not empty; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsNotEmpty(this string s)
+        {
+            return !string.IsNullOrEmpty(s);
+        }
+        /// <summary>
         /// Returns all leading white-space characters.
         /// </summary>
         /// <param name="s">The string to analyse.</param>
@@ -631,7 +661,7 @@ namespace WixSharp
         {
             if (obj is String)
             {
-                    return "string";
+                return "string";
             }
             else if (obj is Int16 || obj is Int32)
             {
@@ -782,7 +812,7 @@ namespace WixSharp
         /// <typeparam name="T"></typeparam>
         /// <param name="items">The items.</param>
         /// <returns></returns>
-        public static WixObject ToWObject<T>(this IEnumerable<T> items) where T: WixObject 
+        public static WixObject ToWObject<T>(this IEnumerable<T> items) where T : WixObject
         {
             return new WixItems(items.Cast<WixObject>());
         }

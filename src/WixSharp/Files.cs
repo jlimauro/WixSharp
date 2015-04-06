@@ -127,6 +127,8 @@ namespace WixSharp
         /// <para>Default value is <c>*.*</c>.</para>
         /// </summary>
         public string IncludeMask = "*.*";
+
+
         /// <summary>
         /// Wildcard patterns for files to be excluded from MSI.
         /// </summary>

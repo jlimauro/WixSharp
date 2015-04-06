@@ -27,6 +27,7 @@ THE SOFTWARE.
 
 #endregion Licence...
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -40,11 +41,11 @@ namespace WixSharp
     /// <para>- You must use a registry key under HKCU as component's KeyPath, not a file. </para>
     /// <para>- The Component element cannot have multiple key path set.  </para>
     /// <para>- The project must have at least one directory element.  </para>
-    /// <para>- All directories installed in the user profile must have corresponding RemoveDirectory 
+    /// <para>- All directories installed in the user profile must have corresponding RemoveDirectory
     /// elements.  </para>
     /// <para>...</para>
     /// <para>
-    /// The MSI always wants registry keys as the key paths for per-user components. 
+    /// The MSI always wants registry keys as the key paths for per-user components.
     /// It has to do with the way profiles work with advertised content in enterprise deployments.
     /// The fact that you do not want to install any registry doesn't matter. MSI is the boss.
     /// </para>
@@ -90,7 +91,7 @@ namespace WixSharp
                           .Where(a => a != null && a.Value == "yes")
                           .ToList();
 
-                keyPathes.ForEach(a=>a.Remove());
+                keyPathes.ForEach(a => a.Remove());
 
                 xComponent.Add(
                             new XElement("RegistryKey",
@@ -229,8 +230,61 @@ namespace WixSharp
                         new XAttribute("SourceFile", file)));
         }
 
+        static void ExpandCustomAttributes(XDocument doc)
+        {
+            foreach (XAttribute instructionAttr in doc.Root.Descendants().Select(x => x.Attribute("WixSharpCustomAttributes")).Where(x => x != null))
+            {
+                XElement sourceElement = instructionAttr.Parent;
+
+                foreach (string item in instructionAttr.Value.Split(';'))
+                    if (item.IsNotEmpty())
+                    {
+                        if (!ExpandCustomAttribute(sourceElement, item))
+                            throw new ApplicationException("Cannot resolve custom attribute definition:" + item);
+                    }
+
+                instructionAttr.Remove();
+            }
+        }
+
+        static Func<XElement, string, bool> ExpandCustomAttribute = DefaultExpandCustomAttribute;
+
+        static bool DefaultExpandCustomAttribute(XElement source, string item)
+        {
+            var attrParts = item.Split('=');
+            var keyParts = attrParts.First().Split(':');
+
+            string element = keyParts.First();
+            string key = keyParts.Last();
+            string value = attrParts.Last();
+
+            if (element == "Component")
+            {
+                XElement destElement = source.Parent("Component");
+                if (destElement != null)
+                {
+                    destElement.SetAttributeValue(key, value);
+                    return true;
+                }
+            }
+
+            if (element == "Custom" && source.Name.LocalName == "CustomAction")
+            {
+                string id = source.Attribute("Id").Value;
+                var elements = source.Document.Descendants("Custom").Where(e => e.Attribute("Action").Value == id);
+                if (elements.Any())
+                {
+                    elements.ForEach(e => e.SetAttributeValue(key, value));
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         internal static void InjectAutoElementsHandler(XDocument doc)
         {
+            ExpandCustomAttributes(doc);
             InjectShortcutIcons(doc);
 
             XElement installDir = doc.Root.Select("Product").Element("Directory").Element("Directory");
@@ -244,7 +298,7 @@ namespace WixSharp
                 installDirName.Value = "ABSOLUTEPATH";
 
                 //<SetProperty> is an attractive approach but it doesn't allow conditional setting of 'ui' and 'execute' as required depending on UI level
-                // it is ether hard coded 'both' or hard coded both 'ui' or 'execute' 
+                // it is ether hard coded 'both' or hard coded both 'ui' or 'execute'
                 // <SetProperty Id="INSTALLDIR" Value="C:\My Company\MyProduct" Sequence="both" Before="AppSearch">
 
                 product.Add(new XElement("CustomAction",
@@ -294,7 +348,7 @@ namespace WixSharp
 
                     foreach (XElement xFile in xComp.Elements("File"))
                         if (xFile.ContainsAdvertisedShortcuts() && !xComp.ContainsDummyUserProfileRegistry())
-                            SetFileKeyPath(xFile); 
+                            SetFileKeyPath(xFile);
                 }
 
                 if (!xDir.ContainsComponents() && xDir.InUserProfile())

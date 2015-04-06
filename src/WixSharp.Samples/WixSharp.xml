@@ -101,17 +101,6 @@
             </code>
             </example>
         </member>
-        <member name="P:WixSharp.WixEntity.LocalAttributes">
-            <summary>
-            Returns all attributes of the <see cref="P:WixSharp.WixEntity.Attributes"/> directly associated with <see cref="T:WixSharp.WixEntity"/>.
-            </summary>
-        </member>
-        <member name="P:WixSharp.WixEntity.ComponentAttributes">
-            <summary>
-            Returns all attributes of the <see cref="P:WixSharp.WixEntity.Attributes"/> associated with <see cref="T:WixSharp.WixEntity"/>
-            "related" element XML <c>Component</c>.
-            </summary>
-        </member>
         <member name="P:WixSharp.WixEntity.Id">
             <summary>
             Gets or sets the <c>Id</c> value of the <see cref="T:WixSharp.WixEntity"/>. 
@@ -415,11 +404,11 @@
             <para>- You must use a registry key under HKCU as component's KeyPath, not a file. </para>
             <para>- The Component element cannot have multiple key path set.  </para>
             <para>- The project must have at least one directory element.  </para>
-            <para>- All directories installed in the user profile must have corresponding RemoveDirectory 
+            <para>- All directories installed in the user profile must have corresponding RemoveDirectory
             elements.  </para>
             <para>...</para>
             <para>
-            The MSI always wants registry keys as the key paths for per-user components. 
+            The MSI always wants registry keys as the key paths for per-user components.
             It has to do with the way profiles work with advertised content in enterprise deployments.
             The fact that you do not want to install any registry doesn't matter. MSI is the boss.
             </para>
@@ -1429,6 +1418,15 @@
             definition are the same as for <see cref="P:WixSharp.WixEntity.AttributesDefinition"/>.</param>
             <returns></returns>
         </member>
+        <member name="M:WixSharp.Extensions.SetAttribute(System.Xml.Linq.XElement,System.String,System.String)">
+            <summary>
+            Sets the vaule of the attribute. This is a fluent version of XElement.SetAttributeValue. 
+            </summary>
+            <param name="obj">The object.</param>
+            <param name="name">The name.</param>
+            <param name="value">The value.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.AddAttributes(System.Xml.Linq.XElement,System.Collections.Generic.Dictionary{System.String,System.String})">
             <summary>
             Adds the attributes to the to a given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
@@ -1577,6 +1575,15 @@
             <param name="s">The string to analyse.</param>
             <returns>
             	<c>true</c> if the specified s is empty; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WixSharp.Extensions.IsNotEmpty(System.String)">
+            <summary>
+            Determines whether the given string is empty or not.
+            </summary>
+            <param name="s">The string to analyse.</param>
+            <returns>
+            	<c>true</c> if the specified string is not empty; otherwise, <c>false</c>.
             </returns>
         </member>
         <member name="M:WixSharp.Extensions.GetLeftIndent(System.String)">
@@ -6001,6 +6008,91 @@
             Name of the property to be set.
             </summary>
         </member>
+        <member name="T:WixSharp.Step">
+            <summary>
+            Specifies predefined values for <see cref="F:WixSharp.Action.Step"/>,
+            which controls order of <c>Custom Action</c> to be executed.
+            <para><c>Before</c> or <c>After</c> switch for <c>Custom Action</c> is controlled by <see cref="T:WixSharp.When"/>.</para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallInitialize">
+            <summary>
+            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallInitialize</c> action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallFinalize">
+            <summary>
+            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallFinalize</c> action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallFiles">
+            <summary>
+            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallFiles</c> action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RemoveFiles">
+            <summary>
+            <c>Custom Action</c> is to be executed before/after MSI built-in <c>RemoveFiles</c> action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallExecute">
+            <summary>
+            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallExecute</c> action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallExecuteAgain">
+            <summary>
+            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallExecuteAgain</c> action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.PreviousAction">
+            <summary>
+            <c>Custom Action</c> is to be executed before/after the previous action declared in <see cref="F:WixSharp.Project.Actions"/>.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.LaunchConditions">
+            <summary>
+            <c>Custom Action</c> is to be executed before/after MSI built-in <c>LaunchConditions</c> action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallValidate">
+            <summary>
+            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallValidate</c> action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.PreviousActionOrInstallFinalize">
+            <summary>
+            <c>Custom Action</c> is to be executed before/after the previous action item in <see cref="F:WixSharp.Project.Actions"/>.
+            If <c>Custom Action</c> is the first item in item in <see cref="F:WixSharp.Project.Actions"/> it will be executed before/after
+            MSI built-in <c>InstallFinalize</c> action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.PreviousActionOrInstallInitialize">
+            <summary>
+            <c>Custom Action</c> is to be executed before/after the previous action item in <see cref="F:WixSharp.Project.Actions"/>.
+            If <c>Custom Action</c> is the first item in item in <see cref="F:WixSharp.Project.Actions"/> it will be executed before/after
+            MSI built-in <c>InstallInitialize</c> action.
+            </summary>
+        </member>
+        <member name="M:WixSharp.Step.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.Sequence"/> class.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="F:WixSharp.Step.Value">
+            <summary>
+            The string value of the Step object
+            </summary>
+        </member>
+        <member name="M:WixSharp.Step.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
         <member name="T:WixSharp.MajorUpgradeStrategy">
              <summary>
              This class defines the Major Upgrade scenario.
@@ -6016,7 +6108,7 @@
                                              {
                                                  UpgradeVersions = VersionRange.OlderThanThis,
                                                  PreventDowngradingVersions = VersionRange.NewerThanThis,
-                                                 NewerProductInstalledErrorMessage = "Newer version already installed",
+                                                 NewerProductInstalledErrorMessage = "Newer version already installed"
                                              };
              Compiler.BuildMsi(project);
              </code>
@@ -6118,6 +6210,11 @@
         <member name="F:WixSharp.VersionRange.IncludeMinimum">
             <summary>
             Indicates if version range includes <see cref="F:WixSharp.VersionRange.Minimum"/> value.
+            </summary>
+        </member>
+        <member name="F:WixSharp.VersionRange.MigrateFeatures">
+            <summary>
+            Set to true to migrate feature states from upgraded products by enabling the logic in the MigrateFeatureStates action
             </summary>
         </member>
         <member name="F:WixSharp.VersionRange.ThisAndNewer">
@@ -6851,91 +6948,6 @@
             <summary>
             Indicates that a custom action should be run a second time if it was previously run in an earlier sequence.
             </summary>
-        </member>
-        <member name="T:WixSharp.Step">
-            <summary>
-            Specifies predefined values for <see cref="F:WixSharp.Action.Step"/>,
-            which controls order of <c>Custom Action</c> to be executed.
-            <para><c>Before</c> or <c>After</c> switch for <c>Custom Action</c> is controlled by <see cref="T:WixSharp.When"/>.</para>
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.InstallInitialize">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallInitialize</c> action.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.InstallFinalize">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallFinalize</c> action.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.InstallFiles">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallFiles</c> action.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.RemoveFiles">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>RemoveFiles</c> action.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.InstallExecute">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallExecute</c> action.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.InstallExecuteAgain">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallExecuteAgain</c> action.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.PreviousAction">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after the previous action declared in <see cref="F:WixSharp.Project.Actions"/>.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.LaunchConditions">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>LaunchConditions</c> action.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.InstallValidate">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallValidate</c> action.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.PreviousActionOrInstallFinalize">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after the previous action item in <see cref="F:WixSharp.Project.Actions"/>.
-            If <c>Custom Action</c> is the first item in item in <see cref="F:WixSharp.Project.Actions"/> it will be executed before/after
-            MSI built-in <c>InstallFinalize</c> action.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.PreviousActionOrInstallInitialize">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after the previous action item in <see cref="F:WixSharp.Project.Actions"/>.
-            If <c>Custom Action</c> is the first item in item in <see cref="F:WixSharp.Project.Actions"/> it will be executed before/after
-            MSI built-in <c>InstallInitialize</c> action.
-            </summary>
-        </member>
-        <member name="M:WixSharp.Step.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.Sequence"/> class.
-            </summary>
-            <param name="value">The value.</param>
-        </member>
-        <member name="F:WixSharp.Step.Value">
-            <summary>
-            The string value of the Step object
-            </summary>
-        </member>
-        <member name="M:WixSharp.Step.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"/> that represents this instance.
-            </summary>
-            <returns>
-            A <see cref="T:System.String"/> that represents this instance.
-            </returns>
         </member>
         <member name="T:WixSharp.When">
             <summary>

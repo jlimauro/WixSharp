@@ -20,7 +20,8 @@ class Script
         project.Version = new Version("1.0.714.10040");
         project.MajorUpgradeStrategy = MajorUpgradeStrategy.Default;
 
-        //just an example of how to access WiX attributes not covered by Wix#
+        //Of course you can use 'bool VersionRange.MigrateFeatures'. The following is just an 
+        //example of how to access WiX attributes if they are not covered by Wix#
         Compiler.WixSourceGenerated += doc => doc.Root
                                                  .Select("Product/Upgrade/UpgradeVersion")
                                                  .AddAttributes("MigrateFeatures=yes");

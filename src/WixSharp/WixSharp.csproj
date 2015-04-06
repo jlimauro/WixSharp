@@ -158,6 +158,7 @@
     <Compile Include="ServiceInstaller.cs" />
     <Compile Include="SetPropertyAction.cs" />
     <Compile Include="Shortcut.cs" />
+    <Compile Include="Step.cs" />
     <Compile Include="UpgradeStrategy.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Utils.cs" />
