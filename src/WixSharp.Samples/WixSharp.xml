@@ -6015,49 +6015,410 @@
             <para><c>Before</c> or <c>After</c> switch for <c>Custom Action</c> is controlled by <see cref="T:WixSharp.When"/>.</para>
             </summary>
         </member>
-        <member name="F:WixSharp.Step.InstallInitialize">
+        <member name="F:WixSharp.Step.ADMIN">
             <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallInitialize</c> action.
+            A top-level action used for an administrative installation.
             </summary>
         </member>
-        <member name="F:WixSharp.Step.InstallFinalize">
+        <member name="F:WixSharp.Step.ADVERTISE">
             <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallFinalize</c> action.
+            A top-level action called to install or remove advertised components.
             </summary>
         </member>
-        <member name="F:WixSharp.Step.InstallFiles">
+        <member name="F:WixSharp.Step.AllocateRegistrySpace">
             <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallFiles</c> action.
+            Validates that the free space specified by AVAILABLEFREEREG exists in the registry.
             </summary>
         </member>
-        <member name="F:WixSharp.Step.RemoveFiles">
+        <member name="F:WixSharp.Step.AppSearch">
             <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>RemoveFiles</c> action.
+            Searches for previous versions of products and determines that upgrades are installed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.BindImage">
+            <summary>
+            Binds executables to imported DLLs.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.CCPSearch">
+            <summary>
+            Uses file signatures to validate that qualifying products are installed on a system before an upgrade installation is performed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.CostFinalize">
+            <summary>
+            Ends the internal installation costing process begun by the CostInitialize action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.CostInitialize">
+            <summary>
+            Starts the installation costing process.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.CreateFolders">
+            <summary>
+            Creates empty folders for components.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.CreateShortcuts">
+            <summary>
+            Creates shortcuts.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.DeleteServices">
+            <summary>
+            Removes system services.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.DisableRollback">
+            <summary>
+            Disables rollback for the remainder of the installation.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.DuplicateFiles">
+            <summary>
+            Duplicates files installed by the InstallFiles action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.ExecuteAction">
+            <summary>
+            Checks the EXECUTEACTION property to determine which top-level action begins the execution sequence, then runs that action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.FileCost">
+            <summary>
+            Initializes disk cost calculation with the installer. Disk costing is not finalized until the CostFinalize action is executed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.FindRelatedProducts">
+            <summary>
+            Detects correspondence between the Upgrade table and installed products.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.ForceReboot">
+            <summary>
+            Used in the action sequence to prompt the user for a restart of the system during the installation.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.INSTALL">
+            <summary>
+            A top-level action called to install or remove components.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallAdminPackage">
+            <summary>
+            Copies the installer database to the administrative installation point.
             </summary>
         </member>
         <member name="F:WixSharp.Step.InstallExecute">
             <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallExecute</c> action.
+            Runs a script containing all operations in the action sequence since either the start of the installation or the last InstallFinalize action. Does not end the transaction.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallFiles">
+            <summary>
+            Copies files from the source to the destination directory.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallFinalize">
+            <summary>
+            Runs a script containing all operations in the action sequence since either the start of the installation or the last InstallFinalize action. Marks the end of a transaction.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallInitialize">
+            <summary>
+            Marks the beginning of a transaction.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallSFPCatalogFile">
+            <summary>
+            The InstallSFPCatalogFile action installs the catalogs used by Windows Me for Windows File Protection.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallValidate">
+            <summary>
+            Verifies that all volumes with attributed costs have sufficient space for the installation.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.IsolateComponents">
+            <summary>
+            Processes the IsolatedComponent table
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.LaunchConditions">
+            <summary>
+            Evaluates a set of conditional statements contained in the LaunchCondition table that must all evaluate to True before the installation can proceed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.MigrateFeatureStates">
+            <summary>
+            Migrates current feature states to the pending installation.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.MoveFiles">
+            <summary>
+            Locates existing files and moves or copies those files to a new location.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.MsiConfigureServices">
+            <summary>
+            Configures a service for the system.
+            Windows Installer 4.5 and earlier:  Not supported.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.MsiPublishAssemblies">
+            <summary>
+            Manages the advertisement of common language runtime assemblies and Win32 assemblies that are being installed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.MsiUnpublishAssemblies">
+            <summary>
+            Manages the advertisement of common language runtime assemblies and Win32 assemblies that are being removed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallODBC">
+            <summary>
+            Installs the ODBC drivers, translators, and data sources.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.InstallServices">
+            <summary>
+            Registers a service with the system.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.PatchFiles">
+            <summary>
+            Queries the Patch table to determine which patches are applied to specific files and then performs the byte-wise patching of the files.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.ProcessComponents">
+            <summary>
+            Registers components, their key paths, and component clients.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.PublishComponents">
+            <summary>
+            Advertises the components specified in the PublishComponent table.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.PublishFeatures">
+            <summary>
+            Writes the feature state of each feature into the system registry
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.PublishProduct">
+            <summary>
+            Publishes product information with the system.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RegisterClassInfo">
+            <summary>
+            Manages the registration of COM class information with the system.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RegisterComPlus">
+            <summary>
+            The RegisterComPlus action registers COM+ applications.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RegisterExtensionInfo">
+            <summary>
+            Registers extension related information with the system.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RegisterFonts">
+            <summary>
+            Registers installed fonts with the system.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RegisterMIMEInfo">
+            <summary>
+            Registers MIME information with the system.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RegisterProduct">
+            <summary>
+            Registers product information with the installer and stores the installer database on the local computer.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RegisterProgIdInfo">
+            <summary>
+            Registers OLE ProgId information with the system.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RegisterTypeLibraries">
+            <summary>
+            Registers type libraries with the system.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RegisterUser">
+            <summary>
+            Registers user information to identify the user of a product.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RemoveDuplicateFiles">
+            <summary>
+            Deletes files installed by the DuplicateFiles action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RemoveEnvironmentStrings">
+            <summary>
+            Modifies the values of environment variables.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RemoveExistingProducts">
+            <summary>
+            Removes installed versions of a product.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RemoveFiles">
+            <summary>
+            Removes files previously installed by the InstallFiles action.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RemoveFolders">
+            <summary>
+            Removes empty folders linked to components set to be removed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RemoveIniValues">
+            <summary>
+            Deletes .ini file information associated with a component specified in the IniFile table.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RemoveODBC">
+            <summary>
+            Removes ODBC data sources, translators, and drivers.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RemoveRegistryValues">
+            <summary>
+            Removes an application's registry keys that were created from the Registry table..
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RemoveShortcuts">
+            <summary>
+            Manages the removal of an advertised shortcut whose feature is selected for uninstallation.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.ResolveSource">
+            <summary>
+            Determines the source location and sets the SourceDir property.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.RMCCPSearch">
+            <summary>
+            Uses file signatures to validate that qualifying products are installed on a system before an upgrade installation is performed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.ScheduleReboot">
+            <summary>
+            Prompts the user for a system restart at the end of the installation.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.SelfRegModules">
+            <summary>
+            Processes modules in the SelfReg table and registers them if they are installed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.SelfUnregModules">
+            <summary>
+            Unregisters the modules in the SelfReg table that are set to be uninstalled.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.SEQUENCE">
+            <summary>
+            Runs the actions in a table specified by the SEQUENCE property.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.SetODBCFolders">
+            <summary>
+            Checks the system for existing ODBC drivers and sets target directory for new ODBC drivers.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.StartServices">
+            <summary>
+            Starts system services.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.StopServices">
+            <summary>
+            Stops system services.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.UnpublishComponents">
+            <summary>
+            Manages the unadvertisement of components from the PublishComponent table and removes information about published components.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.UnpublishFeatures">
+            <summary>
+            Removes the selection-state and feature-component mapping information from the system registry.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.UnregisterClassInfo">
+            <summary>
+            Manages the removal of COM classes from the system registry.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.UnregisterComPlus">
+            <summary>
+            The UnregisterComPlus action removes COM+ applications from the registry.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.UnregisterExtensionInfo">
+            <summary>
+            Manages the removal of extension-related information from the system.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.UnregisterFonts">
+            <summary>
+            Removes registration information about installed fonts from the system.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.UnregisterMIMEInfo">
+            <summary>
+            Unregisters MIME-related information from the system registry.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.UnregisterProgIdInfo">
+            <summary>
+            Manages the unregistration of OLE ProgId information with the system.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.UnregisterTypeLibraries">
+            <summary>
+            Unregisters type libraries with the system.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.ValidateProductID">
+            <summary>
+            Sets ProductID property to the full product identifier.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.WriteEnvironmentStrings">
+            <summary>
+            Modifies the values of environment variables.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.WriteIniValues">
+            <summary>
+            Writes .ini file information.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Step.WriteRegistryValues">
+            <summary>
+            Sets up registry information.
             </summary>
         </member>
         <member name="F:WixSharp.Step.InstallExecuteAgain">
             <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallExecuteAgain</c> action.
+            The InstallExecuteAgain action runs a script containing all operations in the action sequence since either the start of the installation or the last InstallExecuteAgain action or the last InstallExecute action. The InstallExecute action updates the system without ending the transaction. InstallExecuteAgain performs the same operation as the InstallExecute action but should only be used after InstallExecute.
             </summary>
         </member>
         <member name="F:WixSharp.Step.PreviousAction">
             <summary>
             <c>Custom Action</c> is to be executed before/after the previous action declared in <see cref="F:WixSharp.Project.Actions"/>.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.LaunchConditions">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>LaunchConditions</c> action.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Step.InstallValidate">
-            <summary>
-            <c>Custom Action</c> is to be executed before/after MSI built-in <c>InstallValidate</c> action.
             </summary>
         </member>
         <member name="F:WixSharp.Step.PreviousActionOrInstallFinalize">
