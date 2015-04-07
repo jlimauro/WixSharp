@@ -1,15 +1,40 @@
 //css_ref ..\..\WixSharp.dll;
 //css_ref System.Core.dll;
+//css_ref System.Xml.dll;
 using System;
-using WixSharp;
 using System.Xml.Linq;
-using System.Xml;
+using Microsoft.Win32;
+using WixSharp;
 
 class Script
 {
-    static public void Main(string[] args)
+    static public void Main()
     {
-        Project project =
+        Build();
+        //BuildWithAttributes();
+    }
+
+    static public void Build()
+    {
+        var project =
+            new Project("MyProduct",
+                new Dir(@"%ProgramFiles64Folder%\My Company\My Product",
+                    new File(@"Files\Bin\MyApp.exe"),
+                    new Dir(@"Docs\Manual",
+                        new File(@"Files\Docs\Manual.txt"))),
+                new RegValue(RegistryHive.LocalMachine, @"Software\My Company\My Product", "Message", "Hello"));
+
+        project.Platform = Platform.x64;
+        project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
+
+        Compiler.BuildMsi(project);
+    }
+
+    static public void BuildWithAttributes()
+    {
+        //this sample is inly useful for the demonstration of how to work with AttributesDefinition and XML jnjection
+
+        var project =
             new Project("MyProduct",
                 new Dir(@"%ProgramFiles64Folder%\My Company\My Product",
                     new File(@"Files\Bin\MyApp.exe") { AttributesDefinition = "Component:Win64=yes" },
@@ -33,8 +58,8 @@ class Script
 
     static void Compiler_WixSourceGenerated(XDocument document)
     {
-        foreach (XElement comp in document.Root.AllElements("Component"))
-            comp.Add(new XAttribute("Win64", "yes"));
+        document.Descendants("Component")
+                .ForEach(comp=>comp.SetAttributeValue("Win64", "yes"));
     }
 }
 

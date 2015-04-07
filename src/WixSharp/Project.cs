@@ -194,6 +194,11 @@ namespace WixSharp
         /// </summary>
         public Package Package = new Package();
         /// <summary>
+        /// The target platform type.
+        /// </summary>
+        public Platform? Platform;
+
+        /// <summary>
         /// Generic <see cref="T:WixSharp.WixEntity"/> container for defining WiX <c>Media</c> element attributes.
         /// <para>These attributes describe a disk that makes up the source media for the installation.</para>
         ///<example>The following is an example of defining the <c>Package</c> attributes.

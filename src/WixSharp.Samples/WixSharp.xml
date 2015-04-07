@@ -4786,6 +4786,11 @@
              </example>
              </summary>
         </member>
+        <member name="F:WixSharp.Project.Platform">
+            <summary>
+            The target platform type.
+            </summary>
+        </member>
         <member name="F:WixSharp.Project.Media">
              <summary>
              Generic <see cref="T:WixSharp.WixEntity"/> container for defining WiX <c>Media</c> element attributes.
@@ -7391,9 +7396,34 @@
             
              </summary>
         </member>
+        <member name="T:WixSharp.Platform">
+            <summary>
+            Sets the <see cref="T:WixSharp.Project.Package.Platform"/>) for the target platform type.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Platform.x86">
+            <summary>
+            Set this value to declare that the package is an x86 package.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Platform.ia64">
+            <summary>
+            Set this value to declare that the package is an ia64 package. This value requires that the InstallerVersion property be set to 200 or greater.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Platform.x64">
+            <summary>
+             Set this value to declare that the package is an x64 package. This value requires that the InstallerVersion property be set to 200 or greater.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Platform.arm">
+            <summary>
+             Set this value to declare that the package is an arm package. This value requires that the InstallerVersion property be set to 500 or greater.
+            </summary>
+        </member>
         <member name="T:WixSharp.StoreLocation">
             <summary>
-            Sets the (<see cref="T:IISVirtualDir.Certificate.StoreLocation"/>) for the Web site certificate.
+            Sets the <see cref="T:IISVirtualDir.Certificate.StoreLocation"/> for the Web site certificate.
             </summary>
         </member>
         <member name="F:WixSharp.StoreLocation.currentUser">

@@ -1,2 +1,3 @@
-..\..\cscs.exe setup.cs
+..\..\cscs.exe setup.cs 
+
 pause

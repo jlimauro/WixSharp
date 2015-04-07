@@ -230,6 +230,15 @@ namespace WixSharp
                         new XAttribute("SourceFile", file)));
         }
 
+        static void InjectPlatforAttributes(XDocument doc)
+        {
+            var is64BitPlatform = doc.Root.Select("Product/Package").HasAttribute("Platform", val => val == "x64");
+            
+            if (is64BitPlatform)
+                doc.Descendants("Component")
+                   .ForEach(comp => comp.SetAttributeValue("Win64", "yes"));
+        }
+
         static void ExpandCustomAttributes(XDocument doc)
         {
             foreach (XAttribute instructionAttr in doc.Root.Descendants().Select(x => x.Attribute("WixSharpCustomAttributes")).Where(x => x != null))
@@ -284,6 +293,7 @@ namespace WixSharp
 
         internal static void InjectAutoElementsHandler(XDocument doc)
         {
+            InjectPlatforAttributes(doc);
             ExpandCustomAttributes(doc);
             InjectShortcutIcons(doc);
 

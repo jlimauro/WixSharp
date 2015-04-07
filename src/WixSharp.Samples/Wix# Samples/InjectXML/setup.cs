@@ -20,10 +20,8 @@ class Script
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
         Compiler.WixSourceGenerated += document =>
-            {
-                document.Descendants("Components")
-                        .ForEach(e => e.Add(new XAttribute("Win64", "yes")));
-            };
+                                       document.Descendants("Components")
+                                               .ForEach(e => e.SetAttributeValue("Win64", "yes"));
         
         Compiler.WixSourceGenerated += InjectImages;
 

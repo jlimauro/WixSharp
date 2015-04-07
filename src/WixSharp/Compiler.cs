@@ -854,13 +854,15 @@ namespace WixSharp
             XElement package = product.Select("Package");
 
             if (!project.Comments.IsEmpty())
-                package.Add(new XAttribute("Comments", project.Comments));
+                package.SetAttributeValue("Comments", project.Comments);
             if (!project.Description.IsEmpty())
-                package.Add(new XAttribute("Description", project.Description));
+                package.SetAttributeValue("Description", project.Description);
+            if(project.Platform.HasValue)
+                package.SetAttributeValue("Platform", project.Platform.Value);
 
-            package.Add(new XAttribute("SummaryCodepage", project.Codepage));
-            package.Add(new XAttribute("Manufacturer", project.Manufacturer));
-            package.Add(new XAttribute("Languages", new CultureInfo(project.Language).LCID));
+            package.SetAttributeValue("SummaryCodepage", project.Codepage);
+            package.SetAttributeValue("Manufacturer", project.Manufacturer);
+            package.SetAttributeValue("Languages", new CultureInfo(project.Language).LCID);
             package.AddAttributes(project.Package.Attributes);
 
             product.Select("Media").AddAttributes(project.Media.Attributes);

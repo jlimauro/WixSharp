@@ -277,7 +277,30 @@ namespace WixSharp
     }
 
     /// <summary>
-    /// Sets the (<see cref="T:IISVirtualDir.Certificate.StoreLocation"/>) for the Web site certificate.
+    /// Sets the <see cref="T:WixSharp.Project.Package.Platform"/>) for the target platform type.
+    /// </summary>
+    public enum Platform
+    {
+        /// <summary>
+        /// Set this value to declare that the package is an x86 package.
+        /// </summary>
+        x86,
+        /// <summary>
+        /// Set this value to declare that the package is an ia64 package. This value requires that the InstallerVersion property be set to 200 or greater.
+        /// </summary>
+        ia64,
+        /// <summary>
+        ///  Set this value to declare that the package is an x64 package. This value requires that the InstallerVersion property be set to 200 or greater.
+        /// </summary>
+        x64,
+        /// <summary>
+        ///  Set this value to declare that the package is an arm package. This value requires that the InstallerVersion property be set to 500 or greater.
+        /// </summary>
+        arm
+    }
+
+    /// <summary>
+    /// Sets the <see cref="T:IISVirtualDir.Certificate.StoreLocation"/> for the Web site certificate.
     /// </summary>
     public enum StoreLocation
     {
