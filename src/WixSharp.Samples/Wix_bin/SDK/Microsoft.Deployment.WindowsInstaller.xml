@@ -907,6 +907,7 @@
             <item>v0 - Binary Stream</item>
             <item>g? - Temporary string (?=0-255)</item>
             <item>j? - Temporary integer (?=0,1,2,4)</item>
+            <item>O0 - Temporary object (stream)</item>
             <item>l? - Localizable string, variable length (?=1-255)</item>
             <item>l0 - Localizable string, variable length</item>
             </list>

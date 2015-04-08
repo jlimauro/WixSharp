@@ -1,1 +1,1 @@
-WIX (Windows Installer Xml) version 3.5.2519.0
+WIX (Windows Installer Xml) version 3.9.1006.0
