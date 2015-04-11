@@ -24,6 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System;
 namespace WixSharp
 {
     /// <summary>
@@ -102,6 +103,16 @@ namespace WixSharp
             Name = name;
             Location = location;
         }
+
+        /// <summary>
+        /// Inherited member, which you should not use as the WiX Shortcut element doesn't support Condition.
+        /// </summary>
+        public new Condition Condition
+        {
+            set { throw new ApplicationException("Despite the fact that " + this.GetType() + " has member Condition you should not use as the WiX Shortcut element doesn't support Condition."); }
+        }
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FileShortcut"/> class with properties/fields initialized with specified parameters.
         /// <para>This constructor should be used to instantiate shortcuts, which belong to the <see cref="File"/> element.</para>

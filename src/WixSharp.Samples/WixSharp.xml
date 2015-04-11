@@ -3232,6 +3232,11 @@
             <param name="name">The name of the shortcut to be installed.</param>
             <param name="location">The directory where the shortcut should be installed.</param>
         </member>
+        <member name="P:WixSharp.FileShortcut.Condition">
+            <summary>
+            Inherited member, which you should not use as the WiX Shortcut element doesn't support Condition.
+            </summary>
+        </member>
         <member name="T:WixSharp.LaunchCondition">
             <summary>
             Defines WiX <c>Condition</c>. <c>Condition</c> is normally associated with <c>CustomActions</c> or WiX elements (e.g. <c>Shortcut</c>). 
