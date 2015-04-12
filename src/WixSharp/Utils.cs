@@ -62,12 +62,33 @@ namespace WixSharp
         {
             var fields = typeof(T).GetFields()
                                   .Where(f => f.IsStatic && f.IsPublic && f.IsLiteral && f.FieldType == typeof(string))
-                                  .Select(f=>f.GetValue(null) as string)
+                                  .Select(f => f.GetValue(null) as string)
                                   .ToArray();
 
             return fields;
         }
-        
+
+        internal static void Unload(this AppDomain domain)
+        {
+            AppDomain.Unload(domain);
+        }
+
+        internal static T CreateInstanceFromAndUnwrap<T>(this AppDomain domain)
+        {
+            return (T)domain.CreateInstanceFromAndUnwrap(typeof(T).Assembly.Location, typeof(T).ToString());
+        }
+
+        internal static AppDomain Clone(this AppDomain domain, string name = null)
+        {
+            AppDomainSetup setup = new AppDomainSetup();
+            setup.ApplicationBase = IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            setup.PrivateBinPath = AppDomain.CurrentDomain.BaseDirectory;
+            setup.ShadowCopyFiles = "true";
+            setup.ShadowCopyDirectories = setup.ApplicationBase;
+
+            return AppDomain.CreateDomain(name??Guid.NewGuid().ToString(), null, setup);
+        }
+
         internal static void EnsureFileDir(string file)
         {
             var dir = IO.Path.GetDirectoryName(file);
@@ -81,9 +102,9 @@ namespace WixSharp
         /// <value>
         /// The program files directory.
         /// </value>
-        internal static string ProgramFilesDirectory 
+        internal static string ProgramFilesDirectory
         {
-            get 
+            get
             {
                 string programFilesDir = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
                 if ("".GetType().Assembly.Location.Contains("Framework64"))

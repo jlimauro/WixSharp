@@ -580,7 +580,11 @@ namespace WixSharp
 
             if (!PreserveTempFiles)
                 foreach (var file in tempFiles)
-                    IO.File.Delete(file);
+                    try
+                    {
+                        IO.File.Delete(file);
+                    }
+                    catch { }
         }
 
         /// <summary>
@@ -683,7 +687,7 @@ namespace WixSharp
             if (customUI != null)
                 doc.Root.Select("Product").Add(customUI.ToXElement());
         }
-        
+
         /// <summary>
         /// The default <see cref="Compiler.WixSourceGenerated"/> event handler.
         /// </summary>
@@ -857,7 +861,7 @@ namespace WixSharp
                 package.SetAttributeValue("Comments", project.Comments);
             if (!project.Description.IsEmpty())
                 package.SetAttributeValue("Description", project.Description);
-            if(project.Platform.HasValue)
+            if (project.Platform.HasValue)
                 package.SetAttributeValue("Platform", project.Platform.Value);
 
             package.SetAttributeValue("SummaryCodepage", project.Codepage);
@@ -1067,7 +1071,7 @@ namespace WixSharp
                 if (project.MajorUpgradeStrategy.UpgradeVersions != null)
                 {
                     VersionRange versions = project.MajorUpgradeStrategy.UpgradeVersions;
-                    
+
                     var upgradeVersion = upgradeElement.AddElement(
                         new XElement("UpgradeVersion",
                            new XAttribute("Minimum", ExpandVersion(versions.Minimum)),
@@ -1075,7 +1079,7 @@ namespace WixSharp
                            new XAttribute("Maximum", ExpandVersion(versions.Maximum)),
                            new XAttribute("IncludeMaximum", versions.IncludeMaximum.ToYesNo()),
                            new XAttribute("Property", "UPGRADEFOUND")));
-                    
+
                     if (versions.MigrateFeatures.HasValue)
                         upgradeVersion.SetAttributeValue("MigrateFeatures", versions.MigrateFeatures.Value.ToYesNo());
                 }
@@ -1083,7 +1087,7 @@ namespace WixSharp
                 if (project.MajorUpgradeStrategy.PreventDowngradingVersions != null)
                 {
                     VersionRange versions = project.MajorUpgradeStrategy.PreventDowngradingVersions;
-                    
+
                     var upgradeVersion = upgradeElement.AddElement(
                         new XElement("UpgradeVersion",
                                new XAttribute("Minimum", ExpandVersion(versions.Minimum)),
@@ -1185,7 +1189,7 @@ namespace WixSharp
                     new XElement("Component",
                         new XAttribute("Id", compId),
                         new XAttribute("Guid", WixGuid.NewGuid(compId))));
-                        //.AddAttributes(wFile.ComponentAttributes)); //zos
+                //.AddAttributes(wFile.ComponentAttributes)); //zos
 
                 if (wFile.Condition != null)
                     comp.AddElement(
@@ -1298,7 +1302,7 @@ namespace WixSharp
                    new XElement("Component",
                        new XAttribute("Id", compId),
                        new XAttribute("Guid", WixGuid.NewGuid(compId))));
-                       //.AddAttributes(wShortcut.ComponentAttributes));  //zos
+                //.AddAttributes(wShortcut.ComponentAttributes));  //zos
 
                 if (wShortcut.Condition != null)
                     comp.AddElement(
@@ -1736,8 +1740,8 @@ namespace WixSharp
                                         new XAttribute("Type", "raw")
                                         ))
                                     .AddAttributes(rvProp.Attributes));
-                                    
-                    if(!rvProp.Value.IsEmpty())
+
+                    if (!rvProp.Value.IsEmpty())
                         xProp.Add(new XAttribute("Value", rvProp.Value));
 
                     if (rvProp.EntryName != "")
@@ -1839,10 +1843,10 @@ namespace WixSharp
                 {
                     var wScriptAction = (ScriptAction)wAction;
 
-                     sequences.ForEach(sequence=>
-                         sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
-                                        new XAttribute("Action", wAction.Id),
-                                        sequenceNumberAttr)));
+                    sequences.ForEach(sequence =>
+                        sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
+                                       new XAttribute("Action", wAction.Id),
+                                       sequenceNumberAttr)));
 
                     product.Add(new XElement("CustomAction",
                                     new XCData(wScriptAction.Code),
@@ -1890,7 +1894,7 @@ namespace WixSharp
                                             new XAttribute("Property", wAction.Id),
                                             new XAttribute("Value", mapping)));
 
-                            sequences.ForEach(sequence=>
+                            sequences.ForEach(sequence =>
                                 sequence.Add(
                                     new XElement("Custom",
                                         new XAttribute("Action", setPropValuesId),
@@ -1900,7 +1904,7 @@ namespace WixSharp
                         }
                     }
 
-                    sequences.ForEach(sequence=>
+                    sequences.ForEach(sequence =>
                         sequence.Add(new XElement("Custom", wAction.Condition.ToString(),
                                          new XAttribute("Action", wAction.Id),
                                          sequenceNumberAttr)));
@@ -1940,13 +1944,13 @@ namespace WixSharp
 
                     lastActionName = cmdLineActionId;
 
-                    sequences.ForEach(sequence=>
+                    sequences.ForEach(sequence =>
                         sequence.Add(
                             new XElement("Custom", wAction.Condition.ToString(),
                                 new XAttribute("Action", setCmdLineActionId),
                                 sequenceNumberAttr)));
 
-                    sequences.ForEach(sequence=>
+                    sequences.ForEach(sequence =>
                         sequence.Add(
                             new XElement("Custom", wAction.Condition.ToString(),
                                 new XAttribute("Action", cmdLineActionId),
@@ -1960,7 +1964,7 @@ namespace WixSharp
                 {
                     var fileAction = (InstalledFileAction)wAction;
 
-                    sequences.ForEach(sequence=>
+                    sequences.ForEach(sequence =>
                         sequence.Add(
                             new XElement("Custom", wAction.Condition.ToString(),
                                 new XAttribute("Action", wAction.Id),
@@ -1979,7 +1983,7 @@ namespace WixSharp
                 {
                     var fileAction = (PathFileAction)wAction;
 
-                    sequences.ForEach(sequence=>
+                    sequences.ForEach(sequence =>
                         sequence.Add(
                             new XElement("Custom", fileAction.Condition.ToString(),
                                 new XAttribute("Action", fileAction.Id),
@@ -2052,6 +2056,7 @@ namespace WixSharp
 
             var outDll = IO.Path.GetFullPath(nativeDll);
             var asmFile = IO.Path.GetFullPath(asm);
+            //var originalAsmCopy = asmFile; //to be used to verify assembly health
 
             if (asm.EndsWith("%this%"))
             {
@@ -2137,53 +2142,65 @@ namespace WixSharp
             tempFiles.Add(outDll);
         }
 
-        internal static void ValidateCAAssembly(string file)
+        static void ValidateCAAssembly(string file)
         {
-            //Debug.Assert(false);
-            try
+            var domain = AppDomain.CurrentDomain.Clone();
+
+            domain.CreateInstanceFromAndUnwrap<CaAsmValidator>()
+                  .ValidateCAAssembly(file);
+
+            domain.Unload();
+        }
+
+        class CaAsmValidator : MarshalByRefObject
+        {
+            public void ValidateCAAssembly(string file)
             {
-                BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static;
-                var assembly = System.Reflection.Assembly.LoadFrom(file);
-                var caMembers = assembly.GetTypes().SelectMany(t => 
-                                        t.GetMembers(bf).Where(mem =>
-                                        {
-                                            return mem.GetCustomAttributes(false)
-                                                      .Where(x => x.ToString() == "Microsoft.Deployment.WindowsInstaller.CustomActionAttribute").Any();
-                                        }))
-                                        .ToArray();
-
-                var invalidMembers = new List<string>();
-                foreach (MemberInfo mi in caMembers)
+                //Debug.Assert(false);
+                try
                 {
-                    string fullName = mi.DeclaringType.FullName + "." + mi.Name;
+                    BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static;
+                    var assembly = System.Reflection.Assembly.LoadFrom(file);
+                    var caMembers = assembly.GetTypes().SelectMany(t =>
+                                            t.GetMembers(bf).Where(mem =>
+                                            {
+                                                return mem.GetCustomAttributes(false)
+                                                          .Where(x => x.ToString() == "Microsoft.Deployment.WindowsInstaller.CustomActionAttribute").Any();
+                                            }))
+                                            .ToArray();
 
-                    if (!mi.DeclaringType.IsPublic)
-                        if (!invalidMembers.Contains(fullName))
-                            invalidMembers.Add(fullName);
+                    var invalidMembers = new List<string>();
+                    foreach (MemberInfo mi in caMembers)
+                    {
+                        string fullName = mi.DeclaringType.FullName + "." + mi.Name;
 
-                    if (mi.MemberType != MemberTypes.Method)
-                    {
-                        if (!invalidMembers.Contains(fullName))
-                            invalidMembers.Add(fullName);
-                    }
-                    else
-                    {
-                        var method = (mi as MethodInfo);
-                        if (!method.IsPublic || !method.IsStatic)
+                        if (!mi.DeclaringType.IsPublic)
                             if (!invalidMembers.Contains(fullName))
                                 invalidMembers.Add(fullName);
+
+                        if (mi.MemberType != MemberTypes.Method)
+                        {
+                            if (!invalidMembers.Contains(fullName))
+                                invalidMembers.Add(fullName);
+                        }
+                        else
+                        {
+                            var method = (mi as MethodInfo);
+                            if (!method.IsPublic || !method.IsStatic)
+                                if (!invalidMembers.Contains(fullName))
+                                    invalidMembers.Add(fullName);
+                        }
+                    }
+                    if (invalidMembers.Any())
+                    {
+                        Console.Write("Warning: some of the type members are marked with [CustomAction] attribute but they don't meet the MakeSfxCA criteria of being public static method of a public type:\n");
+                        foreach (var member in invalidMembers)
+                            Console.WriteLine("  " + member);
+                        Console.WriteLine();
                     }
                 }
-                if (invalidMembers.Any())
-                {
-                    Console.Write("Warning: some of the type members are marked with [CustomAction] attribute but they don't meet the MakeSfxCA criteria of being public static method of a public type:\n");
-                    foreach(var member in invalidMembers)
-                        Console.WriteLine("  " + member);
-                        Console.WriteLine();
-                }
+                catch { }
             }
-            catch { }
-
         }
 
         internal static Dictionary<string, string> EnvironmentConstantsMapping = new Dictionary<string, string>

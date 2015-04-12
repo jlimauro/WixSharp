@@ -247,7 +247,7 @@ namespace WixSharp
         {
             byte[] bytes = guid.ToByteArray();
             byte[] hashBytes = BitConverter.GetBytes(hashValue);
-            Debug.Assert(bytes.Length > hashBytes.Length);
+            //Debug.Assert(bytes.Length > hashBytes.Length);
             for (int i = 0; i < hashBytes.Length; i++)
             {
                 int bytesIndex = orderMap[i];
