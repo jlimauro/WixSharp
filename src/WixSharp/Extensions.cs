@@ -52,18 +52,36 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Adds the element.
+        /// Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
+        /// <para>
+        /// <c>elementName</c> can be either the name of the element to be added or the sequence of the elements specified by path (e.g. <c>AddElement("Product/Package")</c>).
+        /// </para>
+        /// </summary>
+        /// <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
+        /// <param name="elementName">Element to add.</param>
+        /// <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
+        public static XElement AddElement(this XElement obj, string elementName)
+        {
+            var parent = obj;
+            foreach (var item in elementName.Split('/'))
+                parent = parent.AddElement(new XElement(item));
+            return parent;
+        }
+        
+        /// <summary>
+        /// Adds the element to a given XML element and sets the attributes of the newly created element.
+        /// <para>
+        /// <c>elementName</c> can be either the name of the element to be added or the sequence of the elements specified by path (e.g. <c>AddElement("Product/Package")</c>).
+        /// </para>
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="elementName">The element.</param>
-        /// <param name="attributesDefinition">The attributes definition.</param>
+        /// <param name="attributesDefinition">The attributes definition. Rules of the composing the
+        /// definition are the same as for <see cref="WixEntity.AttributesDefinition"/>.</param>
         /// <returns></returns>
         public static XElement AddElement(this XElement obj, string elementName, string attributesDefinition)
         {
-            var retval = new XElement(elementName)
-                             .AddAttributes(attributesDefinition.ToDictionary());
-            obj.Add(retval);
-            return retval;
+            return obj.AddElement(elementName).AddAttributes(attributesDefinition);
         }
 
         /// <summary>

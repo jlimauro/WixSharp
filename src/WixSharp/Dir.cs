@@ -194,7 +194,7 @@ namespace WixSharp
         /// <summary>
         /// Collection of the <see cref="DirFiles"/> objects. <see cref="DirFiles"/> type is used to specify files 
         /// contained by a specific directory with wildcard character pattern.
-		/// Files in subdirectories are not included.
+        /// Files in subdirectories are not included.
         /// <para>
         /// <see cref="DirFiles"/> type is related to but not identical to <see cref="Files"/>, which defines files of 
         /// not only a single level directory but all subdirectories as well.
@@ -215,9 +215,9 @@ namespace WixSharp
         /// </summary>
         public Merge[] MergeModules = new Merge[0];
         /// <summary>
-        /// Collection of the contained <see cref="Shortcut"/>s. 
+        /// Collection of the contained <see cref="ExeFileShortcut"/>s. 
         /// </summary>
-        public Shortcut[] Shortcuts = new Shortcut[0];
+        public ExeFileShortcut[] Shortcuts = new ExeFileShortcut[0];
         /// <summary>
         /// <see cref="Feature"></see> the directory is included in.
         /// </summary>
@@ -284,7 +284,7 @@ namespace WixSharp
             var dirs = new List<Dir>();
             var fileCollections = new List<DirFiles>();
             var dirItemsCollections = new List<Files>();
-            var shortcuts = new List<Shortcut>();
+            var shortcuts = new List<ExeFileShortcut>();
             var mergeModules = new List<Merge>();
 
             foreach (WixEntity item in items)
@@ -296,8 +296,8 @@ namespace WixSharp
                     fileCollections.Add(item as DirFiles);
                 else if (item is Files)
                     dirItemsCollections.Add(item as Files);
-                else if (item is Shortcut)
-                    shortcuts.Add(item as Shortcut);
+                else if (item is ExeFileShortcut)
+                    shortcuts.Add(item as ExeFileShortcut);
                 else if (item is Merge)
                     mergeModules.Add(item as Merge);
                 else

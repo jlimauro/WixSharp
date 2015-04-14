@@ -20,9 +20,9 @@ class Script
 
             Actions = new WixSharp.Action[] 
             { 	
-                //execute installed appication
-                new InstalledFileAction(@"Registrator.exe", "/u", Return.check, When.Before, Step.InstallFinalize, Condition.Installed),
-                new InstalledFileAction(@"Registrator.exe", "", Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed),
+                //execute installed application
+                new InstalledFileAction("Registrator.exe", "/u", Return.check, When.Before, Step.InstallFinalize, Condition.Installed),
+                new InstalledFileAction("Registrator.exe", "", Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed),
 
                 //execute existing application
                 new PathFileAction(@"%WindowsFolder%\notepad.exe", @"C:\boot.ini", "INSTALLDIR", Return.asyncNoWait, When.After, Step.PreviousAction, Condition.NOT_Installed),
@@ -34,6 +34,8 @@ class Script
                 new ScriptFileAction(@"Files\Sample.vbs", "Execute" , Return.ignore, When.After, Step.PreviousAction, Condition.NOT_Installed)
             }
         };
+
+        Compiler.PreserveTempFiles = true;
 
         var file = Compiler.BuildMsi(project);
     }

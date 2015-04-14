@@ -242,8 +242,15 @@ namespace WixSharp
                 }
                 return id;
             }
-            set { id = value; }
+            set 
+            { 
+                id = value;
+                isAutoId = false;
+            }
         }
+
+        internal bool isAutoId = true;
+
         /// <summary>
         /// Backing value of <see cref="Id"/>.
         /// </summary>

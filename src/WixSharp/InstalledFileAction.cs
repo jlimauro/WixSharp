@@ -72,7 +72,7 @@ namespace WixSharp
         public InstalledFileAction(string key, string args)
             : base()
         {
-            Key = "File." + key;
+            Key = key;
             Args = args;
             Name = "Action" + (++count) + "_" + key;
         }
@@ -85,7 +85,7 @@ namespace WixSharp
         public InstalledFileAction(Id id, string key, string args)
             : base(id)
         {
-            Key = "File." + key;
+            Key = key; 
             Args = args;
             Name = "Action" + (++count) + "_" + key;
         }
@@ -101,7 +101,7 @@ namespace WixSharp
         public InstalledFileAction(string key, string args, Return returnType, When when, Step step, Condition condition)
             : base(returnType, when, step, condition)
         {
-            Key = "File." + key;
+            Key = key; 
             Args = args;
             Name = "Action" + (++count) + "_" + key;
         }
@@ -118,7 +118,7 @@ namespace WixSharp
         public InstalledFileAction(Id id, string key, string args, Return returnType, When when, Step step, Condition condition)
             : base(id, returnType, when, step, condition)
         {
-            Key = "File." + key;
+            Key = key;
             Args = args;
             Name = "Action" + (++count) + "_" + key;
         }
@@ -135,7 +135,7 @@ namespace WixSharp
         public InstalledFileAction(string key, string args, Return returnType, When when, Step step, Condition condition, Sequence sequence)
             : base(returnType, when, step, condition, sequence)
         {
-            Key = "File." + key;
+            Key = key;
             Args = args;
             Name = "Action" + (++count) + "_" + key;
         }
@@ -153,7 +153,7 @@ namespace WixSharp
         public InstalledFileAction(Id id, string key, string args, Return returnType, When when, Step step, Condition condition, Sequence sequence)
             : base(id, returnType, when, step, condition, sequence)
         {
-            Key = "File." + key;
+            Key = key;
             Args = args;
             Name = "Action" + (++count) + "_" + key;
         }

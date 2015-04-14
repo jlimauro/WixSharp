@@ -459,17 +459,17 @@ namespace WixSharp
 
 
         /// <summary>
-        /// Resolves all wild card specifications if any. 
+        /// Resolves all wild card specifications if any.
         /// <para>
-        /// This method is called by <see cref="Compiler"/> during the compilation. However it might be convenient 
-        /// to call it before the compilation if any files matching the wild card mask need to be handled in special  
+        /// This method is called by <see cref="Compiler" /> during the compilation. However it might be convenient
+        /// to call it before the compilation if any files matching the wild card mask need to be handled in special
         /// way (e.g. shortcuts created). See <c>WildCard Files</c> example.
-        /// </para>
-        /// <remarks>
-        /// <see cref="ResolveWildCards"/> should be called only after <see cref="SourceBaseDir"/> is set. 
-        /// Otherwise wild card pathes may not be resolved correctly.</remarks>
+        /// </para><remarks><see cref="ResolveWildCards" /> should be called only after <see cref="SourceBaseDir" /> is set.
+        /// Otherwise wild card paths may not be resolved correctly.</remarks>
         /// </summary>
-        public Project ResolveWildCards()
+        /// <param name="ignoreEmptyDirectories">if set to <c>true</c> empty directories are ignored and not added to the project.</param>
+        /// <returns></returns>
+        public Project ResolveWildCards(bool ignoreEmptyDirectories = false)
         {
             int iterator = 0;
             var dirList = new List<Dir>();
@@ -497,6 +497,17 @@ namespace WixSharp
                 dirList[iterator].DirFileCollections = new DirFiles[0];
 
                 iterator++;
+            }
+
+            if (ignoreEmptyDirectories)
+            {
+                var emptyDirs = AllDirs.Where(d => !d.Files.Any() && !d.Dirs.Any());
+
+                emptyDirs.ForEach(emptyDir => AllDirs.ForEach(d =>
+                                              {
+                                                  if (d.Dirs.Contains(emptyDir))
+                                                      d.Dirs = d.Dirs.Where(x => x != emptyDir).ToArray();
+                                              }));
             }
 
             return this;

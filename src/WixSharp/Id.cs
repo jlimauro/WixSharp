@@ -37,7 +37,7 @@ namespace WixSharp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Id"/> class and assigns the constructor parameter
-		/// specified to <see cref="Id.Value"/> .
+        /// specified to <see cref="Id.Value"/> .
         /// </summary>
         /// <param name="value">The string Id value.</param>
         public Id(string value)

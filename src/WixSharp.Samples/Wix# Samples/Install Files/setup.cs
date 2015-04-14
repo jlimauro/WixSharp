@@ -1,7 +1,8 @@
 //css_ref ..\..\WixSharp.dll;
 //css_ref System.Core.dll;
+//css_ref System.Xml.dll;
 using System;
-using System.Xml;
+using System.Linq;
 using System.Xml.Linq;
 using WixSharp;
 
@@ -9,7 +10,7 @@ class Script
 {
     static public void Main(string[] args)
     {
-        Project project =
+        var project =
             new Project("MyProduct",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
                     new File(@"Files\Bin\MyApp.exe"),
@@ -19,7 +20,17 @@ class Script
         project.UI = WUI.WixUI_InstallDir;
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
-        Compiler.BuildMsi(project);
+        Compiler.WixSourceGenerated += Compiler_WixSourceGenerated;
+        Compiler.BuildMsiCmd(project);
+    }
+
+    static void Compiler_WixSourceGenerated(XDocument document)
+    {
+        //Will make MyApp.exe directory writable.
+        //It is actually a bad practice to write to program files and this code is provided for sample purposes only.
+        document.Descendants("Component")
+                .Single(x => x.HasAttribute("Id", value=>value.EndsWith("MyApp.exe")))
+                .AddElement("CreateFolder/Permission", "User=Everyone;GenericAll=yes");
     }
 }
 

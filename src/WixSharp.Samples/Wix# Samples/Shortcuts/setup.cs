@@ -21,7 +21,7 @@ class Script
                             new File(@"AppFiles\MyApp.cs")),
                         new File(@"AppFiles\MyApp.exe",
                             new FileShortcut("MyApp", "INSTALLDIR"), //INSTALLDIR is the ID of "%ProgramFiles%\My Company\My Product" 
-                            new FileShortcut("MyApp", @"%Desktop%") { IconFile = @"AppFiles\Icon.ico", Condition=new Condition("test=1")}),
+                            new FileShortcut("MyApp", @"%Desktop%") { IconFile = @"AppFiles\Icon.ico" }),
                         new ExeFileShortcut("Uninstall MyApp", "[System64Folder]msiexec.exe", "/x [ProductCode]")),
 
                     new Dir(@"%ProgramMenu%\My Company\My Product",
@@ -32,7 +32,7 @@ class Script
             project.UI = WUI.WixUI_ProgressOnly;
             project.OutFileName = "setup";
 
-            Compiler.BuildMsi(project);
+            Compiler.BuildMsiCmd(project);
         }
         catch (System.Exception ex)
         {

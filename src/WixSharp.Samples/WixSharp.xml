@@ -1382,13 +1382,28 @@
             <param name="element">Element to add.</param>
             <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
         </member>
+        <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
+            <para>
+            <c>elementName</c> can be either the name of the element to be added or the sequence of the elements specified by path (e.g. <c>AddElement("Product/Package")</c>).
+            </para>
+            </summary>
+            <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
+            <param name="elementName">Element to add.</param>
+            <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
+        </member>
         <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.String,System.String)">
             <summary>
-            Adds the element.
+            Adds the element to a given XML element and sets the attributes of the newly created element.
+            <para>
+            <c>elementName</c> can be either the name of the element to be added or the sequence of the elements specified by path (e.g. <c>AddElement("Product/Package")</c>).
+            </para>
             </summary>
             <param name="obj">The object.</param>
             <param name="elementName">The element.</param>
-            <param name="attributesDefinition">The attributes definition.</param>
+            <param name="attributesDefinition">The attributes definition. Rules of the composing the
+            definition are the same as for <see cref="P:WixSharp.WixEntity.AttributesDefinition"/>.</param>
             <returns></returns>
         </member>
         <member name="M:WixSharp.Extensions.ToDictionary(System.String)">
@@ -4067,7 +4082,7 @@
         </member>
         <member name="F:WixSharp.Dir.Shortcuts">
             <summary>
-            Collection of the contained <see cref="T:WixSharp.Shortcut"/>s. 
+            Collection of the contained <see cref="T:WixSharp.ExeFileShortcut"/>s. 
             </summary>
         </member>
         <member name="F:WixSharp.Dir.Feature">
@@ -5002,18 +5017,18 @@
             Path to the file containing the image (e.g. bmp) setup dialogs background. If not specified default image will be used.
             </summary>
         </member>
-        <member name="M:WixSharp.Project.ResolveWildCards">
+        <member name="M:WixSharp.Project.ResolveWildCards(System.Boolean)">
             <summary>
-            Resolves all wild card specifications if any. 
+            Resolves all wild card specifications if any.
             <para>
-            This method is called by <see cref="T:WixSharp.Compiler"/> during the compilation. However it might be convenient 
-            to call it before the compilation if any files matching the wild card mask need to be handled in special  
+            This method is called by <see cref="T:WixSharp.Compiler"/> during the compilation. However it might be convenient
+            to call it before the compilation if any files matching the wild card mask need to be handled in special
             way (e.g. shortcuts created). See <c>WildCard Files</c> example.
-            </para>
-            <remarks>
-            <see cref="M:WixSharp.Project.ResolveWildCards"/> should be called only after <see cref="P:WixSharp.Project.SourceBaseDir"/> is set. 
-            Otherwise wild card pathes may not be resolved correctly.</remarks>
+            </para><remarks><see cref="M:WixSharp.Project.ResolveWildCards(System.Boolean)"/> should be called only after <see cref="P:WixSharp.Project.SourceBaseDir"/> is set.
+            Otherwise wild card paths may not be resolved correctly.</remarks>
             </summary>
+            <param name="ignoreEmptyDirectories">if set to <c>true</c> empty directories are ignored and not added to the project.</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.Project.FindFile(System.Predicate{WixSharp.File})">
             <summary>

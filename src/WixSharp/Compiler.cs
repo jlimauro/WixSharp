@@ -394,6 +394,7 @@ namespace WixSharp
         /// <returns>Path to the batch file.</returns>
         static public void BuildMsiCmd(Project project, string path)
         {
+            //System.Diagnostics.Debug.Assert(false);
             BuildCmd(project, path, OutputType.MSI);
         }
 
@@ -1170,7 +1171,7 @@ namespace WixSharp
             //insert files in the last leaf directory node
             foreach (File wFile in wDir.Files)
             {
-                string fileId = "File." + wFile.Id;
+                string fileId = wFile.Id;
                 string compId = "Component." + wFile.Id;
 
                 if (wFile.Feature != null)
@@ -1977,7 +1978,7 @@ namespace WixSharp
                             new XAttribute("Return", wAction.Return))
                             .AddAttributes(wAction.Attributes));
 
-                    actionElement.Add(new XAttribute("FileKey", fileAction.Key));//zos-1 eventually FileKey should be set explicitly
+                    actionElement.Add(new XAttribute("FileKey", fileAction.Key));
                 }
                 else if (wAction is PathFileAction)
                 {
