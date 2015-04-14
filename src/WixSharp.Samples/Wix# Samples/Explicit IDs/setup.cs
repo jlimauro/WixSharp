@@ -8,8 +8,6 @@ class Script
 {
     static public void Main()
     {
-        AlternativeSyntax(); return;
-
         var project =
             new Project("MyProduct",
                 new Dir(new Id("PRODUCT_INSTALLDIR"), @"%ProgramFiles%\My Company\My Product",
