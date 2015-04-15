@@ -22,7 +22,8 @@ class Script
             { 	
                 //execute installed application
                 new InstalledFileAction("Registrator.exe", "/u", Return.check, When.Before, Step.InstallFinalize, Condition.Installed),
-                new InstalledFileAction("Registrator.exe", "", Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed),
+                new InstalledFileAction("Registrator.exe", "", Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed), 
+                //{AttributesDefinition="Custom:Sequence=1"}, //just a demo of how you can add an attribute to the 'Custom' element associated with the 'CustomAction' 
 
                 //execute existing application
                 new PathFileAction(@"%WindowsFolder%\notepad.exe", @"C:\boot.ini", "INSTALLDIR", Return.asyncNoWait, When.After, Step.PreviousAction, Condition.NOT_Installed),

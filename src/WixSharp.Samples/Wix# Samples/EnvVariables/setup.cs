@@ -22,7 +22,7 @@ class Script
         Environment.SetEnvironmentVariable("docs", @"Files\Docs");
         Environment.SetEnvironmentVariable("LATEST_RELEASE", Environment.CurrentDirectory);
 
-        Project project =
+        var project =
             new Project("MyProduct",
 
                 new Dir(@"%ProgramFiles%\My Company\My Product",
