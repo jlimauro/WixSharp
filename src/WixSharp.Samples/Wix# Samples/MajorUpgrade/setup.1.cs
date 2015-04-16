@@ -18,7 +18,9 @@ class Script
 
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
         project.Version = new Version("1.0.709.10040");
+
         project.MajorUpgradeStrategy = MajorUpgradeStrategy.Default;
+        project.MajorUpgradeStrategy.RemoveExistingProductAfter = Step.InstallInitialize;  
 
         Compiler.BuildMsi(project, "setup.1.msi");
     }

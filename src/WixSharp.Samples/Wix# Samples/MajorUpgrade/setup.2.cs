@@ -25,7 +25,7 @@ class Script
         Compiler.WixSourceGenerated += doc => doc.Root
                                                  .Select("Product/Upgrade/UpgradeVersion")
                                                  .AddAttributes("MigrateFeatures=yes");
-
+        Compiler.PreserveTempFiles = true;
         Compiler.BuildMsi(project, "setup.2.msi");
     }
 }

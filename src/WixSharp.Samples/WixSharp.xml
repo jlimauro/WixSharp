@@ -351,6 +351,16 @@
             determine if the file should be installed on the target system.
             </summary>
         </member>
+        <member name="P:WixSharp.File.NeverOverwrite">
+            <summary>
+            Gets or sets the NeverOverwrite attribute of the associated WiX component.
+            <para>If this attribute is set to 'true', the installer does not install or reinstall the component
+             if a key path file for the component already exists. </para>
+            </summary>
+            <value>
+            The never overwrite.
+            </value>
+        </member>
         <member name="M:WixSharp.Assembly.#ctor">
             <summary>
             Default constructor. Creates instance of the <see cref="T:WixSharp.Assembly"></see> class.
