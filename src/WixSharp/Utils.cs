@@ -58,6 +58,17 @@ namespace WixSharp
             return IO.Path.Combine(p1, p2);
         }
 
+        internal static string MakeRelative(this string filePath, string referencePath)
+        {
+            //Uri.MakeRelativeUri(fileUri).ToString(); does not work without *.config file
+
+            if (referencePath.Last() != IO.Path.DirectorySeparatorChar)
+                referencePath += IO.Path.DirectorySeparatorChar;
+
+            return filePath.Substring(referencePath.Length);
+        }
+
+
         internal static string[] AllConstStringValues<T>()
         {
             var fields = typeof(T).GetFields()
@@ -86,7 +97,7 @@ namespace WixSharp
             setup.ShadowCopyFiles = "true";
             setup.ShadowCopyDirectories = setup.ApplicationBase;
 
-            return AppDomain.CreateDomain(name??Guid.NewGuid().ToString(), null, setup);
+            return AppDomain.CreateDomain(name ?? Guid.NewGuid().ToString(), null, setup);
         }
 
         internal static void EnsureFileDir(string file)

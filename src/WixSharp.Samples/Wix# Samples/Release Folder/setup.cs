@@ -25,7 +25,7 @@ class Script
                                        new FileShortcut("MyApp.exe", "INSTALLDIR"),
                                        new FileShortcut("MyApp.exe", "%Desktop%")
                                   };
-        
+
         Compiler.BuildMsi(project);
     }
 }

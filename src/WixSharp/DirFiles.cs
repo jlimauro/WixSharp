@@ -25,7 +25,7 @@ THE SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using IO = System.IO;
 
@@ -208,9 +208,9 @@ namespace WixSharp
 
                 if (!ignore && Filter(file))
                 {
-                    var filePath = IO.Path.GetFullPath(file);
-                    Debug.WriteLine(filePath);
+                    var filePath = IO.Path.GetFullPath(file).MakeRelative(baseDirectory);
 
+                    //Debug.WriteLine(filePath);
                     if (Feature != null)
                         files.Add(new File(Feature, filePath));
                     else
