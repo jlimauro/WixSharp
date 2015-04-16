@@ -135,13 +135,13 @@ namespace WixSharp
             var firstUnExpectedItem = items.Except(Shortcuts)
                                            .Except(Associations)
                                            .Except(IISVirtualDirs)
-                                           .Where(x=>x != ServiceInstaller)
+                                           .Where(x => x != ServiceInstaller)
                                            .ToArray();
 
             if (firstUnExpectedItem.Any())
-                throw new ApplicationException("{4} is unexpected. Only {0}, {1} and {2} items can be added to {3}".Format(typeof(FileShortcut), 
-                                                                                                       typeof(FileAssociation), 
-                                                                                                       typeof(ServiceInstaller), 
+                throw new ApplicationException("{4} is unexpected. Only {0}, {1} and {2} items can be added to {3}".Format(typeof(FileShortcut),
+                                                                                                       typeof(FileAssociation),
+                                                                                                       typeof(ServiceInstaller),
                                                                                                        this.GetType(),
                                                                                                        firstUnExpectedItem.First().GetType()));
         }
@@ -161,7 +161,7 @@ namespace WixSharp
         /// Collection of the contained <see cref="IISVirtualDir"/>s. 
         /// </summary>
         public IISVirtualDir[] IISVirtualDirs = new IISVirtualDir[0];
-        
+
         /// <summary>
         /// Collection of the <see cref="Shortcut"/>s associated with the file. 
         /// </summary>
@@ -175,5 +175,32 @@ namespace WixSharp
         /// determine if the file should be installed on the target system.
         /// </summary>
         public Condition Condition;
+
+        /// <summary>
+        /// Gets or sets the NeverOverwrite attribute of the associated WiX component.
+        /// <para>If this attribute is set to 'true', the installer does not install or reinstall the component
+        ///  if a key path file for the component already exists. </para>
+        /// </summary>
+        /// <value>
+        /// The never overwrite.
+        /// </value>
+        public bool? NeverOverwrite
+        {
+            get
+            {
+                var value = GetAttributeDefinition("Component:NeverOverwrite");
+                if (value == null)
+                    return null;
+                else
+                   return (value == "yes");
+            }
+            set
+            {
+                if (value.HasValue)
+                    SetAttributeDefinition("Component:NeverOverwrite", value.Value.ToYesNo());
+                else
+                    SetAttributeDefinition("Component:NeverOverwrite", null);
+            }
+        }
     }
 }

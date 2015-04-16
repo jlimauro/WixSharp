@@ -27,8 +27,8 @@ THE SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using IO = System.IO;
-using System.Diagnostics;
 
 namespace WixSharp
 {
@@ -177,6 +177,29 @@ namespace WixSharp
             }
         }
 
+        internal string GetAttributeDefinition(string name)
+        {
+            var preffix = name + "=";
+
+            return (AttributesDefinition??"").Trim()
+                                             .Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                                             .Where(x => x.StartsWith(preffix))
+                                             .Select(x => x.Substring(preffix.Length))
+                                             .FirstOrDefault();
+        }
+
+        internal void SetAttributeDefinition(string name, string value)
+        {
+            var preffix = name + "=";
+            var items = (AttributesDefinition ?? "").Trim()
+                                                    .Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                                                    .Where(x =>! x.StartsWith(preffix))
+                                                    .ToList();
+            if (value.IsNotEmpty())
+                items.Add(name + "=" + value);
+
+            AttributesDefinition = string.Join(";", items.ToArray());
+        }
         /// <summary>
         /// Name of the <see cref="WixEntity"/>. 
         /// <para>This value is used as a <c>Name</c> for the corresponding WiX XML element.</para>
@@ -242,8 +265,8 @@ namespace WixSharp
                 }
                 return id;
             }
-            set 
-            { 
+            set
+            {
                 id = value;
                 isAutoId = false;
             }

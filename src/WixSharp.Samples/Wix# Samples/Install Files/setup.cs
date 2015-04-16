@@ -15,13 +15,13 @@ class Script
                 new Dir(@"%ProgramFiles%\My Company\My Product",
                     new File(@"Files\Bin\MyApp.exe"),
                     new Dir(@"Docs\Manual",
-                        new File(@"Files\Docs\Manual.txt"))));
+                        new File(@"Files\Docs\Manual.txt") { NeverOverwrite = true })));
 
         project.UI = WUI.WixUI_InstallDir;
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
         Compiler.WixSourceGenerated += Compiler_WixSourceGenerated;
-        Compiler.BuildMsiCmd(project);
+        Compiler.BuildMsi(project);
     }
 
     static void Compiler_WixSourceGenerated(XDocument document)
