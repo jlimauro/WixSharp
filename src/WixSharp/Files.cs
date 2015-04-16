@@ -130,6 +130,7 @@ namespace WixSharp
         /// into MSI (e.g. <c>new Files(@"Release\Bin\*.*")</c>).</param>
         /// <param name="excludeFileMasks">Wildcard pattern(s) for files to be excluded from MSI
         /// (e.g. <c>new Files(typical, @"Release\Bin\*.dll", "*.Test.dll", "*.UnitTest.dll")</c>).</param>
+        [Obsolete("Use more versatile constructor, which takes Predicate<string> filter.")]
         public Files(Feature feature, string sourcePath, params string[] excludeFileMasks)
         {
             IncludeMask = IO.Path.GetFileName(sourcePath);
@@ -176,8 +177,9 @@ namespace WixSharp
         public string IncludeMask = "*.*";
 
         /// <summary>
-        /// Wildcard patterns for files to be excluded from MSI.
+        /// Wildcard patterns for files to be excluded from MSI. Note, the mask is applied for the whole path not file name only.
         /// </summary>
+        [Obsolete("Use more versatile constructor, which takes Predicate<string> filter.")]
         public string[] ExcludeMasks = new string[0];
 
         /// <summary>

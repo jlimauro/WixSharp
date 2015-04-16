@@ -11,13 +11,15 @@ class Script
         var project =
             new Project("MyProduct",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
-                    new Files(@"Release\*.*", 
-                              f => !f.EndsWith(".obj") && 
-                                   !f.EndsWith(".pdb")), 
+                    new Files("*.*",
+                              f => !f.EndsWith(".obj") &&
+                                   !f.EndsWith(".pdb")),
                     new ExeFileShortcut("Uninstall My Product", "[System64Folder]msiexec.exe", "/x [ProductCode]")));
 
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1561ba25889b");
 
+        project.SourceBaseDir = @"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Release Folder\Release";
+        
         project.ResolveWildCards(ignoreEmptyDirectories:true)
                .FindFile((f) => f.Name.EndsWith("MyApp.exe"))
                .First()
@@ -26,6 +28,6 @@ class Script
                                        new FileShortcut("MyApp.exe", "%Desktop%")
                                   };
         
-        Compiler.BuildMsi(project);
+        Compiler.BuildMsiCmd(project);
     }
 }

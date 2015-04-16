@@ -27,6 +27,7 @@ class Script
             service.ServiceInstaller = new ServiceInstaller
                                        {
                                            Name = "WixSharp.TestSvc",
+                                           DependsOn = "Dnscache;Dhcp",
                                            StartOn = SvcEvent.Install,
                                            StopOn = SvcEvent.InstallUninstall_Wait,
                                            RemoveOn = SvcEvent.Uninstall_Wait,

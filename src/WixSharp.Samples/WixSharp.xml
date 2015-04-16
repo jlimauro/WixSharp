@@ -4206,7 +4206,7 @@
         </member>
         <member name="F:WixSharp.Files.ExcludeMasks">
             <summary>
-            Wildcard patterns for files to be excluded from MSI.
+            Wildcard patterns for files to be excluded from MSI. Note, the mask is applied for the whole path not file name only.
             </summary>
         </member>
         <member name="M:WixSharp.Files.GetAllItems(System.String)">
@@ -4499,7 +4499,7 @@
         </member>
         <member name="F:WixSharp.DirFiles.ExcludeMasks">
             <summary>
-            Wildcard patterns for files to be excluded from MSI.
+            Wildcard patterns for files to be excluded from MSI. Note, the mask is applied for the whole path not file name only.
             </summary>
         </member>
         <member name="M:WixSharp.DirFiles.GetFiles(System.String)">
@@ -5920,6 +5920,13 @@
             <para>
             Set this member to <c>null</c> if you don't want to remove the service at any stage of the installation.
             </para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.DependsOn">
+            <summary>
+            Semicolon separated list of the names of the external service the service being installed depends on. 
+            It supposed to be names (not the display names) of a previously installed services.
+            <para>For example: DependsOn = "Dnscache;Dhcp"</para>
             </summary>
         </member>
         <member name="T:WixSharp.SvcEvent">

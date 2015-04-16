@@ -177,8 +177,9 @@ namespace WixSharp
         public Predicate<string> Filter = (file => true);
 
         /// <summary>
-        /// Wildcard patterns for files to be excluded from MSI.
+        /// Wildcard patterns for files to be excluded from MSI. Note, the mask is applied for the whole path not file name only.
         /// </summary>
+        [Obsolete("Use more versatile constructor, which takes Predicate<string> filter.")]
         public string[] ExcludeMasks = new string[0];
 
         /// <summary>

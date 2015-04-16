@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace WixSharp
@@ -97,9 +98,16 @@ namespace WixSharp
         /// </summary>
         public SvcEvent RemoveOn = SvcEvent.Uninstall;
 
+        /// <summary>
+        /// Semicolon separated list of the names of the external service the service being installed depends on. 
+        /// It supposed to be names (not the display names) of a previously installed services.
+        /// <para>For example: DependsOn = "Dnscache;Dhcp"</para>
+        /// </summary>
+        public string DependsOn = "";
+
         internal object[] ToXml()
         {
-            var result = new List<object>();
+            var result = new List<XElement>();
 
             result.Add(new XElement("ServiceInstall",
                            new XAttribute("Id", Id),
@@ -110,6 +118,12 @@ namespace WixSharp
                            new XAttribute("Start", StartType),
                            new XAttribute("ErrorControl", ErrorControl))
                            .AddAttributes(Attributes));
+
+            foreach (var item in DependsOn.Split(';'))
+            {
+                if(item.IsNotEmpty())
+                    result.First().AddElement("ServiceDependency", "Id="+item);
+            }
 
             if (StartOn != null)
                 result.Add(SvcEventToXml("Start", StartOn));
