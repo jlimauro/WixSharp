@@ -139,7 +139,7 @@ namespace WixSharp
         /// <summary>
         /// String representation of the <c>UILevel &lt; 4</c> condition of the WiX <c>Condition</c>.
         /// </summary>
-        public readonly static Condition Silent = new Condition(" UILevel < 4) ");
+        public readonly static Condition Silent = new Condition(" (UILevel < 4) ");
         /// <summary>
         /// String representation of the <c>REMOVE="ALL"</c> condition of the WiX <c>Condition</c>.
         /// </summary>

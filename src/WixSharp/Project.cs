@@ -148,7 +148,7 @@ namespace WixSharp
         /// </summary>
         public string Comments = "";
 
-        private string sourceBaseDir = "";
+        string sourceBaseDir = "";
         /// <summary>
         /// Base directory for the relative paths of the project items (e.g. <see cref="File"></see>). 
         /// </summary>
@@ -158,7 +158,7 @@ namespace WixSharp
             set { sourceBaseDir = value; }
         }
 
-        private string outDir;
+        string outDir;
         /// <summary>
         /// The output directory. The directory where all msi and temporary files should be assembled. The <c>CurrentDirectory</c> will be used if <see cref="OutDir"/> is left unassigned.
         /// </summary>
@@ -238,7 +238,7 @@ namespace WixSharp
             }
         }
 
-        private string outFileName = "setup";
+        string outFileName = "setup";
         /// <summary>
         /// Name of the MSI/MSM file (without extension) to be build.
         /// </summary>
@@ -616,7 +616,7 @@ namespace WixSharp
             return null;
         }
 
-        private string codepage = "";
+        string codepage = "";
         /// <summary>
         /// Installation UI Codepage. If not specified 
         /// ANSICodePage of the <see cref="Language"/> will be used.
@@ -649,7 +649,7 @@ namespace WixSharp
             get { return (Language.ToLower() != "en-us" && Language.ToLower() != "en") || !localizationFile.IsEmpty(); }
         }
 
-        private string localizationFile = "";
+        string localizationFile = "";
         /// <summary>
         /// Path to the Localization file. This value is used only if the setup language is not <c>"en-US"</c>.
         /// <para>If the <see cref="LocalizationFile"/> is not specified and the setup language 
