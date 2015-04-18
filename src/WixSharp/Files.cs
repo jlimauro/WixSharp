@@ -194,6 +194,8 @@ namespace WixSharp
             if (baseDirectory.IsEmpty())
                 baseDirectory = Environment.CurrentDirectory;
 
+            baseDirectory = IO.Path.GetFullPath(baseDirectory);
+
             Action<Dir, string> AgregateSubDirs = null;
             AgregateSubDirs = delegate(Dir parentDir, string dirPath)
                                 {

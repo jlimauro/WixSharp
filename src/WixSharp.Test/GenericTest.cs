@@ -12,6 +12,16 @@ namespace WixSharp.Test
     public class GenericTest
     {
         [Fact]
+        public void RelativePath()
+        {
+            var path = @"E:\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Content\readme.txt";
+            var baseDir = @"E:\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Install Files";
+
+            var result = Utils.MakeRelative(path, baseDir);
+            Assert.Equal(@"..\Content\readme.txt", result);
+        }
+
+        [Fact]
         public void Test()
         {
             Compiler.GuidGenerator = GuidGenerators.Default;

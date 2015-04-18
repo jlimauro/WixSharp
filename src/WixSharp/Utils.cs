@@ -29,6 +29,7 @@ THE SOFTWARE.
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using IO = System.IO;
 
 namespace WixSharp
@@ -58,14 +59,34 @@ namespace WixSharp
             return IO.Path.Combine(p1, p2);
         }
 
-        internal static string MakeRelative(this string filePath, string referencePath)
+        public static string MakeRelative(this string filePath, string referencePath)
         {
-            //Uri.MakeRelativeUri(fileUri).ToString(); does not work without *.config file
+            //1 - 'Uri.MakeRelativeUri' doesn't work without *.config file
+            //2 - Substring doesn't work for paths containing ..\..\
 
-            if (referencePath.Last() != IO.Path.DirectorySeparatorChar)
-                referencePath += IO.Path.DirectorySeparatorChar;
+            char dirSeparator = IO.Path.DirectorySeparatorChar;
+            Func<string, string[]> split = path => IO.Path.GetFullPath(path).Trim(dirSeparator).Split(dirSeparator);
 
-            return filePath.Substring(referencePath.Length);
+            string[] absParts = split(filePath);
+            string[] relParts = split(referencePath);
+
+            int commonElementsLength = 0;
+            do
+            {
+                if (string.Compare(absParts[commonElementsLength], relParts[commonElementsLength], true) != 0)
+                    break;
+            }
+            while (++commonElementsLength < Math.Min(absParts.Length, relParts.Length));
+
+            if (commonElementsLength == 0)
+                throw new ArgumentException("The two paths don't have common root.");
+
+            var result = relParts.Skip(commonElementsLength)
+                                 .Select(x => "..")
+                                 .Concat(absParts.Skip(commonElementsLength))
+                                 .ToArray();
+
+            return string.Join(dirSeparator.ToString(), result);
         }
 
 
