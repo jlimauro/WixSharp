@@ -3822,7 +3822,7 @@
         </member>
         <member name="F:WixSharp.Compiler.AllowNonRtfLicense">
             <summary>
-            Defines if license file can be have non RTF extension. 
+            Defines if license file can be have non RTF extension.
             </summary>
         </member>
         <member name="F:WixSharp.Compiler.IgnoreClientAssemblyPDB">
@@ -3872,28 +3872,28 @@
             <exception cref="T:System.Exception">WiX SDK binaries cannot be found. Please set WixSharp.Compiler.WixSdkLocation to valid path to the Wix SDK binaries.</exception>
         </member>
         <member name="P:WixSharp.Compiler.GuidGenerator">
-            <summary>
-            Gets or sets the GUID generator algorithm. You can use either one of the built-in algorithms or define your own.
-            The default value is <see cref="M:WixSharp.GuidGenerators.Default(System.Object)"/>.
-            <description>Possible WiX source file only:
-            <code>
-            //default built-in seeded GUID generator
-            Compiler.GuidGenerator = GuidGenerators.Default;
+             <summary>
+             Gets or sets the GUID generator algorithm. You can use either one of the built-in algorithms or define your own.
+             The default value is <see cref="M:WixSharp.GuidGenerators.Default(System.Object)"/>.
+             <description>Possible WiX source file only:
+             <code>
+             //default built-in seeded GUID generator
+             Compiler.GuidGenerator = GuidGenerators.Default;
             
-            //sequential built-in GUID generator 
-            Compiler.GuidGenerator = GuidGenerators.Sequential;
+             //sequential built-in GUID generator
+             Compiler.GuidGenerator = GuidGenerators.Sequential;
             
-            //Custom 'aways-same' GUID generator
-            Compiler.GuidGenerator = (seed) =&gt; Guid.Parse("9e2974a1-9539-4c5c-bef7-80fc35b9d7b0");
+             //Custom 'aways-same' GUID generator
+             Compiler.GuidGenerator = (seed) =&gt; Guid.Parse("9e2974a1-9539-4c5c-bef7-80fc35b9d7b0");
             
-            //Custom random GUID generator
-            Compiler.GuidGenerator = (seed) =&gt; Guid.NewGuid();
-            </code>
-            </description>
-            </summary>
-            <value>
-            The GUID generator algorithm. 
-            </value>
+             //Custom random GUID generator
+             Compiler.GuidGenerator = (seed) =&gt; Guid.NewGuid();
+             </code>
+             </description>
+             </summary>
+             <value>
+             The GUID generator algorithm.
+             </value>
         </member>
         <member name="P:WixSharp.Compiler.ClientAssembly">
             <summary>
