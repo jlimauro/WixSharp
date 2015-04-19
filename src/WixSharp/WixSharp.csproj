@@ -133,6 +133,7 @@
     <Compile Include="LaunchCondition.cs" />
     <Compile Include="Merge.cs" />
     <Compile Include="NativeBootstrapper.cs" />
+    <Compile Include="ProductInfo.cs" />
     <Compile Include="ProjectValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Binary.cs" />

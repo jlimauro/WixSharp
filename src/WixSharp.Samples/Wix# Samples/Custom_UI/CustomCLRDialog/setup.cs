@@ -1,4 +1,5 @@
 ﻿using Microsoft.Deployment.WindowsInstaller;
+using System.Diagnostics;
 using WixSharp;
 using WixSharp.CommonTasks;
 

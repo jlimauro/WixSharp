@@ -42,10 +42,10 @@ public class CustonActions
     [CustomAction]
     public static ActionResult ShowGritting(Session session)
     {
-		try
-		{
-			MessageBox.Show(session["Gritting"], session["Title"]);
-		}
+        try
+        {
+            MessageBox.Show(session["Gritting"], session["Title"]);
+        }
         catch (Exception e)
         {
             MessageBox.Show(e.ToString(), "Error");

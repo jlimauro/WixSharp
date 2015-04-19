@@ -111,7 +111,7 @@ namespace WixSharp
                         var file = item as RegFile;
                         var values = Tasks.ImportRegFile(file.Path);
                         if (file.Feature != null)
-                            values.ForEach(x=>x.Feature = file.Feature); 
+                            values.ForEach(x => x.Feature = file.Feature);
                         regs.AddRange(values);
                     }
                     else if (item is Property || item is PropertyRef)
@@ -146,6 +146,7 @@ namespace WixSharp
         /// <summary>
         /// Optional comments for browsing.
         /// </summary>
+        [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).")]
         public string Comments = "";
 
         string sourceBaseDir = "";
@@ -313,7 +314,13 @@ namespace WixSharp
         /// <summary>
         /// Path to the product icon file.
         /// </summary>
+        [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).")]
         public string ProductIcon = null;
+
+        /// <summary>
+        ///  Set of values in 'Add/Remove Programs' of Control Panel.
+        /// </summary>
+        public ProductInfo ControlPanelInfo = new ProductInfo();
 
 
         /// <summary>
@@ -322,7 +329,7 @@ namespace WixSharp
         public Version Version = new Version("1.0.0.0");
 
         /// <summary>
-        /// Defines Major Upgrade behaviour. By default it is <c>null</c> thus upgrade is not supported.
+        /// Defines Major Upgrade behavior. By default it is <c>null</c> thus upgrade is not supported.
         /// <para>If you need to implement Major Upgrade define this member to appropriate 
         /// <see cref="MajorUpgradeStrategy"/> instance.</para>
         /// </summary>

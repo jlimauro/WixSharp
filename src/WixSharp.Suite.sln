@@ -157,6 +157,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persisting AppInfo", "WixSh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Install on x64", "WixSharp.Samples\VSProjects\Install on x64.csproj", "{B316429C-05F6-44C3-9397-B6A24FD94A3D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductInfo", "WixSharp.Samples\VSProjects\ProductInfo.csproj", "{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -779,6 +781,16 @@ Global
 		{B316429C-05F6-44C3-9397-B6A24FD94A3D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B316429C-05F6-44C3-9397-B6A24FD94A3D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B316429C-05F6-44C3-9397-B6A24FD94A3D}.Release|x86.ActiveCfg = Release|Any CPU
+		{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -841,5 +853,6 @@ Global
 		{078BAD4C-BABF-4AFA-AC2A-83C05F749BD5} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{1AD8A1A8-2A4A-498A-8D4A-988C681044E3} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{B316429C-05F6-44C3-9397-B6A24FD94A3D} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
+		{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 	EndGlobalSection
 EndGlobal

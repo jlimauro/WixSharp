@@ -1729,6 +1729,15 @@
             <param name="item">The item to be added.</param>
             <returns>Combined <see cref="T:System.Array"/> object.</returns>
         </member>
+        <member name="M:WixSharp.Extensions.AddRange``1(System.Array,System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Adds/combines given <see cref="T:System.Array"/> object with the specified items.
+            </summary>
+            <typeparam name="T">The type of the elements of <c>obj</c>.</typeparam>
+            <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
+            <param name="items">The items to be added.</param>
+            <returns>Combined <see cref="T:System.Array"/> object.</returns>
+        </member>
         <member name="M:WixSharp.Extensions.Combine``1(System.Collections.Generic.List{``0},System.Collections.Generic.List{``0})">
             <summary>
             Combines given <see cref="T:System.Collections.Generic.List"/> items with items of another <see cref="T:System.Collections.Generic.List"/>.
@@ -3469,6 +3478,98 @@
             </summary>
             <value>The optional arguments.</value>
         </member>
+        <member name="T:WixSharp.ProductInfo">
+            <summary>
+            Defines product properties as they appear in 'Add/Remove Programs' of Control Panel. 
+            <example>
+            <code>
+             var project = new Project("MyProduct",
+                               new Dir(@"%ProgramFiles%\My Company\My Product",
+                               ...
+            project.ControlPanelInfo.Comments = "Simple test msi";
+            project.ControlPanelInfo.Readme = "https://wixsharp.codeplex.com/manual";
+            project.ControlPanelInfo.HelpLink = "https://wixsharp.codeplex.com/support";
+            project.ControlPanelInfo.HelpTelephone = "111-222-333-444";
+            project.ControlPanelInfo.UrlInfoAbout = "https://wixsharp.codeplex.com/About";
+            project.ControlPanelInfo.UrlUpdateInfo = "https://wixsharp.codeplex.com/update";
+            project.ControlPanelInfo.ProductIcon = "app_icon.ico";
+            project.ControlPanelInfo.Contact = "Product owner";
+            project.ControlPanelInfo.InstallLocation = "[INSTALLDIR]";        
+            project.ControlPanelInfo.NoModify = true;
+            project.ControlPanelInfo.NoRepair = true,
+            project.ControlPanelInfo.NoRemove = true,
+            project.ControlPanelInfo.SystemComponent = true, //if set will not be shown in Control Panel
+            
+            Compiler.BuildMsi(project);
+            </code>
+            </example>
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.Comments">
+            <summary>
+            Provides Comments for the Add/Remove Programs in the Control Panel. 
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.Contact">
+            <summary>
+            Provides the Contact for Add/Remove Programs in the Control Panel. 
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.InstallLocation">
+            <summary>
+            Fully qualified path to the application's primary folder. 
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.HelpLink">
+            <summary>
+            Internet address, or URL, for technical support. 
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.HelpTelephone">
+            <summary>
+            Technical support phone numbers. 
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.NoModify">
+            <summary>
+            Prevents display of a Change button for the product in Add/Remove Programs in the Control Panel. Note  This only affects the display in the ARP. The Windows Installer is still capable of repairing, installing-on-demand, and uninstalling applications through a command line or the programming interface.
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.NoRemove">
+            <summary>
+            Prevents display of a Remove button for the product in the Add/Remove Programs in the Control Panel. The product can still be removed by selecting the Change button if the installation package has been authored with a user interface that provides product removal as an option. Note  This only affects the display in the ARP. The Windows Installer is still capable of repairing, installing-on-demand, and uninstalling applications through a command line or the programming interface.
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.NoRepair">
+            <summary>
+            Disables the Repair button in the Add/Remove Programs in the Control Panel. Note  This only affects the display in the ARP. The Windows Installer is still capable of repairing, installing-on-demand, and uninstalling applications through a command line or the programming interface. 
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.ProductIcon">
+            <summary>
+            Identifies the icon displayed in Add/Remove Programs. If this property is not defined, Add/Remove Programs specifies the display icon.
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.Readme">
+            <summary>
+            Provides the ReadMe for Add/Remove Programs in Control Panel. 
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.SystemComponent">
+            <summary>
+            Prevents display of the application in the Programs List of the Add/Remove Programs in the Control Panel. Note  This only affects the display in the ARP. The Windows Installer is still capable of repairing, installing-on-demand, and uninstalling applications through a command line or the programming interface.
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.UrlInfoAbout">
+            <summary>
+            URL for application's home page. 
+            </summary>
+        </member>
+        <member name="P:WixSharp.ProductInfo.UrlUpdateInfo">
+            <summary>
+            URL for application update information. 
+            </summary>
+        </member>
         <member name="T:WixSharp.Binary">
             <summary>
             Defines binary file to be embedded into MSI (<c>Binary</c> table).
@@ -4887,6 +4988,11 @@
             Path to the product icon file.
             </summary>
         </member>
+        <member name="F:WixSharp.Project.ControlPanelInfo">
+            <summary>
+             Set of values in 'Add/Remove Programs' of Control Panel.
+            </summary>
+        </member>
         <member name="F:WixSharp.Project.Version">
             <summary>
             Version of the product to be installed.
@@ -4894,7 +5000,7 @@
         </member>
         <member name="F:WixSharp.Project.MajorUpgradeStrategy">
              <summary>
-             Defines Major Upgrade behaviour. By default it is <c>null</c> thus upgrade is not supported.
+             Defines Major Upgrade behavior. By default it is <c>null</c> thus upgrade is not supported.
              <para>If you need to implement Major Upgrade define this member to appropriate 
              <see cref="F:WixSharp.Project.MajorUpgradeStrategy"/> instance.</para>
              </summary>

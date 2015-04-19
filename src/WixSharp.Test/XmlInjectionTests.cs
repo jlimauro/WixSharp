@@ -59,7 +59,7 @@ namespace WixSharp.Test
         void Compiler_WixSourceGenerated(System.Xml.Linq.XDocument document)
         {
             var product = document.Root.Select("Product");
-            product.AddElement("Icon", "Id=app_icon.ico;SourceFile=" + TestData.Path(@"Files\app_icon.ico"));
+            product.AddElement("Icon", "Id=app_icon.ico;SourceFile=" + TestData.Path(@"app_icon.ico"));
             product.AddElement("Property", "Id=ARPPRODUCTICON;Value=app_icon.ico");
         }
     }

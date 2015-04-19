@@ -26,6 +26,6 @@ class Script
                                        new FileShortcut("MyApp.exe", "%Desktop%")
                                   };
 
-        Compiler.BuildMsiCmd(project);
+        Compiler.BuildMsi(project);
     }
 }

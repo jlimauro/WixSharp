@@ -67,7 +67,7 @@ namespace WixSharp
                 parent = parent.AddElement(new XElement(item));
             return parent;
         }
-        
+
         /// <summary>
         /// Adds the element to a given XML element and sets the attributes of the newly created element.
         /// <para>
@@ -728,10 +728,37 @@ namespace WixSharp
             {
                 var retval = new ArrayList();
 
-                foreach (var i in obj)
-                    retval.Add(i);
+                if (obj != null)
+                    foreach (var i in obj)
+                        retval.Add(i);
 
                 retval.Add(item);
+
+                return (T[])retval.ToArray(typeof(T));
+            }
+            return (T[])obj;
+        }
+
+        /// <summary>
+        /// Adds/combines given <see cref="T:System.Array"/> object with the specified items.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of <c>obj</c>.</typeparam>
+        /// <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
+        /// <param name="items">The items to be added.</param>
+        /// <returns>Combined <see cref="T:System.Array"/> object.</returns>
+        public static T[] AddRange<T>(this Array obj, IEnumerable<T> items)
+        {
+            if (items != null)
+            {
+                var retval = new ArrayList();
+
+                if (obj != null)
+                    foreach (var i in obj)
+                        retval.Add(i);
+
+                if (items != null)
+                    foreach (var i in items)
+                        retval.Add(i);
 
                 return (T[])retval.ToArray(typeof(T));
             }

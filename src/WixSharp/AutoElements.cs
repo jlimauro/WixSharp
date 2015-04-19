@@ -233,7 +233,7 @@ namespace WixSharp
         static void InjectPlatforAttributes(XDocument doc)
         {
             var is64BitPlatform = doc.Root.Select("Product/Package").HasAttribute("Platform", val => val == "x64");
-            
+
             if (is64BitPlatform)
                 doc.Descendants("Component")
                    .ForEach(comp => comp.SetAttributeValue("Win64", "yes"));
@@ -275,6 +275,14 @@ namespace WixSharp
                     destElement.SetAttributeValue(key, value);
                     return true;
                 }
+            }
+
+            if (element == "Icon" && source.Name.LocalName == "Property")
+            {
+                source.Parent("Product")
+                      .SelectOrCreate("Icon")
+                      .SetAttributeValue(key, value);
+                return true;
             }
 
             if (element == "Custom" && source.Name.LocalName == "CustomAction")
