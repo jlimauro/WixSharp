@@ -202,7 +202,7 @@ namespace WixSharp
                                     foreach (var subDirPath in IO.Directory.GetDirectories(dirPath))
                                     {
                                         var dirName = IO.Path.GetFileName(subDirPath);
-                                        var subDir = new Dir(dirName, new DirFiles
+                                        var subDir = new Dir(this.Feature, dirName, new DirFiles
                                                                       { 
                                                                           Feature = this.Feature,
                                                                           Directory = ToRelativePath(subDirPath, baseDirectory),
