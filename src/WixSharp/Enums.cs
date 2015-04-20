@@ -517,4 +517,46 @@ namespace WixSharp
         /// </summary>
         remove
     }
+
+    /// <summary>
+    /// Specifies the architecture for this assembly.
+    /// </summary>
+    public enum ProcessorArchitecture
+    {
+        /// <summary>
+        /// The file is a .NET Framework assembly that is processor-neutral. 
+        /// </summary>
+        msil,
+        /// <summary>
+        /// The file is a .NET Framework assembly for the x86 processor. 
+        /// </summary>
+        x86,
+        /// <summary>
+        /// The file is a .NET Framework assembly for the x64 processor. 
+        /// </summary>
+        x64,
+        /// <summary>
+        /// The file is a .NET Framework assembly for the ia64 processor. 
+        /// </summary>
+        ia64
+    }
+
+    /// <summary>
+    /// Specifies what Action should be executed on the RegistryKey when un-/installing
+    /// </summary>
+    public enum RegistryKeyAction
+    {
+        /// <summary>
+        /// Creates the key, if absent, when the parent component is installed. 
+        /// </summary>
+        create,
+        /// <summary>
+        /// Creates the key, if absent, when the parent component is installed then remove the key with all its values and subkeys when the parent component is uninstalled.
+        /// </summary>
+        createAndRemoveOnUninstall,
+        /// <summary>
+        /// Does nothing; this element is used merely in WiX authoring for organization and does nothing to the final output. 
+        /// </summary>
+        none
+    }
 }

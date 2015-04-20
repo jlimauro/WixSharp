@@ -402,9 +402,54 @@
             <param name="registerInGAC">Defines if the assembly file needs to be registered in GAC during the installation. </param>
             <param name="items">Optional <see cref="T:WixSharp.FileShortcut"/> parameters defining shortcuts to the assembly file to be created during the installation.</param>
         </member>
+        <member name="M:WixSharp.Assembly.#ctor(WixSharp.Feature,System.String,System.Boolean,WixSharp.ProcessorArchitecture,WixSharp.FileShortcut[])">
+            <summary>
+            Creates instance of the <see cref="T:WixSharp.Assembly"></see> class with properties initialized with specified parameters.
+            </summary>
+            <param name="feature"><see cref="T:WixSharp.Feature"></see> the assembly file should be included in.</param>
+            <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+            <param name="registerInGAC">Defines if the assembly file needs to be registered in GAC during the installation. </param>
+            <param name="processorArchitecture">Specifies the architecture for this assembly. </param>
+            <param name="items">Optional <see cref="T:WixSharp.FileShortcut"/> parameters defining shortcuts to the assembly file to be created during the installation.</param>
+        </member>
+        <member name="M:WixSharp.Assembly.#ctor(System.String,System.Boolean,WixSharp.ProcessorArchitecture,WixSharp.FileShortcut[])">
+            <summary>
+            Creates instance of the <see cref="T:WixSharp.Assembly"></see> class with properties initialized with specified parameters.
+            </summary>
+            <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+            <param name="registerInGAC">Defines if the assembly file needs to be registered in GAC during the installation. </param>
+            <param name="processorArchitecture">Specifies the architecture for this assembly. </param>
+            <param name="items">Optional <see cref="T:WixSharp.FileShortcut"/> parameters defining shortcuts to the assembly file to be created during the installation.</param>
+        </member>
+        <member name="M:WixSharp.Assembly.#ctor(WixSharp.Id,WixSharp.Feature,System.String,System.Boolean,WixSharp.ProcessorArchitecture,WixSharp.FileShortcut[])">
+            <summary>
+            Creates instance of the <see cref="T:WixSharp.Assembly"></see> class with properties initialized with specified parameters.
+            </summary>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Assembly"/> instance.</param>
+            <param name="feature"><see cref="T:WixSharp.Feature"></see> the assembly file should be included in.</param>
+            <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+            <param name="registerInGAC">Defines if the assembly file needs to be registered in GAC during the installation. </param>
+            <param name="processorArchitecture">Specifies the architecture for this assembly. </param>
+            <param name="items">Optional <see cref="T:WixSharp.FileShortcut"/> parameters defining shortcuts to the assembly file to be created during the installation.</param>
+        </member>
+        <member name="M:WixSharp.Assembly.#ctor(WixSharp.Id,System.String,System.Boolean,WixSharp.ProcessorArchitecture,WixSharp.FileShortcut[])">
+            <summary>
+            Creates instance of the <see cref="T:WixSharp.Assembly"></see> class with properties initialized with specified parameters.
+            </summary>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Assembly"/> instance.</param>
+            <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+            <param name="registerInGAC">Defines if the assembly file needs to be registered in GAC during the installation. </param>
+            <param name="processorArchitecture">Specifies the architecture for this assembly. </param>
+            <param name="items">Optional <see cref="T:WixSharp.FileShortcut"/> parameters defining shortcuts to the assembly file to be created during the installation.</param>
+        </member>
         <member name="F:WixSharp.Assembly.RegisterInGAC">
             <summary>
             Defines if the assembly file needs to be registered in GAC during the installation. 
+            </summary>
+        </member>
+        <member name="F:WixSharp.Assembly.ProcessorArchitecture">
+            <summary>
+            Specifies the architecture for this assembly.
             </summary>
         </member>
         <member name="T:WixSharp.AutoElements">
@@ -5758,6 +5803,21 @@
             Set this attribute to 'yes' to mark the corresponding RegValue as a 64-bit component. 
             </summary>
         </member>
+        <member name="F:WixSharp.RegValue.RegistryKeyAction">
+            <summary>
+            Set this to create an empty key, if absent, when the parent component is installed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.RegValue.ForceCreateOnInstall">
+            <summary>
+            Set this to create an empty key, if absent, when the parent component is installed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.RegValue.ForceDeleteOnUninstall">
+            <summary>
+            Set this to remove the key with all its values and subkeys when the parent component is uninstalled.
+            </summary>
+        </member>
         <member name="T:WixSharp.ScriptAction">
             <summary>
             Defines WiX CustomAction for executing embedded VBScript. 
@@ -7772,6 +7832,51 @@
             Removes the environment variable during an installation. The installer only removes an environment variable
             during an installation if the name and value of the variable match the entries in the Name and Value attributes.
             If you want to remove an environment variable, regardless of its value, do not set the Value attribute.
+            </summary>
+        </member>
+        <member name="T:WixSharp.ProcessorArchitecture">
+            <summary>
+            Specifies the architecture for this assembly.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ProcessorArchitecture.msil">
+            <summary>
+            The file is a .NET Framework assembly that is processor-neutral. 
+            </summary>
+        </member>
+        <member name="F:WixSharp.ProcessorArchitecture.x86">
+            <summary>
+            The file is a .NET Framework assembly for the x86 processor. 
+            </summary>
+        </member>
+        <member name="F:WixSharp.ProcessorArchitecture.x64">
+            <summary>
+            The file is a .NET Framework assembly for the x64 processor. 
+            </summary>
+        </member>
+        <member name="F:WixSharp.ProcessorArchitecture.ia64">
+            <summary>
+            The file is a .NET Framework assembly for the ia64 processor. 
+            </summary>
+        </member>
+        <member name="T:WixSharp.RegistryKeyAction">
+            <summary>
+            Specifies what Action should be executed on the RegistryKey when un-/installing
+            </summary>
+        </member>
+        <member name="F:WixSharp.RegistryKeyAction.create">
+            <summary>
+            Creates the key, if absent, when the parent component is installed. 
+            </summary>
+        </member>
+        <member name="F:WixSharp.RegistryKeyAction.createAndRemoveOnUninstall">
+            <summary>
+            Creates the key, if absent, when the parent component is installed then remove the key with all its values and subkeys when the parent component is uninstalled.
+            </summary>
+        </member>
+        <member name="F:WixSharp.RegistryKeyAction.none">
+            <summary>
+            Does nothing; this element is used merely in WiX authoring for organization and does nothing to the final output. 
             </summary>
         </member>
     </members>

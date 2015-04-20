@@ -46,6 +46,12 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>WixSharpStrongName.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -79,6 +85,9 @@
     <Compile Include="MsiInterop.cs" />
     <Compile Include="MsiSession.cs" />
     <Compile Include="GenericSetup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="WixSharpStrongName.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

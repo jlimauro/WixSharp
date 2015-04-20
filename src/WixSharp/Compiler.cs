@@ -441,7 +441,7 @@ namespace WixSharp
 
                 string batchFileContent = "\"" + compiler + "\" " + CandleOptions + " " + extensionDlls + " \"" + IO.Path.GetFileName(wxsFile) + "\"\r\n";
 
-                if (project.IsLocalized)
+                if (project.IsLocalized && IO.File.Exists(project.LocalizationFile))
                     batchFileContent += "\"" + linker + "\" " + LightOptions + " \"" + objFile + "\" " + extensionDlls + " -cultures:" + project.Language + " -loc " + project.LocalizationFile + "\r\npause";
                 else
                     batchFileContent += "\"" + linker + "\" " + LightOptions + " \"" + objFile + "\" " + extensionDlls + " -cultures:" + project.Language + "\r\npause";
@@ -548,7 +548,7 @@ namespace WixSharp
                     if (IO.File.Exists(msiFile))
                         IO.File.Delete(msiFile);
 
-                    if (project.IsLocalized)
+                    if (project.IsLocalized && IO.File.Exists(project.LocalizationFile))
                         Run(linker, LightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language + " -loc " + project.LocalizationFile);
                     else
                         Run(linker, LightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language);
@@ -1225,7 +1225,8 @@ namespace WixSharp
                 {
                     file.Add(new XAttribute("KeyPath", "yes"),
                              new XAttribute("Assembly", ".net"),
-                             new XAttribute("AssemblyManifest", fileId));
+                             new XAttribute("AssemblyManifest", fileId),
+                             new XAttribute("ProcessorArchitecture", ((Assembly)wFile).ProcessorArchitecture.ToString()));
                 }
 
                 //insert file associations
@@ -1549,10 +1550,20 @@ namespace WixSharp
                     else
                         regValEl.Add(new XAttribute("Value", stringValue));
 
+                    if (regVal.RegistryKeyAction != RegistryKeyAction.none)
+                    {
+                        regKeyEl.Add(new XAttribute("Action", regVal.RegistryKeyAction.ToString()));
+                    }
+                    if (regVal.ForceCreateOnInstall)
+                    {
+                        regKeyEl.Add(new XAttribute("ForceCreateOnInstall", regVal.ForceCreateOnInstall.ToYesNo()));
+                    }
+                    if (regVal.ForceDeleteOnUninstall)
+                    {
+                        regKeyEl.Add(new XAttribute("ForceDeleteOnUninstall", regVal.ForceDeleteOnUninstall.ToYesNo()));
+                    }
                     if (regVal.Name != "")
                         regValEl.Add(new XAttribute("Name", regVal.Name));
-
-                    //comp.AddAttributes(regVal.ComponentAttributes); //zos
 
                     keyPathSet = true;
                 }

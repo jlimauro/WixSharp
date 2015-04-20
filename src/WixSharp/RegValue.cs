@@ -230,6 +230,18 @@ namespace WixSharp
         /// Set this attribute to 'yes' to mark the corresponding RegValue as a 64-bit component. 
         /// </summary>
         public bool Win64 = false;
+        /// <summary>
+        /// Set this to create an empty key, if absent, when the parent component is installed.
+        /// </summary>
+        public RegistryKeyAction RegistryKeyAction = RegistryKeyAction.none;
+        /// <summary>
+        /// Set this to create an empty key, if absent, when the parent component is installed.
+        /// </summary>
+        public bool ForceCreateOnInstall;
+        /// <summary>
+        /// Set this to remove the key with all its values and subkeys when the parent component is uninstalled.
+        /// </summary>
+        public bool ForceDeleteOnUninstall = true;
 
         internal string RegValueString
         {

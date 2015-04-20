@@ -106,8 +106,68 @@ namespace WixSharp
             RegisterInGAC = registerInGAC;
         }
         /// <summary>
+        /// Creates instance of the <see cref="Assembly"></see> class with properties initialized with specified parameters.
+        /// </summary>
+        /// <param name="feature"><see cref="Feature"></see> the assembly file should be included in.</param>
+        /// <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+        /// <param name="registerInGAC">Defines if the assembly file needs to be registered in GAC during the installation. </param>
+        /// <param name="processorArchitecture">Specifies the architecture for this assembly. </param>
+        /// <param name="items">Optional <see cref="FileShortcut"/> parameters defining shortcuts to the assembly file to be created during the installation.</param>
+        public Assembly(Feature feature, string sourcePath, bool registerInGAC, ProcessorArchitecture processorArchitecture, params FileShortcut[] items)
+            : base(feature, sourcePath, items)
+        {
+            RegisterInGAC = registerInGAC;
+            ProcessorArchitecture = processorArchitecture;
+        }
+        /// <summary>
+        /// Creates instance of the <see cref="Assembly"></see> class with properties initialized with specified parameters.
+        /// </summary>
+        /// <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+        /// <param name="registerInGAC">Defines if the assembly file needs to be registered in GAC during the installation. </param>
+        /// <param name="processorArchitecture">Specifies the architecture for this assembly. </param>
+        /// <param name="items">Optional <see cref="FileShortcut"/> parameters defining shortcuts to the assembly file to be created during the installation.</param>
+        public Assembly(string sourcePath, bool registerInGAC, ProcessorArchitecture processorArchitecture, params FileShortcut[] items)
+            : base(sourcePath, items)
+        {
+            RegisterInGAC = registerInGAC;
+            ProcessorArchitecture = processorArchitecture;
+        }
+        /// <summary>
+        /// Creates instance of the <see cref="Assembly"></see> class with properties initialized with specified parameters.
+        /// </summary>
+        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Assembly"/> instance.</param>
+        /// <param name="feature"><see cref="Feature"></see> the assembly file should be included in.</param>
+        /// <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+        /// <param name="registerInGAC">Defines if the assembly file needs to be registered in GAC during the installation. </param>
+        /// <param name="processorArchitecture">Specifies the architecture for this assembly. </param>
+        /// <param name="items">Optional <see cref="FileShortcut"/> parameters defining shortcuts to the assembly file to be created during the installation.</param>
+        public Assembly(Id id, Feature feature, string sourcePath, bool registerInGAC, ProcessorArchitecture processorArchitecture, params FileShortcut[] items)
+            : base(id, feature, sourcePath, items)
+        {
+            RegisterInGAC = registerInGAC;
+            ProcessorArchitecture = processorArchitecture;
+        }
+        /// <summary>
+        /// Creates instance of the <see cref="Assembly"></see> class with properties initialized with specified parameters.
+        /// </summary>
+        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Assembly"/> instance.</param>
+        /// <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+        /// <param name="registerInGAC">Defines if the assembly file needs to be registered in GAC during the installation. </param>
+        /// <param name="processorArchitecture">Specifies the architecture for this assembly. </param>
+        /// <param name="items">Optional <see cref="FileShortcut"/> parameters defining shortcuts to the assembly file to be created during the installation.</param>
+        public Assembly(Id id, string sourcePath, bool registerInGAC, ProcessorArchitecture processorArchitecture, params FileShortcut[] items)
+            : base(id, sourcePath, items)
+        {
+            RegisterInGAC = registerInGAC;
+            ProcessorArchitecture = processorArchitecture;
+        }
+        /// <summary>
         /// Defines if the assembly file needs to be registered in GAC during the installation. 
         /// </summary>
         public bool RegisterInGAC = false;
+        /// <summary>
+        /// Specifies the architecture for this assembly.
+        /// </summary>
+        public ProcessorArchitecture ProcessorArchitecture = ProcessorArchitecture.msil;
     }
 }
