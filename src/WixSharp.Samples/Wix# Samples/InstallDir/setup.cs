@@ -10,26 +10,21 @@ class Script
 {
     static public void Main(string[] args)
     {
-        var project = new Project()
+        var project = new Project("CustomActionTest",
+                         
+                         new Dir(@"%ProgramFiles%\CustomActionTest",
+                             new File("readme.txt")),
+
+                         new SetPropertyAction("IDIR", "[INSTALLDIR]"),
+                         new ManagedAction(@"MyAction"),
+                         
+                         new Property("IDIR", "empty") ,
+                         new Property("Test", "empty"))
         {
             UI = WUI.WixUI_InstallDir,
-            Name = "CustomActionTest",
-
-            Actions = new WixSharp.Action[]{
-                            new SetPropertyAction("IDIR", "[INSTALLDIR]"),
-                            new ManagedAction(@"MyAction")},
-                            
-            Properties = new[] {
-                            new Property("IDIR", "empty") ,
-                            new Property("Test", "empty") },
-
-            Dirs = new[] { 
-                            new Dir(@"%ProgramFiles%\CustomActionTest"){
-                                    Files = new []{
-                                        new File("readme.txt")}}}
         };
 
-        Compiler.BuildWxs(project);
+        Compiler.BuildMsi(project);
     }
 }
 

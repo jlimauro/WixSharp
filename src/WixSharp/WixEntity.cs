@@ -181,7 +181,7 @@ namespace WixSharp
         {
             var preffix = name + "=";
 
-            return (AttributesDefinition??"").Trim()
+            return (AttributesDefinition ?? "").Trim()
                                              .Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                                              .Where(x => x.StartsWith(preffix))
                                              .Select(x => x.Substring(preffix.Length))
@@ -193,7 +193,7 @@ namespace WixSharp
             var preffix = name + "=";
             var items = (AttributesDefinition ?? "").Trim()
                                                     .Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-                                                    .Where(x =>! x.StartsWith(preffix))
+                                                    .Where(x => !x.StartsWith(preffix))
                                                     .ToList();
             if (value.IsNotEmpty())
                 items.Add(name + "=" + value);
@@ -260,7 +260,11 @@ namespace WixSharp
                         id = rawName + "." + index;
                         idMaps[GetType()][rawNameKey] = index;
                     }
+                    
                     //Trace.WriteLine(">>> " + GetType() + " >>> " + id);
+
+                    if (rawName.IsNotEmpty() && char.IsDigit(rawName[0]))
+                        id = "_" + id;
 
                 }
                 return id;
