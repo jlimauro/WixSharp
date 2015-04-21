@@ -4371,7 +4371,7 @@
             which are not matching any <see cref="F:WixSharp.Files.ExcludeMasks"/>.
             </summary>
             <param name="baseDirectory">The base directory for file analysis. It is used in conjunction with
-            relative <see cref="F:WixSharp.DirFiles.Directory"/>.</param>
+            relative <see cref="F:WixSharp.Files.Directory"/>. Though <see cref="F:WixSharp.Files.Directory"/> takes precedence if it is an absolute path.</param>
             <returns>Array of <see cref="T:WixSharp.WixEntity"/> instances, which are either <see cref="T:WixSharp.File"/> or/and <see cref="T:WixSharp.Dir"/> objects.</returns>
         </member>
         <member name="T:WixSharp.Feature">
@@ -4574,11 +4574,6 @@
             </code>
             </example>
         </member>
-        <member name="M:WixSharp.DirFiles.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.DirFiles"/> class.
-            </summary>
-        </member>
         <member name="M:WixSharp.DirFiles.#ctor(System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.DirFiles"/> class with properties/fields initialized with specified parameters.
@@ -4664,7 +4659,7 @@
             which are not matching any <see cref="F:WixSharp.DirFiles.ExcludeMasks"/>.
             </summary>
             <param name="baseDirectory">The base directory for file analysis. It is used in conjunction with
-            relative <see cref="F:WixSharp.DirFiles.Directory"/>.</param>
+            relative <see cref="F:WixSharp.DirFiles.Directory"/>.Though <see cref="F:WixSharp.DirFiles.Directory"/> takes precedence if it is an absolute path.</param>
             <returns>Array of <see cref="T:WixSharp.File"/>s.</returns>
         </member>
         <member name="T:WixSharp.InstalledFileAction">

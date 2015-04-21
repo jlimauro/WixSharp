@@ -280,6 +280,8 @@ namespace WixSharp
         /// </summary>
         static public bool PreserveTempFiles = false;
 
+        static public bool EmitRelativePaths = true; 
+
         /// <summary>
         /// Gets or sets the GUID generator algorithm. You can use either one of the built-in algorithms or define your own.
         /// The default value is <see cref="GuidGenerators.Default"/>.
@@ -643,6 +645,8 @@ namespace WixSharp
             IndjectCustomUI(project.CustomUI, doc);
             DefaultWixSourceGeneratedHandler(doc);
             AutoElements.InjectAutoElementsHandler(doc);
+            AutoElements.NormalizeFilePaths(doc, project.SourceBaseDir, EmitRelativePaths);
+
 
             if (type == OutputType.MSM)
             {
@@ -1318,7 +1322,6 @@ namespace WixSharp
                    new XElement("Component",
                        new XAttribute("Id", compId),
                        new XAttribute("Guid", WixGuid.NewGuid(compId))));
-                //.AddAttributes(wShortcut.ComponentAttributes));  //zos
 
                 if (wShortcut.Condition != null)
                     comp.AddElement(

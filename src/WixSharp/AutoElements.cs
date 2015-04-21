@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using IO = System.IO;
+using Path = System.IO.Path;
 
 namespace WixSharp
 {
@@ -379,6 +380,35 @@ namespace WixSharp
                         InsertDummyUserProfileRegistry(xComp1);
                 }
             }
+        }
+
+        
+        internal static void NormalizeFilePaths(XDocument doc, string sourceBaseDir, bool emitRelativePaths)
+        {
+            string rootDir = sourceBaseDir;
+            if(rootDir.IsEmpty())
+                rootDir = Environment.CurrentDirectory;
+            
+            rootDir = IO.Path.GetFullPath(rootDir);
+
+            Action<IEnumerable<XElement>, string> normalize = (elements, attributeName) =>
+                {
+                    elements.Where(e => e.HasAttribute(attributeName))
+                            .ForEach(e =>
+                                {
+                                    var attr = e.Attribute(attributeName);
+                                    if(emitRelativePaths)
+                                        attr.Value = Utils.MakeRelative(attr.Value, rootDir);
+                                    else
+                                        attr.Value = Path.GetFullPath(attr.Value);
+                                });
+                            
+                };
+
+            normalize(doc.Root.AllElements("Icon"), "SourceFile");
+            normalize(doc.Root.AllElements("File"), "Source");
+            normalize(doc.Root.AllElements("Merge"), "SourceFile");
+            normalize(doc.Root.AllElements("Binary"), "SourceFile");
         }
     }
 }

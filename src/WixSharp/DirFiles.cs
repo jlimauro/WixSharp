@@ -64,13 +64,6 @@ namespace WixSharp
     public partial class DirFiles : WixEntity
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DirFiles"/> class.
-        /// </summary>
-        public DirFiles()
-        {
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DirFiles"/> class with properties/fields initialized with specified parameters.
         /// </summary>
         /// <param name="sourcePath">The relative path to directory source directory. It must include wildcard pattern for files to be included
@@ -164,7 +157,7 @@ namespace WixSharp
         /// The relative path from source directory to directory to lookup for files matching the <see cref="DirFiles.IncludeMask"/>.
         /// </summary>
         public string Directory = "";
-
+        
         /// <summary>
         /// Wildcard pattern for files to be included into MSI.
         /// <para>Default value is <c>*.*</c>.</para>
@@ -187,19 +180,30 @@ namespace WixSharp
         /// which are not matching any <see cref="DirFiles.ExcludeMasks"/>.
         /// </summary>
         /// <param name="baseDirectory">The base directory for file analysis. It is used in conjunction with
-        /// relative <see cref="DirFiles.Directory"/>.</param>
+        /// relative <see cref="DirFiles.Directory"/>.Though <see cref="DirFiles.Directory"/> takes precedence if it is an absolute path.</param>
         /// <returns>Array of <see cref="File"/>s.</returns>
         public File[] GetFiles(string baseDirectory)
         {
+            if (IO.Path.IsPathRooted(Directory))
+                baseDirectory = Directory;
             if (baseDirectory.IsEmpty())
-                baseDirectory = System.Environment.CurrentDirectory;
+                baseDirectory = Environment.CurrentDirectory;
+
+            baseDirectory = IO.Path.GetFullPath(baseDirectory);
+
+            IO.Path.GetFullPath(baseDirectory);
+            string rootDirPath;
+            if (IO.Path.IsPathRooted(Directory))
+                rootDirPath = Directory;
+            else
+                rootDirPath = Utils.PathCombine(baseDirectory, Directory);
 
             var files = new List<File>();
             var excludeWildcards = new List<Compiler.Wildcard>();
             foreach (var mask in ExcludeMasks)
                 excludeWildcards.Add(new Compiler.Wildcard(mask, RegexOptions.IgnoreCase));
 
-            foreach (string file in IO.Directory.GetFiles(Utils.PathCombine(baseDirectory, Directory), IncludeMask))
+            foreach (string file in IO.Directory.GetFiles(rootDirPath, IncludeMask))
             {
                 bool ignore = false;
                 foreach (Compiler.Wildcard wildcard in excludeWildcards)
@@ -208,9 +212,8 @@ namespace WixSharp
 
                 if (!ignore && Filter(file))
                 {
-                    var filePath = IO.Path.GetFullPath(file).MakeRelative(baseDirectory);
+                    var filePath = IO.Path.GetFullPath(file);
 
-                    //Debug.WriteLine(filePath);
                     if (Feature != null)
                         files.Add(new File(Feature, filePath));
                     else

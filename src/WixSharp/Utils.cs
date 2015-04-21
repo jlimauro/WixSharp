@@ -79,7 +79,8 @@ namespace WixSharp
             while (++commonElementsLength < Math.Min(absParts.Length, relParts.Length));
 
             if (commonElementsLength == 0)
-                throw new ArgumentException("The two paths don't have common root.");
+                //throw new ArgumentException("The two paths don't have common root.");
+                return IO.Path.GetFullPath(filePath);
 
             var result = relParts.Skip(commonElementsLength)
                                  .Select(x => "..")

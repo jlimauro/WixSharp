@@ -187,14 +187,22 @@ namespace WixSharp
         /// which are not matching any <see cref="Files.ExcludeMasks"/>.
         /// </summary>
         /// <param name="baseDirectory">The base directory for file analysis. It is used in conjunction with
-        /// relative <see cref="DirFiles.Directory"/>.</param>
+        /// relative <see cref="Files.Directory"/>. Though <see cref="Files.Directory"/> takes precedence if it is an absolute path.</param>
         /// <returns>Array of <see cref="WixEntity"/> instances, which are either <see cref="File"/> or/and <see cref="Dir"/> objects.</returns>
         public WixEntity[] GetAllItems(string baseDirectory)
         {
+            if (IO.Path.IsPathRooted(Directory))
+                baseDirectory = Directory; 
             if (baseDirectory.IsEmpty())
                 baseDirectory = Environment.CurrentDirectory;
 
             baseDirectory = IO.Path.GetFullPath(baseDirectory);
+
+            string rootDirPath;
+            if (IO.Path.IsPathRooted(Directory))
+                rootDirPath = Directory;
+            else
+                rootDirPath = Utils.PathCombine(baseDirectory, Directory);
 
             Action<Dir, string> AgregateSubDirs = null;
             AgregateSubDirs = delegate(Dir parentDir, string dirPath)
@@ -202,13 +210,11 @@ namespace WixSharp
                                     foreach (var subDirPath in IO.Directory.GetDirectories(dirPath))
                                     {
                                         var dirName = IO.Path.GetFileName(subDirPath);
-                                        var subDir = new Dir(this.Feature, dirName, new DirFiles
-                                                                      { 
+                                        var subDir = new Dir(this.Feature, dirName, new DirFiles(IO.Path.Combine(subDirPath, this.IncludeMask))
+                                                                      {
                                                                           Feature = this.Feature,
-                                                                          Directory = ToRelativePath(subDirPath, baseDirectory),
-                                                                          IncludeMask = this.IncludeMask,
-                                                                          ExcludeMasks = this.ExcludeMasks, 
-                                                                          Filter = this.Filter 
+                                                                          ExcludeMasks = this.ExcludeMasks,
+                                                                          Filter = this.Filter
                                                                       });
                                         AgregateSubDirs(subDir, subDirPath);
 
@@ -216,19 +222,18 @@ namespace WixSharp
                                     }
                                 };
 
+
             var items = new List<WixEntity> 
             {
-                new DirFiles 
+                new DirFiles(IO.Path.Combine(rootDirPath, this.IncludeMask)) 
                 {
                     Feature=this.Feature, 
-                    Directory = this.Directory,
-                    IncludeMask = this.IncludeMask,
                     ExcludeMasks = this.ExcludeMasks, 
                     Filter = this.Filter 
                 }
             };
 
-            string rootDirPath = Utils.PathCombine(baseDirectory, Directory);
+
 
             if (!IO.Directory.Exists(rootDirPath))
                 throw new IO.DirectoryNotFoundException(rootDirPath);
@@ -236,12 +241,10 @@ namespace WixSharp
             foreach (var subDirPath in System.IO.Directory.GetDirectories(rootDirPath))
             {
                 var dirName = IO.Path.GetFileName(subDirPath);
-                var subDir = new Dir(this.Feature, dirName, new DirFiles 
-                                              { 
-                                                  Feature=this.Feature, 
-                                                  Directory = ToRelativePath(subDirPath, baseDirectory) ,
-                                                  IncludeMask = this.IncludeMask,
-                                                  ExcludeMasks = this.ExcludeMasks, 
+                var subDir = new Dir(this.Feature, dirName, new DirFiles(IO.Path.Combine(subDirPath, this.IncludeMask))
+                                              {
+                                                  Feature = this.Feature,
+                                                  ExcludeMasks = this.ExcludeMasks,
                                                   Filter = this.Filter
                                               });
                 AgregateSubDirs(subDir, subDirPath);
@@ -250,48 +253,6 @@ namespace WixSharp
             }
 
             return items.ToArray();
-        }
-
-        static internal string ToRelativePath(string filePath, string baseDirPath)
-        {
-            string path = filePath;
-            string baseDir = baseDirPath;
-
-            if (baseDirPath.Length == 0)
-            {
-                return filePath;
-            }
-
-            if (baseDir[baseDir.Length - 1] == IO.Path.DirectorySeparatorChar)
-                baseDir = baseDir.Substring(0, baseDir.Length - 1);
-
-            var relativeDir = IO.Path.GetDirectoryName(path).Substring(baseDir.Length);
-
-            if (!string.IsNullOrEmpty(relativeDir))
-                if (relativeDir[0] == IO.Path.DirectorySeparatorChar)
-                    relativeDir = relativeDir.Substring(1);
-
-            return Utils.PathCombine(relativeDir, IO.Path.GetFileName(path));
-        }
-
-        static void Test(string[] args)
-        {
-            var ttt = ToRelativePath(@"C:\tt\gg\yy\x", @"C:\tt\gg\yy\");
-            //ttt = ToRelativePath(@"C:\tt\gg\yy\test.txt", @"C:\tt\gg\yy\test.txt");
-            ttt = ToRelativePath(@"C:\tt\gg\yy\test.txt", @"C:\tt\gg\yy");
-            ttt = ToRelativePath(@"C:\tt\gg\yy\test.txt", @"C:\tt\");
-            ttt = ToRelativePath(@"C:\tt\gg\yy\test.txt", @"C:\tt");
-            ttt = ToRelativePath(@"C:\tt\gg\yy\test.txt", @"C:\");
-            ttt = ToRelativePath(@"C:\tt\gg\yy\test.txt", @"C:");
-            ttt = ToRelativePath(@"C:\tt\gg\yy\test.txt", @"");
-            ttt = ToRelativePath(@"gg\yy\test.txt", @"gg\yy\");
-            ttt = ToRelativePath(@"gg\yy\test.txt", @"gg\yy");
-            ttt = ToRelativePath(@"gg\yy\test.txt", @"gg\");
-            ttt = ToRelativePath(@"gg\yy\test.txt", @"gg");
-            ttt = ToRelativePath(@"\\gg\yy\test.txt", @"\\gg\yy\");
-            ttt = ToRelativePath(@"\\gg\yy\test.txt", @"\\gg\yy");
-            ttt = ToRelativePath(@"\\gg\yy\test.txt", @"\\gg\");
-            ttt = ToRelativePath(@"\\gg\yy\test.txt", @"\\gg");
         }
     }
 }
