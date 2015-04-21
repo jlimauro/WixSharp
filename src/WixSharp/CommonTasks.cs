@@ -336,7 +336,7 @@ namespace WixSharp.CommonTasks
                 throw new ApplicationException("Project.CustomUI is already initialized. Ensure InjectClrDialog is invoked before any adjustments made to CustomUI.");
 
             project.CustomUI = new CommomDialogsUI();
-            project.Actions = project.Actions.Add(showClrDialog);
+            project.Actions = project.Actions.Add<Action>(showClrDialog);
 
             //disconnect prev and next dialogs
             project.CustomUI.UISequence.RemoveAll(x => (x.Dialog == prevDialog && x.Control == Buttons.Next) ||
@@ -394,7 +394,7 @@ namespace WixSharp.CommonTasks
             string message = errorMessage ?? "Please install .NET " + version + " first.";
 
             project.LaunchConditions.Add(new LaunchCondition("REQUIRED_NET=\"#1\"", message));
-            project.Properties = project.Properties.Add(new RegValueProperty("REQUIRED_NET",
+            project.Properties = project.Properties.Add<Property>(new RegValueProperty("REQUIRED_NET",
                                                                                 RegistryHive.LocalMachine,
                                                                                 @"Software\Microsoft\NET Framework Setup\NDP\" + version,
                                                                                 "Install", "0"));
