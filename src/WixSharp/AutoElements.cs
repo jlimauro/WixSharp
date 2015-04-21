@@ -76,7 +76,7 @@ namespace WixSharp
                                new XAttribute("On", when)));
         }
 
-        static void InsertCreateFolder(XElement xDir, XElement xComponent)
+        static void InsertCreateFolder(XElement xComponent)
         {
             //"Empty Directories" sample demonstrates the need for CreateFolder
             if (!DisableAutoCreateFolder)
@@ -340,15 +340,29 @@ namespace WixSharp
             {
                 var dirComponents = xDir.Elements("Component");
 
+                if (dirComponents.Any())
+                {
+                    bool thereAreFiles = dirComponents.Where(x => x.ContainsFiles()).Any();
+
+                    if (!thereAreFiles)
+                    {
+                        var firstComp = dirComponents.First();
+                        if (xDir.Attribute("Name").Value != "DummyDir")
+                            InsertCreateFolder(firstComp);
+                        else if (!xDir.ContainsAnyRemoveFolder())
+                            InsertRemoveFolder(xDir, firstComp, "both"); //to keep WiX/compiler happy and allow removal of the dummy directory
+                    }
+                }
+
                 foreach (XElement xComp in dirComponents)
                 {
-                    if (!xComp.ContainsFiles())
-                    {
-                        if (xDir.Attribute("Name").Value != "DummyDir")
-                            InsertCreateFolder(xDir, xComp);
-                        else if (!xDir.ContainsAnyRemoveFolder())
-                            InsertRemoveFolder(xDir, xComp, "both"); //to keep WiX/compiler happy and allow removal of the dummy directory
-                    }
+                    //if (!xComp.ContainsFiles())
+                    //{
+                    //    if (xDir.Attribute("Name").Value != "DummyDir")
+                    //        InsertCreateFolder(xDir, xComp);
+                    //    else if (!xDir.ContainsAnyRemoveFolder())
+                    //        InsertRemoveFolder(xDir, xComp, "both"); //to keep WiX/compiler happy and allow removal of the dummy directory
+                    //}
 
                     if (xDir.InUserProfile())
                     {
