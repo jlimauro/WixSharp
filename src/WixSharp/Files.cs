@@ -218,7 +218,7 @@ namespace WixSharp
                                                                       });
                                         AgregateSubDirs(subDir, subDirPath);
 
-                                        parentDir.Dirs = parentDir.Dirs.Add<Dir>(subDir);
+                                        parentDir.Dirs = parentDir.Dirs.Add(subDir);
                                     }
                                 };
 

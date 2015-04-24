@@ -459,7 +459,6 @@ namespace WixSharp
             On(Dialogs.CustomizeDlg, Buttons.Back, new ShowDialog(Dialogs.InstallDirDlg));
             On(Dialogs.CustomizeDlg, Buttons.Next, new ShowDialog(Dialogs.VerifyReadyDlg));
 
-
             On(Dialogs.VerifyReadyDlg, Buttons.Back, new ShowDialog(Dialogs.InstallDirDlg, Condition.NOT_Installed),
                                                      new ShowDialog(Dialogs.MaintenanceTypeDlg, Condition.Installed));
 

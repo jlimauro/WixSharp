@@ -718,11 +718,11 @@ namespace WixSharp
         /// <summary>
         /// Adds/combines given <see cref="T:System.Array"/> object with the specified item.
         /// </summary>
-        /// <typeparam name="T">The type of the elements of <c>obj</c>.</typeparam>
+        /// <typeparam name="T1">The type of the elements of <c>obj</c>.</typeparam>
         /// <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
         /// <param name="item">The item to be added.</param>
         /// <returns>Combined <see cref="T:System.Array"/> object.</returns>
-        public static T[] Add<T>(this Array obj, T item)
+        public static T1[] Add<T1, T2>(this T1[] obj, T2 item) where T2: T1
         {
             if (item != null)
             {
@@ -734,9 +734,9 @@ namespace WixSharp
 
                 retval.Add(item);
 
-                return (T[])retval.ToArray(typeof(T));
+                return (T1[])retval.ToArray(typeof(T1));
             }
-            return (T[])obj;
+            return (T1[])obj;
         }
 
         /// <summary>
@@ -746,12 +746,12 @@ namespace WixSharp
         /// <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
         /// <param name="items">The items to be added.</param>
         /// <returns>Combined <see cref="T:System.Array"/> object.</returns>
-        public static T[] AddRange<T>(this Array obj, IEnumerable<T> items)
+        public static T1[] AddRange<T1, T2>(this T1[] obj, IEnumerable<T2> items)
         {
             if (items != null)
             {
                 var retval = new ArrayList();
-
+                
                 if (obj != null)
                     foreach (var i in obj)
                         retval.Add(i);
@@ -760,9 +760,9 @@ namespace WixSharp
                     foreach (var i in items)
                         retval.Add(i);
 
-                return (T[])retval.ToArray(typeof(T));
+                return (T1[])retval.ToArray(typeof(T1));
             }
-            return (T[])obj;
+            return (T1[])obj;
         }
         /// <summary>
         /// Combines given <see cref="T:System.Collections.Generic.List"/> items with items of another <see cref="T:System.Collections.Generic.List"/>.

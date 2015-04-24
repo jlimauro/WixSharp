@@ -1770,16 +1770,16 @@
             <param name="items">Another instance of <see cref="T:System.Array"/> whose elements to combine with <c>obj</c>.</param>
             <returns>A combined <see cref="T:System.Array"/>.</returns>
         </member>
-        <member name="M:WixSharp.Extensions.Add``1(System.Array,``0)">
+        <member name="M:WixSharp.Extensions.Add``2(``0[],``1)">
             <summary>
             Adds/combines given <see cref="T:System.Array"/> object with the specified item.
             </summary>
-            <typeparam name="T">The type of the elements of <c>obj</c>.</typeparam>
+            <typeparam name="T1">The type of the elements of <c>obj</c>.</typeparam>
             <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
             <param name="item">The item to be added.</param>
             <returns>Combined <see cref="T:System.Array"/> object.</returns>
         </member>
-        <member name="M:WixSharp.Extensions.AddRange``1(System.Array,System.Collections.Generic.IEnumerable{``0})">
+        <member name="M:WixSharp.Extensions.AddRange``2(``0[],System.Collections.Generic.IEnumerable{``1})">
             <summary>
             Adds/combines given <see cref="T:System.Array"/> object with the specified items.
             </summary>

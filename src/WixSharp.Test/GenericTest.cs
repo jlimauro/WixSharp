@@ -22,6 +22,16 @@ namespace WixSharp.Test
         }
 
         [Fact]
+        public void ArrayExtensions()
+        {
+            var project = new Project();
+            project.Actions = new Action[] { new ManagedAction() };
+            //should not throw
+            project.Actions = project.Actions.Add(new InstalledFileAction("", ""));
+            project.Actions = project.Actions.AddRange(project.Actions);
+        }
+
+        [Fact]
         public void Test()
         {
             Compiler.GuidGenerator = GuidGenerators.Default;
@@ -35,13 +45,13 @@ namespace WixSharp.Test
         {
             var itemsA = new[] { "a", "b" };
             var itemsC = new[] { "b", "c" };
-            var itemsB = new List<string>(new [] { "a", "b" });
-            
+            var itemsB = new List<string>(new[] { "a", "b" });
+
             Assert.Equal(itemsB.GetItemsHashCode(), itemsA.GetItemsHashCode());
             Assert.NotEqual(itemsC.GetItemsHashCode(), itemsA.GetItemsHashCode());
             Assert.NotEqual(new[] { "a" }.GetItemsHashCode(), itemsA.GetItemsHashCode());
         }
-       
+
         [Fact]
         public void Should_Combine_Sequences()
         {
@@ -50,7 +60,7 @@ namespace WixSharp.Test
 
             var result1 = s1 + s2;
             Assert.Equal("InstallUISequence|InstallExecuteSequence", result1.ToString());
-            
+
             var result2 = s1 | s2;
             Assert.Equal("InstallUISequence|InstallExecuteSequence", result2.ToString());
         }
