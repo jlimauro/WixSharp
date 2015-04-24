@@ -280,6 +280,9 @@ namespace WixSharp
         /// </summary>
         static public bool PreserveTempFiles = false;
 
+        /// <summary>
+        /// Indicates whether compiler should emit relative or absolute paths in the WiX XML source.
+        /// </summary>
         static public bool EmitRelativePaths = true; 
 
         /// <summary>

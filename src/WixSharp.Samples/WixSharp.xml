@@ -3764,6 +3764,11 @@
             value is ignored and all temporary files are preserved.</para>
             </summary>
         </member>
+        <member name="F:WixSharp.Compiler.EmitRelativePaths">
+            <summary>
+            Indicates whether compiler should emit relative or absolute paths in the WiX XML source.
+            </summary>
+        </member>
         <member name="M:WixSharp.Compiler.BuildMsi(WixSharp.Project)">
             <summary>
             Builds the MSI file from the specified <see cref="T:WixSharp.Project"/> instance.

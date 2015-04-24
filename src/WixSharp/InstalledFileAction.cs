@@ -75,6 +75,7 @@ namespace WixSharp
             Key = key;
             Args = args;
             Name = "Action" + (++count) + "_" + key;
+            Step = Step.InstallExecute;
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="InstalledFileAction"/> class with properties/fields initialized with specified parameters.
@@ -88,6 +89,7 @@ namespace WixSharp
             Key = key; 
             Args = args;
             Name = "Action" + (++count) + "_" + key;
+            Step = Step.InstallExecute; 
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="InstalledFileAction"/> class with properties/fields initialized with specified parameters.

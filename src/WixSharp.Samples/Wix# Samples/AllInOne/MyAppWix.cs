@@ -40,8 +40,8 @@ class Script
                     new RegValue(binaries, RegistryHive.LocalMachine, @"Software\My Product", "ExePath", @"[INSTALLDIR]MyApp.exe"),
 
                     //Custom Actions
-                    new InstalledFileAction("Registrator.exe", "", Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed),
-                    new InstalledFileAction("Registrator.exe", "/u", Return.check, When.Before, Step.InstallFinalize, Condition.Installed),
+                    new InstalledFileAction("Registrator.exe", "", Return.check, When.After, Step.InstallExecute, Condition.NOT_Installed),
+                    new InstalledFileAction("Registrator.exe", "/u", Return.check, When.Before, Step.InstallExecute, Condition.Installed),
 
                     new ScriptAction(@"MsgBox ""Executing VBScript code...""", Return.ignore, When.After, Step.InstallFinalize, Condition.NOT_Installed),
 

@@ -26,6 +26,7 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -98,13 +99,26 @@ namespace WixSharp
                                          //RefAsmHashes = g.Select(action => action.GetRefAssembliesHashCode(project.DefaultRefAssemblies)).ToArray(), //enable if needed for troubleshooting
                                          IsInconsistent = g.Select(action => action.GetRefAssembliesHashCode(project.DefaultRefAssemblies)).Distinct().Count() > 1,
                                      })
-                                     .Where(x=>x.IsInconsistent)
+                                     .Where(x => x.IsInconsistent)
                                      .FirstOrDefault();
 
             if (incosnistentRefAsmActions != null)
-                throw new ApplicationException(string.Format("ManagedAction assembly '{0}' is declared multiple times with the different (inconsistent) set of referenced assemblies. "+
-                                                             "Ensure that all declarations have the same referenced assemblies by either using identical declarations or by using "+
+                throw new ApplicationException(string.Format("ManagedAction assembly '{0}' is declared multiple times with the different (inconsistent) set of referenced assemblies. " +
+                                                             "Ensure that all declarations have the same referenced assemblies by either using identical declarations or by using " +
                                                              "Project.DefaultRefAssemblies.", incosnistentRefAsmActions.Assembly));
+
+            var incosnistentInstalledFileActions = project.Actions
+                                                          .OfType<InstalledFileAction>()
+                                                          .Where(x => x.When != When.After || x.Step != Step.InstallExecute)
+                                                          .Any();
+            if (incosnistentInstalledFileActions)
+                try
+                {
+                    Debug.WriteLine("Warning: InstalledFileAction should be scheduled for after InstallExecute. Otherwise it may produce undesired side effects.");
+                    Console.WriteLine("Warning: InstalledFileAction should be scheduled for after InstallExecute. Otherwise it may produce undesired side effects.");
+                }
+                catch { }
+
         }
     }
 }
