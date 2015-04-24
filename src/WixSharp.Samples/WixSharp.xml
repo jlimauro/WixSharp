@@ -1305,6 +1305,11 @@
             Defines values (names) for the standard WiX dialogs. 
             </summary>
         </member>
+        <member name="F:WixSharp.Dialogs.CustomizeDlg">
+            <summary>
+            The customize features dialog
+            </summary>
+        </member>
         <member name="T:WixSharp.Buttons">
             <summary>
             Defines values (names) for the WiX custom UI predefined buttons. 

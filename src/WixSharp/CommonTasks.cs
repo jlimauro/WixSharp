@@ -330,12 +330,52 @@ namespace WixSharp.CommonTasks
                 RefAssemblies = new[] { wixSharpAsm, wixSharpUIAsm }
             };
 
-            project.UI = WUI.WixUI_Common;
+            //Must use WixUI_Common as other UI type has predefined dialogs already linked between each other and WiX does not allow overriding events
+            //http://stackoverflow.com/questions/16961493/override-publish-within-uiref-in-wix
+            project.UI = WUI.WixUI_Common; 
 
             if (project.CustomUI != null)
                 throw new ApplicationException("Project.CustomUI is already initialized. Ensure InjectClrDialog is invoked before any adjustments made to CustomUI.");
 
             project.CustomUI = new CommomDialogsUI();
+            project.Actions = project.Actions.Add<Action>(showClrDialog);
+
+            //disconnect prev and next dialogs
+            project.CustomUI.UISequence.ForEach(x =>
+                                        {
+                                            if ((x.Dialog == prevDialog && x.Control == Buttons.Next) || (x.Dialog == nextDialog && x.Control == Buttons.Back))
+                                                x.Actions.RemoveAll(a => a is ShowDialog);
+                                        });
+            project.CustomUI.UISequence.RemoveAll(x => x.Actions.Count == 0);
+
+            //create new dialogs connection with showAction in between
+            project.CustomUI.On(prevDialog, Buttons.Next, new ExecuteCustomAction(showClrDialog))
+                            .On(prevDialog, Buttons.Next, new ShowDialog(nextDialog, Condition.ClrDialog_NextPressed))
+                            .On(prevDialog, Buttons.Next, new CloseDialog("Exit", Condition.ClrDialog_CancelPressed) { Order = 2 })
+
+                            .On(nextDialog, Buttons.Back, new ExecuteCustomAction(showClrDialog))
+                            .On(nextDialog, Buttons.Back, new ShowDialog(prevDialog, Condition.ClrDialog_BackPressed));
+
+            return project;
+        }
+
+        static public Project InjectClrDialogInFeatureTreeUI(this Project project, string showDialogMethod, string prevDialog, string nextDialog)
+        {
+            string wixSharpAsm = typeof(Project).Assembly.Location;
+            string wixSharpUIAsm = IO.Path.ChangeExtension(wixSharpAsm, ".UI.dll");
+
+            var showClrDialog = new ManagedAction(showDialogMethod)
+            {
+                Sequence = Sequence.NotInSequence,
+                RefAssemblies = new[] { wixSharpAsm, wixSharpUIAsm }
+            };
+
+            project.UI = WUI.WixUI_FeatureTree;
+
+            if (project.CustomUI != null)
+                throw new ApplicationException("Project.CustomUI is already initialized. Ensure InjectClrDialog is invoked before any adjustments made to CustomUI.");
+
+            project.CustomUI = new DialogSequence();
             project.Actions = project.Actions.Add<Action>(showClrDialog);
 
             //disconnect prev and next dialogs

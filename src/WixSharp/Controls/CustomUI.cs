@@ -443,21 +443,22 @@ namespace WixSharp
         /// </summary>
         public CommomDialogsUI()
         {
-            On(Dialogs.ExitDialog, Buttons.Finish, new CloseDialog() { Order = 9999 });
-
             On(Dialogs.WelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.LicenseAgreementDlg));
 
             On(Dialogs.LicenseAgreementDlg, Buttons.Back, new ShowDialog(Dialogs.WelcomeDlg));
             On(Dialogs.LicenseAgreementDlg, Buttons.Next, new ShowDialog(Dialogs.InstallDirDlg));
 
             On(Dialogs.InstallDirDlg, Buttons.Back, new ShowDialog(Dialogs.LicenseAgreementDlg));
-
             On(Dialogs.InstallDirDlg, Buttons.Next, new SetTargetPath(),
-                                                    new ShowDialog(Dialogs.VerifyReadyDlg));
+                                                    new ShowDialog(Dialogs.CustomizeDlg));
 
             On(Dialogs.InstallDirDlg, Buttons.ChangeFolder,
                                                     new SetProperty("_BrowseProperty", "[WIXUI_INSTALLDIR]"),
                                                     new SpawnDialog(CommonDialogs.BrowseDlg));
+
+            On(Dialogs.CustomizeDlg, Buttons.Back, new ShowDialog(Dialogs.InstallDirDlg));
+            On(Dialogs.CustomizeDlg, Buttons.Next, new ShowDialog(Dialogs.VerifyReadyDlg));
+
 
             On(Dialogs.VerifyReadyDlg, Buttons.Back, new ShowDialog(Dialogs.InstallDirDlg, Condition.NOT_Installed),
                                                      new ShowDialog(Dialogs.MaintenanceTypeDlg, Condition.Installed));
@@ -467,6 +468,8 @@ namespace WixSharp
             On(Dialogs.MaintenanceTypeDlg, Buttons.Back, new ShowDialog(Dialogs.MaintenanceWelcomeDlg));
             On(Dialogs.MaintenanceTypeDlg, Buttons.Repair, new ShowDialog(Dialogs.VerifyReadyDlg));
             On(Dialogs.MaintenanceTypeDlg, Buttons.Remove, new ShowDialog(Dialogs.VerifyReadyDlg));
+
+            On(Dialogs.ExitDialog, Buttons.Finish, new CloseDialog() { Order = 9999 });
         }
     }
 
@@ -503,13 +506,20 @@ namespace WixSharp
     public class Dialogs
     {
 #pragma warning disable 1591
-        public const string ExitDialog = "ExitDialog";
+
         public const string WelcomeDlg = "WelcomeDlg";
         public const string LicenseAgreementDlg = "LicenseAgreementDlg";
         public const string InstallDirDlg = "InstallDirDlg";
+        /// <summary>
+        /// The customize features dialog
+        /// </summary>
+        public const string CustomizeDlg = "CustomizeDlg";
         public const string VerifyReadyDlg = "VerifyReadyDlg";
         public const string MaintenanceWelcomeDlg = "MaintenanceWelcomeDlg";
         public const string MaintenanceTypeDlg = "MaintenanceTypeDlg";
+
+        public const string ExitDialog = "ExitDialog";
+        public const string DiskCostDlg = "DiskCostDlg";
 #pragma warning restore 1591
     }
 
