@@ -12,7 +12,7 @@ class Script
                 new Dir(@"%ProgramFiles%\My Company\My Product",
                     new File("readme.txt"))                   );
 
-        project.UI = WUI.WixUI_InstallDir;
+        project.UI = WUI.WixUI_Minimal;
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
         
         project.ControlPanelInfo.Comments = "Simple test msi";
@@ -23,6 +23,7 @@ class Script
         project.ControlPanelInfo.UrlUpdateInfo = "https://wixsharp.codeplex.com/update";
         project.ControlPanelInfo.ProductIcon = "app_icon.ico";
         project.ControlPanelInfo.Contact = "Product owner";
+        project.ControlPanelInfo.Manufacturer = "My Company";
         project.ControlPanelInfo.InstallLocation = "[INSTALLDIR]";
         project.ControlPanelInfo.NoModify = true;
         //project.ControlPanelInfo.NoRepair = true,

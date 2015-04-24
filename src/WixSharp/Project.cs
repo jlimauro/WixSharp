@@ -136,6 +136,7 @@ namespace WixSharp
         /// <summary>
         /// Product manufacturer name
         /// </summary>
+        [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).")]
         public string Manufacturer = Environment.UserName;
 
         /// <summary>

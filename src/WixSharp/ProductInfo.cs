@@ -22,6 +22,7 @@ namespace WixSharp
     /// project.ControlPanelInfo.UrlUpdateInfo = "https://wixsharp.codeplex.com/update";
     /// project.ControlPanelInfo.ProductIcon = "app_icon.ico";
     /// project.ControlPanelInfo.Contact = "Product owner";
+    /// project.ControlPanelInfo.Manufacturer = "My Company";
     /// project.ControlPanelInfo.InstallLocation = "[INSTALLDIR]";        
     /// project.ControlPanelInfo.NoModify = true;
     /// project.ControlPanelInfo.NoRepair = true,
@@ -44,6 +45,10 @@ namespace WixSharp
         /// </summary>
         [ArpPropertyAttribute("ARPCONTACT")]
         public string Contact { get; set; }
+        /// <summary>
+        /// Product manufacturer name
+        /// </summary>
+        public string Manufacturer = Environment.UserName;
         /// <summary>
         /// Fully qualified path to the application's primary folder. 
         /// </summary>

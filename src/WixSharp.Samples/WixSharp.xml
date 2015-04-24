@@ -3539,6 +3539,7 @@
             project.ControlPanelInfo.UrlUpdateInfo = "https://wixsharp.codeplex.com/update";
             project.ControlPanelInfo.ProductIcon = "app_icon.ico";
             project.ControlPanelInfo.Contact = "Product owner";
+            project.ControlPanelInfo.Manufacturer = "My Company";
             project.ControlPanelInfo.InstallLocation = "[INSTALLDIR]";        
             project.ControlPanelInfo.NoModify = true;
             project.ControlPanelInfo.NoRepair = true,
@@ -3548,6 +3549,11 @@
             Compiler.BuildMsi(project);
             </code>
             </example>
+            </summary>
+        </member>
+        <member name="F:WixSharp.ProductInfo.Manufacturer">
+            <summary>
+            Product manufacturer name
             </summary>
         </member>
         <member name="P:WixSharp.ProductInfo.Comments">

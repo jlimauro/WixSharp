@@ -898,21 +898,20 @@ namespace WixSharp
                          new XAttribute("Language", new CultureInfo(project.Language).LCID),
                          new XAttribute("Codepage", project.Codepage),
                          new XAttribute("Version", project.Version),
-                         new XAttribute("Manufacturer", project.Manufacturer),
                          new XAttribute("UpgradeCode", project.UpgradeCode));
+            
+            if(project.ControlPanelInfo != null && project.ControlPanelInfo.Manufacturer.IsNotEmpty() )
+                product.SetAttribute("Manufacturer", project.ControlPanelInfo.Manufacturer);
             product.AddAttributes(project.Attributes);
 
             XElement package = product.Select("Package");
 
-            if (!project.Comments.IsEmpty())
-                package.SetAttributeValue("Comments", project.Comments);
             if (!project.Description.IsEmpty())
                 package.SetAttributeValue("Description", project.Description);
             if (project.Platform.HasValue)
                 package.SetAttributeValue("Platform", project.Platform.Value);
 
             package.SetAttributeValue("SummaryCodepage", project.Codepage);
-            package.SetAttributeValue("Manufacturer", project.Manufacturer);
             package.SetAttributeValue("Languages", new CultureInfo(project.Language).LCID);
             package.AddAttributes(project.Package.Attributes);
 
