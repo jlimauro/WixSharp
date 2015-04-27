@@ -6,6 +6,7 @@ using System;
 using System.Windows.Forms;
 using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
+using WixSharp.CommonTasks;
 
 class Script
 {
@@ -15,12 +16,12 @@ class Script
         {
             UI = WUI.WixUI_ProgressOnly,
             Name = "PropertiesTest",
-    
-            Dirs = new[] { new Dir(@"%ProgramFiles%\PropertiesTest") }, 
- 
+
+            Dirs = new[] { new Dir(@"%ProgramFiles%\PropertiesTest") },
+
             Actions = new WixSharp.Action[] 
             { 
-                new ManagedAction(@"ShowGritting"), 
+                new ManagedAction("ShowGritting"), 
                 new QtCmdLineAction("notepad.exe", "[NOTEPAD_FILE]"),
             },
 
@@ -50,7 +51,7 @@ public class CustonActions
             //accessing property with Session object
             MessageBox.Show(message, session["Title"]);
 
-            MessageBox.Show("The product is installed in: "+session["INSTALLDIR"], session["Title"]);
+            MessageBox.Show("The product is installed in: " + session["INSTALLDIR"], session["Title"]);
         }
         catch (Exception e)
         {

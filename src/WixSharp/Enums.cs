@@ -260,6 +260,23 @@ namespace WixSharp
         Before
     }
 
+
+    /// <summary>
+    /// Use this enum to specify the installation scope of this package: per-machine or per-user.
+    /// The enum values are mapped to the WiX InstallScope attribute of the Package element.  
+    /// </summary>
+    public enum InstallScope
+    {
+        /// <summary>
+        /// Set this value to declare that the package is a per-machine installation and requires elevated privileges to install. Sets the ALLUSERS property to 1.
+        /// </summary>
+        perMachine,
+        /// <summary>
+        /// Set this value to declare that the package is a per-user installation and does not require elevated privileges to install. Sets the package's InstallPrivileges attribute to "limited."
+        /// </summary>
+        perUser
+    }
+
     /// <summary>
     /// Sets the default script language (<see cref="IISVirtualDir.DefaultScript"/>) for the Web site.
     /// </summary>

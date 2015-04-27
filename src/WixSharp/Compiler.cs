@@ -874,11 +874,14 @@ namespace WixSharp
         /// <returns>Instance of XDocument class representing in-memory WiX XML source file.</returns>
         public static XDocument GenerateWixProj(Project project)
         {
+            project.Preprocess();
+
             ProjectValidator.Validate(project);
 
             project.ControlPanelInfo.AddMembersTo(project);
 
             project.AutoAssignedInstallDirPath = "";
+
             project.GenerateProductGuids();
             ResetCachedContent();
 
@@ -909,15 +912,17 @@ namespace WixSharp
 
             XElement package = product.Select("Package");
 
-            if (!project.Description.IsEmpty())
-                package.SetAttributeValue("Description", project.Description);
-            if (project.Platform.HasValue)
-                package.SetAttributeValue("Platform", project.Platform.Value);
+            package.SetAttribute("Description", project.Description)
+                   .SetAttribute("Platform", project.Platform)
+                   .SetAttribute("SummaryCodepage", project.Codepage)
+                   .SetAttribute("Languages", new CultureInfo(project.Language).LCID)
+                   .SetAttribute("InstallScope", project.InstallScope);
 
-            package.SetAttributeValue("SummaryCodepage", project.Codepage);
-            package.SetAttributeValue("Languages", new CultureInfo(project.Language).LCID);
+            if(project.EmitConsistentPackageId)
+                package.CopyAttributeFrom(product, "Id");
+
             package.AddAttributes(project.Package.Attributes);
-
+            
             product.Select("Media").AddAttributes(project.Media.Attributes);
 
             ProcessLaunchConditions(project, product);

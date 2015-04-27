@@ -147,9 +147,12 @@ namespace WixSharp
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public static XElement SetAttribute(this XElement obj, string name, string value)
+        public static XElement SetAttribute(this XElement obj, string name, object value)
         {
-            obj.SetAttributeValue(name, value);
+            if (value is string && (value as string).IsEmpty())
+                obj.SetAttributeValue(name, null);
+            else
+                obj.SetAttributeValue(name, value);
             return obj;
         }
         /// <summary>
@@ -722,7 +725,7 @@ namespace WixSharp
         /// <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
         /// <param name="item">The item to be added.</param>
         /// <returns>Combined <see cref="T:System.Array"/> object.</returns>
-        public static T1[] Add<T1, T2>(this T1[] obj, T2 item) where T2: T1
+        public static T1[] Add<T1, T2>(this T1[] obj, T2 item) where T2 : T1
         {
             if (item != null)
             {
@@ -751,7 +754,7 @@ namespace WixSharp
             if (items != null)
             {
                 var retval = new ArrayList();
-                
+
                 if (obj != null)
                     foreach (var i in obj)
                         retval.Add(i);

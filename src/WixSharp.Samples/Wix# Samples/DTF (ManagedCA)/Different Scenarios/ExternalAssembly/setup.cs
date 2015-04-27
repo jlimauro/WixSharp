@@ -18,7 +18,7 @@ class Script
 
             Actions = new[]
             {
-                new ManagedAction(@"CustomAction", "CustomAction.dll")
+                new ManagedAction("CustomAction", "CustomAction.dll")
                 {
                     RefAssemblies = new []{"DispalyMessage.dll"}
                 },

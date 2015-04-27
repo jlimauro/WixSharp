@@ -344,7 +344,7 @@ namespace WixSharp
         /// The default properties mapped for use with the deferred custom actions. See <see cref="ManagedAction.UsesProperties"/> for the details.
         /// <para>The default value is "INSTALLDIR,UILevel"</para>
         /// </summary>
-        public string DefaultUsesProperties = "INSTALLDIR,UILevel";
+        public static string DefaultUsesProperties = "INSTALLDIR,UILevel";
 
         internal string ExpandAllUsedProperties()
         {

@@ -18,8 +18,8 @@ class Script
 
             Actions = new[]
             {
-                new ManagedAction(@"MyAction", "%this%")
-            } 
+                new ManagedAction("MyAction", "%this%")
+            }
         };
 
         Compiler.BuildMsi(project);
@@ -35,6 +35,11 @@ public class CustomActions
 #if DEBUG
         System.Diagnostics.Debugger.Launch();
 #endif
+        try
+        {
+            var ttt = session["ALLUSERS"];
+        }
+        catch { }
         session.Log("Begin CustomAction2 Hello World");
 
         return ActionResult.Success;

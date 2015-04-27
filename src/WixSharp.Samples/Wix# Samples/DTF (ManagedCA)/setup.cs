@@ -11,10 +11,10 @@ class Script
 {
     static public void Main(string[] args)
     {
-        var project = new Project("CustomActionTest",
-                new ManagedAction(@"MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed));
+var project = new Project("CustomActionTest",
+        new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed));
 
-        Compiler.BuildMsi(project);
+Compiler.BuildMsi(project);
     }
 }
 

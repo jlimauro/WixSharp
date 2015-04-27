@@ -264,6 +264,42 @@ namespace WixSharp.CommonTasks
             return project;
         }
 
+        static public Project AddPropery(this Project project, params Property[] items)
+        {
+            project.Properties = project.Properties.AddRange(items);
+            return project;
+        }
+
+        static public Project AddAction(this Project project, params Action[] items)
+        {
+            project.Actions = project.Actions.AddRange(items);
+            return project;
+        }
+        
+        static public Project AddDir(this Project project, params Dir[] items)
+        {
+            project.Dirs = project.Dirs.AddRange(items);
+            return project;
+        }
+
+        static public Project AddRegValue(this Project project, params RegValue[] items)
+        {
+            project.RegValues = project.RegValues.AddRange(items);
+            return project;
+        }
+
+        static public Project AddBinarie(this Project project, params Binary[] items)
+        {
+            project.Binaries = project.Binaries.AddRange(items);
+            return project;
+        }
+
+        static public Project AddEnvironmentVariable(this Project project, params EnvironmentVariable[] items)
+        {
+            project.EnvironmentVariables = project.EnvironmentVariables.AddRange(items);
+            return project;
+        }
+
         /// <summary>
         /// Removes the dialogs between specified two dialogs. It simply connects 'next' button of the start dialog with the 
         /// 'NewDialog' action associated with the end dialog. And vise versa for the 'back' button.
@@ -359,7 +395,8 @@ namespace WixSharp.CommonTasks
             return project;
         }
 
-        static public Project InjectClrDialogInFeatureTreeUI(this Project project, string showDialogMethod, string prevDialog, string nextDialog)
+        //not ready yet. Investigation is in progress
+        static internal Project InjectClrDialogInFeatureTreeUI(this Project project, string showDialogMethod, string prevDialog, string nextDialog)
         {
             string wixSharpAsm = typeof(Project).Assembly.Location;
             string wixSharpUIAsm = IO.Path.ChangeExtension(wixSharpAsm, ".UI.dll");

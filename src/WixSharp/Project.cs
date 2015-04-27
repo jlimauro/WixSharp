@@ -150,6 +150,10 @@ namespace WixSharp
         [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).")]
         public string Comments = "";
 
+        internal virtual void Preprocess()
+        {
+        }
+
         string sourceBaseDir = "";
         /// <summary>
         /// Base directory for the relative paths of the project items (e.g. <see cref="File"></see>). 
@@ -258,6 +262,7 @@ namespace WixSharp
         /// <summary>
         /// Path to the file containing the icon for AddRemovePrograms Control panel applet.
         /// </summary>
+        [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).")]
         public string AddRemoveProgramsIcon = "";
         /// <summary>
         /// The Encoding to be used for MSI UI dialogs. If not specified the 
@@ -293,7 +298,7 @@ namespace WixSharp
         /// <summary>
         /// This value uniquely identifies the software product being installed. 
         /// <para>
-        /// All installation scripts for different versions of the same product should have the same <see cref="GUID"/>.
+        /// All setup build scripts for different versions of the same product should have the same <see cref="GUID"/>.
         /// If user doesn't specify this value Wix# engine will generate new random GUID for it.
         /// </para>
         /// <remarks>This value should not be confused with MSI <c>Product.Id</c>, which is in fact 
@@ -323,6 +328,10 @@ namespace WixSharp
         /// </summary>
         public ProductInfo ControlPanelInfo = new ProductInfo();
 
+        /// <summary>
+        /// Use this attribute if you need to specify the installation scope of this package: per-machine or per-user.
+        /// </summary>
+        public InstallScope? InstallScope;
 
         /// <summary>
         /// Version of the product to be installed.
@@ -428,6 +437,26 @@ namespace WixSharp
         /// Collection of WiX/MSI <see cref="Property"/> objects to be created during the installed.
         /// </summary>
         public Property[] Properties = new Property[0];
+        /// <summary>
+        /// Indicates whether compiler should emit consistent package Id (package code). Set <c>EmitConsistentPackageId</c> to 'false' (default value) if 
+        /// you want the WiX compilers automatically generate a new package code for each new .msi file built. Or set it to 'true' if you want Wix# to auto generate a 
+        /// unique consistent package code for a given combination of the product code, product version and product upgrade code. 
+        /// <para>
+        /// WiX package code generation policy discourages the use of this attribute as it is a primary MSI identifier 
+        /// used to distinguish packages in ARP. Thus WiX tools always auto-generate the code for each build. This in turn makes it impossible to
+        /// rebuild a truly identical MSIs from the same WiX code even with the same set of product code, version and upgrade code. 
+        /// </para><para>
+        /// This very artificial limitation has severe practical impact. For example if a specific MSI file is lost it cannot be recreated even if 
+        /// the original source code that was used to built the lost MSI is available.
+        /// </para><para>
+        /// From another hand Wix# encourages using a singe GUID (Project.GUID) as a primary identifier of the product. Thus all other MSI identifiers 
+        /// can be derived by the compiler from the unique combination of this GUID and the product version. This also included generation of the package Id
+        /// attribute controlled by the EmitConsistentPackageId.
+        /// </para><para>
+        /// Wix# does not changes the WiX default package code generation it just gives the opportunity to control it when required. 
+        /// </para>
+        /// </summary>
+        public bool EmitConsistentPackageId = false; 
         /// <summary>
         /// Collection of WiX/MSI <see cref="Binary"/> objects to be embedded into MSI database. 
         /// Normally you doe not need to deal with this property as <see cref="Compiler"/> will populate

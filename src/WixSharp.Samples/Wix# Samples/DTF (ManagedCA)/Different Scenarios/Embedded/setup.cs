@@ -18,7 +18,7 @@ class Script
 
             Actions = new[]
             {
-                new ManagedAction(@"MyAction", "%this%")
+                new ManagedAction("MyAction", "%this%")
             }
         };
        

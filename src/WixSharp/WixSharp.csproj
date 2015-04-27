@@ -134,6 +134,7 @@
     <Compile Include="FileAssosiation.cs" />
     <Compile Include="FileShortcut.cs" />
     <Compile Include="LaunchCondition.cs" />
+    <Compile Include="ManagedProject.cs" />
     <Compile Include="Merge.cs" />
     <Compile Include="NativeBootstrapper.cs" />
     <Compile Include="ProductInfo.cs" />

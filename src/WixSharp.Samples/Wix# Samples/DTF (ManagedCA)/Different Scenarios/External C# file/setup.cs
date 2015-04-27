@@ -19,7 +19,7 @@ class Script
 
             Actions = new[]
             {
-                new ManagedAction(@"CustomAction1", "%this%")
+                new ManagedAction("CustomAction1", "%this%")
             }
         };
 

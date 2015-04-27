@@ -20,7 +20,7 @@ class Script
         project.Version = new Version("1.0.709.10040");
 
         project.MajorUpgradeStrategy = MajorUpgradeStrategy.Default;
-        project.MajorUpgradeStrategy.RemoveExistingProductAfter = Step.InstallInitialize;  
+        project.MajorUpgradeStrategy.RemoveExistingProductAfter = Step.InstallInitialize;
 
         Compiler.BuildMsi(project, "setup.1.msi");
     }
