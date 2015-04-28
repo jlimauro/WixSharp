@@ -31,15 +31,9 @@ public class CustomActions
     [CustomAction]
     public static ActionResult MyAction(Session session)
     {
-
 #if DEBUG
         System.Diagnostics.Debugger.Launch();
 #endif
-        try
-        {
-            var ttt = session["ALLUSERS"];
-        }
-        catch { }
         session.Log("Begin CustomAction2 Hello World");
 
         return ActionResult.Success;

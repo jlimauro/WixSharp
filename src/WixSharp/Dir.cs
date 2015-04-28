@@ -266,7 +266,7 @@ namespace WixSharp
             else
             {
                 //create nested Dirs on-fly
-                var nestedDirs = targetPath.Split("\\/".ToCharArray());
+                var nestedDirs = targetPath.Split("\\/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 this.Name = nestedDirs.First();
                 for (int i = 1; i < nestedDirs.Length; i++)
                 {
