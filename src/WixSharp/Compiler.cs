@@ -27,6 +27,7 @@ THE SOFTWARE.
 
 #endregion Licence...
 
+using Microsoft.Deployment.WindowsInstaller;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -35,6 +36,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using System.Xml.Linq;
 using IO = System.IO;
 
@@ -283,7 +285,7 @@ namespace WixSharp
         /// <summary>
         /// Indicates whether compiler should emit relative or absolute paths in the WiX XML source.
         /// </summary>
-        static public bool EmitRelativePaths = true; 
+        static public bool EmitRelativePaths = true;
 
         /// <summary>
         /// Gets or sets the GUID generator algorithm. You can use either one of the built-in algorithms or define your own.
@@ -672,7 +674,7 @@ namespace WixSharp
         {
             //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
             //returns the build script assembly but not just another method of Compiler.
-            if (ClientAssembly.IsEmpty()) 
+            if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
 
             XDocument doc = GenerateWixProj(project);
@@ -905,8 +907,8 @@ namespace WixSharp
                          new XAttribute("Codepage", project.Codepage),
                          new XAttribute("Version", project.Version),
                          new XAttribute("UpgradeCode", project.UpgradeCode));
-            
-            if(project.ControlPanelInfo != null && project.ControlPanelInfo.Manufacturer.IsNotEmpty() )
+
+            if (project.ControlPanelInfo != null && project.ControlPanelInfo.Manufacturer.IsNotEmpty())
                 product.SetAttribute("Manufacturer", project.ControlPanelInfo.Manufacturer);
             product.AddAttributes(project.Attributes);
 
@@ -918,11 +920,11 @@ namespace WixSharp
                    .SetAttribute("Languages", new CultureInfo(project.Language).LCID)
                    .SetAttribute("InstallScope", project.InstallScope);
 
-            if(project.EmitConsistentPackageId)
+            if (project.EmitConsistentPackageId)
                 package.CopyAttributeFrom(product, "Id");
 
             package.AddAttributes(project.Package.Attributes);
-            
+
             product.Select("Media").AddAttributes(project.Media.Attributes);
 
             ProcessLaunchConditions(project, product);
@@ -1925,7 +1927,8 @@ namespace WixSharp
                 {
                     var wManagedAction = (ManagedAction)wAction;
                     var asmFile = Utils.PathCombine(wProject.SourceBaseDir, wManagedAction.ActionAssembly);
-                    var packageFile = IO.Path.ChangeExtension(asmFile, ".CA.dll");
+                    var packageFile = asmFile.PathChangeDirectory(wProject.OutDir)
+                                             .PathChangeExtension(".CA.dll");
 
                     var existingBinary = product.Descendants("Binary")
                                                 .Where(e => e.Attribute("SourceFile").Value == packageFile)
@@ -1935,7 +1938,7 @@ namespace WixSharp
 
                     if (existingBinary == null)
                     {
-                        PackageManagedAsm(asmFile, packageFile, wManagedAction.RefAssemblies.Concat(wProject.DefaultRefAssemblies).Distinct().ToArray());
+                        PackageManagedAsm(asmFile, packageFile, wManagedAction.RefAssemblies.Concat(wProject.DefaultRefAssemblies).Distinct().ToArray(), wProject.OutDir);
 
                         bynaryKey = wAction.Name.Expand() + "_File";
                         product.Add(new XElement("Binary",
@@ -2109,54 +2112,67 @@ namespace WixSharp
         /// </summary>
         static public bool IgnoreClientAssemblyPDB = false;
 
-        static void PackageManagedAsm(string asm, string nativeDll, string[] refAssemblies)
+        static void PackageManagedAsm(string asm, string nativeDll, string[] refAssemblies, string outDir)
         {
-            //Debug.Assert(false);
-
             var makeSfxCA = Utils.PathCombine(WixSdkLocation, @"MakeSfxCA.exe");
             var sfxcaDll = Utils.PathCombine(WixSdkLocation, @"x86\sfxca.dll");
 
             //if ("".GetType().Assembly.Location.Contains("Framework64")) //x64 CLR  //will lead to install failure on x86
             //    sfxcaDll = Utils.PathCombine(WixSdkLocation, @"x64\sfxca.dll");
 
-            var outDll = IO.Path.GetFullPath(nativeDll);
+            outDir = IO.Path.GetFullPath(outDir);
+
+            var outDll = IO.Path.Combine(outDir, nativeDll);
             var asmFile = IO.Path.GetFullPath(asm);
             //var originalAsmCopy = asmFile; //to be used to verify assembly health
 
             if (asm.EndsWith("%this%"))
             {
                 //restore the original assembly name as MakeSfxCA does not like renamed assemblies
-                asmFile = IO.Path.GetFullPath(System.Reflection.Assembly.LoadFrom(ClientAssembly).ManifestModule.ScopeName);
-                if (IO.Path.GetFullPath(ClientAssembly).ToLower() != IO.Path.GetFullPath(asmFile).ToLower())
+                asmFile = Utils.OriginalAssemblyFileName(ClientAssembly);
+                bool asmIsRenamed = !ClientAssembly.SamePathAs(asmFile);
+
+                if (asmIsRenamed)
                 {
+                    asmFile = asmFile.PathChangeDirectory(outDir);
                     IO.File.Copy(ClientAssembly, asmFile, true);
                     tempFiles.Add(asmFile);
                 }
 
-                if (IO.File.Exists(IO.Path.ChangeExtension(ClientAssembly, ".pdb")))
+                var clientPdb = IO.Path.ChangeExtension(ClientAssembly, ".pdb");
+
+                if (IO.File.Exists(clientPdb) && asmIsRenamed)
                 {
-                    if (IO.Path.GetFullPath(ClientAssembly).ToLower() != IO.Path.GetFullPath(asmFile).ToLower())
-                    {
-                        IO.File.Copy(IO.Path.ChangeExtension(ClientAssembly, ".pdb"), IO.Path.ChangeExtension(asmFile, ".pdb"), true);
-                        tempFiles.Add(IO.Path.ChangeExtension(asmFile, ".pdb"));
-                    }
+                    IO.File.Copy(clientPdb, IO.Path.ChangeExtension(asmFile, ".pdb"), true);
+                    tempFiles.Add(IO.Path.ChangeExtension(asmFile, ".pdb"));
                 }
             }
 
             var requiredAsms = new List<string>(refAssemblies);
-            //requiredAsms.Add();
 
             //if WixSharp was "linked" with the client assembly not as script file but as external assembly
             string wixSharpAsm = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            if (ClientAssembly.ToLower() != wixSharpAsm.ToLower())
+            if (!ClientAssembly.SamePathAs(wixSharpAsm) && !asmFile.SamePathAs(wixSharpAsm))
             {
                 if (!requiredAsms.Contains(wixSharpAsm))
                     requiredAsms.Add(wixSharpAsm);
             }
 
+            string tempDir = IO.Path.GetTempFileName();
+
             var referencedAssemblies = "";
             foreach (string file in requiredAsms)
-                referencedAssemblies += "\"" + IO.Path.GetFullPath(file) + "\" ";
+            {
+                var refAasmFile = Utils.OriginalAssemblyFileName(file);
+                if (!file.SamePathAs(refAasmFile))
+                {
+                    refAasmFile = refAasmFile.PathChangeDirectory(outDir);
+                    IO.File.Copy(file, refAasmFile, true);
+                    tempFiles.Add(refAasmFile);
+                }
+
+                referencedAssemblies += "\"" + IO.Path.GetFullPath(refAasmFile) + "\" ";
+            }
 
             var configFile = IO.Path.GetFullPath("CustomAction.config");
             //var configFile = IO.Path.GetFullPath("Action.config");
@@ -2209,30 +2225,42 @@ namespace WixSharp
 
         static void ValidateCAAssembly(string file)
         {
+            //need to do it in a separate domain as we do not want to lock the assembly
             var domain = AppDomain.CurrentDomain.Clone();
 
             domain.CreateInstanceFromAndUnwrap<CaAsmValidator>()
-                  .ValidateCAAssembly(file);
+                  .ValidateCAAssembly(file, typeof(CustomActionAttribute).Assembly.Location);
 
             domain.Unload();
         }
 
         class CaAsmValidator : MarshalByRefObject
         {
-            public void ValidateCAAssembly(string file)
+            public void ValidateCAAssembly(string file, string dtfAsm)
+            {
+                AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+                                                            {
+                                                                return System.Reflection.Assembly.LoadFrom(dtfAsm);
+                                                            };
+                ValidateCAAssemblyImpl(file, dtfAsm);
+            }
+
+            void ValidateCAAssemblyImpl(string file, string refAsms)
             {
                 //Debug.Assert(false);
                 try
                 {
+
                     BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static;
+
+                    //var assembly = System.Reflection.Assembly.ReflectionOnlyLoadFrom(file); //cannot prelaod all required assemblies
                     var assembly = System.Reflection.Assembly.LoadFrom(file);
+
                     var caMembers = assembly.GetTypes().SelectMany(t =>
-                                            t.GetMembers(bf).Where(mem =>
-                                            {
-                                                return mem.GetCustomAttributes(false)
-                                                          .Where(x => x.ToString() == "Microsoft.Deployment.WindowsInstaller.CustomActionAttribute").Any();
-                                            }))
-                                            .ToArray();
+                                            t.GetMembers(bf)
+                                             .Where(mem =>
+                                                    mem.GetCustomAttributes(false)
+                                                       .Where(x => x.ToString() == "Microsoft.Deployment.WindowsInstaller.CustomActionAttribute").Any())).ToArray();
 
                     var invalidMembers = new List<string>();
                     foreach (MemberInfo mi in caMembers)

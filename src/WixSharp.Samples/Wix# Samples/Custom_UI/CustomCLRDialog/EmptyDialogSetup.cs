@@ -1,4 +1,5 @@
 using Microsoft.Deployment.WindowsInstaller;
+using System.Linq;
 using WixSharp;
 using WixSharp.CommonTasks;
 
@@ -6,7 +7,9 @@ public class EmptyDialogSetup
 {
     public static void Build()
     {
-        var project = new Project("CustomDialogTest");
+        var project = new Project("CustomDialogTest",  
+                          new Dir(@"%ProgramFiles%\My Company\My Product",
+                              new File("setup.exe")));
 
         //Injects CLR dialog EmptyDialog between MSI dialogs InsallDirDlg and VerifyReadyDlg.
         //Passes custom action ShowCustomDialog for instantiating and popping up the CLR dialog.
@@ -15,7 +18,7 @@ public class EmptyDialogSetup
                .RemoveDialogsBetween(Dialogs.WelcomeDlg, Dialogs.InstallDirDlg);
 
         Compiler.PreserveTempFiles = true;
-        Compiler.BuildMsi(project);
+        Compiler.BuildMsiCmd(project);
     }
 
     [CustomAction]

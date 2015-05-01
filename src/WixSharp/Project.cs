@@ -34,6 +34,7 @@ using WixSharp.CommonTasks;
 
 namespace WixSharp
 {
+
     // Wix/Msi bug/limitation: every component that is to be placed in the user profile has to have Registry key
     // Wix# places dummy key into every component to handle the problem
     // Wix# auto-generates components contain RemoveFolder elements for all subfolders in the path chain. 

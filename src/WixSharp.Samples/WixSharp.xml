@@ -1586,6 +1586,46 @@
             <param name="path">The Wix# directory path.</param>
             <returns>Replacement/conversion result.</returns>
         </member>
+        <member name="M:WixSharp.Extensions.SameAs(System.String,System.String,System.Boolean)">
+            <summary>
+            Simple wrapper around System.String.Compare(string strA, string strB, bool ignoreCase);
+            </summary>
+            <param name="strA">The string a.</param>
+            <param name="strB">The string b.</param>
+            <param name="ignoreCase">if set to <c>true</c> [ignore case].</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.SamePathAs(System.String,System.String)">
+            <summary>
+            Returns true if bothe values represent the same path.
+            </summary>
+            <param name="pathA">The path a.</param>
+            <param name="pathB">The path b.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.PathChangeDirectory(System.String,System.String)">
+            <summary>
+            The change directory of the file path.
+            </summary>
+            <param name="path">The path.</param>
+            <param name="newDir">The new dir.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.PathChangeExtension(System.String,System.String)">
+            <summary>
+            Change extension of the file path.
+            </summary>
+            <param name="path">The path.</param>
+            <param name="extension">The extension.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.PathGetFullPath(System.String)">
+            <summary>
+            Gets the full path.
+            </summary>
+            <param name="path">The path.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.Format(System.String,System.Object[])">
             <summary>
             Formats the specified string.

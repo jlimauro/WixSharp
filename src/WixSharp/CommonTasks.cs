@@ -392,6 +392,10 @@ namespace WixSharp.CommonTasks
                             .On(nextDialog, Buttons.Back, new ExecuteCustomAction(showClrDialog))
                             .On(nextDialog, Buttons.Back, new ShowDialog(prevDialog, Condition.ClrDialog_BackPressed));
 
+            var installDir = project.AllDirs.FirstOrDefault(d => d.HastemsToInstall());
+            if (installDir != null && project.CustomUI.Properties.ContainsKey("WIXUI_INSTALLDIR"))
+                project.CustomUI.Properties["WIXUI_INSTALLDIR"] = installDir.RawId ?? Compiler.AutoGeneration.InstallDirDefaultId;
+
             return project;
         }
 

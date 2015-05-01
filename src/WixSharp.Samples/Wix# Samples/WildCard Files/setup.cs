@@ -26,10 +26,7 @@ class Script
 
         project.ResolveWildCards();
 
-        var exeFile = (from f in project.AllFiles
-                       where f.Name.EndsWith("some.exe")
-                       select f)
-                       .First();
+        var exeFile = project.AllFiles.Single(f=>f.Name.EndsWith("some.exe"));
         
         exeFile.Shortcuts = new[] { 
                                     new FileShortcut("some.exe", "INSTALLDIR"),

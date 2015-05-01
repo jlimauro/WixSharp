@@ -101,6 +101,24 @@ namespace WixSharp
             return fields;
         }
 
+        internal static string OriginalAssemblyFileName(string file)
+        {
+            string dir = IO.Path.GetDirectoryName(IO.Path.GetFullPath(file));
+            return IO.Path.Combine(dir, System.Reflection.Assembly.ReflectionOnlyLoadFrom(file).ManifestModule.ScopeName);
+        }
+
+        internal static string GetTempDirectory()
+        {
+            string tempDir = IO.Path.GetTempFileName();
+            if (IO.File.Exists(tempDir))
+                IO.File.Exists(tempDir);
+            
+            if (!IO.Directory.Exists(tempDir))
+                IO.Directory.CreateDirectory(tempDir);
+
+            return tempDir;
+        }
+
         internal static void Unload(this AppDomain domain)
         {
             AppDomain.Unload(domain);

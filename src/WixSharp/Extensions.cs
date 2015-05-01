@@ -305,6 +305,62 @@ namespace WixSharp
         {
             return path.Expand();
         }
+
+        /// <summary>
+        /// Simple wrapper around System.String.Compare(string strA, string strB, bool ignoreCase);
+        /// </summary>
+        /// <param name="strA">The string a.</param>
+        /// <param name="strB">The string b.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> [ignore case].</param>
+        /// <returns></returns>
+        public static bool SameAs(this string strA, string strB, bool ignoreCase = false)
+        {
+            return 0 == string.Compare(strA, strB, ignoreCase);
+        }
+
+        /// <summary>
+        /// Returns true if bothe values represent the same path.
+        /// </summary>
+        /// <param name="pathA">The path a.</param>
+        /// <param name="pathB">The path b.</param>
+        /// <returns></returns>
+        public static bool SamePathAs(this string pathA, string pathB)
+        {
+            return 0 == string.Compare(IO.Path.GetFullPath(pathA), IO.Path.GetFullPath(pathB), true);
+        }
+
+        /// <summary>
+        /// The change directory of the file path.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="newDir">The new dir.</param>
+        /// <returns></returns>
+        public static string PathChangeDirectory(this string path, string newDir)
+        {
+            return IO.Path.Combine(newDir, IO.Path.GetFileName(path));
+        }
+
+        /// <summary>
+        /// Change extension of the file path.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="extension">The extension.</param>
+        /// <returns></returns>
+        public static string PathChangeExtension(this string path, string extension)
+        {
+            return IO.Path.ChangeExtension(path, extension);
+        }
+
+        /// <summary>
+        /// Gets the full path.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
+        public static string PathGetFullPath(this string path)
+        {
+            return IO.Path.GetFullPath(path);
+        }
+
         /// <summary>
         /// Formats the specified string.
         /// </summary>

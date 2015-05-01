@@ -286,7 +286,7 @@ namespace WixSharp
         public Dictionary<string, string> Properties = new Dictionary<string, string>()
         {
             {"DefaultUIFont", "WixUI_Font_Normal"},
-            {"WIXUI_INSTALLDIR", "TARGETDIR"},
+            {"WIXUI_INSTALLDIR", "INSTALLDIR"},
             {"PIDTemplate", "####-####-####-####"},
             {"ARPNOMODIFY", "1"}
         };

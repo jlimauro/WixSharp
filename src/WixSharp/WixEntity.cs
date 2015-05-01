@@ -283,6 +283,8 @@ namespace WixSharp
         /// </summary>
         protected string id;
 
+        internal string RawId { get {return id;} }
+
         /// <summary>
         /// The do not reset auto-ID generator before starting the build.
         /// </summary>

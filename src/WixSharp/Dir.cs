@@ -108,6 +108,10 @@ namespace WixSharp
             lastDir.Feature = feature;
         }
 
+        internal bool HastemsToInstall()
+        {
+            return Files.Any() || FileCollections.Any() || Shortcuts.Any();
+        }
 
         static internal string[] ToFlatPathTree(string path)
         {
@@ -310,5 +314,7 @@ namespace WixSharp
             Shortcuts = shortcuts.ToArray();
             MergeModules = mergeModules.ToArray();
         }
+
+
     }
 }
