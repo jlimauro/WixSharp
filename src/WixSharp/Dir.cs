@@ -49,7 +49,7 @@ namespace WixSharp
     ///  <para>%System64Folder% - [System64Folder]</para>
     ///  <para>%SystemFolder% - [SystemFolder]</para>
     ///  <para>%TempFolder% - [TempFolder]</para>
-    ///  <para>%Desktop - [DesktopFolder]</para>
+    ///  <para>%Desktop% - [DesktopFolder]</para>
     ///  </para>
     /// </summary>
     /// <example>The following is an example of defining installation directory <c>Progam Files/My Company/My Product</c> 

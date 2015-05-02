@@ -9,6 +9,8 @@ namespace WixSharp
 {
     public class ManagedProject : Project
     {
+        //some materials to consider: http://cpiekarski.com/2012/05/18/wix-custom-action-sequencing/
+
         public ManagedProject()
         {
         }
