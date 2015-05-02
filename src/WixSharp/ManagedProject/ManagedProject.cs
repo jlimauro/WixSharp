@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Principal;
 using System.Text;
 using Microsoft.Deployment.WindowsInstaller;
 
@@ -23,9 +24,9 @@ namespace WixSharp
         public delegate void SetupEventHandler(SetupEventArgs e);
 
         public event SetupEventHandler Load;
-        public event SetupEventHandler BeforeExecute;
-        public event SetupEventHandler AfterExecute;
-        public event SetupEventHandler Exit;
+        public event SetupEventHandler BeforeInstall;
+        public event SetupEventHandler AfterInstall;
+        //public event SetupEventHandler Exit;
 
         bool preprocessed = false;
 
@@ -44,12 +45,12 @@ namespace WixSharp
 
                 this.Properties = this.Properties.Add(new Property(name + "_ClientHandlers", GetHandlersInfo(handler as MulticastDelegate)));
                 if (elevated)
-                    this.Actions = this.Actions.Add(new ElevatedManagedAction("WixSharp_" + name + "_Action", asm, Return.check, When.Before, Step.AppSearch, Condition.Create("1"))
+                    this.Actions = this.Actions.Add(new ElevatedManagedAction("WixSharp_" + name + "_Action", asm, Return.check, when, step, Condition.Create("1"))
                     {
                         UsesProperties = name + "_ClientHandlers",
                     });
                 else
-                    this.Actions = this.Actions.Add(new ManagedAction("WixSharp_" + name + "_Action", asm, Return.check, When.Before, Step.AppSearch, Condition.Create("1")));
+                    this.Actions = this.Actions.Add(new ManagedAction("WixSharp_" + name + "_Action", asm, Return.check, when, step, Condition.Create("1")));
             }
         }
 
@@ -62,9 +63,9 @@ namespace WixSharp
                 preprocessed = true;
 
                 Bind(() => Load, When.Before, Step.AppSearch);
-                Bind(() => BeforeExecute, When.Before, Step.InstallFiles);
-                Bind(() => AfterExecute, When.Before, Step.InstallFiles);
-                Bind(() => Exit, When.Before, Step.InstallFiles, true);
+                Bind(() => BeforeInstall, When.Before, Step.InstallFiles);
+                Bind(() => AfterInstall, When.After, Step.InstallFiles, true);
+                //Bind(() => Exit, When.After, Step.InstallFiles);
             }
         }
 

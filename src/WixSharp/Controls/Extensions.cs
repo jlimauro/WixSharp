@@ -1,5 +1,6 @@
-using Wix = WixSharp;
 using System;
+using System.Security.Principal;
+using Wix = WixSharp;
 
 namespace WixSharp
 {
@@ -12,6 +13,12 @@ namespace WixSharp
             wControl.CopyCommonPropertiesFrom(srcControl);
 
             return wControl;
+        }
+
+        static public bool IsAdmin(this WindowsIdentity identity)
+        {
+            var p = new WindowsPrincipal(identity);
+            return p.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
         /// <summary>

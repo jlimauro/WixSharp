@@ -3,10 +3,12 @@
 //css_ref System.Xml.dll;
 //css_ref ..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 using System;
-using System.Diagnostics;
 using System.Linq;
+using System.Security.Principal;
 using System.Windows.Forms;
+using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
+using WixSharp.CommonTasks;
 
 public class Script
 {
@@ -16,9 +18,10 @@ public class Script
         var project = new ManagedProject("ManagedSetup");
 
         project.Load += project_Load;
-        project.BeforeExecute += project_BeforeExecute;
-        project.AfterExecute += project_AfterExecute;
-        
+        project.BeforeInstall += project_BeforeExecute;
+        project.AfterInstall += project_AfterExecute;
+        //project.Exit += project_Exit;
+
         //project.DefaultRefAssemblies.Add(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
 #if vs
@@ -28,23 +31,37 @@ public class Script
 
         //System.Diagnostics.Debugger.Launch();
 
+        //Compiler.PreserveTempFiles = true;
         Compiler.BuildMsi(project);
+    }
+
+    static void project_Exit(SetupEventArgs e)
+    {
+        MessageBox.Show("Exit", GetContext());
     }
 
     static void project_Load(SetupEventArgs e)
     {
         e.Session["test"] = "ttt";
-        MessageBox.Show("Load");
+        MessageBox.Show("Load", GetContext());
     }
 
     static void project_BeforeExecute(SetupEventArgs e)
     {
-        MessageBox.Show("BeforeInstall", e.Session["test"]);
+        MessageBox.Show("BeforeInstall " + e.Session["test"], GetContext());
     }
 
     static void project_AfterExecute(SetupEventArgs e)
     {
-        MessageBox.Show("AfterExecute");
+        MessageBox.Show("AfterExecute", GetContext());
+    }
+
+    static string GetContext()
+    {
+        if (WindowsIdentity.GetCurrent().IsAdmin())
+            return "Admin User";
+        else
+            return "Normal User";
     }
 }
 

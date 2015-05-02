@@ -1,16 +1,17 @@
 //css_ref ..\..\WixSharp.dll;
 //css_ref System.Core.dll;
+//css_ref System.Xml.dll;
 //css_ref ..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 using System;
 using System.Configuration;
-using IO = System.IO;
-using System.Xml;
+using System.Security.Principal;
+using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
 using WixSharp.CommonTasks;
-using System.Windows.Forms;
+using IO = System.IO;
 
 class Script
 {
@@ -69,8 +70,18 @@ public class CustomActions
             UpdateAsXml(configFile);
             UpdateAsText(configFile);
             UpdateWithWixSharp(configFile);
+
+            MessageBox.Show(GetContext());
         });
 
+    }
+
+    static string GetContext()
+    {
+        if (WindowsIdentity.GetCurrent().IsAdmin())
+            return "Admin User";
+        else
+            return "Normal User";
     }
 
     static public void UpdateAsAppConfig(string configFile)
