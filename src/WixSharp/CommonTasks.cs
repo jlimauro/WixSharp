@@ -363,8 +363,11 @@ namespace WixSharp.CommonTasks
             var showClrDialog = new ManagedAction(showDialogMethod)
             {
                 Sequence = Sequence.NotInSequence,
-                RefAssemblies = new[] { wixSharpAsm, wixSharpUIAsm }
+                //RefAssemblies = new[] { wixSharpAsm, wixSharpUIAsm }
             };
+
+            project.DefaultRefAssemblies.Add(wixSharpAsm);
+            project.DefaultRefAssemblies.Add(wixSharpUIAsm);
 
             //Must use WixUI_Common as other UI type has predefined dialogs already linked between each other and WiX does not allow overriding events
             //http://stackoverflow.com/questions/16961493/override-publish-within-uiref-in-wix

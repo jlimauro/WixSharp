@@ -88,7 +88,6 @@ namespace WixSharp
                                                       "For the list of supported constants analyze WixSharp.Compiler.EnvironmentConstantsMapping.Keys.");
 
 
-
             var incosnistentRefAsmActions =
                       project.Actions.OfType<ManagedAction>()
                                      .GroupBy(a => a.ActionAssembly)
@@ -96,16 +95,31 @@ namespace WixSharp
                                      .Select(g => new
                                      {
                                          Assembly = g.Key,
-                                         //RefAsmHashes = g.Select(action => action.GetRefAssembliesHashCode(project.DefaultRefAssemblies)).ToArray(), //enable if needed for troubleshooting
+                                         Info = g.Select(a => new { Name = a.MethodName, RefAsms = a.RefAssemblies.Select(r => Path.GetFileName(r)).ToArray() }).ToArray(),
                                          IsInconsistent = g.Select(action => action.GetRefAssembliesHashCode(project.DefaultRefAssemblies)).Distinct().Count() > 1,
                                      })
                                      .Where(x => x.IsInconsistent)
                                      .FirstOrDefault();
 
             if (incosnistentRefAsmActions != null)
-                throw new ApplicationException(string.Format("ManagedAction assembly '{0}' is declared multiple times with the different (inconsistent) set of referenced assemblies. " +
+            {
+                var errorInfo = new StringBuilder();
+                errorInfo.Append(">>>>>>>>>>>>\n");
+                errorInfo.Append("Asm: " + incosnistentRefAsmActions.Assembly + "\n");
+                foreach (var item in incosnistentRefAsmActions.Info)
+                {
+                    errorInfo.Append("    ----------\n");
+                    errorInfo.Append("    Action: " + item.Name+"\n");
+                    errorInfo.AppendFormat("    RefAsms: {0} items\n", item.RefAsms.Length);
+                    foreach (var name in item.RefAsms)
+                        errorInfo.Append("       - " + name + "\n");
+                }
+                errorInfo.Append(">>>>>>>>>>>>\n");
+
+                throw new ApplicationException(string.Format("Assembly '{0}' is used by multiple ManagedActions but with the inconsistent set of referenced assemblies. " +
                                                              "Ensure that all declarations have the same referenced assemblies by either using identical declarations or by using " +
-                                                             "Project.DefaultRefAssemblies.", incosnistentRefAsmActions.Assembly));
+                                                             "Project.DefaultRefAssemblies.\n{1}", incosnistentRefAsmActions.Assembly, errorInfo));
+            }
 
             var incosnistentInstalledFileActions = project.Actions
                                                           .OfType<InstalledFileAction>()
