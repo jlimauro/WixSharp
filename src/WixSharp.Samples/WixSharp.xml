@@ -741,16 +741,16 @@
         </member>
         <member name="M:WixSharp.CommonTasks.Tasks.SetNetFxPrerequisite(WixSharp.Project,System.String,System.String)">
             <summary>
-            Binds the LaunchCondition to the <c>version</c> property name of WiXNetFxExtension.
-            <para>The typical values are:</para>
-            <para>   NETFRAMEWORK20</para>
-            <para>   NETFRAMEWORK40FULL</para>
-            <para>   NETFRAMEWORK40CLIENT</para>
+            Binds the LaunchCondition to the <c>version</c> condition based on WiXNetFxExtension properties.
+            <para>The typical conditions are:</para>
+            <para>   NETFRAMEWORK20="#1"</para>
+            <para>   NETFRAMEWORK40FULL="#1"</para>
+            <para>   NETFRAMEWORK30_SP_LEVEL and NOT NETFRAMEWORK30_SP_LEVEL='#0'</para>
             <para>   ...</para>
-            The full list of values can be found here http://wixtoolset.org/documentation/manual/v3/customactions/wixnetfxextension.html
+            The full list of names and values can be found here http://wixtoolset.org/documentation/manual/v3/customactions/wixnetfxextension.html
             </summary>
             <param name="project">The project.</param>
-            <param name="version">Name of the WiXNetFxExtension property, which corresponds to the .NET deployment package.
+            <param name="versionCondition">Condition expression.
             </param>
             <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
             <returns></returns>
@@ -4514,6 +4514,12 @@
              Returns the WiX <c>Condition</c> as a string.
             </summary>
             <returns>A string representing the condition.</returns>
+        </member>
+        <member name="M:WixSharp.Condition.GetDistinctProperties">
+            <summary>
+            Extracts the distinct names of properties from the condition string expression.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.Condition.op_Implicit(WixSharp.Condition)~System.String">
             <summary>

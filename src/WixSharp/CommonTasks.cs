@@ -275,7 +275,7 @@ namespace WixSharp.CommonTasks
             project.Actions = project.Actions.AddRange(items);
             return project;
         }
-        
+
         static public Project AddDir(this Project project, params Dir[] items)
         {
             project.Dirs = project.Dirs.AddRange(items);
@@ -371,7 +371,7 @@ namespace WixSharp.CommonTasks
 
             //Must use WixUI_Common as other UI type has predefined dialogs already linked between each other and WiX does not allow overriding events
             //http://stackoverflow.com/questions/16961493/override-publish-within-uiref-in-wix
-            project.UI = WUI.WixUI_Common; 
+            project.UI = WUI.WixUI_Common;
 
             if (project.CustomUI != null)
                 throw new ApplicationException("Project.CustomUI is already initialized. Ensure InjectClrDialog is invoked before any adjustments made to CustomUI.");
@@ -486,26 +486,30 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
-        /// Binds the LaunchCondition to the <c>version</c> property name of WiXNetFxExtension.
-        /// <para>The typical values are:</para>
-        /// <para>   NETFRAMEWORK20</para>
-        /// <para>   NETFRAMEWORK40FULL</para>
-        /// <para>   NETFRAMEWORK40CLIENT</para>
+        /// Binds the LaunchCondition to the <c>version</c> condition based on WiXNetFxExtension properties.
+        /// <para>The typical conditions are:</para>
+        /// <para>   NETFRAMEWORK20="#1"</para>
+        /// <para>   NETFRAMEWORK40FULL="#1"</para>
+        /// <para>   NETFRAMEWORK30_SP_LEVEL and NOT NETFRAMEWORK30_SP_LEVEL='#0'</para>
         /// <para>   ...</para>
-        /// The full list of values can be found here http://wixtoolset.org/documentation/manual/v3/customactions/wixnetfxextension.html
+        /// The full list of names and values can be found here http://wixtoolset.org/documentation/manual/v3/customactions/wixnetfxextension.html
         /// </summary>
         /// <param name="project">The project.</param>
-        /// <param name="version">Name of the WiXNetFxExtension property, which corresponds to the .NET deployment package.
+        /// <param name="versionCondition">Condition expression.
         /// </param>
         /// <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
         /// <returns></returns>
-        static public Project SetNetFxPrerequisite(this WixSharp.Project project, string version, string errorMessage = null)
+        static public Project SetNetFxPrerequisite(this WixSharp.Project project, string versionCondition, string errorMessage = null)
         {
-            string message = errorMessage ?? "Please install .NET ('" + version + "') first.";
+            var condition = Condition.Create(versionCondition);
 
-            project.LaunchConditions.Add(new LaunchCondition(version + "=\"#1\"", message));
+            string message = errorMessage ?? "Please install the appropriate .NET version first.";
 
-            project.Properties = project.Properties.Add(new PropertyRef(version));
+            project.LaunchConditions.Add(new LaunchCondition(condition, message));
+            
+            foreach (var prop in condition.GetDistinctProperties())
+                project.Properties = project.Properties.Add(new PropertyRef(prop));
+
             project.WixExtensions.Add("WiXNetFxExtension");
             project.WixNamespaces.Add("netfx=\"http://schemas.microsoft.com/wix/NetFxExtension\"");
 

@@ -1,9 +1,7 @@
 #region Licence...
 /*
 The MIT License (MIT)
-
 Copyright (c) 2014 Oleg Shilo
-
 Permission is hereby granted, 
 free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -11,10 +9,8 @@ in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,8 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-
+using System.Linq;
 using System.Xml.Linq;
+
 namespace WixSharp
 {
     /// <summary>
@@ -63,7 +60,7 @@ namespace WixSharp
         /// String value of WiX <c>Condition</c>.
         /// </summary>
         public string Value = "";
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Condition"/> class.
         /// </summary>
@@ -81,9 +78,28 @@ namespace WixSharp
         /// <returns>A string representing the condition.</returns>
         public override string ToString()
         {
-            return Value;
+            return Value.Replace("'", "\"");
         }
 
+        /// <summary>
+        /// Extracts the distinct names of properties from the condition string expression.
+        /// </summary>
+        /// <returns></returns>
+        public string[] GetDistinctProperties()
+        {
+            //"NETFRAMEWORK30_SP_LEVEL and NOT NETFRAMEWORK30_SP_LEVEL='#0'"
+            var text = this.ToString();
+            string[] parts = text.Split("[]()!=><\t \n\r".ToCharArray());
+
+            var props = parts.Where(x => x.IsNotEmpty() &&
+                                        !x.SameAs("AND", true) &&
+                                        !x.SameAs("NOT", true) &&
+                                        !x.SameAs("OR", true) &&
+                                        !x.StartsWith("\""))
+                             .Distinct()
+                             .ToArray();
+            return props;
+        }
         /// <summary>
         /// Performs an implicit conversion from <see cref="Condition"/> to <see cref="System.String"/>.
         /// </summary>

@@ -48,9 +48,9 @@ class Script
            new Dir(@"%ProgramFiles%\My Company\My Product",
                 new File(@"Files\MyApp.exe")));
 
-        project.SetNetFxPrerequisite("NETFRAMEWORK20", "Please install .NET 2.0 first.");
+        project.SetNetFxPrerequisite("NETFRAMEWORK20='#1'", "Please install .NET 2.0 first.");
+        //project.SetNetFxPrerequisite("NETFRAMEWORK30_SP_LEVEL and NOT NETFRAMEWORK30_SP_LEVEL='#0'", "Please install .NET 2.0 first.");
 
-        Compiler.PreserveTempFiles = true;
         Compiler.BuildMsi(project);
     }
 }
