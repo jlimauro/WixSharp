@@ -47,7 +47,7 @@ namespace WixSharp
                 if (elevated)
                     this.Actions = this.Actions.Add(new ElevatedManagedAction("WixSharp_" + name + "_Action", asm, Return.check, when, step, Condition.Create("1"))
                     {
-                        UsesProperties = name + "_ClientHandlers",
+                        UsesProperties = name + "_ClientHandlers,WIXSHARP_RUNTIME_DATA",
                     });
                 else
                     this.Actions = this.Actions.Add(new ManagedAction("WixSharp_" + name + "_Action", asm, Return.check, when, step, Condition.Create("1")));

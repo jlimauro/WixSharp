@@ -222,23 +222,23 @@ namespace WixSharp.CommonTasks
         /// <param name="regFile">The reg file.</param>
         /// <returns></returns>
         /// <example>The following is an example of importing registry entries from the *.reg file.
-        /// <code> 
-        /// var project = 
-        ///     new Project("MyProduct", 
-        ///         new Dir(@"%ProgramFiles%\My Company\My Product", 
-        ///             new File(@"readme.txt")), 
+        /// <code>
+        /// var project =
+        ///     new Project("MyProduct",
+        ///         new Dir(@"%ProgramFiles%\My Company\My Product",
+        ///             new File(@"readme.txt")),
         ///         ...
-        ///         
-        /// project.RegValues = CommonTasks.Tasks.ImportRegFile("app_settings.reg"); 
-        /// 
+        ///
+        /// project.RegValues = CommonTasks.Tasks.ImportRegFile("app_settings.reg");
+        ///
         /// Compiler.BuildMsi(project);
         /// </code>
         /// </example>
         static public RegValue[] ImportRegFile(string regFile)
         {
             return RegFileImporter.ImportFrom(regFile);
-
         }
+
         /// <summary>
         /// Imports the reg file. It is nothing else but an extension method version of the 'plain' <see cref="T:WixSharp.CommonTasks.Tasks.ImportRegFile"/>.
         /// </summary>
@@ -246,15 +246,15 @@ namespace WixSharp.CommonTasks
         /// <param name="regFile">The reg file.</param>
         /// <returns></returns>
         /// <example>The following is an example of importing registry entries from the *.reg file.
-        /// <code> 
-        /// var project = 
-        ///     new Project("MyProduct", 
-        ///         new Dir(@"%ProgramFiles%\My Company\My Product", 
-        ///             new File(@"readme.txt")), 
+        /// <code>
+        /// var project =
+        ///     new Project("MyProduct",
+        ///         new Dir(@"%ProgramFiles%\My Company\My Product",
+        ///             new File(@"readme.txt")),
         ///         ...
-        ///         
-        /// project.ImportRegFile("app_settings.reg"); 
-        /// 
+        ///
+        /// project.ImportRegFile("app_settings.reg");
+        ///
         /// Compiler.BuildMsi(project);
         /// </code>
         /// </example>
@@ -264,44 +264,187 @@ namespace WixSharp.CommonTasks
             return project;
         }
 
-        static public Project AddPropery(this Project project, params Property[] items)
+        /// <summary>
+        /// Adds the property.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        static public Project AddProperty(this Project project, params Property[] items)
         {
             project.Properties = project.Properties.AddRange(items);
             return project;
         }
 
+        /// <summary>
+        /// Adds the action.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
         static public Project AddAction(this Project project, params Action[] items)
         {
             project.Actions = project.Actions.AddRange(items);
             return project;
         }
 
+        /// <summary>
+        /// Adds the dir.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
         static public Project AddDir(this Project project, params Dir[] items)
         {
             project.Dirs = project.Dirs.AddRange(items);
             return project;
         }
 
+        /// <summary>
+        /// Adds the registry value.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
         static public Project AddRegValue(this Project project, params RegValue[] items)
         {
             project.RegValues = project.RegValues.AddRange(items);
             return project;
         }
 
-        static public Project AddBinarie(this Project project, params Binary[] items)
+        /// <summary>
+        /// Adds the binary.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        static public Project AddBinary(this Project project, params Binary[] items)
         {
             project.Binaries = project.Binaries.AddRange(items);
             return project;
         }
 
-        static public Project AddEnvironmentVariable(this Project project, params EnvironmentVariable[] items)
+        /// <summary>
+        /// Adds the environment variable.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        static public Project AddEnvironmentVariabl(this Project project, params EnvironmentVariable[] items)
         {
             project.EnvironmentVariables = project.EnvironmentVariables.AddRange(items);
             return project;
         }
 
         /// <summary>
-        /// Removes the dialogs between specified two dialogs. It simply connects 'next' button of the start dialog with the 
+        /// Adds the assembly reference.
+        /// </summary>
+        /// <param name="files">The files.</param>
+        /// <returns></returns>
+        static public ManagedAction AddRefAssembly(this ManagedAction action, params string[] files)
+        {
+            action.RefAssemblies = action.RefAssemblies.AddRange(files);
+            return action;
+        }
+        //////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Adds the file association.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        static public File AddAssociation(this File file, params FileAssociation[] items)
+        {
+            file.Associations = file.Associations.AddRange(items);
+            return file;
+        }
+        /// <summary>
+        /// Adds the shortcut.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        static public File AddShortcut(this File file, params FileShortcut[] items)
+        {
+            file.Shortcuts = file.Shortcuts.AddRange(items);
+            return file;
+        }
+        //////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Adds the dir.
+        /// </summary>
+        /// <param name="dir">The dir.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        static public Dir AddDir(this Dir dir, params Dir[] items)
+        {
+            dir.Dirs = dir.Dirs.AddRange(items);
+            return dir;
+        }
+
+        /// <summary>
+        /// Adds the file.
+        /// </summary>
+        /// <param name="dir">The dir.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        static public Dir AddFile(this Dir dir, params File[] items)
+        {
+            dir.Files = dir.Files.AddRange(items);
+            return dir;
+        }
+
+        /// <summary>
+        /// Adds the shortcut.
+        /// </summary>
+        /// <param name="dir">The dir.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        static public Dir AddShortcut(this Dir dir, params ExeFileShortcut[] items)
+        {
+            dir.Shortcuts = dir.Shortcuts.AddRange(items);
+            return dir;
+        }
+
+        /// <summary>
+        /// Adds the merge module.
+        /// </summary>
+        /// <param name="dir">The dir.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        static public Dir AddMergeModule(this Dir dir, params Merge[] items)
+        {
+            dir.MergeModules = dir.MergeModules.AddRange(items);
+            return dir;
+        }
+
+        /// <summary>
+        /// Adds the file collection.
+        /// </summary>
+        /// <param name="dir">The dir.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        static public Dir AddFileCollection(this Dir dir, params Files[] items)
+        {
+            dir.FileCollections = dir.FileCollections.AddRange(items);
+            return dir;
+        }
+
+        /// <summary>
+        /// Adds the dir file collection.
+        /// </summary>
+        /// <param name="dir">The dir.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        static public Dir AddDirFileCollection(this Dir dir, params DirFiles[] items)
+        {
+            dir.DirFileCollections = dir.DirFileCollections.AddRange(items);
+            return dir;
+        }
+
+        /// <summary>
+        /// Removes the dialogs between specified two dialogs. It simply connects 'next' button of the start dialog with the
         /// 'NewDialog' action associated with the end dialog. And vise versa for the 'back' button.
         /// </summary>
         /// <param name="project">The project.</param>
@@ -309,7 +452,7 @@ namespace WixSharp.CommonTasks
         /// <param name="end">The end.</param>
         /// <returns></returns>
         /// <example>The following is an example of the setup that skips License dialog.
-        /// <code> 
+        /// <code>
         /// project.UI = WUI.WixUI_InstallDir;
         /// project.RemoveDialogsBetween(Dialogs.WelcomeDlg, Dialogs.InstallDirDlg);
         /// ...
@@ -336,17 +479,17 @@ namespace WixSharp.CommonTasks
         /// <param name="nextDialog">The next dialog.</param>
         /// <returns></returns>
         /// <example>The following is an example of inserting CustomDialog dialog into the UI sequence between MSI dialogs InsallDirDlg and VerifyReadyDlg.
-        /// <code> 
+        /// <code>
         /// public class static Script
         /// {
         ///     public static void Main()
         ///     {
         ///         var project = new Project("CustomDialogTest");
-        ///         
+        ///
         ///         project.InjectClrDialog("ShowCustomDialog", Dialogs.InstallDirDlg, Dialogs.VerifyReadyDlg);
         ///         Compiler.BuildMsi(project);
         ///     }
-        ///     
+        ///
         ///     [CustomAction]
         ///     public static ActionResult ShowCustomDialog(Session session)
         ///     {
@@ -453,10 +596,10 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
-        /// Binds the LaunchCondition to the automatically created REQUIRED_NET property which is set to the value of the 
+        /// Binds the LaunchCondition to the automatically created REQUIRED_NET property which is set to the value of the
         /// Software\Microsoft\NET Framework Setup\NDP\{version}\Install registry entry.
         /// <para>It is a single step equivalent of the "Wix# Samples\LaunchConditions" sample.</para>
-        /// <para>Note that the value of the version parameter is a precise sub-key of the corresponding 'Install' registry entry 
+        /// <para>Note that the value of the version parameter is a precise sub-key of the corresponding 'Install' registry entry
         /// (e.g. as in 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4.0\Client\Install').</para>
         /// <para>The typical values are:</para>
         /// <para>   v2.0.50727</para>
@@ -506,7 +649,7 @@ namespace WixSharp.CommonTasks
             string message = errorMessage ?? "Please install the appropriate .NET version first.";
 
             project.LaunchConditions.Add(new LaunchCondition(condition, message));
-            
+
             foreach (var prop in condition.GetDistinctProperties())
                 project.Properties = project.Properties.Add(new PropertyRef(prop));
 
@@ -516,13 +659,11 @@ namespace WixSharp.CommonTasks
             return project;
         }
 
-
-
         /// <summary>
-        /// Sets the value of the attribute value in the .NET application configuration file according 
+        /// Sets the value of the attribute value in the .NET application configuration file according
         /// the specified XPath expression.
         /// <para>
-        /// This simple routine is to be used for the customization of the installed config files 
+        /// This simple routine is to be used for the customization of the installed config files
         /// (e.g. in the deferred custom actions).
         /// </para>
         /// </summary>
@@ -531,10 +672,10 @@ namespace WixSharp.CommonTasks
         /// <param name="value">The value to be set to the attribute.</param>
         ///
         /// <example>The following is an example demonstrates this simple technique:
-        /// <code> 
+        /// <code>
         ///  Tasks.SetConfigAttribute(configFile, "//configuration/appSettings/add[@key='AppName']/@value", "My App");
         /// </code>
-        /// </example> 
+        /// </example>
         static public void SetConfigAttribute(string configFile, string elementPath, string value)
         {
             XDocument.Load(configFile)
@@ -545,10 +686,10 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
-        /// Sets the value of the attribute value in the .NET application configuration file according 
+        /// Sets the value of the attribute value in the .NET application configuration file according
         /// the specified XPath expression.
         /// <para>
-        /// This simple routine is to be used for the customization of the installed config files 
+        /// This simple routine is to be used for the customization of the installed config files
         /// (e.g. in the deferred custom actions).
         /// </para>
         /// </summary>
@@ -577,7 +718,7 @@ namespace WixSharp.CommonTasks
 
         /// <summary>
         /// Installs the windows service. It uses InstallUtil.exe to complete the actual installation/uninstallation.
-        /// During the run for the InstallUtil.exe console window is hidden. /// If any error occurred the console output is captured and embedded into the raised Exception object. 
+        /// During the run for the InstallUtil.exe console window is hidden. /// If any error occurred the console output is captured and embedded into the raised Exception object.
         /// </summary>
         /// <param name="serviceFile">The service file.</param>
         /// <param name="isInstalling">if set to <c>true</c> [is installing].</param>
@@ -607,8 +748,8 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
-        /// Starts the windows service. It uses sc.exe to complete the action.  During the action console window is hidden. 
-        /// If any error occurred the console output is captured and embedded into the raised Exception object. 
+        /// Starts the windows service. It uses sc.exe to complete the action.  During the action console window is hidden.
+        /// If any error occurred the console output is captured and embedded into the raised Exception object.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="throwOnError">if set to <c>true</c> [throw on error].</param>
@@ -619,8 +760,8 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
-        /// Stops the windows service. It uses sc.exe to complete the action.  During the action console window is hidden. 
-        /// If any error occurred the console output is captured and embedded into the raised Exception object. 
+        /// Stops the windows service. It uses sc.exe to complete the action.  During the action console window is hidden.
+        /// If any error occurred the console output is captured and embedded into the raised Exception object.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="throwOnError">if set to <c>true</c> [throw on error].</param>

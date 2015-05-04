@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace WixSharp
 {
-    internal class Win32
+    public class Win32
     {
         const int SW_HIDE = 0;
         const int SW_SHOW = 1;
@@ -47,7 +47,7 @@ namespace WixSharp
         internal static extern IntPtr GetForegroundWindow();
 
         [DllImport("User32.dll")]
-        internal static extern int SetForegroundWindow(IntPtr hwnd);
+        public static extern int SetForegroundWindow(IntPtr hwnd);
 
         [DllImport("user32.dll", EntryPoint = "GetWindowLongA", SetLastError = true)]
         public static extern long GetWindowLong(IntPtr hwnd, int nIndex);

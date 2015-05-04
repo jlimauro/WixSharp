@@ -32,4 +32,9 @@ public partial class EmptyDialog : WixCLRDialog
     {
         MSICancel();
     }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+        ExternalAsm.Utils.Who();
+    }
 }

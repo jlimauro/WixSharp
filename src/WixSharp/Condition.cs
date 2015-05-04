@@ -161,6 +161,20 @@ namespace WixSharp
         /// </summary>
         public readonly static Condition BeingRemoved = new Condition(" (REMOVE=\"ALL\") ");
         /// <summary>
+        /// The .NET2.0 installed. This condition is to be used in Project.SetNetFxPrerequisite.
+        /// </summary>
+        public readonly static Condition Net20_Installed = new Condition(" (NETFRAMEWORK20='#1') ");
+        /// <summary>
+        /// The .NET4.5 installed. This condition is to be used in Project.SetNetFxPrerequisite.
+        /// </summary>
+        public readonly static Condition Net45_Installed = new Condition(" (NETFRAMEWORK45 >= '#378389') ");
+        /// <summary>
+        /// The .NET3.0 SP installed. This condition is to be used in Project.SetNetFxPrerequisite.
+        /// </summary>
+        public readonly static Condition Net30_SP_Installed = new Condition(" (NETFRAMEWORK30_SP_LEVEL and NOT NETFRAMEWORK30_SP_LEVEL='#0') ");
+
+
+        /// <summary>
         /// Creates WiX <c>Condition</c> condition from the given string value.
         /// </summary>
         /// <param name="value">String value of the <c>Condition</c> to be created.</param>

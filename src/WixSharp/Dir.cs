@@ -1,10 +1,11 @@
 #region Licence...
+
 /*
 The MIT License (MIT)
 
 Copyright (c) 2014 Oleg Shilo
 
-Permission is hereby granted, 
+Permission is hereby granted,
 free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -23,19 +24,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#endregion
+
+#endregion Licence...
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 
 namespace WixSharp
 {
     /// <summary>
     /// Defines directory to be installed on target system.
     /// <para>
-    /// Use this class to define file/directory structure of the deployment solution. 
+    /// Use this class to define file/directory structure of the deployment solution.
     /// </para>
-    ///  You can use predefined Wix# environment constants for well-known installation locations. They are directly mapped 
+    ///  You can use predefined Wix# environment constants for well-known installation locations. They are directly mapped
     ///  to the corresponding WiX constants:
     ///  <para>
     ///  <para><c>Wix#</c> - <c>WiX</c></para>
@@ -52,11 +55,11 @@ namespace WixSharp
     ///  <para>%Desktop% - [DesktopFolder]</para>
     ///  </para>
     /// </summary>
-    /// <example>The following is an example of defining installation directory <c>Progam Files/My Company/My Product</c> 
+    /// <example>The following is an example of defining installation directory <c>Progam Files/My Company/My Product</c>
     /// containing a single file <c>MyApp.exe</c> and subdirectory <c>Documentation</c> with <c>UserManual.pdf</c> file.
     /// <code>
     /// var project = new Project("MyProduct",
-    ///     
+    ///
     ///         new Dir(@"%ProgramFiles%\My Company\My Product",
     ///             new File(@"Release\MyApp.exe"),
     ///             new Dir("Documentation",
@@ -69,12 +72,15 @@ namespace WixSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="Dir"/> class.
         /// </summary>
-        public Dir() { }
+        public Dir()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Dir"/> class with properties/fields initialized with specified parameters
         /// </summary>
         /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Dir"/> instance.</param>
-        /// <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
+        /// <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must
         /// be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
         /// <param name="items">Any <see cref="WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         public Dir(Id id, string targetPath, params WixEntity[] items)
@@ -83,10 +89,11 @@ namespace WixSharp
             lastDir.AddItems(items);
             lastDir.Id = id;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Dir"/> class with properties/fields initialized with specified parameters
         /// </summary>
-        /// <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
+        /// <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must
         /// be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
         /// <param name="items">Any <see cref="WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         public Dir(string targetPath, params WixEntity[] items)
@@ -94,11 +101,12 @@ namespace WixSharp
             Dir lastDir = ProcessTargetPath(targetPath);
             lastDir.AddItems(items);
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Dir"/> class with properties/fields initialized with specified parameters
         /// </summary>
         /// <param name="feature"><see cref="Feature"></see> the directory should be included in.</param>
-        /// <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
+        /// <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must
         /// be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
         /// <param name="items">Any <see cref="WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         public Dir(Feature feature, string targetPath, params WixEntity[] items)
@@ -177,7 +185,7 @@ namespace WixSharp
         /// </summary>
         /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Dir"/> instance.</param>
         /// <param name="feature"><see cref="Feature"></see> the directory should be included in.</param>
-        /// <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
+        /// <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must
         /// be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
         /// <param name="items">Any <see cref="WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         public Dir(Id id, Feature feature, string targetPath, params WixEntity[] items)
@@ -187,47 +195,55 @@ namespace WixSharp
             lastDir.Id = id;
             lastDir.Feature = feature;
         }
+
         /// <summary>
-        /// Collection of the contained nested <see cref="Dir"/>s (subdirectories). 
+        /// Collection of the contained nested <see cref="Dir"/>s (subdirectories).
         /// </summary>
         public Dir[] Dirs = new Dir[0];
+
         /// <summary>
-        /// Collection of the contained <see cref="File"/>s. 
+        /// Collection of the contained <see cref="File"/>s.
         /// </summary>
         public File[] Files = new File[0];
+
         /// <summary>
-        /// Collection of the <see cref="DirFiles"/> objects. <see cref="DirFiles"/> type is used to specify files 
+        /// Collection of the <see cref="DirFiles"/> objects. <see cref="DirFiles"/> type is used to specify files
         /// contained by a specific directory with wildcard character pattern.
         /// Files in subdirectories are not included.
         /// <para>
-        /// <see cref="DirFiles"/> type is related to but not identical to <see cref="Files"/>, which defines files of 
+        /// <see cref="DirFiles"/> type is related to but not identical to <see cref="Files"/>, which defines files of
         /// not only a single level directory but all subdirectories as well.
         /// </para>
         /// </summary>
         public DirFiles[] DirFileCollections = new DirFiles[0];
+
         /// <summary>
-        /// Collection of the <see cref="Files"/> objects. <see cref="Files"/> type is used to specify files 
+        /// Collection of the <see cref="Files"/> objects. <see cref="Files"/> type is used to specify files
         /// contained by a specific directory and all subdirectories with wildcard character pattern.
         /// <para>
-        /// <see cref="Files"/> type is related to but not identical to <see cref="DirFiles"/>, which defines only files 
+        /// <see cref="Files"/> type is related to but not identical to <see cref="DirFiles"/>, which defines only files
         /// of a single level directory.
         /// </para>
         /// </summary>
         public Files[] FileCollections = new Files[0];
+
         /// <summary>
-        /// Collection of the contained <see cref="Merge"/> modules. 
+        /// Collection of the contained <see cref="Merge"/> modules.
         /// </summary>
         public Merge[] MergeModules = new Merge[0];
+
         /// <summary>
-        /// Collection of the contained <see cref="ExeFileShortcut"/>s. 
+        /// Collection of the contained <see cref="ExeFileShortcut"/>s.
         /// </summary>
         public ExeFileShortcut[] Shortcuts = new ExeFileShortcut[0];
+
         /// <summary>
         /// <see cref="Feature"></see> the directory is included in.
         /// </summary>
         public Feature Feature;
+
         ///// <summary>
-        ///// Defines the launch <see cref="Condition"/>, which is to be checked during the installation to 
+        ///// Defines the launch <see cref="Condition"/>, which is to be checked during the installation to
         ///// determine if the directory should be installed.
         ///// </summary>
         //public Condition Condition;
@@ -235,7 +251,7 @@ namespace WixSharp
         //bool published;
 
         ///// <summary>
-        ///// Defines if the <see cref="Dir"/> should be public. Public directories (e.g. INSTALL_DIR) can be set from 
+        ///// Defines if the <see cref="Dir"/> should be public. Public directories (e.g. INSTALL_DIR) can be set from
         ///// <c>msiexec.exe</c> command line or <c>setup.ini</c> file. In MSI syntax, public nature of the directory
         ///// is encoded through using only capital characters for directory name.
         ///// </summary>
@@ -314,7 +330,5 @@ namespace WixSharp
             Shortcuts = shortcuts.ToArray();
             MergeModules = mergeModules.ToArray();
         }
-
-
     }
 }

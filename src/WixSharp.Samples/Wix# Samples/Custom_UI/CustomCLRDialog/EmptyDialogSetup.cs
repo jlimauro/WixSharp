@@ -17,6 +17,10 @@ public class EmptyDialogSetup
         project.InjectClrDialog("ShowCustomDialog", Dialogs.InstallDirDlg, Dialogs.VerifyReadyDlg)
                .RemoveDialogsBetween(Dialogs.WelcomeDlg, Dialogs.InstallDirDlg);
 
+        var action = project.Actions.OfType<ManagedAction>().Single();
+
+        action.AddRefAssembly(typeof(ExternalAsm.Utils).Assembly.Location);
+
         Compiler.PreserveTempFiles = true;
         Compiler.BuildMsiCmd(project);
     }

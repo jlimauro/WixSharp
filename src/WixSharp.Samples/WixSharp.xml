@@ -621,49 +621,168 @@
              </example>
         </member>
         <member name="M:WixSharp.CommonTasks.Tasks.ImportRegFile(System.String)">
-            <summary>
-            Imports the reg file.
-            </summary>
-            <param name="regFile">The reg file.</param>
-            <returns></returns>
-            <example>The following is an example of importing registry entries from the *.reg file.
-            <code> 
-            var project = 
-                new Project("MyProduct", 
-                    new Dir(@"%ProgramFiles%\My Company\My Product", 
-                        new File(@"readme.txt")), 
-                    ...
-                    
-            project.RegValues = CommonTasks.Tasks.ImportRegFile("app_settings.reg"); 
+             <summary>
+             Imports the reg file.
+             </summary>
+             <param name="regFile">The reg file.</param>
+             <returns></returns>
+             <example>The following is an example of importing registry entries from the *.reg file.
+             <code>
+             var project =
+                 new Project("MyProduct",
+                     new Dir(@"%ProgramFiles%\My Company\My Product",
+                         new File(@"readme.txt")),
+                     ...
             
-            Compiler.BuildMsi(project);
-            </code>
-            </example>
+             project.RegValues = CommonTasks.Tasks.ImportRegFile("app_settings.reg");
+            
+             Compiler.BuildMsi(project);
+             </code>
+             </example>
         </member>
         <member name="M:WixSharp.CommonTasks.Tasks.ImportRegFile(WixSharp.Project,System.String)">
-            <summary>
-            Imports the reg file. It is nothing else but an extension method version of the 'plain' <see cref="T:WixSharp.CommonTasks.Tasks.ImportRegFile"/>.
-            </summary>
-            <param name="project">The project object.</param>
-            <param name="regFile">The reg file.</param>
-            <returns></returns>
-            <example>The following is an example of importing registry entries from the *.reg file.
-            <code> 
-            var project = 
-                new Project("MyProduct", 
-                    new Dir(@"%ProgramFiles%\My Company\My Product", 
-                        new File(@"readme.txt")), 
-                    ...
-                    
-            project.ImportRegFile("app_settings.reg"); 
+             <summary>
+             Imports the reg file. It is nothing else but an extension method version of the 'plain' <see cref="T:WixSharp.CommonTasks.Tasks.ImportRegFile"/>.
+             </summary>
+             <param name="project">The project object.</param>
+             <param name="regFile">The reg file.</param>
+             <returns></returns>
+             <example>The following is an example of importing registry entries from the *.reg file.
+             <code>
+             var project =
+                 new Project("MyProduct",
+                     new Dir(@"%ProgramFiles%\My Company\My Product",
+                         new File(@"readme.txt")),
+                     ...
             
-            Compiler.BuildMsi(project);
-            </code>
-            </example>
+             project.ImportRegFile("app_settings.reg");
+            
+             Compiler.BuildMsi(project);
+             </code>
+             </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddProperty(WixSharp.Project,WixSharp.Property[])">
+            <summary>
+            Adds the property.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddAction(WixSharp.Project,WixSharp.Action[])">
+            <summary>
+            Adds the action.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddDir(WixSharp.Project,WixSharp.Dir[])">
+            <summary>
+            Adds the dir.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddRegValue(WixSharp.Project,WixSharp.RegValue[])">
+            <summary>
+            Adds the registry value.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddBinary(WixSharp.Project,WixSharp.Binary[])">
+            <summary>
+            Adds the binary.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddEnvironmentVariabl(WixSharp.Project,WixSharp.EnvironmentVariable[])">
+            <summary>
+            Adds the environment variable.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddRefAssembly(WixSharp.ManagedAction,System.String[])">
+            <summary>
+            Adds the assembly reference.
+            </summary>
+            <param name="files">The files.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddAssociation(WixSharp.File,WixSharp.FileAssociation[])">
+            <summary>
+            Adds the file association.
+            </summary>
+            <param name="file">The file.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddShortcut(WixSharp.File,WixSharp.FileShortcut[])">
+            <summary>
+            Adds the shortcut.
+            </summary>
+            <param name="file">The file.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddDir(WixSharp.Dir,WixSharp.Dir[])">
+            <summary>
+            Adds the dir.
+            </summary>
+            <param name="dir">The dir.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddFile(WixSharp.Dir,WixSharp.File[])">
+            <summary>
+            Adds the file.
+            </summary>
+            <param name="dir">The dir.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddShortcut(WixSharp.Dir,WixSharp.ExeFileShortcut[])">
+            <summary>
+            Adds the shortcut.
+            </summary>
+            <param name="dir">The dir.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddMergeModule(WixSharp.Dir,WixSharp.Merge[])">
+            <summary>
+            Adds the merge module.
+            </summary>
+            <param name="dir">The dir.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddFileCollection(WixSharp.Dir,WixSharp.Files[])">
+            <summary>
+            Adds the file collection.
+            </summary>
+            <param name="dir">The dir.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddDirFileCollection(WixSharp.Dir,WixSharp.DirFiles[])">
+            <summary>
+            Adds the dir file collection.
+            </summary>
+            <param name="dir">The dir.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.CommonTasks.Tasks.RemoveDialogsBetween(WixSharp.Project,System.String,System.String)">
             <summary>
-            Removes the dialogs between specified two dialogs. It simply connects 'next' button of the start dialog with the 
+            Removes the dialogs between specified two dialogs. It simply connects 'next' button of the start dialog with the
             'NewDialog' action associated with the end dialog. And vise versa for the 'back' button.
             </summary>
             <param name="project">The project.</param>
@@ -671,7 +790,7 @@
             <param name="end">The end.</param>
             <returns></returns>
             <example>The following is an example of the setup that skips License dialog.
-            <code> 
+            <code>
             project.UI = WUI.WixUI_InstallDir;
             project.RemoveDialogsBetween(Dialogs.WelcomeDlg, Dialogs.InstallDirDlg);
             ...
@@ -690,17 +809,17 @@
              <param name="nextDialog">The next dialog.</param>
              <returns></returns>
              <example>The following is an example of inserting CustomDialog dialog into the UI sequence between MSI dialogs InsallDirDlg and VerifyReadyDlg.
-             <code> 
+             <code>
              public class static Script
              {
                  public static void Main()
                  {
                      var project = new Project("CustomDialogTest");
-                     
+            
                      project.InjectClrDialog("ShowCustomDialog", Dialogs.InstallDirDlg, Dialogs.VerifyReadyDlg);
                      Compiler.BuildMsi(project);
                  }
-                 
+            
                  [CustomAction]
                  public static ActionResult ShowCustomDialog(Session session)
                  {
@@ -719,10 +838,10 @@
         </member>
         <member name="M:WixSharp.CommonTasks.Tasks.SetClrPrerequisite(WixSharp.Project,System.String,System.String)">
             <summary>
-            Binds the LaunchCondition to the automatically created REQUIRED_NET property which is set to the value of the 
+            Binds the LaunchCondition to the automatically created REQUIRED_NET property which is set to the value of the
             Software\Microsoft\NET Framework Setup\NDP\{version}\Install registry entry.
             <para>It is a single step equivalent of the "Wix# Samples\LaunchConditions" sample.</para>
-            <para>Note that the value of the version parameter is a precise sub-key of the corresponding 'Install' registry entry 
+            <para>Note that the value of the version parameter is a precise sub-key of the corresponding 'Install' registry entry
             (e.g. as in 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4.0\Client\Install').</para>
             <para>The typical values are:</para>
             <para>   v2.0.50727</para>
@@ -757,10 +876,10 @@
         </member>
         <member name="M:WixSharp.CommonTasks.Tasks.SetConfigAttribute(System.String,System.String,System.String)">
              <summary>
-             Sets the value of the attribute value in the .NET application configuration file according 
+             Sets the value of the attribute value in the .NET application configuration file according
              the specified XPath expression.
              <para>
-             This simple routine is to be used for the customization of the installed config files 
+             This simple routine is to be used for the customization of the installed config files
              (e.g. in the deferred custom actions).
              </para>
              </summary>
@@ -769,17 +888,17 @@
              <param name="value">The value to be set to the attribute.</param>
             
              <example>The following is an example demonstrates this simple technique:
-             <code> 
+             <code>
               Tasks.SetConfigAttribute(configFile, "//configuration/appSettings/add[@key='AppName']/@value", "My App");
              </code>
-             </example> 
+             </example>
         </member>
         <member name="M:WixSharp.CommonTasks.Tasks.SetConfigAttribute(System.Xml.Linq.XElement,System.String,System.String)">
              <summary>
-             Sets the value of the attribute value in the .NET application configuration file according 
+             Sets the value of the attribute value in the .NET application configuration file according
              the specified XPath expression.
              <para>
-             This simple routine is to be used for the customization of the installed config files 
+             This simple routine is to be used for the customization of the installed config files
              (e.g. in the deferred custom actions).
              </para>
              </summary>
@@ -801,7 +920,7 @@
         <member name="M:WixSharp.CommonTasks.Tasks.InstallService(System.String,System.Boolean)">
             <summary>
             Installs the windows service. It uses InstallUtil.exe to complete the actual installation/uninstallation.
-            During the run for the InstallUtil.exe console window is hidden. /// If any error occurred the console output is captured and embedded into the raised Exception object. 
+            During the run for the InstallUtil.exe console window is hidden. /// If any error occurred the console output is captured and embedded into the raised Exception object.
             </summary>
             <param name="serviceFile">The service file.</param>
             <param name="isInstalling">if set to <c>true</c> [is installing].</param>
@@ -810,8 +929,8 @@
         </member>
         <member name="M:WixSharp.CommonTasks.Tasks.StartService(System.String,System.Boolean)">
             <summary>
-            Starts the windows service. It uses sc.exe to complete the action.  During the action console window is hidden. 
-            If any error occurred the console output is captured and embedded into the raised Exception object. 
+            Starts the windows service. It uses sc.exe to complete the action.  During the action console window is hidden.
+            If any error occurred the console output is captured and embedded into the raised Exception object.
             </summary>
             <param name="service">The service.</param>
             <param name="throwOnError">if set to <c>true</c> [throw on error].</param>
@@ -819,8 +938,8 @@
         </member>
         <member name="M:WixSharp.CommonTasks.Tasks.StopService(System.String,System.Boolean)">
             <summary>
-            Stops the windows service. It uses sc.exe to complete the action.  During the action console window is hidden. 
-            If any error occurred the console output is captured and embedded into the raised Exception object. 
+            Stops the windows service. It uses sc.exe to complete the action.  During the action console window is hidden.
+            If any error occurred the console output is captured and embedded into the raised Exception object.
             </summary>
             <param name="service">The service.</param>
             <param name="throwOnError">if set to <c>true</c> [throw on error].</param>
@@ -4585,6 +4704,21 @@
             String representation of the <c>REMOVE="ALL"</c> condition of the WiX <c>Condition</c>.
             </summary>
         </member>
+        <member name="F:WixSharp.Condition.Net20_Installed">
+            <summary>
+            The .NET2.0 installed. This condition is to be used in Project.SetNetFxPrerequisite.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Condition.Net45_Installed">
+            <summary>
+            The .NET4.5 installed. This condition is to be used in Project.SetNetFxPrerequisite.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Condition.Net30_SP_Installed">
+            <summary>
+            The .NET3.0 SP installed. This condition is to be used in Project.SetNetFxPrerequisite.
+            </summary>
+        </member>
         <member name="M:WixSharp.Condition.Create(System.String)">
             <summary>
             Creates WiX <c>Condition</c> condition from the given string value.
@@ -4604,40 +4738,40 @@
             </example>
         </member>
         <member name="T:WixSharp.Dir">
-            <summary>
-            Defines directory to be installed on target system.
-            <para>
-            Use this class to define file/directory structure of the deployment solution. 
-            </para>
-             You can use predefined Wix# environment constants for well-known installation locations. They are directly mapped 
-             to the corresponding WiX constants:
+             <summary>
+             Defines directory to be installed on target system.
              <para>
-             <para><c>Wix#</c> - <c>WiX</c></para>
-             <para>%WindowsFolder% - [WindowsFolder]</para>
-             <para>%ProgramFiles% - [ProgramFilesFolder]</para>
-             <para>%ProgramMenu% - [ProgramMenuFolder]</para>
-             <para>%AppDataFolder% - [AppDataFolder]</para>
-             <para>%CommonFilesFolder% - [CommonFilesFolder]</para>
-             <para>%LocalAppDataFolder% - [LocalAppDataFolder]</para>
-             <para>%ProgramFiles64Folder% - [ProgramFiles64Folder]</para>
-             <para>%System64Folder% - [System64Folder]</para>
-             <para>%SystemFolder% - [SystemFolder]</para>
-             <para>%TempFolder% - [TempFolder]</para>
-             <para>%Desktop% - [DesktopFolder]</para>
+             Use this class to define file/directory structure of the deployment solution.
              </para>
-            </summary>
-            <example>The following is an example of defining installation directory <c>Progam Files/My Company/My Product</c> 
-            containing a single file <c>MyApp.exe</c> and subdirectory <c>Documentation</c> with <c>UserManual.pdf</c> file.
-            <code>
-            var project = new Project("MyProduct",
-                
-                    new Dir(@"%ProgramFiles%\My Company\My Product",
-                        new File(@"Release\MyApp.exe"),
-                        new Dir("Documentation",
-                            new File(@"Release\UserManual.pdf")),
-                        ...
-            </code>
-            </example>
+              You can use predefined Wix# environment constants for well-known installation locations. They are directly mapped
+              to the corresponding WiX constants:
+              <para>
+              <para><c>Wix#</c> - <c>WiX</c></para>
+              <para>%WindowsFolder% - [WindowsFolder]</para>
+              <para>%ProgramFiles% - [ProgramFilesFolder]</para>
+              <para>%ProgramMenu% - [ProgramMenuFolder]</para>
+              <para>%AppDataFolder% - [AppDataFolder]</para>
+              <para>%CommonFilesFolder% - [CommonFilesFolder]</para>
+              <para>%LocalAppDataFolder% - [LocalAppDataFolder]</para>
+              <para>%ProgramFiles64Folder% - [ProgramFiles64Folder]</para>
+              <para>%System64Folder% - [System64Folder]</para>
+              <para>%SystemFolder% - [SystemFolder]</para>
+              <para>%TempFolder% - [TempFolder]</para>
+              <para>%Desktop% - [DesktopFolder]</para>
+              </para>
+             </summary>
+             <example>The following is an example of defining installation directory <c>Progam Files/My Company/My Product</c>
+             containing a single file <c>MyApp.exe</c> and subdirectory <c>Documentation</c> with <c>UserManual.pdf</c> file.
+             <code>
+             var project = new Project("MyProduct",
+            
+                     new Dir(@"%ProgramFiles%\My Company\My Product",
+                         new File(@"Release\MyApp.exe"),
+                         new Dir("Documentation",
+                             new File(@"Release\UserManual.pdf")),
+                         ...
+             </code>
+             </example>
         </member>
         <member name="M:WixSharp.Dir.#ctor">
             <summary>
@@ -4649,7 +4783,7 @@
             Initializes a new instance of the <see cref="T:WixSharp.Dir"/> class with properties/fields initialized with specified parameters
             </summary>
             <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Dir"/> instance.</param>
-            <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
+            <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must
             be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
             <param name="items">Any <see cref="T:WixSharp.WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         </member>
@@ -4657,7 +4791,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.Dir"/> class with properties/fields initialized with specified parameters
             </summary>
-            <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
+            <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must
             be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
             <param name="items">Any <see cref="T:WixSharp.WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         </member>
@@ -4666,7 +4800,7 @@
             Initializes a new instance of the <see cref="T:WixSharp.Dir"/> class with properties/fields initialized with specified parameters
             </summary>
             <param name="feature"><see cref="F:WixSharp.Dir.Feature"></see> the directory should be included in.</param>
-            <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
+            <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must
             be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
             <param name="items">Any <see cref="T:WixSharp.WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         </member>
@@ -4676,49 +4810,49 @@
             </summary>
             <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Dir"/> instance.</param>
             <param name="feature"><see cref="F:WixSharp.Dir.Feature"></see> the directory should be included in.</param>
-            <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must 
+            <param name="targetPath">The name of the directory. Note if the directory is a root installation directory <c>targetPath</c> must
             be specified as a full path. However if the directory is a nested installation directory the name must be a directory name only.</param>
             <param name="items">Any <see cref="T:WixSharp.WixEntity"/> which can be contained by directory (e.g. file, subdirectory).</param>
         </member>
         <member name="F:WixSharp.Dir.Dirs">
             <summary>
-            Collection of the contained nested <see cref="T:WixSharp.Dir"/>s (subdirectories). 
+            Collection of the contained nested <see cref="T:WixSharp.Dir"/>s (subdirectories).
             </summary>
         </member>
         <member name="F:WixSharp.Dir.Files">
             <summary>
-            Collection of the contained <see cref="T:WixSharp.File"/>s. 
+            Collection of the contained <see cref="T:WixSharp.File"/>s.
             </summary>
         </member>
         <member name="F:WixSharp.Dir.DirFileCollections">
             <summary>
-            Collection of the <see cref="T:WixSharp.DirFiles"/> objects. <see cref="T:WixSharp.DirFiles"/> type is used to specify files 
+            Collection of the <see cref="T:WixSharp.DirFiles"/> objects. <see cref="T:WixSharp.DirFiles"/> type is used to specify files
             contained by a specific directory with wildcard character pattern.
             Files in subdirectories are not included.
             <para>
-            <see cref="T:WixSharp.DirFiles"/> type is related to but not identical to <see cref="F:WixSharp.Dir.Files"/>, which defines files of 
+            <see cref="T:WixSharp.DirFiles"/> type is related to but not identical to <see cref="F:WixSharp.Dir.Files"/>, which defines files of
             not only a single level directory but all subdirectories as well.
             </para>
             </summary>
         </member>
         <member name="F:WixSharp.Dir.FileCollections">
             <summary>
-            Collection of the <see cref="F:WixSharp.Dir.Files"/> objects. <see cref="F:WixSharp.Dir.Files"/> type is used to specify files 
+            Collection of the <see cref="F:WixSharp.Dir.Files"/> objects. <see cref="F:WixSharp.Dir.Files"/> type is used to specify files
             contained by a specific directory and all subdirectories with wildcard character pattern.
             <para>
-            <see cref="F:WixSharp.Dir.Files"/> type is related to but not identical to <see cref="T:WixSharp.DirFiles"/>, which defines only files 
+            <see cref="F:WixSharp.Dir.Files"/> type is related to but not identical to <see cref="T:WixSharp.DirFiles"/>, which defines only files
             of a single level directory.
             </para>
             </summary>
         </member>
         <member name="F:WixSharp.Dir.MergeModules">
             <summary>
-            Collection of the contained <see cref="T:WixSharp.Merge"/> modules. 
+            Collection of the contained <see cref="T:WixSharp.Merge"/> modules.
             </summary>
         </member>
         <member name="F:WixSharp.Dir.Shortcuts">
             <summary>
-            Collection of the contained <see cref="T:WixSharp.ExeFileShortcut"/>s. 
+            Collection of the contained <see cref="T:WixSharp.ExeFileShortcut"/>s.
             </summary>
         </member>
         <member name="F:WixSharp.Dir.Feature">
