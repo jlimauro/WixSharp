@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Security.Principal;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Deployment.WindowsInstaller;
+using WixSharp.CommonTasks;
 
 namespace WixSharp
 {
@@ -30,6 +32,9 @@ namespace WixSharp
 
         bool preprocessed = false;
 
+
+        string thisAsm = typeof(ManagedProject).Assembly.Location;
+
         void Bind<T>(Expression<Func<T>> expression, When when, Step step, bool elevated = false)
         {
             var name = Reflect.NameOf(expression);
@@ -41,18 +46,19 @@ namespace WixSharp
 
                 if (!this.DefaultRefAssemblies.Contains(handlerAsm))
                     this.DefaultRefAssemblies.Add(handlerAsm);
-                string asm = this.GetType().Assembly.Location;
 
                 this.Properties = this.Properties.Add(new Property(name + "_ClientHandlers", GetHandlersInfo(handler as MulticastDelegate)));
                 if (elevated)
-                    this.Actions = this.Actions.Add(new ElevatedManagedAction("WixSharp_" + name + "_Action", asm, Return.check, when, step, Condition.Create("1"))
+                    this.Actions = this.Actions.Add(new ElevatedManagedAction("WixSharp_" + name + "_Action", thisAsm, Return.check, when, step, Condition.Create("1"))
                     {
-                        UsesProperties = name + "_ClientHandlers,WIXSHARP_RUNTIME_DATA",
+                        UsesProperties = name + "_ClientHandlers,WIXSHARP_RUNTIME_DATA;" + DefaultDeferredProperties,
                     });
                 else
-                    this.Actions = this.Actions.Add(new ManagedAction("WixSharp_" + name + "_Action", asm, Return.check, when, step, Condition.Create("1")));
+                    this.Actions = this.Actions.Add(new ManagedAction("WixSharp_" + name + "_Action", thisAsm, Return.check, when, step, Condition.Create("1")));
             }
         }
+
+        public string DefaultDeferredProperties = "INSTALLDIR";
 
         override internal void Preprocess()
         {
@@ -62,10 +68,11 @@ namespace WixSharp
             {
                 preprocessed = true;
 
+                this.AddAction(new ManagedAction("WixSharp_InitRuntime_Action", thisAsm, Return.check, When.Before, Step.AppSearch, Condition.Always));
+
                 Bind(() => Load, When.Before, Step.AppSearch);
                 Bind(() => BeforeInstall, When.Before, Step.InstallFiles);
                 Bind(() => AfterInstall, When.After, Step.InstallFiles, true);
-                //Bind(() => Exit, When.After, Step.InstallFiles);
             }
         }
 
@@ -123,10 +130,7 @@ namespace WixSharp
 
         internal static ActionResult InvokeClientHandlers(Session session, string eventName)
         {
-            var eventArgs = new SetupEventArgs
-            {
-                Session = session
-            };
+            var eventArgs = Convert(session);
 
             try
             {
@@ -142,6 +146,69 @@ namespace WixSharp
             }
             catch { }
             return eventArgs.Result;
+        }
+
+        internal static ActionResult Init(Session session)
+        {
+            var data = new SetupEventArgs.AppData();
+            try
+            {
+                data["Installed"] = session["Installed"];
+                data["REMOVE"] = session["REMOVE"];
+                data["UILevel"] = session["UILevel"];
+                data["MsiWindow"] = GetMsiForegroundWindow().ToString();
+                data["IsMaintenance"] = session.GetMode(InstallRunMode.Maintenance).ToString();
+            }
+            catch (Exception e)
+            {
+                session.Log(e.Message);
+            }
+
+            session["WIXSHARP_RUNTIME_DATA"] = data.ToString();
+
+            return ActionResult.Success;
+        }
+
+        static SetupEventArgs Convert(Session session)
+        {
+            var result = new SetupEventArgs { Session = session };
+            try
+            {
+                string data = session.Property("WIXSHARP_RUNTIME_DATA");
+                result.Data.InitFrom(data);
+            }
+            catch (Exception e)
+            {
+                session.Log(e.Message);
+
+            }
+            return result;
+        }
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 1;
+        const int SW_RESTORE = 9;
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("User32.dll")]
+        static extern int SetForegroundWindow(IntPtr hwnd);
+
+        static IntPtr GetMsiForegroundWindow()
+        {
+            try
+            {
+                var proc = Process.GetProcessesByName("msiexec").Where(p => p.MainWindowHandle != IntPtr.Zero).FirstOrDefault();
+                if (proc != null)
+                {
+                    ShowWindow(proc.MainWindowHandle, SW_RESTORE);
+                    SetForegroundWindow(proc.MainWindowHandle);
+                    return proc.MainWindowHandle;
+                }
+            }
+            catch { }
+            return IntPtr.Zero;
         }
     }
 }

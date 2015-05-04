@@ -3,8 +3,6 @@
 //css_ref System.Xml.dll;
 //css_ref ..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
@@ -16,7 +14,10 @@ public class Script
     static public void Main()
     {
         //NOTE: IT IS STILL A WORK IN PROGRESS FEATURE PREVIEW
-        var project = new ManagedProject("ManagedSetup");
+        var project =
+            new ManagedProject("ManagedSetup",
+                new Dir(@"%ProgramFiles%\My Company\My Product",
+                    new File("readme.txt")));
 
         project.UI = WUI.WixUI_ProgressOnly;
 
@@ -24,42 +25,42 @@ public class Script
         project.BeforeInstall += project_BeforeExecute;
         project.AfterInstall += project_AfterExecute;
 
-        //project.Exit += project_Exit;
-
-        //project.DefaultRefAssemblies.Add(System.Reflection.Assembly.GetExecutingAssembly().Location);
-
 #if vs
         project.OutDir = @"..\..\..\Wix# Samples\Managed Setup".PathGetFullPath();
 #endif
-        //Compiler.PreserveTempFiles = true;
 
-        //System.Diagnostics.Debugger.Launch();
-
-        //Compiler.PreserveTempFiles = true;
         Compiler.BuildMsi(project);
-    }
-
-    static void project_Exit(SetupEventArgs e)
-    {
-        MessageBox.Show("Exit", GetContext(e));
     }
 
     static void project_Load(SetupEventArgs e)
     {
-        IntPtr msiWindow = IntPtr.Zero;
-        try
-        {
-            msiWindow = FindWindow(null, "ManagedSetup");
-            msiWindow = GetMsiForegroundWindow();
-        }
-        catch { }
+        ManagedUI.HideWindow(e.MsiWindow);
+        MessageBox.Show(e.ToString(), "Load");
+    }
 
-        ShowWindow(msiWindow, SW_HIDE);
-       
-        e.Session["WIXSHARP_RUNTIME_DATA"] =
-            string.Format("Installed: {0}\nREMOVE: {1}\nUILevel: {2}\nMsiWindow: {3}",
-            e.Session["Installed"], e.Session["REMOVE"], e.Session["UILevel"], msiWindow);
-        MessageBox.Show(GetContext(e), "Load");
+    static void project_BeforeExecute(SetupEventArgs e)
+    {
+        MessageBox.Show(e.ToString(), "BeforeInstall");
+        ManagedUI.ShowWindow(e.MsiWindow);
+    }
+
+    static void project_AfterExecute(SetupEventArgs e)
+    {
+        ManagedUI.HideWindow(e.MsiWindow);
+        MessageBox.Show(e.ToString(), "AfterExecute");
+    }
+}
+
+public class ManagedUI
+{
+    public static void HideWindow(IntPtr wnd)
+    {
+        ShowWindow(wnd, SW_HIDE);
+    }
+   
+    public static void ShowWindow(IntPtr wnd)
+    {
+        ShowWindow(wnd, SW_SHOW);
     }
 
     const int SW_HIDE = 0;
@@ -67,59 +68,4 @@ public class Script
 
     [DllImport("user32.dll")]
     public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-    static IntPtr GetMsiWindow(SetupEventArgs e)
-    {
-        try
-        {
-            var value = e.Session .Property("WIXSHARP_RUNTIME_DATA")
-                                  .Split('\n')
-                                  .First(x => x.StartsWith("MsiWindow: "))
-                                  .Replace("MsiWindow: ", "");
-            return (IntPtr)int.Parse(value);
-        }
-        catch { }
-        return IntPtr.Zero;
-    }
-
-    static void project_BeforeExecute(SetupEventArgs e)
-    {
-        MessageBox.Show(GetContext(e), "BeforeInstall");
-        ShowWindow(GetMsiWindow(e), SW_SHOW);
-    }
-
-    static void project_AfterExecute(SetupEventArgs e)
-    {
-        ShowWindow(GetMsiWindow(e), SW_HIDE);
-        MessageBox.Show(GetContext(e), "AfterExecute");
-    }
-
-    static string GetContext(SetupEventArgs e)
-    {
-        var result = new StringBuilder();
-
-        if (WindowsIdentity.GetCurrent().IsAdmin())
-            result.AppendLine("Executing as 'Admin User'");
-        else
-            result.AppendLine("Executing as 'Normal User'");
-
-        result.AppendLine(e.Session.Property("WIXSHARP_RUNTIME_DATA"));
-        return result.ToString();
-    }
-
-    [DllImport("user32.dll", SetLastError = true)]
-    static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-    static IntPtr GetMsiForegroundWindow()
-    {
-        var proc = Process.GetProcessesByName("msiexec").Where(p => p.MainWindowHandle != IntPtr.Zero).FirstOrDefault();
-        if (proc != null)
-        {
-            Win32.ShowWindow(proc.MainWindowHandle, Win32.SW_RESTORE);
-            Win32.SetForegroundWindow(proc.MainWindowHandle);
-            return proc.MainWindowHandle;
-        }
-        else return IntPtr.Zero;
-    }
 }
-

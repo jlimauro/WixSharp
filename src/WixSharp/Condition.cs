@@ -144,6 +144,10 @@ namespace WixSharp
         /// String representation of the <c>Installed</c> condition of the WiX <c>Condition</c>.
         /// </summary>
         public readonly static Condition Installed = new Condition(" (Installed) ");
+        
+        
+        public readonly static Condition Always = new Condition(" (1) ");
+
         /// <summary>
         /// String representation of the <c>NOT (REMOVE="ALL")</c> condition of the WiX <c>Condition</c>.
         /// </summary>

@@ -1585,12 +1585,14 @@
             definition are the same as for <see cref="P:WixSharp.WixEntity.AttributesDefinition"/>.</param>
             <returns></returns>
         </member>
-        <member name="M:WixSharp.Extensions.ToDictionary(System.String)">
+        <member name="M:WixSharp.Extensions.ToDictionary(System.String,System.Char,System.Char)">
             <summary>
             Converts key/value map into the dictionary. The map entry format
             is as follows: &lt;key&gt;=&lt;value&gt;[;&lt;key&gt;=&lt;value&gt;].
             </summary>
             <param name="map">The map.</param>
+            <param name="itemDelimiter">The item delimiter.</param>
+            <param name="valueDelimiter">The value delimiter.</param>
             <returns></returns>
             <exception cref="T:System.Exception">Invalid map entry</exception>
         </member>
@@ -1704,6 +1706,20 @@
             </summary>
             <param name="path">The Wix# directory path.</param>
             <returns>Replacement/conversion result.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToInt(System.String)">
+            <summary>
+            Safely converts string to int.
+            </summary>
+            <param name="value">The value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToIntPtr(System.String)">
+            <summary>
+            Safely converts string to IntPtr.
+            </summary>
+            <param name="value">The value.</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.Extensions.SameAs(System.String,System.String,System.Boolean)">
             <summary>
@@ -3970,6 +3986,59 @@
             <c>WixUI_[Language].wxl</c>.
             </para>
             </summary>
+        </member>
+        <member name="T:WixSharp.SetupEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WixSharp.SetupEventArgs.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.SetupEventArgs"/> class.
+            </summary>
+        </member>
+        <member name="M:WixSharp.SetupEventArgs.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.Session">
+            <summary>
+            Gets or sets the session.
+            </summary>
+            <value>
+            The session.
+            </value>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.Result">
+            <summary>
+            Gets or sets the result.
+            </summary>
+            <value>
+            The result.
+            </value>
+        </member>
+        <member name="T:WixSharp.SetupEventArgs.AppData">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WixSharp.SetupEventArgs.AppData.InitFrom(System.String)">
+            <summary>
+            Initializes from.
+            </summary>
+            <param name="data">The data.</param>
+        </member>
+        <member name="M:WixSharp.SetupEventArgs.AppData.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
         </member>
         <member name="T:WixSharp.Merge">
              <summary>

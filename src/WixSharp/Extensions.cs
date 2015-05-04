@@ -89,27 +89,33 @@ namespace WixSharp
         /// is as follows: &lt;key&gt;=&lt;value&gt;[;&lt;key&gt;=&lt;value&gt;].
         /// </summary>
         /// <param name="map">The map.</param>
+        /// <param name="itemDelimiter">The item delimiter.</param>
+        /// <param name="valueDelimiter">The value delimiter.</param>
         /// <returns></returns>
         /// <exception cref="System.Exception">Invalid map entry</exception>
-        public static Dictionary<string, string> ToDictionary(this string map)
+        public static Dictionary<string, string> ToDictionary(this string map, char itemDelimiter = ';', char valueDelimiter = '=')
         {
             var retval = new Dictionary<string, string>();
             if (!map.IsEmpty())
             {
-                foreach (string pair in map.Trim().Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
+                foreach (string pair in map.Trim().Split(new[] { itemDelimiter }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    try
-                    {
-                        string[] tokens = pair.Split("=".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                        string name = tokens[0].Trim();
-                        string value = tokens[1].Trim();
+                    if (pair.IsNotEmpty())
+                        try
+                        {
+                            string[] tokens = pair.Split(new[] { valueDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+                            string name = tokens[0].Trim();
 
-                        retval[name] = value;
-                    }
-                    catch (Exception e)
-                    {
-                        throw new Exception("Invalid map entry", e);
-                    }
+                            string value = "";
+                            if (tokens.Count() > 1)
+                                value = tokens[1].Trim();
+
+                            retval[name] = value;
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception("Invalid map entry", e);
+                        }
                 }
 
             }
@@ -304,6 +310,30 @@ namespace WixSharp
         public static string ToDirID(this string path)
         {
             return path.Expand();
+        }
+
+        /// <summary>
+        /// Safely converts string to int.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public static int ToInt(this string value)
+        {
+            int result = 0;
+            int.TryParse(value, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Safely converts string to IntPtr.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public static IntPtr ToIntPtr(this string value)
+        {
+            int result = 0;
+            int.TryParse(value, out result);
+            return (IntPtr)result;
         }
 
         /// <summary>
