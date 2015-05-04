@@ -17,12 +17,15 @@ public class EmptyDialogSetup
         project.InjectClrDialog("ShowCustomDialog", Dialogs.InstallDirDlg, Dialogs.VerifyReadyDlg)
                .RemoveDialogsBetween(Dialogs.WelcomeDlg, Dialogs.InstallDirDlg);
 
-        var action = project.Actions.OfType<ManagedAction>().Single();
+        project.Actions.OfType<ManagedAction>()
+                       .Single()
+                       .AddRefAssembly(typeof(ExternalAsm.Utils).Assembly.Location);
 
-        action.AddRefAssembly(typeof(ExternalAsm.Utils).Assembly.Location);
+        //or as the next commented code line
+        //project.DefaultRefAssemblies.Add(typeof(ExternalAsm.Utils).Assembly.Location);
 
         Compiler.PreserveTempFiles = true;
-        Compiler.BuildMsiCmd(project);
+        Compiler.BuildMsi(project);
     }
 
     [CustomAction]
