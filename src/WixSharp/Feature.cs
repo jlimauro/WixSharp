@@ -227,5 +227,16 @@ namespace WixSharp
         /// Child <see cref="Feature"/>. To be added in the nested Features scenarios.
         /// </summary>
         public List<Feature> Children = new List<Feature>();
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

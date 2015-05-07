@@ -161,6 +161,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductInfo", "WixSharp.Sam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Managed Setup", "WixSharp.Samples\VSProjects\Managed Setup.csproj", "{3DCA5C64-EA28-4314-8E45-BE9DE119987E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsumingMergeModule", "WixSharp.Samples\VSProjects\ConsumingMergeModule.csproj", "{1BFA0BDE-1695-413A-97B7-DB8C126833EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -803,6 +805,16 @@ Global
 		{3DCA5C64-EA28-4314-8E45-BE9DE119987E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3DCA5C64-EA28-4314-8E45-BE9DE119987E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3DCA5C64-EA28-4314-8E45-BE9DE119987E}.Release|x86.ActiveCfg = Release|Any CPU
+		{1BFA0BDE-1695-413A-97B7-DB8C126833EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BFA0BDE-1695-413A-97B7-DB8C126833EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BFA0BDE-1695-413A-97B7-DB8C126833EF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1BFA0BDE-1695-413A-97B7-DB8C126833EF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1BFA0BDE-1695-413A-97B7-DB8C126833EF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1BFA0BDE-1695-413A-97B7-DB8C126833EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BFA0BDE-1695-413A-97B7-DB8C126833EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BFA0BDE-1695-413A-97B7-DB8C126833EF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1BFA0BDE-1695-413A-97B7-DB8C126833EF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1BFA0BDE-1695-413A-97B7-DB8C126833EF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -867,5 +879,6 @@ Global
 		{B316429C-05F6-44C3-9397-B6A24FD94A3D} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{5A93470B-B98C-4A8F-A2A3-CE3ACA900EA4} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{3DCA5C64-EA28-4314-8E45-BE9DE119987E} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
+		{1BFA0BDE-1695-413A-97B7-DB8C126833EF} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 	EndGlobalSection
 EndGlobal

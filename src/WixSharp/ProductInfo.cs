@@ -67,7 +67,7 @@ namespace WixSharp
         /// <summary>
         /// Prevents display of a Change button for the product in Add/Remove Programs in the Control Panel. Note  This only affects the display in the ARP. The Windows Installer is still capable of repairing, installing-on-demand, and uninstalling applications through a command line or the programming interface.
         /// </summary>
-        [ArpPropertyAttribute("ARPNOMODIFY", SetAsAction=true)]
+        [ArpPropertyAttribute("ARPNOMODIFY", SetAsAction = true)]
         public bool? NoModify { get; set; }
         /// <summary>
         /// Prevents display of a Remove button for the product in the Add/Remove Programs in the Control Panel. The product can still be removed by selecting the Change button if the installation package has been authored with a user interface that provides product removal as an option. Note  This only affects the display in the ARP. The Windows Installer is still capable of repairing, installing-on-demand, and uninstalling applications through a command line or the programming interface.
@@ -115,30 +115,39 @@ namespace WixSharp
             {
                 object value = prop.GetValue(this, new object[0]);
 
-                //value = prop.Name;
                 if (value != null)
                 {
                     var attr = (ArpPropertyAttribute)prop.GetCustomAttributes(typeof(ArpPropertyAttribute), false).FirstOrDefault();
                     if (attr != null)
                     {
+                        bool propertyExists = project.Properties.Any(a => a.Name == attr.Name);
+                        bool actionExists = project.Actions.OfType<SetPropertyAction>().Any(a => a.PropName == attr.Name);
+
                         if (attr.Name == "ARPPRODUCTICON")
                         {
-                            properties.Add(new Property(attr.Name, "app_icon.ico") { AttributesDefinition = "Icon:Id=app_icon.ico;Icon:SourceFile=" + value });
+                            if (!propertyExists)
+                                properties.Add(new Property(attr.Name, "app_icon.ico") { AttributesDefinition = "Icon:Id=app_icon.ico;Icon:SourceFile=" + value });
                         }
                         else
                         {
                             if (attr.SetAsAction)
-                                actions.Add(new SetPropertyAction(new Id("Set_" + attr.Name), attr.Name, value.ToString()));
+                            {
+                                if (!actionExists)
+                                    actions.Add(new SetPropertyAction(new Id("Set_" + attr.Name), attr.Name, value.ToString()));
+                            }
                             else
-                                properties.Add(new Property(attr.Name, value.ToString()));
+                            {
+                                if (!propertyExists)
+                                    properties.Add(new Property(attr.Name, value.ToString()));
+                            }
                         }
                     }
 
                 }
             }
 
-           project.Properties = project.Properties.AddRange(properties);
-           project.Actions = project.Actions.AddRange(actions);
+            project.Properties = project.Properties.AddRange(properties);
+            project.Actions = project.Actions.AddRange(actions);
         }
 
         class ArpPropertyAttribute : Attribute

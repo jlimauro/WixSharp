@@ -164,5 +164,16 @@ namespace WixSharp
         /// The initial value of the property.
         /// </summary>
         public string Value = "";
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

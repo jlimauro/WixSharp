@@ -167,5 +167,16 @@ namespace WixSharp
         /// The sequence number for this action. Mutually exclusive with Before, After, and OnExit of <see cref="When"/> field.
         /// </summary>
         public int? SequenceNumber;
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

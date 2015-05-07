@@ -30,6 +30,7 @@ namespace WixSharp
 
 
         public bool IsElevated { get { return WindowsIdentity.GetCurrent().IsAdmin(); } }
+        public bool IsInstalled { get { return Data["Installed"].IsNotEmpty(); } }
 
         string installDir;
 
