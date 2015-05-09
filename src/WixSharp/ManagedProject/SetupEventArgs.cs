@@ -12,6 +12,13 @@ namespace WixSharp
     /// </summary>
     public class SetupEventArgs
     {
+        public enum SetupType
+        {
+            Installing,
+            Reparing,
+            Uninstalling,
+            Unknown
+        }
         /// <summary>
         /// Gets or sets the session.
         /// </summary>
@@ -31,7 +38,22 @@ namespace WixSharp
 
         public bool IsElevated { get { return WindowsIdentity.GetCurrent().IsAdmin(); } }
         public bool IsInstalled { get { return Data["Installed"].IsNotEmpty(); } }
+        public bool IsMaintenance { get { return Data["IsMaintenance"] == true.ToString(); } }
 
+        public bool IsInstalling { get { return IsInstalled && !IsMaintenance; } }
+        public bool IsReparing { get { return IsInstalled && !IsMaintenance; } }
+        public bool IsUninstalling { get { return Data["REMOVE"] == "ALL"; } }
+
+        public SetupType Type
+        {
+            get
+            {
+                if(IsInstalling) return SetupType.Installing;
+                if(IsReparing) return SetupType.Reparing;
+                if(IsUninstalling) return SetupType.Uninstalling;
+                return SetupType.Unknown;
+            }
+        }
         string installDir;
 
         public string InstallDir
@@ -40,10 +62,11 @@ namespace WixSharp
             set { Session["INSTALLDIR"] = value; }
         }
 
-        bool isElevated;
-        
+        // bool isElevated;
+
         public IntPtr MsiWindow { get { return Data["MsiWindow"].ToIntPtr(); } }
 
+        //see ManagedProject.Init(Session session) for the list of Data embedded properties 
         public AppData Data { get; set; }
 
         /// <summary>
@@ -90,7 +113,11 @@ namespace WixSharp
         /// </returns>
         public override string ToString()
         {
-            return Data.ToString() + "\nINSTALLDIR=" + InstallDir + "\nIsElevated=" + IsElevated;
+            return Data.ToString() + 
+                "\nINSTALLDIR=" + InstallDir + 
+                "\nIsElevated=" + IsElevated +
+                "\nIsInstalling=" + IsInstalling +
+                "\nIsInstalling=" + IsReparing;
         }
     }
 

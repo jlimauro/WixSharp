@@ -153,6 +153,17 @@ namespace WixSharp
 
         internal virtual void Preprocess()
         {
+            var managedActions = this.Actions.OfType<ManagedAction>()
+                                             .Select(x => new { Action = x, Asm = x.ActionAssembly})
+                                             .GroupBy(x=>x.Asm)
+                                             .ToDictionary(x=>x.Key);
+            
+            foreach(var uniqueAsm in managedActions.Keys)
+            {
+                var actions = managedActions[uniqueAsm].Select(x=>x.Action).ToArray();
+                var refAsms = actions.SelectMany(a=>a.RefAssemblies).Distinct().ToArray();
+                actions.ForEach(a=>a.RefAssemblies = refAsms);
+            }
         }
 
         string sourceBaseDir = "";

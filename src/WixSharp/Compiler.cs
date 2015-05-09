@@ -56,6 +56,9 @@ namespace WixSharp
         /// </summary>
         //public bool GenerateImplicitDirs = true;
         //public bool GenerateSubDirsForComplexPaths = true; //Generate MyCompany and MyProduct directories for new Dir(%ProgramFiles%\My Company\My Product"...
+
+        //it is important to have the ID as public (upper case). Otherwise WiX doesn't produce correct MSI
+        //Issue #35: Absolute path as INSTALLDIR doesn't work correctly with Files("*.*")
         public string InstallDirDefaultId = "INSTALLDIR";
     }
 
@@ -1453,14 +1456,14 @@ namespace WixSharp
 
             Dir[] wDirs = wProject.Dirs;
 
-            //auto-assign INSTALLDIR id for installation directory (the first directory)
+            //auto-assign INSTALLDIR id for installation directory (the first directory that has multiple items)
             if (wDirs.Count() != 0)
             {
                 Dir firstDirWithItems = wDirs.First();
 
                 string logicalPath = firstDirWithItems.Name;
                 while (firstDirWithItems.Shortcuts.Count() == 0 &&
-                       firstDirWithItems.Dirs.Count() != 0 &&
+                       firstDirWithItems.Dirs.Count() == 1 &&
                        firstDirWithItems.Files.Count() == 0)
                 {
                     firstDirWithItems = firstDirWithItems.Dirs.First();
@@ -1816,9 +1819,16 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Processes the custom actions.
+        /// </summary>
+        /// <param name="wProject">The w project.</param>
+        /// <param name="product">The product.</param>
+        /// <exception cref="System.Exception">Step.PreviousAction is specified for the very first 'Custom Action'.\nThere cannot be any previous action as it is the very first one in the sequence.</exception>
         static void ProcessCustomActions(Project wProject, XElement product)
         {
             string lastActionName = null;
+
             foreach (Action wAction in wProject.Actions)
             {
                 string step = wAction.Step.ToString();

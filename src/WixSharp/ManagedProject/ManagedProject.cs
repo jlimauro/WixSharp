@@ -32,20 +32,20 @@ namespace WixSharp
 
         bool preprocessed = false;
 
-
         string thisAsm = typeof(ManagedProject).Assembly.Location;
 
         void Bind<T>(Expression<Func<T>> expression, When when, Step step, bool elevated = false)
         {
             var name = Reflect.NameOf(expression);
-            var handler = expression.Compile()();
+            var handler = expression.Compile()() as Delegate;
 
             if (handler != null)
             {
-                var handlerAsm = (handler as Delegate).Method.DeclaringType.Assembly.Location;
-
-                if (!this.DefaultRefAssemblies.Contains(handlerAsm))
-                    this.DefaultRefAssemblies.Add(handlerAsm);
+                foreach (string handlerAsm in handler.GetInvocationList().Select(x => x.Method.DeclaringType.Assembly.Location))
+                {
+                    if (!this.DefaultRefAssemblies.Contains(handlerAsm))
+                        this.DefaultRefAssemblies.Add(handlerAsm);
+                }
 
                 this.Properties = this.Properties.Add(new Property(name + "_ClientHandlers", GetHandlersInfo(handler as MulticastDelegate)));
                 if (elevated)

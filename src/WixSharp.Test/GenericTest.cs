@@ -8,7 +8,6 @@ using Xunit;
 
 namespace WixSharp.Test
 {
-    //none of the existing UnitTests are migrated yet from the old codebase
     public class GenericTest
     {
         [Fact]

@@ -4540,6 +4540,14 @@
             Defines if license file can be have non RTF extension.
             </summary>
         </member>
+        <member name="M:WixSharp.Compiler.ProcessCustomActions(WixSharp.Project,System.Xml.Linq.XElement)">
+            <summary>
+            Processes the custom actions.
+            </summary>
+            <param name="wProject">The w project.</param>
+            <param name="product">The product.</param>
+            <exception cref="T:System.Exception">Step.PreviousAction is specified for the very first 'Custom Action'.\nThere cannot be any previous action as it is the very first one in the sequence.</exception>
+        </member>
         <member name="F:WixSharp.Compiler.IgnoreClientAssemblyPDB">
             <summary>
             Flag indicating whether to include PDB file of the assembly implementing ManagedCustomAction into MSI.  Default value is <c>False</c>.
