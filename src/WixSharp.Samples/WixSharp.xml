@@ -494,9 +494,9 @@
             </summary>
         </member>
         <member name="T:WixSharp.CommonTasks.Tasks">
-             <summary>
+            <summary>
             
-             </summary>
+            </summary>
         </member>
         <member name="M:WixSharp.CommonTasks.Tasks.BuildBootstrapper(System.String,System.String,System.String,System.String,System.Boolean,System.String)">
              <summary>
@@ -721,6 +721,7 @@
             <summary>
             Adds the assembly reference.
             </summary>
+            <param name="action">The action.</param>
             <param name="files">The files.</param>
             <returns></returns>
         </member>
@@ -1548,6 +1549,13 @@
             
             </summary>
         </member>
+        <member name="M:WixSharp.Extensions.IsAdmin(System.Security.Principal.WindowsIdentity)">
+            <summary>
+            Determines whether the current user is administrator.
+            </summary>
+            <param name="identity">The identity.</param>
+            <returns></returns>
+        </member>
         <member name="F:WixSharp.Extensions.WixScalingFactor">
             <summary>
             The WiX UI scaling factor.
@@ -1715,11 +1723,12 @@
             <param name="path">The Wix# directory path.</param>
             <returns>Replacement/conversion result.</returns>
         </member>
-        <member name="M:WixSharp.Extensions.ToInt(System.String)">
+        <member name="M:WixSharp.Extensions.ToInt(System.String,System.Int32)">
             <summary>
             Safely converts string to int.
             </summary>
             <param name="value">The value.</param>
+            <param name="defaultValue">The default value.</param>
             <returns></returns>
         </member>
         <member name="M:WixSharp.Extensions.ToIntPtr(System.String)">
@@ -1958,6 +1967,7 @@
             Adds/combines given <see cref="T:System.Array"/> object with the specified item.
             </summary>
             <typeparam name="T1">The type of the elements of <c>obj</c>.</typeparam>
+            <typeparam name="T2">The type of the elements of the items being added.</typeparam>
             <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
             <param name="item">The item to be added.</param>
             <returns>Combined <see cref="T:System.Array"/> object.</returns>
@@ -1966,7 +1976,8 @@
             <summary>
             Adds/combines given <see cref="T:System.Array"/> object with the specified items.
             </summary>
-            <typeparam name="T">The type of the elements of <c>obj</c>.</typeparam>
+            <typeparam name="T1">The type of the elements of <c>obj</c>.</typeparam>
+            <typeparam name="T2">The type of the elements of the items being added.</typeparam>
             <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
             <param name="items">The items to be added.</param>
             <returns>Combined <see cref="T:System.Array"/> object.</returns>
@@ -2006,6 +2017,14 @@
             <param name="session">The session.</param>
             <param name="name">The name.</param>
             <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.SaveBinary(Microsoft.Deployment.WindowsInstaller.Session,System.String,System.String)">
+            <summary>
+            Saves the binary (from the Binary table) ito the file.
+            </summary>
+            <param name="session">The session.</param>
+            <param name="binary">The binary.</param>
+            <param name="file">The file.</param>
         </member>
         <member name="M:WixSharp.Extensions.HandleErrors(Microsoft.Deployment.WindowsInstaller.Session,System.Action)">
             <summary>
@@ -3577,6 +3596,44 @@
             The message to be displayed during the installation if <see cref="T:WixSharp.LaunchCondition"/> evaluated as <c>False</c>.
             </summary>
         </member>
+        <member name="T:WixSharp.ManagedProjectActions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WixSharp.ManagedProjectActions.WixSharp_InitRuntime_Action(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Internal ManagedProject action. It must be public for the DTF accessibility but it is not to be used by the user/developer. 
+            </summary>
+            <param name="session">The session.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.ManagedProjectActions.WixSharp_Load_Action(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Internal ManagedProject action. It must be public for the DTF accessibility but it is not to be used by the user/developer. 
+            </summary>
+            <param name="session">The session.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.ManagedProjectActions.WixSharp_BeforeInstall_Action(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Internal ManagedProject action. It must be public for the DTF accessibility but it is not to be used by the user/developer. 
+            </summary>
+            <param name="session">The session.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.ManagedProjectActions.WixSharp_AfterInstall_Action(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Internal ManagedProject action. It must be public for the DTF accessibility but it is not to be used by the user/developer. 
+            </summary>
+            <param name="session">The session.</param>
+            <returns></returns>
+        </member>
+        <member name="T:WixSharp.ManagedProject">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:WixSharp.Project">
             <summary>
             Represents Wix# project. This class defines the WiX/MSI entities and their relationships.
@@ -3995,10 +4052,49 @@
             </para>
             </summary>
         </member>
-        <member name="T:WixSharp.SetupEventArgs">
+        <member name="M:WixSharp.ManagedProject.#ctor">
             <summary>
-            
+            Initializes a new instance of the <see cref="T:WixSharp.ManagedProject"/> class.
             </summary>
+        </member>
+        <member name="M:WixSharp.ManagedProject.#ctor(System.String,WixSharp.WixObject[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.ManagedProject"/> class.
+            </summary>
+            <param name="name">The name of the project. Typically it is the name of the product to be installed.</param>
+            <param name="items">The project installable items (e.g. directories, files, registrty keys, Custom Actions).</param>
+        </member>
+        <member name="F:WixSharp.ManagedProject.DefaultDeferredProperties">
+            <summary>
+            The default properties mapped for use with the deferred custom actions. See <see cref="F:WixSharp.ManagedAction.UsesProperties"/> for the details.
+            <para>The default value is "INSTALLDIR,UILevel"</para>
+            </summary>
+        </member>
+        <member name="E:WixSharp.ManagedProject.Load">
+            <summary>
+            Occurs before AppSearch standard action.
+            </summary>
+        </member>
+        <member name="E:WixSharp.ManagedProject.BeforeInstall">
+            <summary>
+            Occurs before InstallFiles standard action.
+            </summary>
+        </member>
+        <member name="E:WixSharp.ManagedProject.AfterInstall">
+            <summary>
+            Occurs after InstallFiles standard action. The event is fired from the elevated execution.
+            </summary>
+        </member>
+        <member name="T:WixSharp.ManagedProject.SetupEventHandler">
+            <summary>
+            Event handler of the ManagedSetup for the MSI runtime events.
+            </summary>
+            <param name="e">The <see cref="T:WixSharp.SetupEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="T:WixSharp.SetupEventArgs">
+             <summary>
+            
+             </summary>
         </member>
         <member name="M:WixSharp.SetupEventArgs.#ctor">
             <summary>
@@ -4029,10 +4125,123 @@
             The result.
             </value>
         </member>
-        <member name="T:WixSharp.SetupEventArgs.AppData">
+        <member name="P:WixSharp.SetupEventArgs.UILevel">
+            <summary>
+            Gets the UIlevel.
+            </summary>
+            <value>
+            The UI level.
+            </value>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.IsElevated">
+            <summary>
+            Gets a value indicating whether the event handler is executed from the elevated context.
+            </summary>
+            <value>
+            <c>true</c> if the execution context is elevated; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.IsInstalled">
+            <summary>
+            Gets a value indicating whether the product is installed.
+            </summary>
+            <value>
+            <c>true</c> if the product is installed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.IsMaintenance">
+            <summary>
+            Gets a value indicating whether the setup is executed is in the maintenance mode.
+            </summary>
+            <value>
+            <c>true</c> if this mode is a maintenance mode; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.IsInstalling">
+            <summary>
+            Gets a value indicating whether the product is being installed.
+            </summary>
+            <value>
+            <c>true</c> if installing; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.IsReparing">
+            <summary>
+            Gets a value indicating whether the product is being repared.
+            </summary>
+            <value>
+            <c>true</c> if reparing; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.IsUninstalling">
+            <summary>
+            Gets a value indicating whether the product is being uninstalled.
+            </summary>
+            <value>
+            <c>true</c> if uninstalling; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.Mode">
+            <summary>
+            Gets the setup mode.
+            </summary>
+            <value>
+            The mode.
+            </value>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.InstallDir">
+            <summary>
+            Gets or sets the install directory.
+            </summary>
+            <value>
+            The install dir.
+            </value>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.MsiWindow">
+            <summary>
+            Gets the msi window.
+            </summary>
+            <value>
+            The msi window.
+            </value>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.Data">
+            <summary>
+            Gets or sets the Data.
+            </summary>
+            <value>
+            The data.
+            </value>
+        </member>
+        <member name="T:WixSharp.SetupEventArgs.SetupMode">
             <summary>
             
             </summary>
+        </member>
+        <member name="F:WixSharp.SetupEventArgs.SetupMode.Installing">
+            <summary>
+            The installing mode
+            </summary>
+        </member>
+        <member name="F:WixSharp.SetupEventArgs.SetupMode.Reparing">
+            <summary>
+            The reparing mode
+            </summary>
+        </member>
+        <member name="F:WixSharp.SetupEventArgs.SetupMode.Uninstalling">
+            <summary>
+            The uninstalling mode
+            </summary>
+        </member>
+        <member name="F:WixSharp.SetupEventArgs.SetupMode.Unknown">
+            <summary>
+            The unknown mode
+            </summary>
+        </member>
+        <member name="T:WixSharp.SetupEventArgs.AppData">
+             <summary>
+            Class that encapsulated parsing of the CustomActionData content
+             </summary>
         </member>
         <member name="M:WixSharp.SetupEventArgs.AppData.InitFrom(System.String)">
             <summary>
@@ -4767,6 +4976,11 @@
         <member name="F:WixSharp.Condition.Installed">
             <summary>
             String representation of the <c>Installed</c> condition of the WiX <c>Condition</c>.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Condition.Always">
+            <summary>
+            String representation of "always true" condition of the WiX <c>Condition</c>.
             </summary>
         </member>
         <member name="F:WixSharp.Condition.NOT_BeingRemoved">

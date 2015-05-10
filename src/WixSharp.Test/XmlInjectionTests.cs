@@ -48,7 +48,7 @@ namespace WixSharp.Test
                     new Dir(@"Docs\Manual",
                         new File(@"Files\Docs\Manual.txt"))));
 
-            project.AddRemoveProgramsIcon = TestData.Path(@"Files\app_icon.ico");
+            project.ControlPanelInfo.ProductIcon = TestData.Path(@"Files\app_icon.ico");
             project.Version = new Version("2015.0.41.0");
             project.SourceBaseDir = TestData.Path();
 

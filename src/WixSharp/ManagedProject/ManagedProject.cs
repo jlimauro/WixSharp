@@ -10,25 +10,48 @@ using WixSharp.CommonTasks;
 
 namespace WixSharp
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ManagedProject : Project
     {
         //some materials to consider: http://cpiekarski.com/2012/05/18/wix-custom-action-sequencing/
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ManagedProject"/> class.
+        /// </summary>
         public ManagedProject()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ManagedProject"/> class.
+        /// </summary>
+        /// <param name="name">The name of the project. Typically it is the name of the product to be installed.</param>
+        /// <param name="items">The project installable items (e.g. directories, files, registrty keys, Custom Actions).</param>
         public ManagedProject(string name, params WixObject[] items)
             : base(name, items)
         {
         }
 
+        /// <summary>
+        /// Event handler of the ManagedSetup for the MSI runtime events.
+        /// </summary>
+        /// <param name="e">The <see cref="SetupEventArgs"/> instance containing the event data.</param>
         public delegate void SetupEventHandler(SetupEventArgs e);
 
+        /// <summary>
+        /// Occurs before AppSearch standard action.
+        /// </summary>
         public event SetupEventHandler Load;
+        /// <summary>
+        /// Occurs before InstallFiles standard action.
+        /// </summary>
         public event SetupEventHandler BeforeInstall;
+        /// <summary>
+        /// Occurs after InstallFiles standard action. The event is fired from the elevated execution.
+        /// </summary>
         public event SetupEventHandler AfterInstall;
-        //public event SetupEventHandler Exit;
 
         bool preprocessed = false;
 
@@ -58,6 +81,10 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// The default properties mapped for use with the deferred custom actions. See <see cref="ManagedAction.UsesProperties"/> for the details.
+        /// <para>The default value is "INSTALLDIR,UILevel"</para>
+        /// </summary>
         public string DefaultDeferredProperties = "INSTALLDIR";
 
         override internal void Preprocess()
@@ -100,8 +127,9 @@ namespace WixSharp
             {
                 GetHandler(info);
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                //may need to do extra logging; not important for now
                 throw;
             }
         }

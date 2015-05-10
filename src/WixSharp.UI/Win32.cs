@@ -6,12 +6,17 @@ using System.Runtime.InteropServices;
 
 namespace WixSharp
 {
+#pragma warning disable 1591
+    /// <summary>
+    /// Set of Win32 API wrappers
+    /// </summary>
     public class Win32
     {
         const int SW_HIDE = 0;
         const int SW_SHOW = 1;
-        public const int SW_RESTORE = 9;
+        internal const int SW_RESTORE = 9;
 
+        
         [DllImport("user32", EntryPoint = "SendMessage")]
         public extern static int SendMessage(IntPtr hwnd, uint msg, uint wParam, uint lParam);
 
@@ -30,9 +35,6 @@ namespace WixSharp
         {
             return ShowWindow(hWnd, show ? SW_SHOW : SW_HIDE);
         }
-
-        [DllImport("user32")]
-        public static extern int SendMessage(int hwnd, int msg, int wparam, int lparam);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         internal static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
@@ -67,4 +69,5 @@ namespace WixSharp
             public int Bottom;
         }
     }
+#pragma warning restore 1591
 }

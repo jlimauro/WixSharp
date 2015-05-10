@@ -14,20 +14,7 @@ public class Script
 {
     static public void Main()
     {
-        var project = new Project("MyProduct",
-                          new Dir(@"D:\MyCompany\MyProduct",
-                          //new Dir(@"%ProgramFiles%\My Company\My Product",
-                              new Files(@"files\*.*")));
-
-        project.UI = WUI.WixUI_ProgressOnly;
-#if vs
-        project.OutDir = @"..\..\Wix# Samples\Managed Setup".PathGetFullPath();
-#endif
-
-        Compiler.PreserveTempFiles = true;
-        Compiler.BuildMsiCmd(project);
-
-        //new Script().Test();
+        new Script().Test();
     }
 
     void Test()

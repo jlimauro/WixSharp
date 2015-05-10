@@ -15,6 +15,11 @@ namespace WixSharp
             return wControl;
         }
 
+        /// <summary>
+        /// Determines whether the current user is administrator.
+        /// </summary>
+        /// <param name="identity">The identity.</param>
+        /// <returns></returns>
         static public bool IsAdmin(this WindowsIdentity identity)
         {
             var p = new WindowsPrincipal(identity);

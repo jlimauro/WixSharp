@@ -316,10 +316,11 @@ namespace WixSharp
         /// Safely converts string to int.
         /// </summary>
         /// <param name="value">The value.</param>
+        /// <param name="defaultValue">The default value.</param>
         /// <returns></returns>
-        public static int ToInt(this string value)
+        public static int ToInt(this string value, int defaultValue = 0)
         {
-            int result = 0;
+            int result = defaultValue;
             int.TryParse(value, out result);
             return result;
         }
@@ -808,6 +809,7 @@ namespace WixSharp
         /// Adds/combines given <see cref="T:System.Array"/> object with the specified item.
         /// </summary>
         /// <typeparam name="T1">The type of the elements of <c>obj</c>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of the items being added.</typeparam>
         /// <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
         /// <param name="item">The item to be added.</param>
         /// <returns>Combined <see cref="T:System.Array"/> object.</returns>
@@ -831,7 +833,8 @@ namespace WixSharp
         /// <summary>
         /// Adds/combines given <see cref="T:System.Array"/> object with the specified items.
         /// </summary>
-        /// <typeparam name="T">The type of the elements of <c>obj</c>.</typeparam>
+        /// <typeparam name="T1">The type of the elements of <c>obj</c>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of the items being added.</typeparam>
         /// <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
         /// <param name="items">The items to be added.</param>
         /// <returns>Combined <see cref="T:System.Array"/> object.</returns>
@@ -916,6 +919,50 @@ namespace WixSharp
                 return session[name];
             else
                 return session.CustomActionData[name];
+        }
+
+        /// <summary>
+        /// Saves the binary (from the Binary table) ito the file.
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <param name="binary">The binary.</param>
+        /// <param name="file">The file.</param>
+        public static void SaveBinary(this Session session, string binary, string file)
+        {
+            //If binary is accessed this way it will raise "stream handle is not valid" exception
+            //object result = session.Database.ExecuteScalar("select Data from Binary where Name = 'Fake_CRT.msi'");
+            //Stream s = (Stream)result;
+            //using (FileStream fs = new FileStream(@"....\Wix# Samples\Simplified Bootstrapper\Fake CRT1.msi", FileMode.Create))
+            //{
+            //    int Length = 256;
+            //    var buffer = new Byte[Length];
+            //    int bytesRead = s.Read(buffer, 0, Length);
+            //    while (bytesRead > 0)
+            //    {
+            //        fs.Write(buffer, 0, bytesRead);
+            //        bytesRead = s.Read(buffer, 0, Length);
+            //    }
+            //}
+
+            //however View approach is OK
+            using (var sql = session.Database.OpenView("select Data from Binary where Name = '" + binary + "'"))
+            {
+                sql.Execute();
+
+                System.IO.Stream stream = sql.Fetch().GetStream(1);
+
+                using (var fs = new System.IO.FileStream(file, System.IO.FileMode.Create))
+                {
+                    int Length = 256;
+                    var buffer = new Byte[Length];
+                    int bytesRead = stream.Read(buffer, 0, Length);
+                    while (bytesRead > 0)
+                    {
+                        fs.Write(buffer, 0, bytesRead);
+                        bytesRead = stream.Read(buffer, 0, Length);
+                    }
+                }
+            }
         }
 
         /// <summary>

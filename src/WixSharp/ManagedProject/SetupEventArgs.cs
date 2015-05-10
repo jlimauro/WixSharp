@@ -1,24 +1,39 @@
-﻿using System;
+﻿using Microsoft.Deployment.WindowsInstaller;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using Microsoft.Deployment.WindowsInstaller;
-using System.Diagnostics;
 
 namespace WixSharp
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class SetupEventArgs
     {
-        public enum SetupType
+        /// <summary>
+        /// 
+        /// </summary>
+        public enum SetupMode
         {
+            /// <summary>
+            /// The installing mode
+            /// </summary>
             Installing,
+            /// <summary>
+            /// The reparing mode
+            /// </summary>
             Reparing,
+            /// <summary>
+            /// The uninstalling mode
+            /// </summary>
             Uninstalling,
+            /// <summary>
+            /// The unknown mode
+            /// </summary>
             Unknown
         }
+
         /// <summary>
         /// Gets or sets the session.
         /// </summary>
@@ -35,38 +50,105 @@ namespace WixSharp
         /// </value>
         public ActionResult Result { get; set; }
 
+        /// <summary>
+        /// Gets the UIlevel.
+        /// </summary>
+        /// <value>
+        /// The UI level.
+        /// </value>
+        public int UILevel { get { return Data["UILevel"].ToInt(-1); } }
 
+        /// <summary>
+        /// Gets a value indicating whether the event handler is executed from the elevated context.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the execution context is elevated; otherwise, <c>false</c>.
+        /// </value>
         public bool IsElevated { get { return WindowsIdentity.GetCurrent().IsAdmin(); } }
+
+        /// <summary>
+        /// Gets a value indicating whether the product is installed.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the product is installed; otherwise, <c>false</c>.
+        /// </value>
         public bool IsInstalled { get { return Data["Installed"].IsNotEmpty(); } }
+
+        /// <summary>
+        /// Gets a value indicating whether the setup is executed is in the maintenance mode.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this mode is a maintenance mode; otherwise, <c>false</c>.
+        /// </value>
         public bool IsMaintenance { get { return Data["IsMaintenance"] == true.ToString(); } }
 
-        public bool IsInstalling { get { return IsInstalled && !IsMaintenance; } }
-        public bool IsReparing { get { return IsInstalled && !IsMaintenance; } }
+        /// <summary>
+        /// Gets a value indicating whether the product is being installed.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if installing; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsInstalling { get { return IsInstalled && !IsMaintenance && Data["REMOVE"] == "ALL"; } }
+
+        /// <summary>
+        /// Gets a value indicating whether the product is being repared.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if reparing; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsReparing { get { return IsInstalled && IsMaintenance && Data["REMOVE"] != "ALL"; } }
+
+        /// <summary>
+        /// Gets a value indicating whether the product is being uninstalled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if uninstalling; otherwise, <c>false</c>.
+        /// </value>
         public bool IsUninstalling { get { return Data["REMOVE"] == "ALL"; } }
 
-        public SetupType Type
+        /// <summary>
+        /// Gets the setup mode.
+        /// </summary>
+        /// <value>
+        /// The mode.
+        /// </value>
+        public SetupMode Mode
         {
             get
             {
-                if(IsInstalling) return SetupType.Installing;
-                if(IsReparing) return SetupType.Reparing;
-                if(IsUninstalling) return SetupType.Uninstalling;
-                return SetupType.Unknown;
+                if (IsInstalling) return SetupMode.Installing;
+                if (IsReparing) return SetupMode.Reparing;
+                if (IsUninstalling) return SetupMode.Uninstalling;
+                return SetupMode.Unknown;
             }
         }
-        string installDir;
 
+        /// <summary>
+        /// Gets or sets the install directory.
+        /// </summary>
+        /// <value>
+        /// The install dir.
+        /// </value>
         public string InstallDir
         {
             get { return Session.Property("INSTALLDIR"); }
             set { Session["INSTALLDIR"] = value; }
         }
 
-        // bool isElevated;
-
+        /// <summary>
+        /// Gets the msi window.
+        /// </summary>
+        /// <value>
+        /// The msi window.
+        /// </value>
         public IntPtr MsiWindow { get { return Data["MsiWindow"].ToIntPtr(); } }
 
-        //see ManagedProject.Init(Session session) for the list of Data embedded properties 
+        /// <summary>
+        /// Gets or sets the Data.
+        /// </summary>
+        /// <value>
+        /// The data.
+        /// </value>
         public AppData Data { get; set; }
 
         /// <summary>
@@ -78,7 +160,7 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// 
+        ///Class that encapsulated parsing of the CustomActionData content
         /// </summary>
         public class AppData : Dictionary<string, string>
         {
@@ -113,13 +195,16 @@ namespace WixSharp
         /// </returns>
         public override string ToString()
         {
-            return Data.ToString() + 
-                "\nINSTALLDIR=" + InstallDir + 
+            return
+                "\nInstallDir=" + InstallDir +
+                "\nUILevel=" + UILevel +
+                "\nMsiWindow=" + MsiWindow +
                 "\nIsElevated=" + IsElevated +
+                "\nIsInstalled=" + IsInstalled +
+                "\nIsMaintenance=" + IsMaintenance +
                 "\nIsInstalling=" + IsInstalling +
-                "\nIsInstalling=" + IsReparing;
+                "\nIsUninstalling=" + IsUninstalling +
+                "\nIsReparing=" + IsReparing;
         }
     }
-
-
 }

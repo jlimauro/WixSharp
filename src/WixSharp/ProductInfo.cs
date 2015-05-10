@@ -105,7 +105,6 @@ namespace WixSharp
         [ArpPropertyAttribute("ARPURLUPDATEINFO")]
         public string UrlUpdateInfo { get; set; }
 
-
         internal void AddMembersTo(Project project)
         {
             var properties = new List<Property>();

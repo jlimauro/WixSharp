@@ -970,16 +970,17 @@ namespace WixSharp
                     project.WixExtensions.Add(extensionAssembly);
             }
 
-            if (!project.AddRemoveProgramsIcon.IsEmpty())
-            {
-                product.Add(new XElement("Icon",
-                    new XAttribute("Id", "MainIcon"),
-                    new XAttribute("SourceFile", project.AddRemoveProgramsIcon)));
+            //project.AddRemoveProgramsIcon is obsolete now
+            //if (!project.AddRemoveProgramsIcon.IsEmpty())
+            //{
+            //    product.Add(new XElement("Icon",
+            //        new XAttribute("Id", "MainIcon"),
+            //        new XAttribute("SourceFile", project.AddRemoveProgramsIcon)));
 
-                product.Add(new XElement("Property",
-                    new XAttribute("Id", "ARPPRODUCTICON"),
-                    new XAttribute("Value", "MainIcon")));
-            }
+            //    product.Add(new XElement("Property",
+            //        new XAttribute("Id", "ARPPRODUCTICON"),
+            //        new XAttribute("Value", "MainIcon")));
+            //}
 
             if (!project.BannerImage.IsEmpty())
             {

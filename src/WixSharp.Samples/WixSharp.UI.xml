@@ -95,6 +95,11 @@
             <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly
             is in the Wix# script.</param>
         </member>
+        <member name="T:WixSharp.Win32">
+            <summary>
+            Set of Win32 API wrappers
+            </summary>
+        </member>
         <member name="T:WixSharp.WixCLRDialog">
             <summary>
             Defines System.Windows.Forms.<see cref="T:System.Windows.Forms.Form" />, which is to be used as the  for custom MSI dialog.

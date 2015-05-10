@@ -36,7 +36,7 @@ using IO = System.IO;
 namespace WixSharp.CommonTasks
 {
     /// <summary>
-    ///
+    /// 
     /// </summary>
     public static partial class Tasks
     {
@@ -339,6 +339,7 @@ namespace WixSharp.CommonTasks
         /// <summary>
         /// Adds the assembly reference.
         /// </summary>
+        /// <param name="action">The action.</param>
         /// <param name="files">The files.</param>
         /// <returns></returns>
         static public ManagedAction AddRefAssembly(this ManagedAction action, params string[] files)

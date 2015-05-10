@@ -9,10 +9,12 @@ namespace WixSharp
     //on-screen positioning
     //".NET presence" launch condition
     //ensure UI event handlers are fired the last
+    //add DefaultUseingProperties; similar to ManagedAction
     public class ManagedUI
     {
         public static void AttachTo(ManagedProject project)
         {
+            project.UI = WUI.WixUI_ProgressOnly;
             project.Load += OnLoad;
             project.BeforeInstall += OnBeforeInstall;
             project.AfterInstall += OnAfterInstall;
@@ -24,7 +26,7 @@ namespace WixSharp
 
             new Form()
             {
-                Text = "Managed Setup - " + e.Type,
+                Text = "Managed Setup - " + e.Mode,
                 Size = new Size(400, 300),
                 StartPosition = FormStartPosition.CenterScreen
             }
@@ -41,7 +43,7 @@ namespace WixSharp
             HideWindow(e.MsiWindow);
             new Form()
             {
-                Text = "Managed Setup - " + e.Type + " Exit",
+                Text = "Managed Setup - " + e.Mode + " Exit",
                 Size = new Size(400, 300),
                 StartPosition = FormStartPosition.CenterScreen
             }
@@ -62,6 +64,6 @@ namespace WixSharp
         const int SW_SHOW = 1;
 
         [DllImport("user32.dll")]
-        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
     }
 }

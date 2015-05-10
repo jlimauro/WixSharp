@@ -40,8 +40,10 @@ public class InstallScript
         if (!IsCRTInstalled())
         {
             //extract CRT msi into temp directory
-            var CRTMsiFile = Path.ChangeExtension(Path.GetTempFileName(), ".msi");
-            SaveBinaryToFile(session, "Fake CRT.msi".Expand(), CRTMsiFile); //Expand() is needed to normalize file name into file ID
+            string CRTMsiFile = Path.ChangeExtension(Path.GetTempFileName(), ".msi");
+            string CRTMsiId = "Fake CRT.msi".Expand();//Expand() is needed to normalize file name into file ID
+
+            session.SaveBinary(CRTMsiId, CRTMsiFile); 
 
             //install CTR
             Process.Start(CRTMsiFile).WaitForExit();
@@ -62,44 +64,6 @@ public class InstallScript
     {
         using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{6F330B47-2577-43AD-1195-1861BA25889B}"))
             return key != null;
-    }
-
-    static void SaveBinaryToFile(Session session, string binary, string file)
-    {
-        //If binary is accessed this way it will raise "stream handle is not valid" exception
-        //object result = session.Database.ExecuteScalar("select Data from Binary where Name = 'Fake_CRT.msi'");
-        //Stream s = (Stream)result;
-        //using (FileStream fs = new FileStream(@"E:\cs-script\Dev\Wix\WixSharp\Distro\Wix# Samples\Simplified Bootstrapper\Fake CRT1.msi", FileMode.Create))
-        //{
-        //    int Length = 256;
-        //    var buffer = new Byte[Length];
-        //    int bytesRead = s.Read(buffer, 0, Length);
-        //    while (bytesRead > 0)
-        //    {
-        //        fs.Write(buffer, 0, bytesRead);
-        //        bytesRead = s.Read(buffer, 0, Length);
-        //    }
-        //}
-
-        //however View approach is OK
-        using (var sql = session.Database.OpenView("select Data from Binary where Name = '" + binary + "'"))
-        {
-            sql.Execute();
-
-            Stream stream = sql.Fetch().GetStream(1);
-            
-            using (var fs = new FileStream(file, FileMode.Create))
-            {
-                int Length = 256;
-                var buffer = new Byte[Length];
-                int bytesRead = stream.Read(buffer, 0, Length);
-                while (bytesRead > 0)
-                {
-                    fs.Write(buffer, 0, bytesRead);
-                    bytesRead = stream.Read(buffer, 0, Length);
-                }
-            }
-        }
     }
 }
 
