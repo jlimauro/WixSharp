@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace WixSharp
 {
@@ -10,7 +12,7 @@ namespace WixSharp
     /// <summary>
     /// Set of Win32 API wrappers
     /// </summary>
-    public class Win32
+    public static class Win32
     {
         const int SW_HIDE = 0;
         const int SW_SHOW = 1;
@@ -29,6 +31,58 @@ namespace WixSharp
             StringBuilder sb = new StringBuilder(length + 1);
             GetWindowText(wnd, sb, sb.Capacity);
             return sb.ToString();
+        }
+
+        public static void Hide(this IntPtr wnd)
+        {
+            ShowWindow(wnd, SW_HIDE);
+        }
+
+        public static void Show(this IntPtr wnd)
+        {
+            ShowWindow(wnd, SW_SHOW);
+        }
+        
+        public static void MoveToMiddleOf(this IntPtr wnd, Form refForm)
+        {
+            wnd.MoveToMiddleOf(refForm.Handle);
+            //var rect = wnd.GeRectangle();
+            //var center = form.Bounds.Location;
+            //center.Offset(form.Width / 2, form.Height / 2);
+            //center.Offset(-rect.Width / 2, -rect.Height / 2);
+
+            //MoveWindow(wnd, rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top, true);
+        }
+
+        public static void MoveToMiddleOf(this IntPtr wnd, IntPtr refWnd)
+        {
+            var rect = wnd.GeRectangle();
+            var refRect = refWnd.GeRectangle();
+            var center = refRect;
+            center.Offset(center.Width / 2, center.Height / 2);
+            center.Offset(-rect.Width / 2, -rect.Height / 2);
+
+            MoveWindow(wnd, center.Left, center.Top, rect.Width, rect.Height, true);
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr FindWindow(string className, string windowName);
+
+        public static void MoveToMiddleOf(this Form form, IntPtr refWnd)
+        {
+            //var bounds = refWnd.GeRectangle();
+            //var center = bounds.Location;
+            //center.Offset(bounds.Width / 2, bounds.Height / 2);
+            //center.Offset(-form.Width / 2, -form.Height / 2);
+            //form.Location = center;
+            form.Handle.MoveToMiddleOf(refWnd);
+        }
+
+        public static Rectangle GeRectangle(this IntPtr hWnd)
+        {
+            var rect = new RECT();
+            GetWindowRect(hWnd, out rect);
+            return new Rectangle { X = rect.Left, Y = rect.Top, Width = rect.Right - rect.Left + 1, Height = rect.Bottom - rect.Top + 1 };
         }
 
         public static bool ShowWindow(IntPtr hWnd, bool show)

@@ -88,15 +88,15 @@ namespace WixSharp
         /// <value>
         /// <c>true</c> if installing; otherwise, <c>false</c>.
         /// </value>
-        public bool IsInstalling { get { return IsInstalled && !IsMaintenance && Data["REMOVE"] == "ALL"; } }
+        public bool IsInstalling { get { return !IsInstalled && !IsMaintenance && Data["REMOVE"] != "ALL"; } }
 
         /// <summary>
-        /// Gets a value indicating whether the product is being repared.
+        /// Gets a value indicating whether the product is being repaired.
         /// </summary>
         /// <value>
-        /// <c>true</c> if reparing; otherwise, <c>false</c>.
+        /// <c>true</c> if repairing; otherwise, <c>false</c>.
         /// </value>
-        public bool IsReparing { get { return IsInstalled && IsMaintenance && Data["REMOVE"] != "ALL"; } }
+        public bool IsRepairing { get { return IsInstalled && IsMaintenance && Data["REMOVE"] != "ALL"; } }
 
         /// <summary>
         /// Gets a value indicating whether the product is being uninstalled.
@@ -117,7 +117,7 @@ namespace WixSharp
             get
             {
                 if (IsInstalling) return SetupMode.Installing;
-                if (IsReparing) return SetupMode.Reparing;
+                if (IsRepairing) return SetupMode.Reparing;
                 if (IsUninstalling) return SetupMode.Uninstalling;
                 return SetupMode.Unknown;
             }
@@ -198,13 +198,14 @@ namespace WixSharp
             return
                 "\nInstallDir=" + InstallDir +
                 "\nUILevel=" + UILevel +
+                "\nMode=" + Mode +
                 "\nMsiWindow=" + MsiWindow +
                 "\nIsElevated=" + IsElevated +
                 "\nIsInstalled=" + IsInstalled +
                 "\nIsMaintenance=" + IsMaintenance +
                 "\nIsInstalling=" + IsInstalling +
                 "\nIsUninstalling=" + IsUninstalling +
-                "\nIsReparing=" + IsReparing;
+                "\nIsReparing=" + IsRepairing;
         }
     }
 }

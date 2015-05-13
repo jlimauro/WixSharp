@@ -209,7 +209,7 @@ namespace WixSharp
                 this.MaximumSize =
                 this.MinimumSize = new Size(this.Width, this.Height); //prevent resizing
 
-                Win32.ShowWindow(hostWindow, false);
+                hostWindow.Hide();
             }
             catch (Exception ex)
             {
@@ -229,7 +229,7 @@ namespace WixSharp
             Win32.GetWindowRect(hostWindow, out rHost);
 
             Win32.MoveWindow(hostWindow, r.Left + delta, r.Top + delta, rHost.Right - rHost.Left, rHost.Bottom - rHost.Top, true);
-            Win32.ShowWindow(hostWindow, true);
+            hostWindow.Show();
             this.Opacity = 0.01;
 
             Application.DoEvents();

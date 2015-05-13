@@ -1,4 +1,6 @@
+using Microsoft.Deployment.WindowsInstaller;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -9,10 +11,21 @@ namespace WixSharp
     //on-screen positioning
     //".NET presence" launch condition
     //ensure UI event handlers are fired the last
-    //add DefaultUseingProperties; similar to ManagedAction
-    public class ManagedUI
+    public class ManagedUI : IManagedUI
     {
-        public static void AttachTo(ManagedProject project)
+        ManagedDialogs beforeInstall = new ManagedDialogs();
+        public ManagedDialogs BeforeInstall { get { return beforeInstall; } }
+
+        ManagedDialogs afterInstall = new ManagedDialogs();
+        public ManagedDialogs AfterInstall { get { return afterInstall; } }
+
+        public UIShell Shell;
+        /// <summary>
+        /// The predefined ManagedUI. It contains the dialog sequence similar to WixUI_Mondo. 
+        /// </summary>
+        static public ManagedUI Default = new ManagedUI();
+
+        virtual public void BindTo(ManagedProject project)
         {
             project.UI = WUI.WixUI_ProgressOnly;
             project.Load += OnLoad;
@@ -20,50 +33,42 @@ namespace WixSharp
             project.AfterInstall += OnAfterInstall;
         }
 
-        static void OnLoad(SetupEventArgs e)
+        public void UnbindFrom(ManagedProject project)
         {
-            HideWindow(e.MsiWindow);
+            project.Load -= OnLoad;
+            project.BeforeInstall -= OnBeforeInstall;
+            project.AfterInstall -= OnAfterInstall;
+        }
 
-            new Form()
+        void OnLoad(SetupEventArgs e)
+        {
+            e.MsiWindow.Hide();
+
+            using (var form = new UIShell(e))
             {
-                Text = "Managed Setup - " + e.Mode,
-                Size = new Size(400, 300),
-                StartPosition = FormStartPosition.CenterScreen
+                form.Load += (s, x) => form.MoveToMiddleOf(e.MsiWindow);
+
+                form.ShowBeforeInstallSequence();
+                
+                e.MsiWindow.MoveToMiddleOf(form);
             }
-            .ShowDialog();
         }
 
-        static void OnBeforeInstall(SetupEventArgs e)
+        void OnBeforeInstall(SetupEventArgs e)
         {
-            ShowWindow(e.MsiWindow);
+            e.MsiWindow.Show();
         }
 
-        static void OnAfterInstall(SetupEventArgs e)
+        void OnAfterInstall(SetupEventArgs e)
         {
-            HideWindow(e.MsiWindow);
-            new Form()
+            e.MsiWindow.Hide();
+
+            using (var form = new UIShell(e))
             {
-                Text = "Managed Setup - " + e.Mode + " Exit",
-                Size = new Size(400, 300),
-                StartPosition = FormStartPosition.CenterScreen
+                form.Load += (s, x) => form.MoveToMiddleOf(e.MsiWindow);
+
+                form.ShowAfterInstallSequence(); 
             }
-            .ShowDialog();
         }
-
-        static void HideWindow(IntPtr wnd)
-        {
-            ShowWindow(wnd, SW_HIDE);
-        }
-
-        static void ShowWindow(IntPtr wnd)
-        {
-            ShowWindow(wnd, SW_SHOW);
-        }
-
-        const int SW_HIDE = 0;
-        const int SW_SHOW = 1;
-
-        [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
     }
 }

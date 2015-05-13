@@ -33,6 +33,9 @@ class Script
                         new File(binaries, @"AppFiles\MyApp.ico"),
                         new ExeFileShortcut(binaries, "Uninstall MyApp", "[System64Folder]msiexec.exe", "/x [ProductCode]")),
 
+                    new Dir("%Startup%",
+                        new ExeFileShortcut(binaries, "MyApp", "[INSTALLDIR]MyApp.exe", "")),
+
                     new Dir(@"%ProgramMenu%\My Company\My Product",
                         new ExeFileShortcut(binaries, "Uninstall MyApp", "[System64Folder]msiexec.exe", "/x [ProductCode]")),
 

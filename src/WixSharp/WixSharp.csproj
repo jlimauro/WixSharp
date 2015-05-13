@@ -134,6 +134,7 @@
     <Compile Include="FileAssosiation.cs" />
     <Compile Include="FileShortcut.cs" />
     <Compile Include="LaunchCondition.cs" />
+    <Compile Include="ManagedProject\Interfaces.cs" />
     <Compile Include="ManagedProject\ManagedProjectActions.cs" />
     <Compile Include="ManagedProject\ManagedProject.cs" />
     <Compile Include="ManagedProject\SetupEventArgs.cs" />

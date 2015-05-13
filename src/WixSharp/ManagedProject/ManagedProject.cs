@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,6 +11,8 @@ using WixSharp.CommonTasks;
 
 namespace WixSharp
 {
+    
+
     /// <summary>
     /// 
     /// </summary>
@@ -52,6 +55,26 @@ namespace WixSharp
         /// Occurs after InstallFiles standard action. The event is fired from the elevated execution.
         /// </summary>
         public event SetupEventHandler AfterInstall;
+
+        IManagedUI managedUI;
+
+        public IManagedUI ManagedUI
+        {
+            get { return managedUI; }
+            set
+            {
+                if (managedUI != value)
+                {
+                    if (managedUI != null)
+                        value.UnbindFrom(this);
+
+                    managedUI = value;
+
+                    if (managedUI != null)
+                        value.BindTo(this);
+                }
+            }
+        }
 
         bool preprocessed = false;
 

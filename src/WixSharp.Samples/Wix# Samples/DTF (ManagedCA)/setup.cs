@@ -6,6 +6,7 @@ using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
 using Microsoft.Win32;
 using System;
+using System.IO;
 
 class Script
 {

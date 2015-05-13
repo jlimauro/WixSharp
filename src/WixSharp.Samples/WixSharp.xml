@@ -4165,12 +4165,12 @@
             <c>true</c> if installing; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:WixSharp.SetupEventArgs.IsReparing">
+        <member name="P:WixSharp.SetupEventArgs.IsRepairing">
             <summary>
-            Gets a value indicating whether the product is being repared.
+            Gets a value indicating whether the product is being repaired.
             </summary>
             <value>
-            <c>true</c> if reparing; otherwise, <c>false</c>.
+            <c>true</c> if repairing; otherwise, <c>false</c>.
             </value>
         </member>
         <member name="P:WixSharp.SetupEventArgs.IsUninstalling">

@@ -62,6 +62,12 @@
   <ItemGroup>
     <Compile Include="ManagedUI\ManagedUI.cs" />
     <Compile Include="ManagedAction.cs" />
+    <Compile Include="ManagedUI\UIShell.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagedUI\UIShell.Designer.cs">
+      <DependentUpon>UIShell.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32.cs" />
     <Compile Include="WixCLRDialog.cs">
@@ -77,7 +83,11 @@
   <ItemGroup>
     <None Include="WixSharpStrongName.snk" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="ManagedUI\UIShell.resx">
+      <DependentUpon>UIShell.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetDir)$(TargetFileName)" "$(ProjectDir)..\..\bin\WixSharp\$(TargetFileName)"

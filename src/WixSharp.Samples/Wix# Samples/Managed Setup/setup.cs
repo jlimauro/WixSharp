@@ -1,3 +1,4 @@
+using Microsoft.Deployment.WindowsInstaller;
 //css_ref ..\..\WixSharp.dll;
 //css_ref ..\..\WixSharp.UI.dll;
 //css_ref System.Core.dll;
@@ -12,8 +13,15 @@ using WixSharp;
 
 public class Script
 {
+   
+
     static public void Main()
     {
+        //IntPtr form = Win32.FindWindow(null, "Load");
+        //IntPtr msi = Win32.FindWindow(null, "ManagedSetup");
+        //msi.MoveToMiddleOf(form);
+        //form.MoveToMiddleOf(msi);
+        //Win32.Test(new IntPtr(5571222));
         new Script().Test();
     }
 
@@ -25,18 +33,27 @@ public class Script
                 new Dir(@"%ProgramFiles%\My Company\My Product",
                     new File("readme.txt")));
 
-        project.UI = WUI.WixUI_ProgressOnly;
-        project.EmitConsistentPackageId = true;
+        project.ManagedUI = ManagedUI.Default;
 
-        project.Load += project_Load;
-        project.BeforeInstall += project_BeforeExecute;
-        project.AfterInstall += project_AfterExecute;
+        project.ManagedUI.BeforeInstall.Clear()
+                                       .Add<LicenceDialog>()
+                                       .Add<FeaturesDialog>()
+                                       .Add<InstallDirDialog>();
 
-        //ManagedUI.AttachTo(project);
+        project.ManagedUI.AfterInstall.Clear()
+                                      .Add<ExitDialog>() ;
+
+        //project.UI = WUI.WixUI_ProgressOnly;
+        //project.Load += project_Load;
+        //project.BeforeInstall += project_BeforeExecute;
+        //project.AfterInstall += project_AfterExecute;
+
 
 #if vs
         project.OutDir = @"..\..\Wix# Samples\Managed Setup".PathGetFullPath();
 #endif
+        project.EmitConsistentPackageId = true;
+        Compiler.CandleOptions += " -sw1091";
 
         Compiler.PreserveTempFiles = true;
         Compiler.BuildMsi(project);
@@ -46,8 +63,9 @@ public class Script
     static void project_Load(SetupEventArgs e)
     {
         MessageBox.Show(e.ToString(), "Load");
+        e.Result = ActionResult.UserExit;
     }
-    
+
     static void project_BeforeExecute(SetupEventArgs e)
     {
         MessageBox.Show(e.ToString(), "BeforeInstall");
