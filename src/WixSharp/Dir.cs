@@ -283,8 +283,6 @@ namespace WixSharp
             if (System.IO.Path.IsPathRooted(targetPath))
             {
                 this.Name = targetPath;
-                //this.Id = Compiler.AutoGeneration.InstallDirDefaultId;
-                //this.Id = this.Id.ToUpper().Replace("_.", "."); // "D_.MyCompany.MyProduct" -> "D.MYCOMPANY.MYPRODUCT"
             }
             else
             {

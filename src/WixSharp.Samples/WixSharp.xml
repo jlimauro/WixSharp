@@ -3638,7 +3638,7 @@
             <summary>
             Represents Wix# project. This class defines the WiX/MSI entities and their relationships.
             <para>
-            		<see cref="T:WixSharp.Project"/> instance can be compiled into complete MSI or WiX source file with one of the <see cref="T:WixSharp.Compiler"/> "Build" methods.
+            		<see cref="T:WixSharp.Project"/> instance can be compiled into complete MSI or WiX source file with one of the <see cref="T:WixSharp.Project.CompilerProxy"/> "Build" methods.
             </para>
             	<para>
             Use <see cref="T:WixSharp.Project"/> non-default constructor or C# initializers to specify required installation components.
@@ -3907,7 +3907,7 @@
         <member name="F:WixSharp.Project.Binaries">
             <summary>
             Collection of WiX/MSI <see cref="T:WixSharp.Binary"/> objects to be embedded into MSI database. 
-            Normally you doe not need to deal with this property as <see cref="T:WixSharp.Compiler"/> will populate
+            Normally you doe not need to deal with this property as <see cref="T:WixSharp.Project.CompilerProxy"/> will populate
             it automatically.
             </summary>
         </member>
@@ -3950,7 +3950,7 @@
             <summary>
             Resolves all wild card specifications if any.
             <para>
-            This method is called by <see cref="T:WixSharp.Compiler"/> during the compilation. However it might be convenient
+            This method is called by <see cref="T:WixSharp.Project.CompilerProxy"/> during the compilation. However it might be convenient
             to call it before the compilation if any files matching the wild card mask need to be handled in special
             way (e.g. shortcuts created). See <c>WildCard Files</c> example.
             </para><remarks><see cref="M:WixSharp.Project.ResolveWildCards(System.Boolean)"/> should be called only after <see cref="P:WixSharp.Project.SourceBaseDir"/> is set.
@@ -3987,6 +3987,14 @@
             <summary>
             Name (path) of the directory which was assigned <see cref="T:WixSharp.Compiler.AutoGeneration.InstallDirDefaultId"/> ID as part of XML auto-generation (see <see cref="T:WixSharp.AutoGenerationOptions"/>).
             </summary>
+        </member>
+        <member name="P:WixSharp.Project.Compiler">
+            <summary>
+            Gets the <c>Compiler</c> container for project specific Compiler properties and events.
+            </summary>
+            <value>
+            The events container object.
+            </value>
         </member>
         <member name="P:WixSharp.Project.SourceBaseDir">
             <summary>
@@ -4047,9 +4055,39 @@
             <summary>
             Path to the Localization file. This value is used only if the setup language is not <c>"en-US"</c>.
             <para>If the <see cref="P:WixSharp.Project.LocalizationFile"/> is not specified and the setup language 
-            <see cref="T:WixSharp.Compiler"/> will generate <see cref="P:WixSharp.Project.LocalizationFile"/> value as following:
+            <see cref="T:WixSharp.Project.CompilerProxy"/> will generate <see cref="P:WixSharp.Project.LocalizationFile"/> value as following:
             <c>WixUI_[Language].wxl</c>.
             </para>
+            </summary>
+        </member>
+        <member name="T:WixSharp.Project.CompilerProxy">
+            <summary>
+            Container for project specific Compiler properties events.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Project.CompilerProxy.PreserveTempFiles">
+            <summary>
+            Forces <see cref="P:WixSharp.Project.Compiler"/> to preserve all temporary build files (e.g. *.wxs).
+            <para>The default value is <c>false</c>: all temporary files are deleted at the end of the build/compilation.</para>
+            <para>Note: if <see cref="P:WixSharp.Project.Compiler"/> fails to build MSI the <c>PreserveTempFiles</c>
+            value is ignored and all temporary files are preserved.</para>
+            </summary>
+        </member>
+        <member name="E:WixSharp.Project.CompilerProxy.WixSourceGenerated">
+            <summary>
+            Occurs when WiX source code generated. Use this event if you need to modify generated XML (XDocument)
+            before it is compiled into MSI.
+            </summary>
+        </member>
+        <member name="E:WixSharp.Project.CompilerProxy.WixSourceSaved">
+            <summary>
+            Occurs when WiX source file is saved. Use this event if you need to do any post-processing of the generated/saved file.
+            </summary>
+        </member>
+        <member name="E:WixSharp.Project.CompilerProxy.WixSourceFormated">
+            <summary>
+            Occurs when WiX source file is formatted and ready to be saved. Use this event if you need to do any custom formatting of the XML content before
+            it is saved by the compiler.
             </summary>
         </member>
         <member name="M:WixSharp.ManagedProject.#ctor">

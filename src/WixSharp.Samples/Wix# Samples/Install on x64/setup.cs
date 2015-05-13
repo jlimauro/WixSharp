@@ -16,9 +16,10 @@ class Script
 
     static public void Build()
     {
+        //note %ProgramFiles% will be mapped into %ProgramFiles64Folder% as the result of project.Platform = Platform.x64;
         var project =
             new Project("MyProduct",
-                new Dir(@"%ProgramFiles64Folder%\My Company\My Product",
+                new Dir(@"%ProgramFiles%\My Company\My Product",
                     new File(@"Files\Bin\MyApp.exe"),
                     new Dir(@"Docs\Manual",
                         new File(@"Files\Docs\Manual.txt"))),
@@ -51,7 +52,7 @@ class Script
         //    file.Attributes.Add("Component:Win64", "yes");
 
         //or do it as a post-generation step
-        //Compiler.WixSourceGenerated += new XDocumentGeneratedDlgt(Compiler_WixSourceGenerated);
+        //project.Compiler.WixSourceGenerated += new XDocumentGeneratedDlgt(Compiler_WixSourceGenerated);
 
         Compiler.BuildMsi(project);
     }

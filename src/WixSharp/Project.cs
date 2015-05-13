@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using WixSharp.CommonTasks;
 
 namespace WixSharp
@@ -44,7 +45,7 @@ namespace WixSharp
     /// <summary>
     /// Represents Wix# project. This class defines the WiX/MSI entities and their relationships.
     /// <para>
-    /// 		<see cref="Project"/> instance can be compiled into complete MSI or WiX source file with one of the <see cref="Compiler"/> "Build" methods.
+    /// 		<see cref="Project"/> instance can be compiled into complete MSI or WiX source file with one of the <see cref="CompilerProxy"/> "Build" methods.
     /// </para>
     /// 	<para>
     /// Use <see cref="Project"/> non-default constructor or C# initializers to specify required installation components.
@@ -151,18 +152,97 @@ namespace WixSharp
         [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).")]
         public string Comments = "";
 
+        CompilerProxy compiler = new CompilerProxy();
+
+        /// <summary>
+        /// Gets the <c>Compiler</c> container for project specific Compiler properties and events.
+        /// </summary>
+        /// <value>
+        /// The events container object.
+        /// </value>
+        public CompilerProxy Compiler { get { return compiler; } }
+
+        /// <summary>
+        /// Container for project specific Compiler properties events.
+        /// </summary>
+        public class CompilerProxy
+        {
+            /// <summary>
+            /// Occurs when WiX source code generated. Use this event if you need to modify generated XML (XDocument)
+            /// before it is compiled into MSI.
+            /// </summary>
+            public event XDocumentGeneratedDlgt WixSourceGenerated;
+
+            /// <summary>
+            /// Occurs when WiX source file is saved. Use this event if you need to do any post-processing of the generated/saved file.
+            /// </summary>
+            public event XDocumentSavedDlgt WixSourceSaved;
+
+            /// <summary>
+            /// Occurs when WiX source file is formatted and ready to be saved. Use this event if you need to do any custom formatting of the XML content before
+            /// it is saved by the compiler.
+            /// </summary>
+            public event XDocumentFormatedDlgt WixSourceFormated;
+
+            /// <summary>
+            /// Forces <see cref="Compiler"/> to preserve all temporary build files (e.g. *.wxs).
+            /// <para>The default value is <c>false</c>: all temporary files are deleted at the end of the build/compilation.</para>
+            /// <para>Note: if <see cref="Compiler"/> fails to build MSI the <c>PreserveTempFiles</c>
+            /// value is ignored and all temporary files are preserved.</para>
+            /// </summary>
+            public bool PreserveTempFiles = false;
+
+            internal void InvokeWixSourceGenerated(XDocument doc)
+            {
+                if (WixSourceGenerated != null)
+                    WixSourceGenerated(doc);
+            }
+
+            internal void InvokeWixSourceSaved(string fileName)
+            {
+                if (WixSourceSaved != null)
+                    WixSourceSaved(fileName);
+            }
+
+            internal void InvokeWixSourceFormated(ref string content)
+            {
+                if (WixSourceFormated != null)
+                    WixSourceFormated(ref content);
+            }
+        }
+
         internal virtual void Preprocess()
         {
             var managedActions = this.Actions.OfType<ManagedAction>()
-                                             .Select(x => new { Action = x, Asm = x.ActionAssembly})
-                                             .GroupBy(x=>x.Asm)
-                                             .ToDictionary(x=>x.Key);
-            
-            foreach(var uniqueAsm in managedActions.Keys)
+                                             .Select(x => new { Action = x, Asm = x.ActionAssembly })
+                                             .GroupBy(x => x.Asm)
+                                             .ToDictionary(x => x.Key);
+
+            foreach (var uniqueAsm in managedActions.Keys)
             {
-                var actions = managedActions[uniqueAsm].Select(x=>x.Action).ToArray();
-                var refAsms = actions.SelectMany(a=>a.RefAssemblies).Distinct().ToArray();
-                actions.ForEach(a=>a.RefAssemblies = refAsms);
+                var actions = managedActions[uniqueAsm].Select(x => x.Action).ToArray();
+                var refAsms = actions.SelectMany(a => a.RefAssemblies).Distinct().ToArray();
+                actions.ForEach(a => a.RefAssemblies = refAsms);
+            }
+
+            if (WixSharp.Compiler.AutoGeneration.Map64InstallDirs && this.Platform.HasValue && this.Platform.Value == WixSharp.Platform.x64)
+            {
+                foreach (var dir in this.AllDirs)
+                {
+                    dir.Name = dir.Name.Map64Dirs();
+                    foreach (Shortcut s in dir.Shortcuts)
+                        s.Location = s.Location.Map64Dirs();
+                }
+
+                foreach (Shortcut s in this.AllFiles.SelectMany(f => f.Shortcuts))
+                {
+                    s.Location = s.Location.Map64Dirs();
+                };
+                
+                foreach (var action in this.Actions.OfType<PathFileAction>())
+                {
+                    action.AppPath = action.AppPath.Map64Dirs();
+                };
             }
         }
 
@@ -468,10 +548,10 @@ namespace WixSharp
         /// Wix# does not changes the WiX default package code generation it just gives the opportunity to control it when required. 
         /// </para>
         /// </summary>
-        public bool EmitConsistentPackageId = false; 
+        public bool EmitConsistentPackageId = false;
         /// <summary>
         /// Collection of WiX/MSI <see cref="Binary"/> objects to be embedded into MSI database. 
-        /// Normally you doe not need to deal with this property as <see cref="Compiler"/> will populate
+        /// Normally you doe not need to deal with this property as <see cref="CompilerProxy"/> will populate
         /// it automatically.
         /// </summary>
         public Binary[] Binaries = new Binary[0];
@@ -510,7 +590,7 @@ namespace WixSharp
         /// <summary>
         /// Resolves all wild card specifications if any.
         /// <para>
-        /// This method is called by <see cref="Compiler" /> during the compilation. However it might be convenient
+        /// This method is called by <see cref="CompilerProxy" /> during the compilation. However it might be convenient
         /// to call it before the compilation if any files matching the wild card mask need to be handled in special
         /// way (e.g. shortcuts created). See <c>WildCard Files</c> example.
         /// </para><remarks><see cref="ResolveWildCards" /> should be called only after <see cref="SourceBaseDir" /> is set.
@@ -702,7 +782,7 @@ namespace WixSharp
         /// <summary>
         /// Path to the Localization file. This value is used only if the setup language is not <c>"en-US"</c>.
         /// <para>If the <see cref="LocalizationFile"/> is not specified and the setup language 
-        /// <see cref="Compiler"/> will generate <see cref="LocalizationFile"/> value as following:
+        /// <see cref="CompilerProxy"/> will generate <see cref="LocalizationFile"/> value as following:
         /// <c>WixUI_[Language].wxl</c>.
         /// </para>
         /// </summary>

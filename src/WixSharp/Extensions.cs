@@ -441,6 +441,17 @@ namespace WixSharp
                        .EscapeIllegalCharacters();
         }
 
+        public static string Map64Dirs(this string path)
+        {
+            //directory ID (e.g. %ProgramFiles%\My Company\My Product should be preprocessed into %ProgramFiles64%\My Company\My Product)
+            foreach (string key in Compiler.EnvironmentFolders64Mapping.Keys)
+            {
+                if (path.Contains(key))
+                    path = path.Replace(key, Compiler.EnvironmentFolders64Mapping[key]);
+            }
+            return path;
+        }
+
         /// <summary>
         /// Replaces all Wix# predefined string constants (Environment Constants) in the Wix# directory path with their WiX equivalents and escapes all WiX illegal characters (e.g. space character). 
         /// <para>

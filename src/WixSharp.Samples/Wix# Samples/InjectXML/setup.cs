@@ -12,20 +12,32 @@ class Script
     {
         Project project =
             new Project("MyProduct",
-                new Dir(@"%ProgramFiles%\My Company\My Product",
+                new Dir(@"%ProgramFiles64Folder%\My Company\My Product",
                     new File(@"Files\Bin\MyApp.exe"),
                     new Dir(@"Docs\Manual",
                         new File(@"Files\Docs\Manual.txt"))));
 
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
+        project.SourceBaseDir = @"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\InjectXML";
+
+        //Note: setting x64 is done via XML injection for demo only.
+        //The x64 install can be achieved by "project.Platform = Platform.x64;"
+
+        //project specific build event
+        project.Compiler.WixSourceGenerated += InjectImages;
+
+        //global build event
         Compiler.WixSourceGenerated += document =>
-                                       document.Descendants("Components")
-                                               .ForEach(e => e.SetAttributeValue("Win64", "yes"));
-        
-        Compiler.WixSourceGenerated += InjectImages;
+            {
+                document.Root.Select("Product/Package")
+                             .SetAttributeValue("Platform", "x64");
 
+                document.Descendants("Component")
+                        .ForEach(e => e.SetAttributeValue("Win64", "yes"));
+            };
 
+        Compiler.PreserveTempFiles = true;
         Compiler.BuildMsi(project);
     }
 

@@ -57,9 +57,15 @@ namespace WixSharp
         //public bool GenerateImplicitDirs = true;
         //public bool GenerateSubDirsForComplexPaths = true; //Generate MyCompany and MyProduct directories for new Dir(%ProgramFiles%\My Company\My Product"...
 
-        //it is important to have the ID as public (upper case). Otherwise WiX doesn't produce correct MSI
-        //Issue #35: Absolute path as INSTALLDIR doesn't work correctly with Files("*.*")
+        //it is important to have the ID as public (upper case). Otherwise WiX doesn't produce correct MSI. It is related
+        //to Issue #35: Absolute path as INSTALLDIR doesn't work correctly with Files("*.*")
         public string InstallDirDefaultId = "INSTALLDIR";
+
+        /// <summary>
+        /// Flag indicating if all system folders (e.g. %ProgramFiles%) should be auto-mapped into their x64 equivalents
+        /// when 'project.Platform = Platform.x64'
+        /// </summary>
+        public bool Map64InstallDirs = true;
     }
 
     /// <summary>
@@ -327,7 +333,7 @@ namespace WixSharp
         /// <returns>Path to the built MSI file. Returns <c>null</c> if <c>MSI</c> cannot be built.</returns>
         static public string BuildMsi(Project project)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -341,7 +347,7 @@ namespace WixSharp
         /// <returns>Path to the built MSM file. Returns <c>null</c> if <c>msm</c> cannot be built.</returns>
         static public string BuildMsm(Project project)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -350,7 +356,7 @@ namespace WixSharp
 
         static string Build(Project project, OutputType type)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -375,7 +381,7 @@ namespace WixSharp
         /// <returns>Path to the batch file.</returns>
         static public string BuildMsiCmd(Project project)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -396,7 +402,7 @@ namespace WixSharp
         /// <returns>Path to the batch file.</returns>
         static public string BuildMsmCmd(Project project)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -418,7 +424,7 @@ namespace WixSharp
         /// <returns>Path to the batch file.</returns>
         static public void BuildMsiCmd(Project project, string path)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -434,7 +440,7 @@ namespace WixSharp
         /// <returns>Path to the batch file.</returns>
         static public void BuildMsmCmd(Project project, string path)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -443,7 +449,7 @@ namespace WixSharp
 
         static void BuildCmd(Project project, string path, OutputType type)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -486,7 +492,7 @@ namespace WixSharp
         /// <returns>Path to the built MSI file.</returns>
         static public void BuildMsi(Project project, string path)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -501,7 +507,7 @@ namespace WixSharp
         /// <returns>Path to the built MSM file.</returns>
         static public void BuildMsm(Project project, string path)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -623,7 +629,7 @@ namespace WixSharp
                     }
                 }
 
-                if (!PreserveTempFiles)
+                if (!PreserveTempFiles && !project.Compiler.PreserveTempFiles)
                     foreach (var file in tempFiles)
                         try
                         {
@@ -644,7 +650,7 @@ namespace WixSharp
         /// <returns>Path to the built WXS file.</returns>
         public static string BuildWxs(Project project)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -660,7 +666,7 @@ namespace WixSharp
         /// <returns>Path to the built WXS file.</returns>
         public static string BuildWxs(Project project, OutputType type)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -684,7 +690,7 @@ namespace WixSharp
         /// <returns>Path to the built WXS file.</returns>
         public static void BuildWxs(Project project, string path, OutputType type)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly 
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -696,13 +702,13 @@ namespace WixSharp
             AutoElements.InjectAutoElementsHandler(doc);
             AutoElements.NormalizeFilePaths(doc, project.SourceBaseDir, EmitRelativePaths);
 
-
             if (type == OutputType.MSM)
             {
                 //remove all pure MSI elements
                 ConvertMsiToMsm(doc);
             }
 
+            project.Compiler.InvokeWixSourceGenerated(doc);
             if (WixSourceGenerated != null)
                 WixSourceGenerated(doc);
 
@@ -715,11 +721,11 @@ namespace WixSharp
 
             //of course you can use XmlTextWriter.WriteRaw but this is just a temporary quick'n'dirty solution
             //http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2657663&SiteID=1
-            xml = xml.Replace("xmlns=\"\"", "")
-                     ;//.Replace("&amp;", "&"); //zos
+            xml = xml.Replace("xmlns=\"\"", "");
 
             DefaultWixSourceFormatedHandler(ref xml);
 
+            project.Compiler.InvokeWixSourceFormated(ref xml);
             if (WixSourceFormated != null)
                 WixSourceFormated(ref xml);
 
@@ -729,6 +735,7 @@ namespace WixSharp
             Console.WriteLine("\n----------------------------------------------------------\n");
             Console.WriteLine("Wix project file has been built: " + path + "\n");
 
+            project.Compiler.InvokeWixSourceSaved(path);
             if (WixSourceSaved != null)
                 WixSourceSaved(path);
         }
@@ -2250,7 +2257,6 @@ namespace WixSharp
                 //Debug.Assert(false);
                 try
                 {
-
                     BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static;
 
                     //var assembly = System.Reflection.Assembly.ReflectionOnlyLoadFrom(file); //cannot prelaod all required assemblies
@@ -2296,6 +2302,16 @@ namespace WixSharp
             }
         }
 
+        internal static Dictionary<string, string> EnvironmentFolders64Mapping = new Dictionary<string, string>
+        {
+            { "%ProgramFilesFolder%", "%ProgramFiles64Folder%" },
+            { "%ProgramFiles%", "%ProgramFiles64%" },
+            { "%CommonFilesFolder%", "%CommonFiles64Folder%" },
+            { "%SystemFolder%", "%System64Folder%" },
+            { "%CommonFiles%", "%CommonFiles64%" },
+            { "%System%", "%System64%" },
+        };
+
         internal static Dictionary<string, string> EnvironmentConstantsMapping = new Dictionary<string, string>
         {
             { "%AdminToolsFolder%", "AdminToolsFolder" },
@@ -2322,7 +2338,6 @@ namespace WixSharp
             { "%TemplateFolder%", "TemplateFolder" },
             { "%WindowsFolder%", "WindowsFolder" },
             { "%WindowsVolume%", "WindowsVolume" },
-
             { "%AdminTools%", "AdminToolsFolder" },
             { "%AppData%", "AppDataFolder" },
             { "%CommonAppData%", "CommonAppDataFolder" },
