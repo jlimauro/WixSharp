@@ -13,15 +13,8 @@ using WixSharp;
 
 public class Script
 {
-   
-
     static public void Main()
     {
-        //IntPtr form = Win32.FindWindow(null, "Load");
-        //IntPtr msi = Win32.FindWindow(null, "ManagedSetup");
-        //msi.MoveToMiddleOf(form);
-        //form.MoveToMiddleOf(msi);
-        //Win32.Test(new IntPtr(5571222));
         new Script().Test();
     }
 
@@ -33,6 +26,8 @@ public class Script
                 new Dir(@"%ProgramFiles%\My Company\My Product",
                     new File("readme.txt")));
 
+        project.UI = WUI.WixUI_Mondo;
+
         project.ManagedUI = ManagedUI.Default;
 
         project.ManagedUI.BeforeInstall.Clear()
@@ -41,7 +36,22 @@ public class Script
                                        .Add<InstallDirDialog>();
 
         project.ManagedUI.AfterInstall.Clear()
-                                      .Add<ExitDialog>() ;
+                                      .Add<ExitDialog>();
+
+        project.ManagedUI.BeforeRepair.Clear()
+                                      .Add<RepairStartDialog>();
+
+        project.ManagedUI.AfterRepair.Clear()
+                                     .Add<RepairExitDialog>();
+
+        project.ManagedUI.BeforeUninstall.Clear()
+                                         .Add<UninstallStartDialog>();
+
+        project.ManagedUI.AfterUninstall.Clear()
+                                        .Add<UninstallExitDialog>();
+
+
+
 
         //project.UI = WUI.WixUI_ProgressOnly;
         //project.Load += project_Load;

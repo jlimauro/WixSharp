@@ -398,7 +398,7 @@ namespace WixSharp
         /// <param name="obj">The string to format.</param>
         /// <param name="args">The formatting arguments.</param>
         /// <returns>The formatted string.</returns>
-        public static string Format(this string obj, params object[] args)
+        public static string FormatInline(this string obj, params object[] args)
         {
             return string.Format(obj, args);
         }

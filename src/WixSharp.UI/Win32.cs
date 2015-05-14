@@ -45,19 +45,17 @@ namespace WixSharp
         
         public static void MoveToMiddleOf(this IntPtr wnd, Form refForm)
         {
-            wnd.MoveToMiddleOf(refForm.Handle);
-            //var rect = wnd.GeRectangle();
-            //var center = form.Bounds.Location;
-            //center.Offset(form.Width / 2, form.Height / 2);
-            //center.Offset(-rect.Width / 2, -rect.Height / 2);
-
-            //MoveWindow(wnd, rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top, true);
+            wnd.MoveToMiddleOf(refForm.Bounds);
         }
 
-        public static void MoveToMiddleOf(this IntPtr wnd, IntPtr refWnd)
+        public static void MoveToMiddleOf(this Form form, IntPtr refWnd)
         {
-            var rect = wnd.GeRectangle();
-            var refRect = refWnd.GeRectangle();
+            form.Handle.MoveToMiddleOf(refWnd.GetRectangle());
+        }
+
+        public static void MoveToMiddleOf(this IntPtr wnd, Rectangle refRect)
+        {
+            var rect = wnd.GetRectangle();
             var center = refRect;
             center.Offset(center.Width / 2, center.Height / 2);
             center.Offset(-rect.Width / 2, -rect.Height / 2);
@@ -68,17 +66,8 @@ namespace WixSharp
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr FindWindow(string className, string windowName);
 
-        public static void MoveToMiddleOf(this Form form, IntPtr refWnd)
-        {
-            //var bounds = refWnd.GeRectangle();
-            //var center = bounds.Location;
-            //center.Offset(bounds.Width / 2, bounds.Height / 2);
-            //center.Offset(-form.Width / 2, -form.Height / 2);
-            //form.Location = center;
-            form.Handle.MoveToMiddleOf(refWnd);
-        }
 
-        public static Rectangle GeRectangle(this IntPtr hWnd)
+        public static Rectangle GetRectangle(this IntPtr hWnd)
         {
             var rect = new RECT();
             GetWindowRect(hWnd, out rect);

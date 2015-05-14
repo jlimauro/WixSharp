@@ -2423,7 +2423,7 @@ namespace WixSharp
         {
             var sb = new StringBuilder();
             foreach (int id in IDs)
-                sb.Append("-sw{0} ".Format(id));
+                sb.Append("-sw{0} ".FormatInline(id));
             return sb.ToString();
         }
 

@@ -139,7 +139,8 @@ namespace WixSharp
                                            .ToArray();
 
             if (firstUnExpectedItem.Any())
-                throw new ApplicationException("{4} is unexpected. Only {0}, {1} and {2} items can be added to {3}".Format(typeof(FileShortcut),
+                throw new ApplicationException("{4} is unexpected. Only {0}, {1} and {2} items can be added to {3}".FormatInline(
+                                                                                                       typeof(FileShortcut),
                                                                                                        typeof(FileAssociation),
                                                                                                        typeof(ServiceInstaller),
                                                                                                        this.GetType(),

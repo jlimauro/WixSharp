@@ -19,9 +19,7 @@ class Script
 
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
-        project.SourceBaseDir = @"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\InjectXML";
-
-        //Note: setting x64 is done via XML injection for demo only.
+        //Note: setting x64 is done via XML injection for demo purposes only.
         //The x64 install can be achieved by "project.Platform = Platform.x64;"
 
         //project specific build event

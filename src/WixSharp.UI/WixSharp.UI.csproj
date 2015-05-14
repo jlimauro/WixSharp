@@ -60,6 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ManagedUI\LicenceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ManagedUI\ManagedUI.cs" />
     <Compile Include="ManagedAction.cs" />
     <Compile Include="ManagedUI\UIShell.cs">

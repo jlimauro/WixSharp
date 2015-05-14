@@ -51,7 +51,15 @@ namespace WixSharp
         public ActionResult Result { get; set; }
 
         /// <summary>
-        /// Gets the UIlevel.
+        /// Gets a value indicating whether Authored UI and wizard dialog boxes suppressed.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if UI is suppressed; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsUISupressed { get { return UILevel <= 4; } }
+        /// <summary>
+        /// Gets the UIlevel. 
+        /// <para>UILevel > 4 lead to displaying modal dialogs. See https://msdn.microsoft.com/en-us/library/aa369487(v=vs.85).aspx. </para> 
         /// </summary>
         /// <value>
         /// The UI level.
@@ -105,6 +113,59 @@ namespace WixSharp
         /// <c>true</c> if uninstalling; otherwise, <c>false</c>.
         /// </value>
         public bool IsUninstalling { get { return Data["REMOVE"] == "ALL"; } }
+
+        public bool HasBeforeSetupClrDialogs { get { return Session.Property(GetClrDialogsPropertyName(true)).IsNotEmpty(); } }
+        public bool HasAfterSetupClrDialogs { get { return Session.Property(GetClrDialogsPropertyName(false)).IsNotEmpty(); } }
+
+        string GetClrDialogsPropertyName(bool isBefore)
+        {
+            if (IsInstalling) return (isBefore ? "WixSharp_BeforeInstall_Dialogs" : "WixSharp_AfterInstall_Dialogs");
+            if (IsRepairing) return (isBefore ? "WixSharp_BeforeRepair_Dialogs" : "WixSharp_AfterRepair_Dialogs");
+            if (IsUninstalling) return (isBefore ? "WixSharp_BeforeUninstall_Dialogs" : "WixSharp_AfterUninstall_Dialogs");
+            return "unknown";
+        }
+
+        public Type[] BeforeSetupClrDialogs
+        {
+            get
+            {
+                try
+                {
+                    string name = GetClrDialogsPropertyName(true);
+                    return Session.Property(name)
+                                  .Split('\n')
+                                  .Select(x => x.Trim())
+                                  .Where(x => x.IsNotEmpty())
+                                  .Select(x => ManagedProject.GetDialog(x))
+                                  .ToArray();
+                }
+                catch
+                {
+                    return new Type[0];
+                }
+            }
+        }
+
+        public Type[] AfterInstallClrDialogs
+        {
+            get
+            {
+                try
+                {
+                    string name = GetClrDialogsPropertyName(false);
+                    return Session.Property(name)
+                                  .Split('\n')
+                                  .Select(x => x.Trim())
+                                  .Where(x => x.IsNotEmpty())
+                                  .Select(x => ManagedProject.GetDialog(x))
+                                  .ToArray();
+                }
+                catch
+                {
+                    return new Type[0];
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the setup mode.

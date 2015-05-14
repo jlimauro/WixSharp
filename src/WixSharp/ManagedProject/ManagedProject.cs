@@ -11,7 +11,7 @@ using WixSharp.CommonTasks;
 
 namespace WixSharp
 {
-    
+
 
     /// <summary>
     /// 
@@ -84,6 +84,8 @@ namespace WixSharp
         {
             var name = Reflect.NameOf(expression);
             var handler = expression.Compile()() as Delegate;
+            
+            const string wixSharpProperties = "WIXSHARP_RUNTIME_DATA,WixSharp_BeforeInstall_Dialogs,WixSharp_AfterInstall_Dialogs,WixSharp_BeforeUninstall_Dialogs,WixSharp_AfterUninstall_Dialogs,WixSharp_BeforeRepair_Dialogs,WixSharp_AfterRepair_Dialogs";
 
             if (handler != null)
             {
@@ -93,14 +95,17 @@ namespace WixSharp
                         this.DefaultRefAssemblies.Add(handlerAsm);
                 }
 
-                this.Properties = this.Properties.Add(new Property(name + "_ClientHandlers", GetHandlersInfo(handler as MulticastDelegate)));
+                this.Properties = this.Properties.Add(new Property("WixSharp_{0}_Handlers".FormatInline(name), GetHandlersInfo(handler as MulticastDelegate)));
+
+                string dllEntry = "WixSharp_{0}_Action".FormatInline(name);
+
                 if (elevated)
-                    this.Actions = this.Actions.Add(new ElevatedManagedAction("WixSharp_" + name + "_Action", thisAsm, Return.check, when, step, Condition.Create("1"))
+                    this.Actions = this.Actions.Add(new ElevatedManagedAction(new Id(dllEntry), dllEntry, thisAsm, Return.check, when, step, Condition.Create("1"))
                     {
-                        UsesProperties = name + "_ClientHandlers,WIXSHARP_RUNTIME_DATA;" + DefaultDeferredProperties,
+                        UsesProperties = "WixSharp_{0}_Handlers,{1},{2}".FormatInline(name, wixSharpProperties, DefaultDeferredProperties),
                     });
                 else
-                    this.Actions = this.Actions.Add(new ManagedAction("WixSharp_" + name + "_Action", thisAsm, Return.check, when, step, Condition.Create("1")));
+                    this.Actions = this.Actions.Add(new ManagedAction(new Id(dllEntry), dllEntry, thisAsm, Return.check, when, step, Condition.Create("1")));
             }
         }
 
@@ -110,6 +115,26 @@ namespace WixSharp
         /// </summary>
         public string DefaultDeferredProperties = "INSTALLDIR";
 
+        void InjectDialogs(string name, ManagedDialogs dialogs)
+        {
+            if (dialogs.Any())
+            {
+                var dialogsInfo = new StringBuilder();
+
+                foreach (var item in dialogs)
+                {
+                    if (!this.DefaultRefAssemblies.Contains(item.Assembly.Location))
+                        this.DefaultRefAssemblies.Add(item.Assembly.Location);
+
+                    var info = GetDialogInfo(item);
+
+                    ValidateDialogInfo(info);
+                    dialogsInfo.AppendLine(info);
+                }
+                this.AddProperty(new Property(name, dialogsInfo.ToString().Trim()));
+            }
+        }
+
         override internal void Preprocess()
         {
             base.Preprocess();
@@ -118,7 +143,19 @@ namespace WixSharp
             {
                 preprocessed = true;
 
-                this.AddAction(new ManagedAction("WixSharp_InitRuntime_Action", thisAsm, Return.check, When.Before, Step.AppSearch, Condition.Always));
+                string dllEntry = "WixSharp_InitRuntime_Action";
+
+                this.AddAction(new ManagedAction(new Id(dllEntry), dllEntry, thisAsm, Return.check, When.Before, Step.AppSearch, Condition.Always));
+
+                if (ManagedUI != null)
+                {
+                    InjectDialogs("WixSharp_BeforeInstall_Dialogs", ManagedUI.BeforeInstall);
+                    InjectDialogs("WixSharp_AfterInstall_Dialogs", ManagedUI.AfterInstall);
+                    InjectDialogs("WixSharp_BeforeUninstall_Dialogs", ManagedUI.BeforeUninstall);
+                    InjectDialogs("WixSharp_AfterUninstall_Dialogs", ManagedUI.AfterUninstall);
+                    InjectDialogs("WixSharp_BeforeRepair_Dialogs", ManagedUI.BeforeRepair);
+                    InjectDialogs("WixSharp_AfterRepair_Dialogs", ManagedUI.AfterRepair);
+                }
 
                 Bind(() => Load, When.Before, Step.AppSearch);
                 Bind(() => BeforeInstall, When.Before, Step.InstallFiles);
@@ -126,23 +163,37 @@ namespace WixSharp
             }
         }
 
-        internal static string GetHandlersInfo(MulticastDelegate handlers)
+        static void ValidateDialogInfo(string info)
         {
-            var result = new StringBuilder();
-
-            foreach (Delegate action in handlers.GetInvocationList())
+            try
             {
-                var handlerInfo = string.Format("{0}|{1}|{2}",
-                                     action.Method.DeclaringType.Assembly.FullName,
-                                     action.Method.DeclaringType.Name,
-                                     action.Method.Name);
-
-                ValidateHandlerInfo(handlerInfo);
-
-                result.AppendLine(handlerInfo);
+                GetDialog(info);
             }
-            return result.ToString();
+            catch (Exception)
+            {
+                //may need to do extra logging; not important for now
+                throw;
+            }
         }
+
+        static string GetDialogInfo(Type dialog)
+        {
+            var info = string.Format("{0}|{1}",
+                                          dialog.Assembly.FullName,
+                                          dialog.FullName);
+            return info;
+        }
+
+        internal static Type GetDialog(string info)
+        {
+            string[] parts = info.Split('|');
+
+            var assembly = System.Reflection.Assembly.Load(parts[0]);
+            var type = assembly.GetTypes().Single(t => t.FullName == parts[1]);
+            
+            return type;
+        }
+
 
         static void ValidateHandlerInfo(string info)
         {
@@ -157,12 +208,31 @@ namespace WixSharp
             }
         }
 
+        internal static string GetHandlersInfo(MulticastDelegate handlers)
+        {
+            var result = new StringBuilder();
+
+            foreach (Delegate action in handlers.GetInvocationList())
+            {
+                var handlerInfo = string.Format("{0}|{1}|{2}",
+                                     action.Method.DeclaringType.Assembly.FullName,
+                                     action.Method.DeclaringType.FullName,
+                                     action.Method.Name);
+
+                ValidateHandlerInfo(handlerInfo);
+
+                result.AppendLine(handlerInfo);
+            }
+            return result.ToString().Trim();
+        }
+
+
         static MethodInfo GetHandler(string info)
         {
             string[] parts = info.Split('|');
 
             var assembly = System.Reflection.Assembly.Load(parts[0]);
-            var type = assembly.GetTypes().Single(t => t.Name == parts[1]);
+            var type = assembly.GetTypes().Single(t => t.FullName == parts[1]);
             var method = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.Static)
                              .Single(m => m.Name == parts[2]);
 
@@ -185,8 +255,7 @@ namespace WixSharp
 
             try
             {
-                string handlersInfo = session.Property(eventName + "_ClientHandlers");
-
+                string handlersInfo = session.Property("WixSharp_{0}_Handlers".FormatInline(eventName));
 
                 foreach (string item in handlersInfo.Trim().Split('\n'))
                 {

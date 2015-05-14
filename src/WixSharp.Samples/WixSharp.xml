@@ -1778,7 +1778,7 @@
             <param name="path">The path.</param>
             <returns></returns>
         </member>
-        <member name="M:WixSharp.Extensions.Format(System.String,System.Object[])">
+        <member name="M:WixSharp.Extensions.FormatInline(System.String,System.Object[])">
             <summary>
             Formats the specified string.
             </summary>
@@ -4163,9 +4163,18 @@
             The result.
             </value>
         </member>
+        <member name="P:WixSharp.SetupEventArgs.IsUISupressed">
+            <summary>
+            Gets a value indicating whether Authored UI and wizard dialog boxes suppressed.
+            </summary>
+            <value>
+            <c>true</c> if UI is suppressed; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="P:WixSharp.SetupEventArgs.UILevel">
             <summary>
-            Gets the UIlevel.
+            Gets the UIlevel. 
+            <para>UILevel > 4 lead to displaying modal dialogs. See https://msdn.microsoft.com/en-us/library/aa369487(v=vs.85).aspx. </para> 
             </summary>
             <value>
             The UI level.
@@ -4580,6 +4589,12 @@
         <member name="F:WixSharp.AutoGenerationOptions.InstallDirDefaultId">
             <summary>
             directories specified indirectly (e.g. by Shortcut working directory)
+            </summary>
+        </member>
+        <member name="F:WixSharp.AutoGenerationOptions.Map64InstallDirs">
+            <summary>
+            Flag indicating if all system folders (e.g. %ProgramFiles%) should be auto-mapped into their x64 equivalents
+            when 'project.Platform = Platform.x64'
             </summary>
         </member>
         <member name="T:WixSharp.XDocumentGeneratedDlgt">
