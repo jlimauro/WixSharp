@@ -15,6 +15,7 @@ public class Script
 {
     static public void Main()
     {
+        //var ttt = ManagedProject.GetMsiForegroundWindow();
         new Script().Test();
     }
 

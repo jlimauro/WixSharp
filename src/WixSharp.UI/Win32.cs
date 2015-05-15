@@ -18,7 +18,7 @@ namespace WixSharp
         const int SW_SHOW = 1;
         internal const int SW_RESTORE = 9;
 
-        
+
         [DllImport("user32", EntryPoint = "SendMessage")]
         public extern static int SendMessage(IntPtr hwnd, uint msg, uint wParam, uint lParam);
 
@@ -42,15 +42,17 @@ namespace WixSharp
         {
             ShowWindow(wnd, SW_SHOW);
         }
-        
+
         public static void MoveToMiddleOf(this IntPtr wnd, Form refForm)
         {
-            wnd.MoveToMiddleOf(refForm.Bounds);
+            if (wnd != IntPtr.Zero)
+                wnd.MoveToMiddleOf(refForm.Bounds);
         }
 
         public static void MoveToMiddleOf(this Form form, IntPtr refWnd)
         {
-            form.Handle.MoveToMiddleOf(refWnd.GetRectangle());
+            if (refWnd != IntPtr.Zero)
+                form.Handle.MoveToMiddleOf(refWnd.GetRectangle());
         }
 
         public static void MoveToMiddleOf(this IntPtr wnd, Rectangle refRect)

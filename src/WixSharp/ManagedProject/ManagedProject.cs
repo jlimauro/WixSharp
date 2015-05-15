@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Deployment.WindowsInstaller;
 using WixSharp.CommonTasks;
+using System.Windows.Forms;
 
 namespace WixSharp
 {
@@ -276,7 +277,7 @@ namespace WixSharp
                 data["Installed"] = session["Installed"];
                 data["REMOVE"] = session["REMOVE"];
                 data["UILevel"] = session["UILevel"];
-                data["MsiWindow"] = GetMsiForegroundWindow().ToString();
+                data["MsiWindow"] = GetMsiForegroundWindow(session["ProductName"]).ToString();
                 data["IsMaintenance"] = session.GetMode(InstallRunMode.Maintenance).ToString();
             }
             catch (Exception e)
@@ -315,20 +316,51 @@ namespace WixSharp
         [DllImport("User32.dll")]
         static extern int SetForegroundWindow(IntPtr hwnd);
 
-        static IntPtr GetMsiForegroundWindow()
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool IsWindowVisible(IntPtr hWnd);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        internal static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        internal static extern int GetWindowTextLength(IntPtr hWnd);
+
+        public static string GetWindowText(IntPtr wnd)
+        {
+            int length = GetWindowTextLength(wnd);
+            StringBuilder sb = new StringBuilder(length + 1);
+            GetWindowText(wnd, sb, sb.Capacity);
+            return sb.ToString();
+        }
+
+        static IntPtr GetMsiForegroundWindow(string productName)
         {
             try
             {
-                var proc = Process.GetProcessesByName("msiexec").Where(p => p.MainWindowHandle != IntPtr.Zero).FirstOrDefault();
-                if (proc != null)
+                foreach (var proc in Process.GetProcessesByName("msiexec").Where(p => p.MainWindowHandle != IntPtr.Zero))
                 {
-                    ShowWindow(proc.MainWindowHandle, SW_RESTORE);
-                    SetForegroundWindow(proc.MainWindowHandle);
-                    return proc.MainWindowHandle;
+                    if (GetWindowText(proc.MainWindowHandle) == productName && IsWindowVisible(proc.MainWindowHandle))
+                    {
+                        ShowWindow(proc.MainWindowHandle, SW_RESTORE);
+                        SetForegroundWindow(proc.MainWindowHandle);
+                        return proc.MainWindowHandle;
+                    }
                 }
             }
             catch { }
-            return IntPtr.Zero;
+
+            //There is no warranty that MsiWindow will be found in "Change/Repair+UI" mode (from ARP) as 
+            //the window in not owned by msiexec (like in "Install" mode).
+            //Thus let's try primitive 'find'.
+            return FindWindow(null, productName);
         }
     }
 }
