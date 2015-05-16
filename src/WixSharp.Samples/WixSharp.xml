@@ -807,6 +807,49 @@
             </code>
             </example>
         </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.BuildMsi(WixSharp.Project,System.String)">
+            <summary>
+            Builds the MSI file from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <param name="path">The path to the MSI file to be build.</param>
+            <returns>Path to the built MSI file.</returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.BuildMsiCmd(WixSharp.Project,System.String)">
+            <summary>
+            Builds the WiX source file and generates batch file capable of building
+            MSI with WiX toolset.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <param name="path">The path to the batch file to be build.</param>
+            <returns>Path to the batch file.</returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.BuildWxs(WixSharp.Project,WixSharp.Compiler.OutputType,System.String)">
+            <summary>
+            Builds the WiX source file (*.wxs) from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <param name="path">The path to the WXS file to be build.</param>
+            <param name="type">The type (<see cref="!:OutputType"/>) of the setup file to be defined in the source file (MSI vs. MSM).</param>
+            <returns>Path to the built WXS file.</returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.BuildMsm(WixSharp.Project,System.String)">
+            <summary>
+            Builds the MSM file from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <param name="path">The path to the MSM file to be build.</param>
+            <returns>Path to the built MSM file.</returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.BuildMsmCmd(WixSharp.Project,System.String)">
+            <summary>
+            Builds the WiX source file and generates batch file capable of building
+            MSM with WiX toolset.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <param name="path">The path to the batch file to be build.</param>
+            <returns>Path to the batch file.</returns>
+        </member>
         <member name="M:WixSharp.CommonTasks.Tasks.InjectClrDialog(WixSharp.Project,System.String,System.String,System.String)">
              <summary>
              Injects CLR dialog between MSI dialogs 'prevDialog' and 'nextDialog'.
@@ -1632,7 +1675,7 @@
         </member>
         <member name="M:WixSharp.Extensions.SetAttribute(System.Xml.Linq.XElement,System.String,System.Object)">
             <summary>
-            Sets the vaule of the attribute. This is a fluent version of XElement.SetAttributeValue. 
+            Sets the value of the attribute. This is a fluent version of XElement.SetAttributeValue. 
             </summary>
             <param name="obj">The object.</param>
             <param name="name">The name.</param>
@@ -4697,13 +4740,6 @@
             <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
             <returns>Path to the built MSI file. Returns <c>null</c> if <c>MSI</c> cannot be built.</returns>
         </member>
-        <member name="M:WixSharp.Compiler.BuildMsm(WixSharp.Project)">
-            <summary>
-            Builds the MSM file from the specified <see cref="T:WixSharp.Project"/> instance.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <returns>Path to the built MSM file. Returns <c>null</c> if <c>msm</c> cannot be built.</returns>
-        </member>
         <member name="M:WixSharp.Compiler.BuildMsiCmd(WixSharp.Project)">
             <summary>
             Builds the WiX source file and generates batch file capable of building
@@ -4745,6 +4781,13 @@
             <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
             <param name="path">The path to the MSI file to be build.</param>
             <returns>Path to the built MSI file.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildMsm(WixSharp.Project)">
+            <summary>
+            Builds the MSM file from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <returns>Path to the built MSM file. Returns <c>null</c> if <c>msm</c> cannot be built.</returns>
         </member>
         <member name="M:WixSharp.Compiler.BuildMsm(WixSharp.Project,System.String)">
             <summary>

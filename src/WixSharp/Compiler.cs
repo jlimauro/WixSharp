@@ -340,27 +340,8 @@ namespace WixSharp
             return Build(project, OutputType.MSI);
         }
 
-        /// <summary>
-        /// Builds the MSM file from the specified <see cref="Project"/> instance.
-        /// </summary>
-        /// <param name="project">The <see cref="Project"/> instance.</param>
-        /// <returns>Path to the built MSM file. Returns <c>null</c> if <c>msm</c> cannot be built.</returns>
-        static public string BuildMsm(Project project)
-        {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
-            //returns the build script assembly but not just another method of Compiler.
-            if (ClientAssembly.IsEmpty())
-                ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
-            return Build(project, OutputType.MSM);
-        }
-
         static string Build(Project project, OutputType type)
         {
-            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
-            //returns the build script assembly but not just another method of Compiler.
-            if (ClientAssembly.IsEmpty())
-                ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
-
             string outFile = IO.Path.GetFullPath(IO.Path.Combine(project.OutDir, project.OutFileName) + "." + type.ToString().ToLower());
 
             Utils.EnsureFileDir(outFile);
@@ -422,13 +403,14 @@ namespace WixSharp
         /// <param name="project">The <see cref="Project"/> instance.</param>
         /// <param name="path">The path to the batch file to be build.</param>
         /// <returns>Path to the batch file.</returns>
-        static public void BuildMsiCmd(Project project, string path)
+        static public string BuildMsiCmd(Project project, string path)
         {
             //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
             BuildCmd(project, path, OutputType.MSI);
+            return path;
         }
 
         /// <summary>
@@ -438,13 +420,14 @@ namespace WixSharp
         /// <param name="project">The <see cref="Project"/> instance.</param>
         /// <param name="path">The path to the batch file to be build.</param>
         /// <returns>Path to the batch file.</returns>
-        static public void BuildMsmCmd(Project project, string path)
+        static public string BuildMsmCmd(Project project, string path)
         {
             //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
             BuildCmd(project, path, OutputType.MSM);
+            return path;
         }
 
         static void BuildCmd(Project project, string path, OutputType type)
@@ -490,13 +473,28 @@ namespace WixSharp
         /// <param name="project">The <see cref="Project"/> instance.</param>
         /// <param name="path">The path to the MSI file to be build.</param>
         /// <returns>Path to the built MSI file.</returns>
-        static public void BuildMsi(Project project, string path)
+        static public string BuildMsi(Project project, string path)
         {
             //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
             Build(project, path, OutputType.MSI);
+            return path;
+        }
+
+        /// <summary>
+        /// Builds the MSM file from the specified <see cref="Project"/> instance.
+        /// </summary>
+        /// <param name="project">The <see cref="Project"/> instance.</param>
+        /// <returns>Path to the built MSM file. Returns <c>null</c> if <c>msm</c> cannot be built.</returns>
+        static public string BuildMsm(Project project)
+        {
+            //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
+            //returns the build script assembly but not just another method of Compiler.
+            if (ClientAssembly.IsEmpty())
+                ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+            return Build(project, OutputType.MSM);
         }
 
         /// <summary>
@@ -505,13 +503,16 @@ namespace WixSharp
         /// <param name="project">The <see cref="Project"/> instance.</param>
         /// <param name="path">The path to the MSM file to be build.</param>
         /// <returns>Path to the built MSM file.</returns>
-        static public void BuildMsm(Project project, string path)
+        static public string BuildMsm(Project project, string path)
         {
             //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+        
             Build(project, path, OutputType.MSM);
+
+            return path;
         }
 
         /// <summary>
@@ -688,7 +689,7 @@ namespace WixSharp
         /// <param name="path">The path to the WXS file to be build.</param>
         /// <param name="type">The type (<see cref="OutputType"/>) of the setup file to be defined in the source file (MSI vs. MSM).</param>
         /// <returns>Path to the built WXS file.</returns>
-        public static void BuildWxs(Project project, string path, OutputType type)
+        public static string BuildWxs(Project project, string path, OutputType type)
         {
             //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
@@ -738,6 +739,8 @@ namespace WixSharp
             project.Compiler.InvokeWixSourceSaved(path);
             if (WixSourceSaved != null)
                 WixSourceSaved(path);
+
+            return path;
         }
 
         //This class is needed to overcome the StringWriter limitation when encoding cannot be changed

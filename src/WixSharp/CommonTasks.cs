@@ -471,6 +471,94 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
+        /// Builds the MSI file from the specified <see cref="Project"/> instance.
+        /// </summary>
+        /// <param name="project">The <see cref="Project"/> instance.</param>
+        /// <param name="path">The path to the MSI file to be build.</param>
+        /// <returns>Path to the built MSI file.</returns>
+        static public string BuildMsi(this Project project, string path = null)
+        {
+            if (Compiler.ClientAssembly.IsEmpty())
+                Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
+            if (path == null)
+                return Compiler.BuildMsi(project);
+            else
+                return Compiler.BuildMsi(project, path);
+        }
+
+        /// <summary>
+        /// Builds the WiX source file and generates batch file capable of building
+        /// MSI with WiX toolset.
+        /// </summary>
+        /// <param name="project">The <see cref="Project"/> instance.</param>
+        /// <param name="path">The path to the batch file to be build.</param>
+        /// <returns>Path to the batch file.</returns>
+        static public string BuildMsiCmd(this Project project, string path = null)
+        {
+            if (Compiler.ClientAssembly.IsEmpty())
+                Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
+            if (path == null)
+                return Compiler.BuildMsiCmd(project);
+            else
+                return Compiler.BuildMsiCmd(project, path);
+        }
+
+        /// <summary>
+        /// Builds the WiX source file (*.wxs) from the specified <see cref="Project"/> instance.
+        /// </summary>
+        /// <param name="project">The <see cref="Project"/> instance.</param>
+        /// <param name="path">The path to the WXS file to be build.</param>
+        /// <param name="type">The type (<see cref="OutputType"/>) of the setup file to be defined in the source file (MSI vs. MSM).</param>
+        /// <returns>Path to the built WXS file.</returns>
+        static public string BuildWxs(this Project project, Compiler.OutputType type = Compiler.OutputType.MSI ,string path = null)
+        {
+            if (Compiler.ClientAssembly.IsEmpty())
+                Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
+            if (path == null)
+                return Compiler.BuildWxs(project, type);
+            else
+                return Compiler.BuildWxs(project, path, type);
+        }
+        
+        /// <summary>
+        /// Builds the MSM file from the specified <see cref="Project"/> instance.
+        /// </summary>
+        /// <param name="project">The <see cref="Project"/> instance.</param>
+        /// <param name="path">The path to the MSM file to be build.</param>
+        /// <returns>Path to the built MSM file.</returns>
+        static public string BuildMsm(this Project project, string path = null)
+        {
+            if (Compiler.ClientAssembly.IsEmpty())
+                Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
+            if (path == null)
+                return Compiler.BuildMsm(project);
+            else
+                return Compiler.BuildMsm(project, path);
+        }
+        
+        /// <summary>
+        /// Builds the WiX source file and generates batch file capable of building
+        /// MSM with WiX toolset.
+        /// </summary>
+        /// <param name="project">The <see cref="Project"/> instance.</param>
+        /// <param name="path">The path to the batch file to be build.</param>
+        /// <returns>Path to the batch file.</returns>
+        static public string BuildMsmCmd(this Project project, string path = null)
+        {
+            if (Compiler.ClientAssembly.IsEmpty())
+                Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
+            if (path == null)
+                return Compiler.BuildMsmCmd(project);
+            else
+                return Compiler.BuildMsmCmd(project, path);
+        }
+
+        /// <summary>
         /// Injects CLR dialog between MSI dialogs 'prevDialog' and 'nextDialog'.
         /// Passes custom action CLR method name (showDialogMethod) for instantiating and popping up the CLR dialog.
         /// </summary>
@@ -507,7 +595,6 @@ namespace WixSharp.CommonTasks
             var showClrDialog = new ManagedAction(showDialogMethod)
             {
                 Sequence = Sequence.NotInSequence,
-                //RefAssemblies = new[] { wixSharpAsm, wixSharpUIAsm }
             };
 
             project.DefaultRefAssemblies.Add(wixSharpAsm);

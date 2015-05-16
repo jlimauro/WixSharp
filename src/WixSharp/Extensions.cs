@@ -147,7 +147,7 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Sets the vaule of the attribute. This is a fluent version of XElement.SetAttributeValue. 
+        /// Sets the value of the attribute. This is a fluent version of XElement.SetAttributeValue. 
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="name">The name.</param>
