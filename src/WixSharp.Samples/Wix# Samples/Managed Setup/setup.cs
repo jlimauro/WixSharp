@@ -88,7 +88,6 @@ public class Script
         Compiler.CandleOptions += " -sw1091";
 
         project.Compiler.PreserveTempFiles = true;
-        project.Compiler.WixSourceGenerated += Compiler_WixSourceGenerated;
         project.BuildMsiCmd();
     }
 
