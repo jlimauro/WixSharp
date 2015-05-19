@@ -593,7 +593,7 @@ namespace WixSharp
                             IO.File.Delete(msiFile);
 
                         if (project.IsLocalized && IO.File.Exists(project.LocalizationFile))
-                            Run(linker, LightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language + " -loc " + project.LocalizationFile);
+                            Run(linker, LightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language + " -loc \"" + project.LocalizationFile + "\"");
                         else
                             Run(linker, LightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language);
 

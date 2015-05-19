@@ -100,21 +100,21 @@ namespace WixSharp
             //WiX 'multiString'
             if (isPreffix("hex(7):"))
             {
-                byte[] data = rawValue.Unescape().DecodeFromHex();
+                byte[] data = rawValue.Unescape().DecodeFromRegHex();
                 return encoding.GetString(data).TrimEnd('\0').Replace("\0", "\r\n");
             }
 
             //WiX 'expandable'
             if (isPreffix("hex(2):"))
             {
-                byte[] data = rawValue.Unescape().DecodeFromHex();
+                byte[] data = rawValue.Unescape().DecodeFromRegHex();
                 return encoding.GetString(data).TrimEnd('\0');
             }
 
             //WiX 'binary'
             if (isPreffix("hex:"))
             {
-                byte[] data = rawValue.Unescape().DecodeFromHex();
+                byte[] data = rawValue.Unescape().DecodeFromRegHex();
                 return data;
             }
 
@@ -131,7 +131,7 @@ namespace WixSharp
                 throw new Exception("Cannot deserialize RegFile value: '" + text + "'");
         }
 
-        public static byte[] DecodeFromHex(this string obj)
+        public static byte[] DecodeFromRegHex(this string obj)
         {
             var data = new List<byte>();
             for (int i = 0; !string.IsNullOrEmpty(obj) && i < obj.Length; )

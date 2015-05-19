@@ -1,15 +1,13 @@
 //css_ref ..\..\WixSharp.dll;
 //css_ref System.Core.dll;
 //css_ref ..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
-
 using System;
-using System.Xml;
-using System.Xml.Linq;
 using System.Linq;
-using Microsoft.Win32;
 using System.Windows.Forms;
 using Microsoft.Deployment.WindowsInstaller;
+using Microsoft.Win32;
 using WixSharp;
+using WixSharp.CommonTasks;
 
 class Script
 {
@@ -62,10 +60,10 @@ class Script
             project.UI = WUI.WixUI_Mondo;
             project.SourceBaseDir = Environment.CurrentDirectory;
             project.OutFileName = "MyApp";
-
+            
             //project.Compiler.PreserveTempFiles = true;
             project.Compiler.WixSourceGenerated += Compiler_WixSourceGenerated;
-            Compiler.BuildMsi(project);
+            project.BuildMsi();
         }
         catch (System.Exception ex)
         {
@@ -84,7 +82,6 @@ class Script
                       });
     }
 }
-
 
 public class CustomActions
 {

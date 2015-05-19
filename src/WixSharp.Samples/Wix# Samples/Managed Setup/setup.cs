@@ -1,15 +1,18 @@
-using Microsoft.Deployment.WindowsInstaller;
 //css_ref ..\..\WixSharp.dll;
 //css_ref ..\..\WixSharp.UI.dll;
 //css_ref System.Core.dll;
 //css_ref System.Xml.dll;
 //css_ref ..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 using System;
-using System.Runtime.InteropServices;
-using System.Security.Principal;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
+using WixSharp.CommonTasks;
 
 public class Script
 {
@@ -19,46 +22,59 @@ public class Script
         new Script().Test();
     }
 
+
+    static string ToMap(string wxlFile)
+    {
+        return null;
+    }
+
+
     void Test()
     {
         //NOTE: IT IS STILL A WORK IN PROGRESS FEATURE PREVIEW
         var project =
             new ManagedProject("ManagedSetup",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
-                    new File("readme.txt")));
+                    new File("readme.txt")),
+                    new ManagedAction("embeddedUI", @"E:\Galos\Projects\WixSharp\src\EmbeddedUI_WPF\bin\Debug\EmbeddedUI_WPF.dll") 
+                    {
+                        Sequence = Sequence.NotInSequence,
+                        RefAssemblies = new[] { @"E:\Galos\Projects\WixSharp\src\EmbeddedUI_WPF\bin\Debug\Microsoft.Deployment.WindowsInstaller.dll" }
+                    }
+                    );
 
-        project.UI = WUI.WixUI_Mondo;
+        //project.UI = WUI.WixUI_Mondo;
 
-        project.ManagedUI = ManagedUI.Default;
+        project.ManagedUI = HybridUI.Default;
 
-        project.ManagedUI.BeforeInstall.Clear()
-                                       .Add<LicenceDialog>()
-                                       .Add<FeaturesDialog>()
-                                       .Add<InstallDirDialog>();
+        //project.ManagedUI.BeforeInstall.Clear()
+        //                               .Add<LicenceDialog>()
+        //                               .Add<FeaturesDialog>()
+        //                               .Add<InstallDirDialog>();
 
-        project.ManagedUI.AfterInstall.Clear()
-                                      .Add<ExitDialog>();
+        //project.ManagedUI.AfterInstall.Clear()
+        //                              .Add<ExitDialog>();
 
-        project.ManagedUI.BeforeRepair.Clear()
-                                      .Add<RepairStartDialog>();
+        //project.ManagedUI.BeforeRepair.Clear()
+        //                              .Add<RepairStartDialog>();
 
-        project.ManagedUI.AfterRepair.Clear()
-                                     .Add<RepairExitDialog>();
+        //project.ManagedUI.AfterRepair.Clear()
+        //                             .Add<RepairExitDialog>();
 
-        project.ManagedUI.BeforeUninstall.Clear()
-                                         .Add<UninstallStartDialog>();
+        //project.ManagedUI.BeforeUninstall.Clear()
+        //                                 .Add<UninstallStartDialog>();
 
-        project.ManagedUI.AfterUninstall.Clear()
-                                        .Add<UninstallExitDialog>();
+        //project.ManagedUI.AfterUninstall.Clear()
+        //                                .Add<UninstallExitDialog>();
 
-
-
+        //project.ManagedUI = null;
+        //project.UI = WUI.WixUI_Mondo;
+        //project.AddBinary(new Binary("WixUI_en-us.wxl"));
 
         //project.UI = WUI.WixUI_ProgressOnly;
         //project.Load += project_Load;
         //project.BeforeInstall += project_BeforeExecute;
         //project.AfterInstall += project_AfterExecute;
-
 
 #if vs
         project.OutDir = @"..\..\Wix# Samples\Managed Setup".PathGetFullPath();
@@ -66,14 +82,25 @@ public class Script
         project.EmitConsistentPackageId = true;
         Compiler.CandleOptions += " -sw1091";
 
-        Compiler.PreserveTempFiles = true;
-        Compiler.BuildMsi(project);
-        //Compiler.BuildWxs(project);
+        project.Compiler.PreserveTempFiles = true;
+        project.Compiler.WixSourceGenerated += Compiler_WixSourceGenerated;
+        project.BuildMsiCmd();
+    }
+
+    void Compiler_WixSourceGenerated(XDocument document)
+    {
+        var product = document.Root.Select("Product");
+
+        product.AddElement("UI")
+               .AddElement("EmbeddedUI")
+               .AddAttributes("Id=EmbeddedUI_WPF.dll;SourceFile=EmbeddedUI_WPF.CA.dll");
+
+        product.Select("UIRef").Remove();
     }
 
     static void project_Load(SetupEventArgs e)
     {
-        MessageBox.Show(e.ToString(), "Load");
+        //Debugger.Launch();
         e.Result = ActionResult.UserExit;
     }
 
@@ -84,6 +111,10 @@ public class Script
 
     static void project_AfterExecute(SetupEventArgs e)
     {
+        //Debugger.Launch();
         MessageBox.Show(e.ToString(), "AfterExecute");
     }
+
 }
+
+

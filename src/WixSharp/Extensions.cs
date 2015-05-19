@@ -915,6 +915,15 @@ namespace WixSharp
             }
         }
 
+        public static bool IsUninstall(this Session session)
+        {
+            return session.Property("REMOVE").SameAs("All", true);
+        }
+        public static bool IsBasic(this InstallUIOptions level)
+        {
+            return (level & InstallUIOptions.Full) != InstallUIOptions.Full;
+        }
+
         /// <summary>
         /// Returns the value of the named property of the specified <see cref="T:Microsoft.Deployment.WindowsInstaller.Session"/> object.
         /// <para>It can be uses as a generic way of accessing the properties as it redirects (transparently) access to the 
@@ -972,6 +981,57 @@ namespace WixSharp
                         fs.Write(buffer, 0, bytesRead);
                         bytesRead = stream.Read(buffer, 0, Length);
                     }
+                }
+            }
+        }
+
+        public static byte[] TryReadBinary(this Session session, string binary)
+        {
+            try
+            {
+                return ReadBinary(session, binary);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static byte[] ReadBinary(this Session session, string binary)
+        {
+            //If binary is accessed this way it will raise "stream handle is not valid" exception
+            //object result = session.Database.ExecuteScalar("select Data from Binary where Name = 'Fake_CRT.msi'");
+            //Stream s = (Stream)result;
+            //using (FileStream fs = new FileStream(@"....\Wix# Samples\Simplified Bootstrapper\Fake CRT1.msi", FileMode.Create))
+            //{
+            //    int Length = 256;
+            //    var buffer = new Byte[Length];
+            //    int bytesRead = s.Read(buffer, 0, Length);
+            //    while (bytesRead > 0)
+            //    {
+            //        fs.Write(buffer, 0, bytesRead);
+            //        bytesRead = s.Read(buffer, 0, Length);
+            //    }
+            //}
+
+            //however View approach is OK
+            using (var sql = session.Database.OpenView("select Data from Binary where Name = '" + binary + "'"))
+            {
+                sql.Execute();
+
+                System.IO.Stream stream = sql.Fetch().GetStream(1);
+
+                using (var ms = new System.IO.MemoryStream())
+                {
+                    int Length = 256;
+                    var buffer = new Byte[Length];
+                    int bytesRead = stream.Read(buffer, 0, Length);
+                    while (bytesRead > 0)
+                    {
+                        ms.Write(buffer, 0, bytesRead);
+                        bytesRead = stream.Read(buffer, 0, Length);
+                    }
+                    return ms.ToArray();
                 }
             }
         }

@@ -60,16 +60,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ManagedUI\ExitDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagedUI\FeaturesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagedUI\HybridUI.cs" />
+    <Compile Include="ManagedUI\InstallDirDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ManagedUI\LicenceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ManagedUI\ManagedUI.cs" />
     <Compile Include="ManagedAction.cs" />
+    <Compile Include="ManagedUI\RepairExitDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagedUI\RepairStartDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagedUI\EmbeddedUIShell.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagedUI\EmbeddedUIShell.Designer.cs">
+      <DependentUpon>EmbeddedUIShell.cs</DependentUpon>
+    </Compile>
     <Compile Include="ManagedUI\UIShell.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ManagedUI\UIShell.Designer.cs">
       <DependentUpon>UIShell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManagedUI\UninstallExitDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagedUI\UninstallStartDialog.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32.cs" />
@@ -87,6 +115,12 @@
     <None Include="WixSharpStrongName.snk" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ManagedUI\ExitDialog.resx">
+      <DependentUpon>ExitDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManagedUI\EmbeddedUIShell.resx">
+      <DependentUpon>EmbeddedUIShell.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ManagedUI\UIShell.resx">
       <DependentUpon>UIShell.cs</DependentUpon>
     </EmbeddedResource>

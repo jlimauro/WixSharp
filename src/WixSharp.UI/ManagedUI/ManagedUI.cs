@@ -1,21 +1,18 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
+using System.Threading;
+using Microsoft.Deployment.WindowsInstaller;
 
 namespace WixSharp
 {
-    //TODO:
-    //".NET presence" launch condition
-    //ensure UI event handlers are fired the last
-    public class ManagedUI : IManagedUI
+    public class EmbeddedUI : IManagedUI, IEmbeddedUI
     {
         ManagedDialogs beforeInstall = new ManagedDialogs();
         public ManagedDialogs BeforeInstall { get { return beforeInstall; } }
 
         ManagedDialogs afterInstall = new ManagedDialogs();
         public ManagedDialogs AfterInstall { get { return afterInstall; } }
-        
+
         ManagedDialogs beforeUninstall = new ManagedDialogs();
         public ManagedDialogs BeforeUninstall { get { return beforeUninstall; } }
 
@@ -28,63 +25,79 @@ namespace WixSharp
         ManagedDialogs afterRepair = new ManagedDialogs();
         public ManagedDialogs AfterRepair { get { return afterRepair; } }
 
-        public UIShell Shell;
+        public EmbeddedUIShell Shell;
         /// <summary>
         /// The predefined ManagedUI. It contains the dialog sequence similar to WixUI_Mondo. 
         /// </summary>
-        static public ManagedUI Default = new ManagedUI();
+        static public EmbeddedUI Default = new EmbeddedUI();
 
-        virtual public void BindTo(ManagedProject project)
+        public void BindTo(ManagedProject project)
         {
-            project.UI = WUI.WixUI_ProgressOnly;
-            project.Load += OnLoad;
-            project.BeforeInstall += OnBeforeInstall;
-            project.AfterInstall += OnAfterInstall;
         }
 
         public void UnbindFrom(ManagedProject project)
         {
-            project.Load -= OnLoad;
-            project.BeforeInstall -= OnBeforeInstall;
-            project.AfterInstall -= OnAfterInstall;
         }
 
-        void OnLoad(SetupEventArgs e)
+        ManualResetEvent installStartEvent = new ManualResetEvent(false);
+        ManualResetEvent installExitEvent = new ManualResetEvent(false);
+        Thread uiThread;
+
+        public bool Initialize(Session session, string resourcePath, ref InstallUIOptions uiLevel)
         {
-            //Debugger.Launch();
-            if (!e.IsUISupressed && e.HasBeforeSetupClrDialogs)
+            if (session != null && (session.IsUninstall() || uiLevel.IsBasic()))
+                return false;
+
+            uiThread = new Thread(ShowUI);
+            uiThread.SetApartmentState(ApartmentState.STA);
+            uiThread.Start();
+
+            // Wait for the setup wizard to either kickoff the install or prematurely exit.
+            int waitResult = WaitHandle.WaitAny(new[] { installStartEvent, installExitEvent });
+            if (waitResult == 1)
             {
-                e.MsiWindow.Hide();
-
-                using (var form = new UIShell(e))
-                {
-                    form.Load += (s, x) => form.MoveToMiddleOf(e.MsiWindow);
-                    form.ShowDialogSequence(e.BeforeSetupClrDialogs);
-
-                    e.MsiWindow.MoveToMiddleOf(form);
-                }
+                // The setup wizard set the exit event instead of the start event. Cancel the installation.
+                throw new InstallCanceledException();
+            }
+            else
+            {
+                // Start the installation with a silenced internal UI.
+                // This "embedded external UI" will handle message types except for source resolution.
+                uiLevel = InstallUIOptions.NoChange | InstallUIOptions.SourceResolutionOnly;
+                return true;
             }
         }
 
-        void OnBeforeInstall(SetupEventArgs e)
+        public MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord,
+           MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton)
         {
-            if (!e.IsUISupressed && e.HasBeforeSetupClrDialogs)
-                e.MsiWindow.Show();
+            // Synchronously send the message to the setup wizard window on its thread.
+            //object result = this.setupWizard.Dispatcher.Invoke(DispatcherPriority.Send,
+            //    new Func<MessageResult>(delegate()
+            //    {
+            //        return this.setupWizard.ProcessMessage(messageType, messageRecord, buttons, icon, defaultButton);
+            //    }));
+            //return (MessageResult)result;
+            return MessageResult.OK;
         }
 
-        void OnAfterInstall(SetupEventArgs e)
+        public void Shutdown()
         {
-            //Debugger.Launch();
-            if (!e.IsUISupressed && e.HasAfterSetupClrDialogs)
-            {
-                e.MsiWindow.Hide();
-
-                using (var form = new UIShell(e))
-                {
-                    form.Load += (s, x) => form.MoveToMiddleOf(e.MsiWindow);
-                    form.ShowDialogSequence(e.AfterInstallClrDialogs);
-                }
-            }
+            // Wait for the user to exit the setup wizard.
+            //this.setupWizard.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+            //    new Action(delegate()
+            //    {
+            //        this.setupWizard.EnableExit();
+            //    }));
+            uiThread.Join();
         }
+
+        void ShowUI()
+        {
+
+            installExitEvent.Set();
+        }
+
     }
+
 }

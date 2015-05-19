@@ -1,8 +1,10 @@
-﻿using Microsoft.Deployment.WindowsInstaller;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.Xml.Linq;
+using Microsoft.Deployment.WindowsInstaller;
+using System.Text;
 
 namespace WixSharp
 {
@@ -114,6 +116,15 @@ namespace WixSharp
         /// </value>
         public bool IsUninstalling { get { return Data["REMOVE"] == "ALL"; } }
 
+        /// <summary>
+        /// Gets the msi file location.
+        /// </summary>
+        /// <value>
+        /// The msi file.
+        /// </value>
+        public string MsiFile { get { return Data["MsiFile"]; } }
+
+
         public bool HasBeforeSetupClrDialogs { get { return Session.Property(GetClrDialogsPropertyName(true)).IsNotEmpty(); } }
         public bool HasAfterSetupClrDialogs { get { return Session.Property(GetClrDialogsPropertyName(false)).IsNotEmpty(); } }
 
@@ -211,6 +222,7 @@ namespace WixSharp
         /// The data.
         /// </value>
         public AppData Data { get; set; }
+        public ResourcesData UIText { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SetupEventArgs"/> class.
@@ -218,22 +230,44 @@ namespace WixSharp
         public SetupEventArgs()
         {
             Data = new AppData();
+            UIText = new ResourcesData();
         }
 
         /// <summary>
-        ///Class that encapsulated parsing of the CustomActionData content
+        /// Saves the user data.
         /// </summary>
-        public class AppData : Dictionary<string, string>
+        internal void SaveData()
+        {
+            this.Session["WIXSHARP_RUNTIME_DATA"] = Data.ToString();
+        }
+
+        public class ResourcesData : AppData
         {
             /// <summary>
-            /// Initializes from.
+            /// Initializes from WiX localization data (*.wxl).
+            /// </summary>
+            /// <param name="wxlFile">The WXL file.</param>
+            /// <returns></returns>
+            public ResourcesData InitFromWxl(byte[] wxlData)
+            {
+                var data = XDocument.Parse(wxlData.GetString(Encoding.UTF8))
+                                    .Descendants()
+                                    .Where(x => x.Name.LocalName == "String")
+                                    .ToDictionary(x => x.Attribute("Id").Value, x => x.Value);
+                base.InitFrom(data);
+                return this;
+            }
+
+            /// <summary>
+            /// Initializes from string.
             /// </summary>
             /// <param name="data">The data.</param>
-            public void InitFrom(string data)
+            /// <returns></returns>
+            public ResourcesData InitFrom(string data)
             {
-                this.Clear();
-                foreach (var item in data.ToDictionary(itemDelimiter: '\n'))
-                    this.Add(item.Key, item.Value);
+                var map = data.DecodeFromHex().GetString(Encoding.UTF8);
+                base.InitFrom(map);
+                return this;
             }
 
             /// <summary>
@@ -244,7 +278,60 @@ namespace WixSharp
             /// </returns>
             public override string ToString()
             {
-                return string.Join("\n", this.Select(x => x.Key + "=" + x.Value).ToArray());
+                string data = base.ToString();
+                return data.GetBytes(Encoding.UTF8).EncodeToHex();
+            }
+        }
+        /// <summary>
+        ///Class that encapsulated parsing of the CustomActionData content
+        /// </summary>
+        public class AppData : Dictionary<string, string>
+        {
+            /// <summary>
+            /// Initializes from string.
+            /// </summary>
+            /// <param name="data">The data.</param>
+            public AppData InitFrom(string data)
+            {
+                this.Clear();
+                foreach (var item in data.ToDictionary(itemDelimiter: '\n'))
+                    this.Add(item.Key, item.Value.Replace("{$NL}", "\n"));
+                return this;
+            }
+
+            /// <summary>
+            /// Initializes from dictionary.
+            /// </summary>
+            /// <param name="data">The data.</param>
+            public AppData InitFrom(Dictionary<string, string> data)
+            {
+                this.Clear();
+                foreach (var item in data)
+                    this.Add(item.Key, item.Value);
+                return this;
+            }
+
+            /// <summary>
+            /// Returns a <see cref="System.String" /> that represents this instance.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="System.String" /> that represents this instance.
+            /// </returns>
+            public override string ToString()
+            {
+                return string.Join("\n", this.Select(x => x.Key + "=" + x.Value.Replace("\n", "{$NL}")).ToArray());
+            }
+
+            public string this[string key]
+            {
+                get
+                {
+                    return base.ContainsKey(key) ? base[key] : null;
+                }
+                set
+                {
+                    base[key] = value;
+                }
             }
         }
 
@@ -258,6 +345,7 @@ namespace WixSharp
         {
             return
                 "\nInstallDir=" + InstallDir +
+                "\nMsiFile=" + MsiFile +
                 "\nUILevel=" + UILevel +
                 "\nMode=" + Mode +
                 "\nMsiWindow=" + MsiWindow +

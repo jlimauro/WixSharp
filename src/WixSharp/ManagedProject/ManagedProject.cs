@@ -6,14 +6,13 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using IO=System.IO;
+using System.Xml.Linq;
 using Microsoft.Deployment.WindowsInstaller;
 using WixSharp.CommonTasks;
-using System.Windows.Forms;
 
 namespace WixSharp
 {
-
-
     /// <summary>
     /// 
     /// </summary>
@@ -67,12 +66,12 @@ namespace WixSharp
                 if (managedUI != value)
                 {
                     if (managedUI != null)
-                        value.UnbindFrom(this);
+                        managedUI.UnbindFrom(this);
 
                     managedUI = value;
 
                     if (managedUI != null)
-                        value.BindTo(this);
+                        managedUI.BindTo(this);
                 }
             }
         }
@@ -85,7 +84,7 @@ namespace WixSharp
         {
             var name = Reflect.NameOf(expression);
             var handler = expression.Compile()() as Delegate;
-            
+
             const string wixSharpProperties = "WIXSHARP_RUNTIME_DATA,WixSharp_BeforeInstall_Dialogs,WixSharp_AfterInstall_Dialogs,WixSharp_BeforeUninstall_Dialogs,WixSharp_AfterUninstall_Dialogs,WixSharp_BeforeRepair_Dialogs,WixSharp_AfterRepair_Dialogs";
 
             if (handler != null)
@@ -136,6 +135,25 @@ namespace WixSharp
             }
         }
 
+        string PrepareResourceFile()
+        {
+            if (this.LocalizationFile.IsNotEmpty())
+            {
+                return this.LocalizationFile;
+            }
+            else
+            {
+                var tempDir = IO.Path.Combine(IO.Path.GetTempPath(), "WixSharp");
+                if (!IO.Directory.Exists(tempDir))
+                    IO.Directory.CreateDirectory(tempDir);
+
+                var file = IO.Path.Combine(tempDir, "WixUI_en-us.wxl");
+
+                IO.File.WriteAllBytes(file, Resources.Resources.WixUI_en_us);
+                return file;
+            }
+        }
+
         override internal void Preprocess()
         {
             base.Preprocess();
@@ -143,6 +161,9 @@ namespace WixSharp
             if (!preprocessed)
             {
                 preprocessed = true;
+
+                if (this.ManagedUI != null)
+                    this.AddBinary(new Binary(new Id("WixSharp_UIText"), PrepareResourceFile()));
 
                 string dllEntry = "WixSharp_InitRuntime_Action";
 
@@ -191,7 +212,7 @@ namespace WixSharp
 
             var assembly = System.Reflection.Assembly.Load(parts[0]);
             var type = assembly.GetTypes().Single(t => t.FullName == parts[1]);
-            
+
             return type;
         }
 
@@ -264,6 +285,8 @@ namespace WixSharp
                     if (eventArgs.Result == ActionResult.Failure || eventArgs.Result == ActionResult.UserExit)
                         break;
                 }
+
+                eventArgs.SaveData();
             }
             catch { }
             return eventArgs.Result;
@@ -271,14 +294,29 @@ namespace WixSharp
 
         internal static ActionResult Init(Session session)
         {
+            //Debugger.Launch();
             var data = new SetupEventArgs.AppData();
             try
             {
+                try
+                {
+                    var bytes = session.TryReadBinary("WixSharp_UIText");
+                    if (bytes != null)
+                    {
+                        var uiResources = new SetupEventArgs.ResourcesData();
+                        uiResources.InitFromWxl(bytes);
+                        data["UIText"] = uiResources.ToString();
+                    }
+                }
+                catch { }
+
+
                 data["Installed"] = session["Installed"];
                 data["REMOVE"] = session["REMOVE"];
                 data["UILevel"] = session["UILevel"];
                 data["MsiWindow"] = GetMsiForegroundWindow(session["ProductName"]).ToString();
                 data["IsMaintenance"] = session.GetMode(InstallRunMode.Maintenance).ToString();
+                data["MsiFile"] = session.Database.FilePath;
             }
             catch (Exception e)
             {
@@ -292,11 +330,14 @@ namespace WixSharp
 
         static SetupEventArgs Convert(Session session)
         {
+            //Debugger.Launch();
             var result = new SetupEventArgs { Session = session };
             try
             {
                 string data = session.Property("WIXSHARP_RUNTIME_DATA");
                 result.Data.InitFrom(data);
+                string uiTextData = result.Data["UIText"];
+                result.UIText.InitFrom(uiTextData);
             }
             catch (Exception e)
             {
@@ -361,6 +402,48 @@ namespace WixSharp
             //the window in not owned by msiexec (like in "Install" mode).
             //Thus let's try primitive 'find'.
             return FindWindow(null, productName);
+        }
+
+    }
+
+    internal static class SerializingExtensions
+    {
+        public static byte[] DecodeFromHex(this string obj)
+        {
+            var data = new List<byte>();
+            for (int i = 0; !string.IsNullOrEmpty(obj) && i < obj.Length; )
+            {
+                if (obj[i] == ',')
+                {
+                    i++;
+                    continue;
+                }
+                data.Add(byte.Parse(obj.Substring(i, 2), System.Globalization.NumberStyles.HexNumber));
+                i += 2;
+            }
+            return data.ToArray();
+        }
+
+        public static string EncodeToHex(this byte[] data)
+        {
+            return BitConverter.ToString(data).Replace("-", string.Empty);
+        }
+
+        public static string GetString(this byte[] obj, Encoding encoding = null)
+        {
+            if (obj == null) return null;
+            if (encoding == null)
+                return Encoding.Default.GetString(obj);
+            else
+                return encoding.GetString(obj);
+        }
+
+        public static byte[] GetBytes(this string obj, Encoding encoding = null)
+        {
+            if (encoding == null)
+                return Encoding.Default.GetBytes(obj);
+            else
+                return encoding.GetBytes(obj);
         }
     }
 }

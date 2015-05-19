@@ -137,6 +137,11 @@
     <Compile Include="ManagedProject\Interfaces.cs" />
     <Compile Include="ManagedProject\ManagedProjectActions.cs" />
     <Compile Include="ManagedProject\ManagedProject.cs" />
+    <Compile Include="Resources\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ManagedProject\SetupEventArgs.cs" />
     <Compile Include="Merge.cs" />
     <Compile Include="NativeBootstrapper.cs" />
@@ -196,6 +201,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="WixSharpStrongName.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WixUI_en-us.wxl" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
