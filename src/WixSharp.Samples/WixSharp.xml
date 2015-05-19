@@ -4676,13 +4676,31 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.Binary"/> class with properties initialized with specified parameters.
             </summary>
-            <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+            <param name="sourcePath">Relative path to the file to be taken for building the MSI.</param>
         </member>
         <member name="M:WixSharp.Binary.#ctor(WixSharp.Id,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.Binary"/> class.
             </summary>
             <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.Binary"/> instance.</param>
+            <param name="sourcePath">Relative path to the file to be taken for building the MSI.</param>
+        </member>
+        <member name="M:WixSharp.EmbeddedAssembly.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.EmbeddedAssembly"/> class.
+            </summary>
+        </member>
+        <member name="M:WixSharp.EmbeddedAssembly.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.EmbeddedAssembly"/> class with properties initialized with specified parameters.
+            </summary>
+            <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+        </member>
+        <member name="M:WixSharp.EmbeddedAssembly.#ctor(WixSharp.Id,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.EmbeddedAssembly"/> class.
+            </summary>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.EmbeddedAssembly"/> instance.</param>
             <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
         </member>
         <member name="T:WixSharp.AutoGenerationOptions">

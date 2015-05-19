@@ -509,7 +509,7 @@ namespace WixSharp
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
-        
+
             Build(project, path, OutputType.MSM);
 
             return path;
@@ -989,17 +989,24 @@ namespace WixSharp
                     project.WixExtensions.Add(extensionAssembly);
             }
 
-            //project.AddRemoveProgramsIcon is obsolete now
-            //if (!project.AddRemoveProgramsIcon.IsEmpty())
-            //{
-            //    product.Add(new XElement("Icon",
-            //        new XAttribute("Id", "MainIcon"),
-            //        new XAttribute("SourceFile", project.AddRemoveProgramsIcon)));
+            if (project.EmbeddedUI != null)
+            {
+                string bynaryPath = project.EmbeddedUI.Name;
+                if (project.EmbeddedUI is EmbeddedAssembly)
+                {
+                    var asmBin = project.EmbeddedUI as EmbeddedAssembly;
 
-            //    product.Add(new XElement("Property",
-            //        new XAttribute("Id", "ARPPRODUCTICON"),
-            //        new XAttribute("Value", "MainIcon")));
-            //}
+                    bynaryPath = asmBin.Name.PathChangeDirectory(project.OutDir)
+                                            .PathChangeExtension(".CA.dll");
+
+                    PackageManagedAsm(asmBin.Name, bynaryPath, asmBin.RefAssemblies.Concat(project.DefaultRefAssemblies).Distinct().ToArray(), project.OutDir);
+                }
+
+                product.AddElement("UI")
+                       .Add(new XElement("EmbeddedUI",
+                                new XAttribute("Id", project.EmbeddedUI.Id),
+                                new XAttribute("SourceFile", bynaryPath)));
+            }
 
             if (!project.BannerImage.IsEmpty())
             {
@@ -1832,9 +1839,22 @@ namespace WixSharp
         {
             foreach (var bin in wProject.Binaries)
             {
+                string bynaryKey = bin.Id;
+                string bynaryPath = bin.Name;
+
+                if (bin is EmbeddedAssembly)
+                {
+                    var asmBin = bin as EmbeddedAssembly;
+
+                    bynaryPath = asmBin.Name.PathChangeDirectory(wProject.OutDir)
+                                            .PathChangeExtension(".CA.dll");
+
+                    PackageManagedAsm(asmBin.Name, bynaryPath, asmBin.RefAssemblies.Concat(wProject.DefaultRefAssemblies).Distinct().ToArray(), wProject.OutDir);
+                }
+
                 product.Add(new XElement("Binary",
-                                new XAttribute("Id", bin.Id),
-                                new XAttribute("SourceFile", bin.Name))
+                                new XAttribute("Id", bynaryKey),
+                                new XAttribute("SourceFile", bynaryPath))
                                 .AddAttributes(bin.Attributes));
             }
         }
@@ -2136,27 +2156,30 @@ namespace WixSharp
             var asmFile = IO.Path.GetFullPath(asm);
             //var originalAsmCopy = asmFile; //to be used to verify assembly health
 
-            if (asm.EndsWith("%this%"))
-            {
-                //restore the original assembly name as MakeSfxCA does not like renamed assemblies
-                asmFile = Utils.OriginalAssemblyFileName(ClientAssembly);
-                bool asmIsRenamed = !ClientAssembly.SamePathAs(asmFile);
-
-                if (asmIsRenamed)
+            Func<string, string> resolveClientAsm = (asmName) =>
                 {
-                    asmFile = asmFile.PathChangeDirectory(outDir);
-                    IO.File.Copy(ClientAssembly, asmFile, true);
-                    tempFiles.Add(asmFile);
-                }
+                    //restore the original assembly name as MakeSfxCA does not like renamed assemblies
+                    string newName = Utils.OriginalAssemblyFileName(ClientAssembly);
+                    newName = newName.PathChangeDirectory(outDir);
 
-                var clientPdb = IO.Path.ChangeExtension(ClientAssembly, ".pdb");
+                    if (!ClientAssembly.SamePathAs(newName))
+                    {
+                        IO.File.Copy(ClientAssembly, newName, true);
+                        tempFiles.Add(newName);
 
-                if (IO.File.Exists(clientPdb) && asmIsRenamed)
-                {
-                    IO.File.Copy(clientPdb, IO.Path.ChangeExtension(asmFile, ".pdb"), true);
-                    tempFiles.Add(IO.Path.ChangeExtension(asmFile, ".pdb"));
-                }
-            }
+                        var clientPdb = IO.Path.ChangeExtension(ClientAssembly, ".pdb");
+
+                        if (IO.File.Exists(clientPdb))
+                        {
+                            IO.File.Copy(clientPdb, IO.Path.ChangeExtension(newName, ".pdb"), true);
+                            tempFiles.Add(IO.Path.ChangeExtension(newName, ".pdb"));
+                        }
+                    }
+                    return newName;
+                };
+
+            if (asmFile.EndsWith("%this%"))
+                asmFile = resolveClientAsm(asmFile);
 
             var requiredAsms = new List<string>(refAssemblies);
 
@@ -2173,20 +2196,28 @@ namespace WixSharp
             var referencedAssemblies = "";
             foreach (string file in requiredAsms)
             {
-                var refAasmFile = Utils.OriginalAssemblyFileName(file);
-                if (!file.SamePathAs(refAasmFile))
+                string refAasmFile;
+
+                if (file == "%this%")
                 {
-                    refAasmFile = refAasmFile.PathChangeDirectory(outDir);
-                    IO.File.Copy(file, refAasmFile, true);
-                    tempFiles.Add(refAasmFile);
+                    refAasmFile = resolveClientAsm(file);
+                }
+                else
+                {
+                    refAasmFile = Utils.OriginalAssemblyFileName(file);
+
+                    if (!file.SamePathAs(refAasmFile))
+                    {
+                        refAasmFile = refAasmFile.PathChangeDirectory(outDir);
+                        IO.File.Copy(file, refAasmFile, true);
+                        tempFiles.Add(refAasmFile);
+                    }
                 }
 
                 referencedAssemblies += "\"" + IO.Path.GetFullPath(refAasmFile) + "\" ";
             }
 
             var configFile = IO.Path.GetFullPath("CustomAction.config");
-            //var configFile = IO.Path.GetFullPath("Action.config");
-            //var configFile = asmFile+".config";
 
             using (var writer = new IO.StreamWriter(configFile))
                 writer.Write(@"<?xml version=""1.0"" encoding=""utf-8"" ?>

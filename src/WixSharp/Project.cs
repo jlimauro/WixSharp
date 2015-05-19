@@ -367,6 +367,8 @@ namespace WixSharp
         /// </summary>
         public WUI UI = WUI.WixUI_Minimal;
 
+        public Binary EmbeddedUI = null;
+
         /// <summary>
         /// The custom UI definition. Use CustomUIBuilder to generate the WiX UI definition or compose 
         /// <see cref="WixSharp.CustomUI"/> manually.

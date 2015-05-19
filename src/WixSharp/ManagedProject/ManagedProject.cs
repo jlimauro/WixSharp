@@ -56,25 +56,7 @@ namespace WixSharp
         /// </summary>
         public event SetupEventHandler AfterInstall;
 
-        IManagedUI managedUI;
-
-        public IManagedUI ManagedUI
-        {
-            get { return managedUI; }
-            set
-            {
-                if (managedUI != value)
-                {
-                    if (managedUI != null)
-                        managedUI.UnbindFrom(this);
-
-                    managedUI = value;
-
-                    if (managedUI != null)
-                        managedUI.BindTo(this);
-                }
-            }
-        }
+        public IManagedUI ManagedUI;
 
         bool preprocessed = false;
 
@@ -171,12 +153,13 @@ namespace WixSharp
 
                 if (ManagedUI != null)
                 {
-                    InjectDialogs("WixSharp_BeforeInstall_Dialogs", ManagedUI.BeforeInstall);
-                    InjectDialogs("WixSharp_AfterInstall_Dialogs", ManagedUI.AfterInstall);
-                    InjectDialogs("WixSharp_BeforeUninstall_Dialogs", ManagedUI.BeforeUninstall);
-                    InjectDialogs("WixSharp_AfterUninstall_Dialogs", ManagedUI.AfterUninstall);
-                    InjectDialogs("WixSharp_BeforeRepair_Dialogs", ManagedUI.BeforeRepair);
-                    InjectDialogs("WixSharp_AfterRepair_Dialogs", ManagedUI.AfterRepair);
+
+                    //InjectDialogs("WixSharp_BeforeInstall_Dialogs", ManagedUI.BeforeInstall);
+                    //InjectDialogs("WixSharp_AfterInstall_Dialogs", ManagedUI.AfterInstall);
+                    //InjectDialogs("WixSharp_BeforeUninstall_Dialogs", ManagedUI.BeforeUninstall);
+                    //InjectDialogs("WixSharp_AfterUninstall_Dialogs", ManagedUI.AfterUninstall);
+                    //InjectDialogs("WixSharp_BeforeRepair_Dialogs", ManagedUI.BeforeRepair);
+                    //InjectDialogs("WixSharp_AfterRepair_Dialogs", ManagedUI.AfterRepair);
                 }
 
                 Bind(() => Load, When.Before, Step.AppSearch);

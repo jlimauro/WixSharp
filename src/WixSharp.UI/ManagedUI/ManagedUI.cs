@@ -5,7 +5,7 @@ using Microsoft.Deployment.WindowsInstaller;
 
 namespace WixSharp
 {
-    public class EmbeddedUI : IManagedUI, IEmbeddedUI
+    public class ManagedUI : IManagedUI, IEmbeddedUI
     {
         ManagedDialogs beforeInstall = new ManagedDialogs();
         public ManagedDialogs BeforeInstall { get { return beforeInstall; } }
@@ -25,11 +25,11 @@ namespace WixSharp
         ManagedDialogs afterRepair = new ManagedDialogs();
         public ManagedDialogs AfterRepair { get { return afterRepair; } }
 
-        public EmbeddedUIShell Shell;
+        public UIShell Shell;
         /// <summary>
         /// The predefined ManagedUI. It contains the dialog sequence similar to WixUI_Mondo. 
         /// </summary>
-        static public EmbeddedUI Default = new EmbeddedUI();
+        static public ManagedUI Default = new ManagedUI();
 
         public void BindTo(ManagedProject project)
         {
@@ -42,6 +42,7 @@ namespace WixSharp
         ManualResetEvent installStartEvent = new ManualResetEvent(false);
         ManualResetEvent installExitEvent = new ManualResetEvent(false);
         Thread uiThread;
+        //EnvironmentVariable ttt 
 
         public bool Initialize(Session session, string resourcePath, ref InstallUIOptions uiLevel)
         {
@@ -94,7 +95,7 @@ namespace WixSharp
 
         void ShowUI()
         {
-
+            using (var shell = new UIShell())
             installExitEvent.Set();
         }
 

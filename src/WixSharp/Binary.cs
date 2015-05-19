@@ -60,7 +60,7 @@ namespace WixSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="Binary"/> class with properties initialized with specified parameters.
         /// </summary>
-        /// <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+        /// <param name="sourcePath">Relative path to the file to be taken for building the MSI.</param>
         public Binary(string sourcePath)
         {
             Name = sourcePath;
@@ -69,11 +69,39 @@ namespace WixSharp
         /// Initializes a new instance of the <see cref="Binary"/> class.
         /// </summary>
         /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="Binary"/> instance.</param>
-        /// <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+        /// <param name="sourcePath">Relative path to the file to be taken for building the MSI.</param>
         public Binary(Id id, string sourcePath)
         {
             Id = id.Value;
             Name = sourcePath;
         }
+
+        public bool IsAssembly = false;
+    }
+
+    public partial class EmbeddedAssembly: Binary
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmbeddedAssembly"/> class.
+        /// </summary>
+        public EmbeddedAssembly() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmbeddedAssembly"/> class with properties initialized with specified parameters.
+        /// </summary>
+        /// <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+        public EmbeddedAssembly(string sourcePath) :base(sourcePath)
+        {
+            
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmbeddedAssembly"/> class.
+        /// </summary>
+        /// <param name="id">The explicit <see cref="Id"></see> to be associated with <see cref="EmbeddedAssembly"/> instance.</param>
+        /// <param name="sourcePath">Relative path to the assembly file to be taken for building the MSI.</param>
+        public EmbeddedAssembly(Id id, string sourcePath) : base(id, sourcePath)
+        {
+        }
+
+        public string[] RefAssemblies = new string[0];
     }
 }

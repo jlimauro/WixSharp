@@ -17,7 +17,7 @@
             The predefined ManagedUI. It contains the dialog sequence similar to WixUI_Mondo.
             </summary>
         </member>
-        <member name="F:WixSharp.EmbeddedUI.Default">
+        <member name="F:WixSharp.ManagedUI.Default">
             <summary>
             The predefined ManagedUI. It contains the dialog sequence similar to WixUI_Mondo. 
             </summary>
@@ -113,23 +113,6 @@
             <param name="actionAssembly">Path to the assembly containing the CustomAction implementation. Specify <c>"%this%"</c> if the assembly
             is in the Wix# script.</param>
         </member>
-        <member name="F:WixSharp.EmbeddedUIShell.components">
-            <summary>
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:WixSharp.EmbeddedUIShell.Dispose(System.Boolean)">
-            <summary>
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:WixSharp.EmbeddedUIShell.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
-            </summary>
-        </member>
         <member name="F:WixSharp.UIShell.components">
             <summary>
             Required designer variable.
@@ -142,6 +125,23 @@
             <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
         <member name="M:WixSharp.UIShell.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:WixSharp.HybridUIShell.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:WixSharp.HybridUIShell.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:WixSharp.HybridUIShell.InitializeComponent">
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.

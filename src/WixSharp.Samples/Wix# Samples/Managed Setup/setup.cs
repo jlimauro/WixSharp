@@ -1,16 +1,12 @@
+using Microsoft.Deployment.WindowsInstaller;
+
 //css_ref ..\..\WixSharp.dll;
 //css_ref ..\..\WixSharp.UI.dll;
 //css_ref System.Core.dll;
 //css_ref System.Xml.dll;
 //css_ref ..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
 using WixSharp.CommonTasks;
 
@@ -22,12 +18,10 @@ public class Script
         new Script().Test();
     }
 
-
     static string ToMap(string wxlFile)
     {
         return null;
     }
-
 
     void Test()
     {
@@ -35,17 +29,28 @@ public class Script
         var project =
             new ManagedProject("ManagedSetup",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
-                    new File("readme.txt")),
-                    new ManagedAction("embeddedUI", @"E:\Galos\Projects\WixSharp\src\EmbeddedUI_WPF\bin\Debug\EmbeddedUI_WPF.dll") 
-                    {
-                        Sequence = Sequence.NotInSequence,
-                        RefAssemblies = new[] { @"E:\Galos\Projects\WixSharp\src\EmbeddedUI_WPF\bin\Debug\Microsoft.Deployment.WindowsInstaller.dll" }
-                    }
+                    new File("readme.txt"))
+                    //,
+                    //new EmbeddedAssembly(HybridUI.Default.GetType().Assembly.Location)
+                    //{
+                    //    RefAssemblies = new[]
+                    //    {
+                    //        "%this%",
+                    //        typeof(IEmbeddedUI).Assembly.Location 
+                    //    }
+                    //}
                     );
 
         //project.UI = WUI.WixUI_Mondo;
 
-        project.ManagedUI = HybridUI.Default;
+        project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\EmbeddedUI_WPF\bin\Debug\EmbeddedUI_WPF.dll")
+                    {
+                        RefAssemblies = new[]
+                        {
+                            typeof(Session).Assembly.Location 
+                        }
+                    };
+        //project.ManagedUI = ManagedUI.Default;
 
         //project.ManagedUI.BeforeInstall.Clear()
         //                               .Add<LicenceDialog>()
@@ -114,7 +119,4 @@ public class Script
         //Debugger.Launch();
         MessageBox.Show(e.ToString(), "AfterExecute");
     }
-
 }
-
-
