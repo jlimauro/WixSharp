@@ -13,8 +13,7 @@ namespace WixSharp
         static Type RepairStartDialog = typeof(RepairStartDialog);
         static Type RepairExitDialog = typeof(RepairExitDialog);
 
-        static Type UninstallStartDialog = typeof(UninstallStartDialog);
-        static Type UninstallExitDialog = typeof(UninstallExitDialog);
+        static Type ProgressDialog = typeof(ProgressDialog);
     }
 
     public class LicenceDialog : Form, IManagedDialog

@@ -998,8 +998,13 @@ namespace WixSharp
 
                     bynaryPath = asmBin.Name.PathChangeDirectory(project.OutDir)
                                             .PathChangeExtension(".CA.dll");
+                    
+                    var refAsms = asmBin.RefAssemblies.Add(typeof(Session).Assembly.Location)
+                                                      .Concat(project.DefaultRefAssemblies)
+                                                      .Distinct()
+                                                      .ToArray();
 
-                    PackageManagedAsm(asmBin.Name, bynaryPath, asmBin.RefAssemblies.Concat(project.DefaultRefAssemblies).Distinct().ToArray(), project.OutDir);
+                    PackageManagedAsm(asmBin.Name, bynaryPath, refAsms, project.OutDir);
                 }
 
                 product.AddElement("UI")

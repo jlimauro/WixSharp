@@ -2050,6 +2050,31 @@
             <param name="session">The session.</param>
             <returns></returns>
         </member>
+        <member name="M:WixSharp.Extensions.IsInstalling(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Gets a value indicating whether the product is being installed.
+            </summary>
+            <value>
+            <c>true</c> if installing; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:WixSharp.Extensions.IsRepairing(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Gets a value indicating whether the product is being repaired.
+            </summary>
+        </member>
+        <member name="M:WixSharp.Extensions.IsUninstalling(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Gets a value indicating whether the product is being uninstalled.
+            </summary>
+        </member>
+        <member name="M:WixSharp.Extensions.IsBasic(Microsoft.Deployment.WindowsInstaller.InstallUIOptions)">
+            <summary>
+            Determines whether this is basic UI level.
+            </summary>
+            <param name="level">The level.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.Property(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
             <summary>
             Returns the value of the named property of the specified <see cref="T:Microsoft.Deployment.WindowsInstaller.Session"/> object.
@@ -3673,9 +3698,9 @@
             <returns></returns>
         </member>
         <member name="T:WixSharp.ManagedProject">
-            <summary>
+             <summary>
             
-            </summary>
+             </summary>
         </member>
         <member name="T:WixSharp.Project">
             <summary>
@@ -4242,8 +4267,8 @@
         </member>
         <member name="P:WixSharp.SetupEventArgs.UILevel">
             <summary>
-            Gets the UIlevel. 
-            <para>UILevel > 4 lead to displaying modal dialogs. See https://msdn.microsoft.com/en-us/library/aa369487(v=vs.85).aspx. </para> 
+            Gets the UIlevel.
+            <para>UILevel > 4 lead to displaying modal dialogs. See https://msdn.microsoft.com/en-us/library/aa369487(v=vs.85).aspx. </para>
             </summary>
             <value>
             The UI level.
@@ -4263,14 +4288,6 @@
             </summary>
             <value>
             <c>true</c> if the product is installed; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="P:WixSharp.SetupEventArgs.IsMaintenance">
-            <summary>
-            Gets a value indicating whether the setup is executed is in the maintenance mode.
-            </summary>
-            <value>
-            <c>true</c> if this mode is a maintenance mode; otherwise, <c>false</c>.
             </value>
         </member>
         <member name="P:WixSharp.SetupEventArgs.IsInstalling">
@@ -4321,14 +4338,6 @@
             The install dir.
             </value>
         </member>
-        <member name="P:WixSharp.SetupEventArgs.MsiWindow">
-            <summary>
-            Gets the msi window.
-            </summary>
-            <value>
-            The msi window.
-            </value>
-        </member>
         <member name="P:WixSharp.SetupEventArgs.Data">
             <summary>
             Gets or sets the Data.
@@ -4338,18 +4347,18 @@
             </value>
         </member>
         <member name="T:WixSharp.SetupEventArgs.SetupMode">
-            <summary>
+             <summary>
             
-            </summary>
+             </summary>
         </member>
         <member name="F:WixSharp.SetupEventArgs.SetupMode.Installing">
             <summary>
             The installing mode
             </summary>
         </member>
-        <member name="F:WixSharp.SetupEventArgs.SetupMode.Reparing">
+        <member name="F:WixSharp.SetupEventArgs.SetupMode.Repairing">
             <summary>
-            The reparing mode
+            The repairing mode
             </summary>
         </member>
         <member name="F:WixSharp.SetupEventArgs.SetupMode.Uninstalling">
@@ -4380,28 +4389,6 @@
             <param name="data">The data.</param>
         </member>
         <member name="M:WixSharp.SetupEventArgs.AppData.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"/> that represents this instance.
-            </summary>
-            <returns>
-            A <see cref="T:System.String"/> that represents this instance.
-            </returns>
-        </member>
-        <member name="M:WixSharp.SetupEventArgs.ResourcesData.InitFromWxl(System.Byte[])">
-            <summary>
-            Initializes from WiX localization data (*.wxl).
-            </summary>
-            <param name="wxlFile">The WXL file.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.SetupEventArgs.ResourcesData.InitFrom(System.String)">
-            <summary>
-            Initializes from string.
-            </summary>
-            <param name="data">The data.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.SetupEventArgs.ResourcesData.ToString">
             <summary>
             Returns a <see cref="T:System.String"/> that represents this instance.
             </summary>

@@ -1,10 +1,7 @@
-﻿using System;
+﻿using Microsoft.Deployment.WindowsInstaller;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using System.Xml.Linq;
-using Microsoft.Deployment.WindowsInstaller;
-using System.Text;
 
 namespace WixSharp
 {
@@ -14,7 +11,7 @@ namespace WixSharp
     public class SetupEventArgs
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public enum SetupMode
         {
@@ -22,14 +19,17 @@ namespace WixSharp
             /// The installing mode
             /// </summary>
             Installing,
+
             /// <summary>
-            /// The reparing mode
+            /// The repairing mode
             /// </summary>
-            Reparing,
+            Repairing,
+
             /// <summary>
             /// The uninstalling mode
             /// </summary>
             Uninstalling,
+
             /// <summary>
             /// The unknown mode
             /// </summary>
@@ -59,9 +59,10 @@ namespace WixSharp
         /// <c>true</c> if UI is suppressed; otherwise, <c>false</c>.
         /// </value>
         public bool IsUISupressed { get { return UILevel <= 4; } }
+
         /// <summary>
-        /// Gets the UIlevel. 
-        /// <para>UILevel > 4 lead to displaying modal dialogs. See https://msdn.microsoft.com/en-us/library/aa369487(v=vs.85).aspx. </para> 
+        /// Gets the UIlevel.
+        /// <para>UILevel > 4 lead to displaying modal dialogs. See https://msdn.microsoft.com/en-us/library/aa369487(v=vs.85).aspx. </para>
         /// </summary>
         /// <value>
         /// The UI level.
@@ -85,20 +86,12 @@ namespace WixSharp
         public bool IsInstalled { get { return Data["Installed"].IsNotEmpty(); } }
 
         /// <summary>
-        /// Gets a value indicating whether the setup is executed is in the maintenance mode.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this mode is a maintenance mode; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsMaintenance { get { return Data["IsMaintenance"] == true.ToString(); } }
-
-        /// <summary>
         /// Gets a value indicating whether the product is being installed.
         /// </summary>
         /// <value>
         /// <c>true</c> if installing; otherwise, <c>false</c>.
         /// </value>
-        public bool IsInstalling { get { return !IsInstalled && !IsMaintenance && Data["REMOVE"] != "ALL"; } }
+        public bool IsInstalling { get { return !IsInstalled && Data["REMOVE"] != "ALL"; } }
 
         /// <summary>
         /// Gets a value indicating whether the product is being repaired.
@@ -106,7 +99,7 @@ namespace WixSharp
         /// <value>
         /// <c>true</c> if repairing; otherwise, <c>false</c>.
         /// </value>
-        public bool IsRepairing { get { return IsInstalled && IsMaintenance && Data["REMOVE"] != "ALL"; } }
+        public bool IsRepairing { get { return IsInstalled && Data["REMOVE"] != "ALL"; } }
 
         /// <summary>
         /// Gets a value indicating whether the product is being uninstalled.
@@ -124,60 +117,6 @@ namespace WixSharp
         /// </value>
         public string MsiFile { get { return Data["MsiFile"]; } }
 
-
-        public bool HasBeforeSetupClrDialogs { get { return Session.Property(GetClrDialogsPropertyName(true)).IsNotEmpty(); } }
-        public bool HasAfterSetupClrDialogs { get { return Session.Property(GetClrDialogsPropertyName(false)).IsNotEmpty(); } }
-
-        string GetClrDialogsPropertyName(bool isBefore)
-        {
-            if (IsInstalling) return (isBefore ? "WixSharp_BeforeInstall_Dialogs" : "WixSharp_AfterInstall_Dialogs");
-            if (IsRepairing) return (isBefore ? "WixSharp_BeforeRepair_Dialogs" : "WixSharp_AfterRepair_Dialogs");
-            if (IsUninstalling) return (isBefore ? "WixSharp_BeforeUninstall_Dialogs" : "WixSharp_AfterUninstall_Dialogs");
-            return "unknown";
-        }
-
-        public Type[] BeforeSetupClrDialogs
-        {
-            get
-            {
-                try
-                {
-                    string name = GetClrDialogsPropertyName(true);
-                    return Session.Property(name)
-                                  .Split('\n')
-                                  .Select(x => x.Trim())
-                                  .Where(x => x.IsNotEmpty())
-                                  .Select(x => ManagedProject.GetDialog(x))
-                                  .ToArray();
-                }
-                catch
-                {
-                    return new Type[0];
-                }
-            }
-        }
-
-        public Type[] AfterInstallClrDialogs
-        {
-            get
-            {
-                try
-                {
-                    string name = GetClrDialogsPropertyName(false);
-                    return Session.Property(name)
-                                  .Split('\n')
-                                  .Select(x => x.Trim())
-                                  .Where(x => x.IsNotEmpty())
-                                  .Select(x => ManagedProject.GetDialog(x))
-                                  .ToArray();
-                }
-                catch
-                {
-                    return new Type[0];
-                }
-            }
-        }
-
         /// <summary>
         /// Gets the setup mode.
         /// </summary>
@@ -189,7 +128,7 @@ namespace WixSharp
             get
             {
                 if (IsInstalling) return SetupMode.Installing;
-                if (IsRepairing) return SetupMode.Reparing;
+                if (IsRepairing) return SetupMode.Repairing;
                 if (IsUninstalling) return SetupMode.Uninstalling;
                 return SetupMode.Unknown;
             }
@@ -207,13 +146,13 @@ namespace WixSharp
             set { Session["INSTALLDIR"] = value; }
         }
 
-        /// <summary>
-        /// Gets the msi window.
-        /// </summary>
-        /// <value>
-        /// The msi window.
-        /// </value>
-        public IntPtr MsiWindow { get { return Data["MsiWindow"].ToIntPtr(); } }
+        ///// <summary>
+        ///// Gets the msi window.
+        ///// </summary>
+        ///// <value>
+        ///// The msi window.
+        ///// </value>
+        //public IntPtr MsiWindow { get { return Data["MsiWindow"].ToIntPtr(); } }
 
         /// <summary>
         /// Gets or sets the Data.
@@ -222,7 +161,8 @@ namespace WixSharp
         /// The data.
         /// </value>
         public AppData Data { get; set; }
-        public ResourcesData UIText { get; set; }
+
+        //public ResourcesData UIText { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SetupEventArgs"/> class.
@@ -230,7 +170,7 @@ namespace WixSharp
         public SetupEventArgs()
         {
             Data = new AppData();
-            UIText = new ResourcesData();
+            //UIText = new ResourcesData();
         }
 
         /// <summary>
@@ -241,47 +181,6 @@ namespace WixSharp
             this.Session["WIXSHARP_RUNTIME_DATA"] = Data.ToString();
         }
 
-        public class ResourcesData : AppData
-        {
-            /// <summary>
-            /// Initializes from WiX localization data (*.wxl).
-            /// </summary>
-            /// <param name="wxlFile">The WXL file.</param>
-            /// <returns></returns>
-            public ResourcesData InitFromWxl(byte[] wxlData)
-            {
-                var data = XDocument.Parse(wxlData.GetString(Encoding.UTF8))
-                                    .Descendants()
-                                    .Where(x => x.Name.LocalName == "String")
-                                    .ToDictionary(x => x.Attribute("Id").Value, x => x.Value);
-                base.InitFrom(data);
-                return this;
-            }
-
-            /// <summary>
-            /// Initializes from string.
-            /// </summary>
-            /// <param name="data">The data.</param>
-            /// <returns></returns>
-            public ResourcesData InitFrom(string data)
-            {
-                var map = data.DecodeFromHex().GetString(Encoding.UTF8);
-                base.InitFrom(map);
-                return this;
-            }
-
-            /// <summary>
-            /// Returns a <see cref="System.String" /> that represents this instance.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="System.String" /> that represents this instance.
-            /// </returns>
-            public override string ToString()
-            {
-                string data = base.ToString();
-                return data.GetBytes(Encoding.UTF8).EncodeToHex();
-            }
-        }
         /// <summary>
         ///Class that encapsulated parsing of the CustomActionData content
         /// </summary>
@@ -348,10 +247,8 @@ namespace WixSharp
                 "\nMsiFile=" + MsiFile +
                 "\nUILevel=" + UILevel +
                 "\nMode=" + Mode +
-                "\nMsiWindow=" + MsiWindow +
                 "\nIsElevated=" + IsElevated +
                 "\nIsInstalled=" + IsInstalled +
-                "\nIsMaintenance=" + IsMaintenance +
                 "\nIsInstalling=" + IsInstalling +
                 "\nIsUninstalling=" + IsUninstalling +
                 "\nIsReparing=" + IsRepairing;

@@ -1,63 +1,67 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
+using System.Xml.Linq;
 using Microsoft.Deployment.WindowsInstaller;
+using System.Diagnostics;
+using System;
 
 namespace WixSharp
 {
+
     public class ManagedUI : IManagedUI, IEmbeddedUI
     {
-        ManagedDialogs beforeInstall = new ManagedDialogs();
-        public ManagedDialogs BeforeInstall { get { return beforeInstall; } }
+        static public ManagedUI Default = new ManagedUI
+            {
+            };
 
-        ManagedDialogs afterInstall = new ManagedDialogs();
-        public ManagedDialogs AfterInstall { get { return afterInstall; } }
-
-        ManagedDialogs beforeUninstall = new ManagedDialogs();
-        public ManagedDialogs BeforeUninstall { get { return beforeUninstall; } }
-
-        ManagedDialogs afterUninstall = new ManagedDialogs();
-        public ManagedDialogs AfterUninstall { get { return afterUninstall; } }
-
-        ManagedDialogs beforeRepair = new ManagedDialogs();
-        public ManagedDialogs BeforeRepair { get { return beforeRepair; } }
-
-        ManagedDialogs afterRepair = new ManagedDialogs();
-        public ManagedDialogs AfterRepair { get { return afterRepair; } }
-
-        public UIShell Shell;
-        /// <summary>
-        /// The predefined ManagedUI. It contains the dialog sequence similar to WixUI_Mondo. 
-        /// </summary>
-        static public ManagedUI Default = new ManagedUI();
-
-        public void BindTo(ManagedProject project)
+        public ManagedUI()
         {
+            InstallDialogs = new ManagedDialogs();
+            RepairDialogs = new ManagedDialogs();
         }
 
-        public void UnbindFrom(ManagedProject project)
-        {
-        }
+        public ManagedDialogs InstallDialogs { get; set; }
+        public ManagedDialogs RepairDialogs { get; set; }
 
-        ManualResetEvent installStartEvent = new ManualResetEvent(false);
-        ManualResetEvent installExitEvent = new ManualResetEvent(false);
-        Thread uiThread;
-        //EnvironmentVariable ttt 
+        ManualResetEvent uiExitEvent = new ManualResetEvent(false);
+        IUIShell shell;
+
+        void ReadDialogs(Session session)
+        {
+            InstallDialogs.Clear()
+                          .AddRange(ManagedProject.ReadDialogs(session.Property("WixSharp_InstallDialogs")));
+
+            RepairDialogs.Clear()
+                          .AddRange(ManagedProject.ReadDialogs(session.Property("WixSharp_RepairDialogs")));
+
+        }
 
         public bool Initialize(Session session, string resourcePath, ref InstallUIOptions uiLevel)
         {
-            if (session != null && (session.IsUninstall() || uiLevel.IsBasic()))
-                return false;
+            //Debugger.Launch();
+            if (session != null && (session.IsUninstalling() || uiLevel.IsBasic()))
+                return false; //use built-in MSI basic UI
 
-            uiThread = new Thread(ShowUI);
+            ReadDialogs(session);
+
+            var startEvent = new ManualResetEvent(false);
+
+            var uiThread = new Thread(() =>
+            {
+                shell = new UIShell(); //important to create the instance in the same thread that call ShowModal
+                shell.ShowModal(new MsiRuntime(session){ StartExecute = () => startEvent.Set() }, this);
+                uiExitEvent.Set();
+            });
+
             uiThread.SetApartmentState(ApartmentState.STA);
             uiThread.Start();
 
-            // Wait for the setup wizard to either kickoff the install or prematurely exit.
-            int waitResult = WaitHandle.WaitAny(new[] { installStartEvent, installExitEvent });
+            int waitResult = WaitHandle.WaitAny(new[] { startEvent, uiExitEvent });
             if (waitResult == 1)
             {
-                // The setup wizard set the exit event instead of the start event. Cancel the installation.
+                //UI exited without starting the install. Cancel the installation.
                 throw new InstallCanceledException();
             }
             else
@@ -65,40 +69,25 @@ namespace WixSharp
                 // Start the installation with a silenced internal UI.
                 // This "embedded external UI" will handle message types except for source resolution.
                 uiLevel = InstallUIOptions.NoChange | InstallUIOptions.SourceResolutionOnly;
+                shell.InUIThread(shell.OnExecuteStarted);
                 return true;
             }
         }
 
-        public MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord,
-           MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton)
+        public MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton)
         {
-            // Synchronously send the message to the setup wizard window on its thread.
-            //object result = this.setupWizard.Dispatcher.Invoke(DispatcherPriority.Send,
-            //    new Func<MessageResult>(delegate()
-            //    {
-            //        return this.setupWizard.ProcessMessage(messageType, messageRecord, buttons, icon, defaultButton);
-            //    }));
-            //return (MessageResult)result;
-            return MessageResult.OK;
+            MessageResult result = MessageResult.OK;
+            shell.InUIThread(() =>
+                {
+                    result = shell.ProcessMessage(messageType, messageRecord, buttons, icon, defaultButton);
+                });
+            return result;
         }
 
         public void Shutdown()
         {
-            // Wait for the user to exit the setup wizard.
-            //this.setupWizard.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-            //    new Action(delegate()
-            //    {
-            //        this.setupWizard.EnableExit();
-            //    }));
-            uiThread.Join();
+            shell.OnExecuteComplete();
+            uiExitEvent.WaitOne();
         }
-
-        void ShowUI()
-        {
-            using (var shell = new UIShell())
-            installExitEvent.Set();
-        }
-
     }
-
 }

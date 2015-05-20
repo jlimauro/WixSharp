@@ -1,22 +1,19 @@
+using Microsoft.Deployment.WindowsInstaller;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
-using IO=System.IO;
-using System.Xml.Linq;
-using Microsoft.Deployment.WindowsInstaller;
 using WixSharp.CommonTasks;
+using IO = System.IO;
 
 namespace WixSharp
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public class ManagedProject : Project
+    public partial class ManagedProject : Project
     {
         //some materials to consider: http://cpiekarski.com/2012/05/18/wix-custom-action-sequencing/
 
@@ -47,10 +44,12 @@ namespace WixSharp
         /// Occurs before AppSearch standard action.
         /// </summary>
         public event SetupEventHandler Load;
+
         /// <summary>
         /// Occurs before InstallFiles standard action.
         /// </summary>
         public event SetupEventHandler BeforeInstall;
+
         /// <summary>
         /// Occurs after InstallFiles standard action. The event is fired from the elevated execution.
         /// </summary>
@@ -97,26 +96,6 @@ namespace WixSharp
         /// </summary>
         public string DefaultDeferredProperties = "INSTALLDIR";
 
-        void InjectDialogs(string name, ManagedDialogs dialogs)
-        {
-            if (dialogs.Any())
-            {
-                var dialogsInfo = new StringBuilder();
-
-                foreach (var item in dialogs)
-                {
-                    if (!this.DefaultRefAssemblies.Contains(item.Assembly.Location))
-                        this.DefaultRefAssemblies.Add(item.Assembly.Location);
-
-                    var info = GetDialogInfo(item);
-
-                    ValidateDialogInfo(info);
-                    dialogsInfo.AppendLine(info);
-                }
-                this.AddProperty(new Property(name, dialogsInfo.ToString().Trim()));
-            }
-        }
-
         string PrepareResourceFile()
         {
             if (this.LocalizationFile.IsNotEmpty())
@@ -144,28 +123,53 @@ namespace WixSharp
             {
                 preprocessed = true;
 
-                if (this.ManagedUI != null)
-                    this.AddBinary(new Binary(new Id("WixSharp_UIText"), PrepareResourceFile()));
-
                 string dllEntry = "WixSharp_InitRuntime_Action";
 
                 this.AddAction(new ManagedAction(new Id(dllEntry), dllEntry, thisAsm, Return.check, When.Before, Step.AppSearch, Condition.Always));
 
                 if (ManagedUI != null)
                 {
+                    this.AddBinary(new Binary(new Id("WixSharp_UIText"), PrepareResourceFile()));
 
-                    //InjectDialogs("WixSharp_BeforeInstall_Dialogs", ManagedUI.BeforeInstall);
-                    //InjectDialogs("WixSharp_AfterInstall_Dialogs", ManagedUI.AfterInstall);
-                    //InjectDialogs("WixSharp_BeforeUninstall_Dialogs", ManagedUI.BeforeUninstall);
-                    //InjectDialogs("WixSharp_AfterUninstall_Dialogs", ManagedUI.AfterUninstall);
-                    //InjectDialogs("WixSharp_BeforeRepair_Dialogs", ManagedUI.BeforeRepair);
-                    //InjectDialogs("WixSharp_AfterRepair_Dialogs", ManagedUI.AfterRepair);
+                    InjectDialogs("WixSharp_InstallDialogs", ManagedUI.InstallDialogs);
+                    InjectDialogs("WixSharp_RepairDialogs", ManagedUI.RepairDialogs);
+
+                    this.EmbeddedUI = new EmbeddedAssembly(ManagedUI.GetType().Assembly.Location);
                 }
 
                 Bind(() => Load, When.Before, Step.AppSearch);
                 Bind(() => BeforeInstall, When.Before, Step.InstallFiles);
                 Bind(() => AfterInstall, When.After, Step.InstallFiles, true);
             }
+        }
+
+        void InjectDialogs(string name, ManagedDialogs dialogs)
+        {
+            if (dialogs.Any())
+            {
+                var dialogsInfo = new StringBuilder();
+
+                foreach (var item in dialogs)
+                {
+                    if (!this.DefaultRefAssemblies.Contains(item.Assembly.Location))
+                        this.DefaultRefAssemblies.Add(item.Assembly.Location);
+
+                    var info = GetDialogInfo(item);
+
+                    ValidateDialogInfo(info);
+                    dialogsInfo.AppendLine(info);
+                }
+                this.AddProperty(new Property(name, dialogsInfo.ToString().Trim()));
+            }
+        }
+
+        public static List<Type> ReadDialogs(string data)
+        {
+            return data.Split('\n')
+                       .Select(x => x.Trim())
+                       .Where(x => x.IsNotEmpty())
+                       .Select(x => ManagedProject.GetDialog(x))
+                       .ToList();
         }
 
         static void ValidateDialogInfo(string info)
@@ -183,9 +187,9 @@ namespace WixSharp
 
         static string GetDialogInfo(Type dialog)
         {
-            var info = string.Format("{0}|{1}",
-                                          dialog.Assembly.FullName,
-                                          dialog.FullName);
+            var info = "{0}|{1}".FormatInline(
+                                dialog.Assembly.FullName,
+                                dialog.FullName);
             return info;
         }
 
@@ -198,7 +202,6 @@ namespace WixSharp
 
             return type;
         }
-
 
         static void ValidateHandlerInfo(string info)
         {
@@ -219,7 +222,7 @@ namespace WixSharp
 
             foreach (Delegate action in handlers.GetInvocationList())
             {
-                var handlerInfo = string.Format("{0}|{1}|{2}",
+                var handlerInfo = "{0}|{1}|{2}".FormatInline(
                                      action.Method.DeclaringType.Assembly.FullName,
                                      action.Method.DeclaringType.FullName,
                                      action.Method.Name);
@@ -230,7 +233,6 @@ namespace WixSharp
             }
             return result.ToString().Trim();
         }
-
 
         static MethodInfo GetHandler(string info)
         {
@@ -281,25 +283,9 @@ namespace WixSharp
             var data = new SetupEventArgs.AppData();
             try
             {
-                try
-                {
-                    var bytes = session.TryReadBinary("WixSharp_UIText");
-                    if (bytes != null)
-                    {
-                        var uiResources = new SetupEventArgs.ResourcesData();
-                        uiResources.InitFromWxl(bytes);
-                        data["UIText"] = uiResources.ToString();
-                    }
-                }
-                catch { }
-
-
                 data["Installed"] = session["Installed"];
                 data["REMOVE"] = session["REMOVE"];
                 data["UILevel"] = session["UILevel"];
-                data["MsiWindow"] = GetMsiForegroundWindow(session["ProductName"]).ToString();
-                data["IsMaintenance"] = session.GetMode(InstallRunMode.Maintenance).ToString();
-                data["MsiFile"] = session.Database.FilePath;
             }
             catch (Exception e)
             {
@@ -319,114 +305,12 @@ namespace WixSharp
             {
                 string data = session.Property("WIXSHARP_RUNTIME_DATA");
                 result.Data.InitFrom(data);
-                string uiTextData = result.Data["UIText"];
-                result.UIText.InitFrom(uiTextData);
             }
             catch (Exception e)
             {
                 session.Log(e.Message);
-
             }
             return result;
-        }
-
-        const int SW_HIDE = 0;
-        const int SW_SHOW = 1;
-        const int SW_RESTORE = 9;
-
-        [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        [DllImport("User32.dll")]
-        static extern int SetForegroundWindow(IntPtr hwnd);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool IsWindowVisible(IntPtr hWnd);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        internal static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        internal static extern int GetWindowTextLength(IntPtr hWnd);
-
-        public static string GetWindowText(IntPtr wnd)
-        {
-            int length = GetWindowTextLength(wnd);
-            StringBuilder sb = new StringBuilder(length + 1);
-            GetWindowText(wnd, sb, sb.Capacity);
-            return sb.ToString();
-        }
-
-        static IntPtr GetMsiForegroundWindow(string productName)
-        {
-            try
-            {
-                foreach (var proc in Process.GetProcessesByName("msiexec").Where(p => p.MainWindowHandle != IntPtr.Zero))
-                {
-                    if (GetWindowText(proc.MainWindowHandle) == productName && IsWindowVisible(proc.MainWindowHandle))
-                    {
-                        ShowWindow(proc.MainWindowHandle, SW_RESTORE);
-                        SetForegroundWindow(proc.MainWindowHandle);
-                        return proc.MainWindowHandle;
-                    }
-                }
-            }
-            catch { }
-
-            //There is no warranty that MsiWindow will be found in "Change/Repair+UI" mode (from ARP) as 
-            //the window in not owned by msiexec (like in "Install" mode).
-            //Thus let's try primitive 'find'.
-            return FindWindow(null, productName);
-        }
-
-    }
-
-    internal static class SerializingExtensions
-    {
-        public static byte[] DecodeFromHex(this string obj)
-        {
-            var data = new List<byte>();
-            for (int i = 0; !string.IsNullOrEmpty(obj) && i < obj.Length; )
-            {
-                if (obj[i] == ',')
-                {
-                    i++;
-                    continue;
-                }
-                data.Add(byte.Parse(obj.Substring(i, 2), System.Globalization.NumberStyles.HexNumber));
-                i += 2;
-            }
-            return data.ToArray();
-        }
-
-        public static string EncodeToHex(this byte[] data)
-        {
-            return BitConverter.ToString(data).Replace("-", string.Empty);
-        }
-
-        public static string GetString(this byte[] obj, Encoding encoding = null)
-        {
-            if (obj == null) return null;
-            if (encoding == null)
-                return Encoding.Default.GetString(obj);
-            else
-                return encoding.GetString(obj);
-        }
-
-        public static byte[] GetBytes(this string obj, Encoding encoding = null)
-        {
-            if (encoding == null)
-                return Encoding.Default.GetBytes(obj);
-            else
-                return encoding.GetBytes(obj);
         }
     }
 }

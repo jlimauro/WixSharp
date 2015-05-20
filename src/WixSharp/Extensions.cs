@@ -26,11 +26,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using System.Xml.XPath;
 using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
 using IO = System.IO;
-using System.Xml;
 
 namespace WixSharp
 {
@@ -915,14 +913,48 @@ namespace WixSharp
             }
         }
 
-        public static bool IsUninstall(this Session session)
+        public static bool IsInstalled(this Session session)
+        {
+            return session.Property("Installed").IsNotEmpty();
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the product is being installed.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if installing; otherwise, <c>false</c>.
+        /// </value>
+        static public bool IsInstalling(this Session session)
+        {
+            return !session.IsInstalled() && !session.IsUninstalling();
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the product is being repaired.
+        /// </summary>
+        static public bool IsRepairing(this Session session)
+        {
+            return session.IsInstalled() && !session.IsUninstalling();
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the product is being uninstalled.
+        /// </summary>
+        static public bool IsUninstalling(this Session session)
         {
             return session.Property("REMOVE").SameAs("All", true);
         }
+
+        /// <summary>
+        /// Determines whether this is basic UI level.
+        /// </summary>
+        /// <param name="level">The level.</param>
+        /// <returns></returns>
         public static bool IsBasic(this InstallUIOptions level)
         {
             return (level & InstallUIOptions.Full) != InstallUIOptions.Full;
         }
+        /////////////////////////////////////////////////////////////
 
         /// <summary>
         /// Returns the value of the named property of the specified <see cref="T:Microsoft.Deployment.WindowsInstaller.Session"/> object.
@@ -1067,6 +1099,47 @@ namespace WixSharp
         public static WixObject ToWObject<T>(this IEnumerable<T> items) where T : WixObject
         {
             return new WixItems(items.Cast<WixObject>());
+        }
+    }
+
+    public static class SerializingExtensions
+    {
+        public static byte[] DecodeFromHex(this string obj)
+        {
+            var data = new List<byte>();
+            for (int i = 0; !string.IsNullOrEmpty(obj) && i < obj.Length; )
+            {
+                if (obj[i] == ',')
+                {
+                    i++;
+                    continue;
+                }
+                data.Add(byte.Parse(obj.Substring(i, 2), System.Globalization.NumberStyles.HexNumber));
+                i += 2;
+            }
+            return data.ToArray();
+        }
+
+        public static string EncodeToHex(this byte[] data)
+        {
+            return BitConverter.ToString(data).Replace("-", string.Empty);
+        }
+
+        public static string GetString(this byte[] obj, Encoding encoding = null)
+        {
+            if (obj == null) return null;
+            if (encoding == null)
+                return Encoding.Default.GetString(obj);
+            else
+                return encoding.GetString(obj);
+        }
+
+        public static byte[] GetBytes(this string obj, Encoding encoding = null)
+        {
+            if (encoding == null)
+                return Encoding.Default.GetBytes(obj);
+            else
+                return encoding.GetBytes(obj);
         }
     }
 

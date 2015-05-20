@@ -66,15 +66,16 @@
     <Compile Include="ManagedUI\FeaturesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ManagedUI\HybridUI\HybridUI.cs" />
     <Compile Include="ManagedUI\InstallDirDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ManagedUI\InstallProgressCounter.cs" />
     <Compile Include="ManagedUI\LicenceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ManagedUI\ManagedUI.cs" />
     <Compile Include="ManagedAction.cs" />
+    <Compile Include="ManagedUI\MsiRuntime.cs" />
     <Compile Include="ManagedUI\RepairExitDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,16 +88,7 @@
     <Compile Include="ManagedUI\UIShell.Designer.cs">
       <DependentUpon>UIShell.cs</DependentUpon>
     </Compile>
-    <Compile Include="ManagedUI\HybridUI\HybridUIShell.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ManagedUI\HybridUI\HybridUIShell.Designer.cs">
-      <DependentUpon>HybridUIShell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ManagedUI\UninstallExitDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ManagedUI\UninstallStartDialog.cs">
+    <Compile Include="ManagedUI\ProgressDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -120,9 +112,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ManagedUI\UIShell.resx">
       <DependentUpon>UIShell.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ManagedUI\HybridUI\HybridUIShell.resx">
-      <DependentUpon>HybridUIShell.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
