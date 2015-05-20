@@ -146,14 +146,6 @@ namespace WixSharp
             set { Session["INSTALLDIR"] = value; }
         }
 
-        ///// <summary>
-        ///// Gets the msi window.
-        ///// </summary>
-        ///// <value>
-        ///// The msi window.
-        ///// </value>
-        //public IntPtr MsiWindow { get { return Data["MsiWindow"].ToIntPtr(); } }
-
         /// <summary>
         /// Gets or sets the Data.
         /// </summary>
@@ -170,7 +162,6 @@ namespace WixSharp
         public SetupEventArgs()
         {
             Data = new AppData();
-            //UIText = new ResourcesData();
         }
 
         /// <summary>
