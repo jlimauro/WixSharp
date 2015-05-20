@@ -34,6 +34,7 @@ public class Script
         //project.UI = WUI.WixUI_Mondo;
 
         //project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\EmbeddedUI_WPF\bin\Debug\EmbeddedUI_WPF.dll");
+        project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\EmbeddedUI\bin\Debug\EmbeddedUI.dll");
         project.ManagedUI = ManagedUI.Default;
 
         project.ManagedUI.InstallDialogs.Clear()
@@ -49,14 +50,12 @@ public class Script
                                        .Add<RepairExitDialog>();
 
 
-        //project.ManagedUI = null;
+        project.ManagedUI = null;
         //project.UI = WUI.WixUI_Mondo;
-        //project.AddBinary(new Binary("WixUI_en-us.wxl"));
 
-        //project.UI = WUI.WixUI_ProgressOnly;
-        project.Load += project_Load;
-        project.BeforeInstall += project_BeforeExecute;
-        project.AfterInstall += project_AfterExecute;
+        //project.Load += project_Load;
+        //project.BeforeInstall += project_BeforeExecute;
+        //project.AfterInstall += project_AfterExecute;
 
 #if vs
         project.OutDir = @"..\..\Wix# Samples\Managed Setup".PathGetFullPath();
