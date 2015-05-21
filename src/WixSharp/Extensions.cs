@@ -603,6 +603,29 @@ namespace WixSharp
         }
 
         /// <summary>
+        /// Selects from the given element the first child element matching the specified path (e.g. <c>Select("Product/Package")</c>).
+        /// </summary>
+        /// <param name="element">The element to be searched.</param>
+        /// <param name="path">The path.</param>
+        /// <returns>The element matching the path.</returns>
+        public static XElement Select(this XDocument document, string path)
+        {
+            string[] parts = path.Split('/');
+
+            var e = (from el in document.Root.Elements()
+                     where el.Name.LocalName == parts[0]
+                     select el).GetEnumerator();
+
+            if (!e.MoveNext())
+                return null;
+
+            if (parts.Length == 1) //the last link in the chain
+                return e.Current;
+            else
+                return e.Current.Select(path.Substring(parts[0].Length + 1)); //be careful RECURSION
+        }
+
+        /// <summary>
         /// Selects from the given element the first child element Directory matching the specified path (e.g. <c>Select("ProgramFiles/MyCompany") by </c>).
         /// </summary>
         /// <param name="element">The element to be searched.</param>
@@ -660,6 +683,7 @@ namespace WixSharp
         /// <param name="element">The element to be searched.</param>
         /// <param name="elementName">The element name.</param>
         /// <returns>The elements matching the name.</returns>
+        [Obsolete("AllElements is obsolete. Please use more efficient FindAll instead.")]
         public static XElement[] AllElements(this XElement element, string elementName)
         {
             int iterator = 0;
@@ -690,10 +714,11 @@ namespace WixSharp
         /// <param name="element">The element to be searched.</param>
         /// <param name="elementName">The element local name.</param>
         /// <returns>The elements matching the name.</returns>
-        public static XElement SelectSingle(this XElement element, string elementName)
+        public static XElement FindSingle(this XElement element, string elementName)
         {
             return element.Descendants().Single(x => x.Name.LocalName == elementName);
         }
+
 
         /// <summary>
         /// Selects single descendant element with a given name (LocalName). Throws if no or more then one match found
@@ -701,9 +726,30 @@ namespace WixSharp
         /// <param name="element">The element to be searched.</param>
         /// <param name="elementName">The element local name.</param>
         /// <returns>The elements matching the name.</returns>
-        public static XElement SelectSingle(this XDocument document, string elementName)
+        public static XElement FindSingle(this XDocument document, string elementName)
         {
-            return document.Root.Descendants().Single(x => x.Name.LocalName == elementName);
+            return document.Root.FindSingle(elementName);
+        }
+
+        /// <summary>
+        /// Selects all descendant elements with a given name (LocalName). Throws if no or more then one match found
+        /// </summary>
+        /// <param name="element">The element to be searched.</param>
+        /// <param name="elementName">The element local name.</param>
+        /// <returns>The elements matching the name.</returns>
+        public static XElement[] FindAll(this XElement element, string elementName)
+        {
+            return element.Descendants().Where(x => x.Name.LocalName == elementName).ToArray();
+        }
+        /// <summary>
+        /// Selects all descendant elements with a given name (LocalName). Throws if no or more then one match found
+        /// </summary>
+        /// <param name="element">The element to be searched.</param>
+        /// <param name="elementName">The element local name.</param>
+        /// <returns>The elements matching the name.</returns>
+        public static XElement[] FindAll(this XDocument document, string elementName)
+        {
+            return document.Root.FindAll(elementName);
         }
 
         /// <summary>

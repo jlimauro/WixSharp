@@ -56,7 +56,7 @@ namespace WixSharp.Test
                 string output = Run(batchFile);
 
 
-                if (output.Contains(" : error") || (nonMsi && !HasAnyMsis(dir)))
+                if (output.Contains(" : error") || output.Contains("Error: ") || (nonMsi && !HasAnyMsis(dir)))
                     failedSamples.Add(currentStep + ":" + batchFile);
                 
                 if (!nonMsi)

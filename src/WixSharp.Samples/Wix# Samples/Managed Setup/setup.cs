@@ -1,15 +1,15 @@
-using Microsoft.Deployment.WindowsInstaller;
-
-//css_ref ..\..\WixSharp.dll;
-//css_ref ..\..\WixSharp.UI.dll;
+//css_dir ..\..\;
+//css_ref Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
+//css_ref WixSharp.UI.dll;
 //css_ref System.Core.dll;
 //css_ref System.Xml.dll;
-//css_ref ..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System;
 using System.Linq;
 using WixSharp;
 using WixSharp.CommonTasks;
+using Microsoft.Deployment.WindowsInstaller;
 
 public class Script
 {

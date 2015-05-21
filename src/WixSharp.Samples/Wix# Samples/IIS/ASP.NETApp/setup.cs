@@ -40,8 +40,9 @@ class Script
         project.Compiler.PreserveTempFiles = true;
         project.Compiler.WixSourceGenerated += doc =>
         {
-            var webSite = doc.SelectSingle("WebSite");
-            var virtualDir = doc.SelectSingle("WebVirtualDir");
+            //ConfigureIfExists requires that webSite is contained by the Component not a Product element. So move it.
+            var webSite = doc.FindSingle("WebSite");
+            var virtualDir = doc.FindSingle("WebVirtualDir");
             webSite.MoveTo(virtualDir.Parent);
         };
         project.BuildMsi();
