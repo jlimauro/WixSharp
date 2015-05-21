@@ -171,6 +171,10 @@ namespace WixSharp
         /// </summary>
         public readonly static Condition Net20_Installed = new Condition(" (NETFRAMEWORK20='#1') ");
         /// <summary>
+        /// The .NET3.5 installed. This condition is to be used in Project.SetNetFxPrerequisite.
+        /// </summary>
+        public readonly static Condition Net35_Installed = new Condition(" (NETFRAMEWORK35='#1') ");
+        /// <summary>
         /// The .NET4.5 installed. This condition is to be used in Project.SetNetFxPrerequisite.
         /// </summary>
         public readonly static Condition Net45_Installed = new Condition(" (NETFRAMEWORK45 >= '#378389') ");

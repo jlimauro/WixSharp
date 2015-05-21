@@ -1,10 +1,10 @@
-using Microsoft.Deployment.WindowsInstaller;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using Microsoft.Deployment.WindowsInstaller;
 using WixSharp.CommonTasks;
 using IO = System.IO;
 
@@ -66,7 +66,7 @@ namespace WixSharp
             var name = Reflect.NameOf(expression);
             var handler = expression.Compile()() as Delegate;
 
-            const string wixSharpProperties = "WIXSHARP_RUNTIME_DATA,WixSharp_BeforeInstall_Dialogs,WixSharp_AfterInstall_Dialogs,WixSharp_BeforeUninstall_Dialogs,WixSharp_AfterUninstall_Dialogs,WixSharp_BeforeRepair_Dialogs,WixSharp_AfterRepair_Dialogs";
+            const string wixSharpProperties = "WIXSHARP_RUNTIME_DATA";
 
             if (handler != null)
             {
@@ -123,6 +123,9 @@ namespace WixSharp
             {
                 preprocessed = true;
 
+                //It is too late to set prerequisites. Launch conditions are evaluated after UI is popped up.   
+                //this.SetNetFxPrerequisite(Condition.Net35_Installed, "Please install .NET v3.5 first.");
+                
                 string dllEntry = "WixSharp_InitRuntime_Action";
 
                 this.AddAction(new ManagedAction(new Id(dllEntry), dllEntry, thisAsm, Return.check, When.Before, Step.AppSearch, Condition.Always));
@@ -157,7 +160,7 @@ namespace WixSharp
                     var info = GetDialogInfo(item);
 
                     ValidateDialogInfo(info);
-                    dialogsInfo.AppendLine(info);
+                    dialogsInfo.Append(info + "\n");
                 }
                 this.AddProperty(new Property(name, dialogsInfo.ToString().Trim()));
             }

@@ -14,6 +14,7 @@ namespace WixSharp
     {
         static public ManagedUI Default = new ManagedUI
             {
+                //http://wixtoolset.org/documentation/manual/v3/wixui/dialog_reference/wixui_featuretree.html
             };
 
         public ManagedUI()

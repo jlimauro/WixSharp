@@ -42,6 +42,7 @@ namespace WixSharp
 
         void Install_Click(object sender, EventArgs e)
         {
+            //msiRuntime.Session["INSTALLDIR"] = @"C:\Program Files (x86)\AAA";
             msiRuntime.StartExecute();
         }
 

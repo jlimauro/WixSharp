@@ -1,10 +1,12 @@
 //css_ref ..\..\..\WixSharp.dll;
+////css_ref ..\..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 //css_ref System.Core.dll;
 using System;
 using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
 using WixSharp;
+using WixSharp.CommonTasks;
 
 class Script
 {
@@ -23,9 +25,10 @@ class Script
         project.WixExtensions.Add("WixIIsExtension.dll");
         project.WixNamespaces.Add("xmlns:iis=\"http://schemas.microsoft.com/wix/IIsExtension\"");
 
-        Compiler.WixSourceGenerated += new XDocumentGeneratedDlgt(Compiler_WixSourceGenerated);
-
-        Compiler.BuildMsi(project);
+        project.Compiler.PreserveTempFiles = true;
+        project.Compiler.WixSourceGenerated += Compiler_WixSourceGenerated;
+        
+        project.BuildMsiCmd();
     }
     
     static void Compiler_WixSourceGenerated(System.Xml.Linq.XDocument document)

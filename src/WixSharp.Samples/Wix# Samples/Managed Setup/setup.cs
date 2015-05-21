@@ -33,8 +33,8 @@ public class Script
 
         //project.UI = WUI.WixUI_Mondo;
 
-        //project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\EmbeddedUI_WPF\bin\Debug\EmbeddedUI_WPF.dll");
-        project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\EmbeddedUI\bin\Debug\EmbeddedUI.dll");
+        //project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Custom_UI\EmbeddedUI_WPF\bin\Debug\EmbeddedUI_WPF.dll");
+        //project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Custom_UI\EmbeddedUI\bin\Debug\EmbeddedUI.exe");
         project.ManagedUI = ManagedUI.Default;
 
         project.ManagedUI.InstallDialogs.Clear()
@@ -50,7 +50,7 @@ public class Script
                                        .Add<RepairExitDialog>();
 
 
-        project.ManagedUI = null;
+        //project.ManagedUI = null;
         //project.UI = WUI.WixUI_Mondo;
 
         //project.Load += project_Load;

@@ -655,7 +655,7 @@ namespace WixSharp
 
 
         /// <summary>
-        /// Flattened "view" of all elements with a given name.
+        /// Flattened "view" of all elements with a given name (LocalName).
         /// </summary>
         /// <param name="element">The element to be searched.</param>
         /// <param name="elementName">The element name.</param>
@@ -684,6 +684,41 @@ namespace WixSharp
             return matchingElementList.ToArray();
         }
 
+        /// <summary>
+        /// Selects single descendant element with a given name (LocalName). Throws if no or more then one match found
+        /// </summary>
+        /// <param name="element">The element to be searched.</param>
+        /// <param name="elementName">The element local name.</param>
+        /// <returns>The elements matching the name.</returns>
+        public static XElement SelectSingle(this XElement element, string elementName)
+        {
+            return element.Descendants().Single(x => x.Name.LocalName == elementName);
+        }
+
+        /// <summary>
+        /// Selects single descendant element with a given name (LocalName). Throws if no or more then one match found
+        /// </summary>
+        /// <param name="element">The element to be searched.</param>
+        /// <param name="elementName">The element local name.</param>
+        /// <returns>The elements matching the name.</returns>
+        public static XElement SelectSingle(this XDocument document, string elementName)
+        {
+            return document.Root.Descendants().Single(x => x.Name.LocalName == elementName);
+        }
+
+        /// <summary>
+        /// Removes the element from its current parent and inserts it into another element.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="newParent">The new parent.</param>
+        /// <returns></returns>
+        public static XElement MoveTo(this XElement element, XElement newParent)
+        {
+            element.Remove();
+            newParent.Add(element);
+            return element;
+        }
+       
         /// <summary>
         /// Selects, from the given element, the child element matching the specified path.
         /// <para>If the child element is not found, a new element is created matching the path.</para>
