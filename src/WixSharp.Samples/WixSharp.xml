@@ -507,8 +507,8 @@
         </member>
         <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.DisableRollback">
             <summary>
-            The disable rollbackSpecifies whether the bundle will attempt to rollback packages executed in the chain. 
-            If "yes" is specified then when a vital package fails to install only that package will rollback and the chain will stop with the error. 
+            The disable rollbackSpecifies whether the bundle will attempt to rollback packages executed in the chain.
+            If "yes" is specified then when a vital package fails to install only that package will rollback and the chain will stop with the error.
             The default is "no" which indicates all packages executed during the chain will be rolldback to their previous state when a vital package fails.
             </summary>
         </member>
@@ -517,9 +517,96 @@
             Specifies whether the bundle will attempt to create a system restore point when executing the chain. If "yes" is specified then a system restore point will not be created. The default is "no" which indicates a system restore point will be created when the bundle is installed, uninstalled, repaired, modified, etc. If the system restore point cannot be created, the bundle will log the issue and continue.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.LicensePath">
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Copyright">
             <summary>
-            Source file of the RTF license file or URL target of the license link.	 
+            The legal copyright found in the version resources of final bundle executable.
+            If this attribute is not provided the copyright will be set to "Copyright (c) [Bundle/@Manufacturer]. All rights reserved.".
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.AboutUrl">
+            <summary>
+            A URL for more information about the bundle to display in Programs and Features (also known as Add/Remove Programs).
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Compressed">
+            <summary>
+            Whether Packages and Payloads not assigned to a container should be added to the default attached container or if they
+            should be external. The default is yes.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Condition">
+            <summary>
+            The condition of the bundle. If the condition is not met, the bundle will refuse to run. Conditions are checked before the
+            bootstrapper application is loaded (before detect), and thus can only reference built-in variables such as variables which
+            indicate the version of the OS.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.DisableRemove">
+            <summary>
+            Determines whether the bundle can be removed via the Programs and Features (also known as Add/Remove Programs). If the value is
+            "yes" then the "Uninstall" button will not be displayed. The default is "no" which ensures there is an "Uninstall" button to remove
+            the bundle. If the "DisableModify" attribute is also "yes" or "button" then the bundle will not be displayed in Progams and
+            Features and another mechanism (such as registering as a related bundle addon) must be used to ensure the bundle can be removed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.DisableModify">
+            <summary>
+            Determines whether the bundle can be modified via the Programs and Features (also known as Add/Remove Programs). If the value is
+            "button" then Programs and Features will show a single "Uninstall/Change" button. If the value is "yes" then Programs and Features
+            will only show the "Uninstall" button". If the value is "no", the default, then a "Change" button is shown. See the DisableRemove
+            attribute for information how to not display the bundle in Programs and Features.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.HelpTelephone">
+            <summary>
+            A telephone number for help to display in Programs and Features (also known as Add/Remove Programs).
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.HelpUrl">
+            <summary>
+            A URL to the help for the bundle to display in Programs and Features (also known as Add/Remove Programs).
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.IconFile">
+            <summary>
+            Path to an icon that will replace the default icon in the final Bundle executable. This icon will also be displayed in Programs and Features (also known as Add/Remove Programs).
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Manufacturer">
+            <summary>
+            The publisher of the bundle to display in Programs and Features (also known as Add/Remove Programs).
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.ParentName">
+            <summary>
+            The name of the parent bundle to display in Installed Updates (also known as Add/Remove Programs). This name is used to nest or group bundles that will appear as updates. If the
+            parent name does not actually exist, a virtual parent is created automatically.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.SplashScreenSource">
+            <summary>
+            Path to a bitmap that will be shown as the bootstrapper application is being loaded. If this attribute is not specified, no splash screen will be displayed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Tag">
+            <summary>
+            Set this string to uniquely identify this bundle to its own BA, and to related bundles. The value of this string only matters to the BA, and its value has no direct
+            effect on engine functionality.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.UpdateUrl">
+            <summary>
+            A URL for updates of the bundle to display in Programs and Features (also known as Add/Remove Programs).
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.UpgradeCode">
+            <summary>
+            Unique identifier for a family of bundles. If two bundles have the same UpgradeCode the bundle with the highest version will be installed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Version">
+            <summary>
+            The version of the bundle. Newer versions upgrade earlier versions of the bundles with matching UpgradeCodes. If the bundle is registered in Programs and Features then this attribute will be displayed in the Programs and Features user interface.
             </summary>
         </member>
         <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.LogoFile">
@@ -527,9 +614,9 @@
             Source file of the logo graphic.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.IconFile">
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.LicensePath">
             <summary>
-            The icon file for the bootstrapper application.
+            Source file of the RTF license file or URL target of the license link.
             </summary>
         </member>
         <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.LocalizationFile">
@@ -539,7 +626,7 @@
         </member>
         <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Chain">
             <summary>
-            The sequence of the packages to be installed 
+            The sequence of the packages to be installed
             </summary>
         </member>
         <member name="F:WixSharp.Bootstrapper.ChainItem.Vital">
@@ -551,7 +638,7 @@
         </member>
         <member name="F:WixSharp.Bootstrapper.Package.Permanent">
             <summary>
-            Specifies whether the package can be uninstalled. 
+            Specifies whether the package can be uninstalled.
             </summary>
         </member>
         <member name="F:WixSharp.Bootstrapper.Package.SourceFile">
@@ -561,9 +648,9 @@
         </member>
         <member name="F:WixSharp.Bootstrapper.Package.Description">
             <summary>
-            Specifies the description to place in the bootstrapper application data manifest for the package. By default, 
-            ExePackages use the FileName field from the version information, MsiPackages use the ARPCOMMENTS property, and MspPackages 
-            use the Description patch metadata property. Other package types must use this attribute to define a description in the 
+            Specifies the description to place in the bootstrapper application data manifest for the package. By default,
+            ExePackages use the FileName field from the version information, MsiPackages use the ARPCOMMENTS property, and MspPackages
+            use the Description patch metadata property. Other package types must use this attribute to define a description in the
             bootstrapper application data manifest.
             </summary>
         </member>
@@ -582,7 +669,7 @@
         </member>
         <member name="F:WixSharp.Bootstrapper.Package.InstallCondition">
             <summary>
-            A condition to evaluate before installing the package. The package will only be installed if the condition evaluates to true. 
+            A condition to evaluate before installing the package. The package will only be installed if the condition evaluates to true.
             If the condition evaluates to false and the bundle is being installed, repaired, or modified, the package will be uninstalled.
             </summary>
         </member>
@@ -626,6 +713,13 @@
             Specifies whether the bundle will show the UI authored into the msi package. The default is "no" which means all information is routed to 
             the bootstrapper application to provide a unified installation experience. If "yes" is specified the UI authored into the msi package will be 
             displayed on top of any bootstrapper application UI.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.MsiPackage.MsiProperties">
+            <summary>
+            MSI properties to be set based on the value of a burn engine expression. This is a KeyValue mapping expression of the following format:
+            <para>&lt;key&gt;=&lt;value&gt;[;&lt;key&gt;=&lt;value&gt;]</para>
+            <para><c>Example:</c> "TRANSFORMS=[CommandArgs];GLOBAL=yes"</para>
             </summary>
         </member>
         <member name="T:WixSharp.CommonTasks.Tasks">
@@ -2104,15 +2198,7 @@
             <param name="elementName">The element local name.</param>
             <returns>The elements matching the name.</returns>
         </member>
-        <member name="M:WixSharp.Extensions.FindAll(System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Selects all descendant elements with a given name (LocalName). Throws if no or more then one match found
-            </summary>
-            <param name="element">The element to be searched.</param>
-            <param name="elementName">The element local name.</param>
-            <returns>The elements matching the name.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.FindAll(System.Xml.Linq.XDocument,System.String)">
+        <member name="M:WixSharp.Extensions.FindAll(System.Xml.Linq.XContainer,System.String)">
             <summary>
             Selects all descendant elements with a given name (LocalName). Throws if no or more then one match found
             </summary>

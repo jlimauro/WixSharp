@@ -1229,4 +1229,55 @@ namespace WixSharp
             Items = items;
         }
     }
+
+    internal static class XmlMapping
+    {
+        public static XAttribute[] MapToXmlAttributes(this WixEntity obj)
+        {
+
+            var result = new List<XAttribute>();
+
+
+            var fields = obj.GetType()
+                            .GetFields()
+                            .Select(f => new
+                            {
+                                Field = f,
+                                Value = f.GetValue(obj),
+                                Attribute = (XmlAttribute)f.GetCustomAttributes(typeof(XmlAttribute), false)
+                                            .FirstOrDefault(),
+                            })
+                            .Where(x => x.Attribute != null && x.Value != null)
+                            .ToArray();
+
+            foreach (var item in fields)
+            {
+                string xmlValue = item.Value.ToString();
+
+                if (item.Value is bool?)
+                {
+                    var bulVal = (item.Value as bool?);
+                    if (!bulVal.HasValue)
+                        continue;
+                    else
+                        xmlValue = bulVal.Value.ToYesNo();
+                }
+                else if (item.Value is bool)
+                {
+                    xmlValue = ((bool)item.Value).ToYesNo();
+                }
+
+                result.Add(new XAttribute(
+                            item.Attribute.Name ?? item.Field.Name,
+                            xmlValue));
+            }
+
+            return result.ToArray();
+        }
+    }
+
+    internal class XmlAttribute : Attribute
+    {
+        public string Name { get; set; }
+    }
 }

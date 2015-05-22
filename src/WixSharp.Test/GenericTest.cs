@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Xml.Linq;
+using WixSharp.Bootstrapper;
 using WixSharp.CommonTasks;
 using Xunit;
 
@@ -64,19 +65,8 @@ namespace WixSharp.Test
             Assert.Equal("InstallUISequence|InstallExecuteSequence", result2.ToString());
         }
 
-
         [Fact]
         [Description("Issue #37")]
-        public void Should_Name_CustomActionsSequentially()
-        {
-            //var project = new Project("CustomActionTest",
-            //   new ManagedAction("MyAction", Return.check, When.Before, Step.LaunchConditions, Condition.NOT_Installed, Sequence.InstallUISequence),
-            //   new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_Installed, Sequence.InstallUISequence));
-
-            //var file = Compiler.BuildWxs(project);
-        }
-
-        [Fact]
         public void Should_Preserve_ConstantsInAttrDefs()
         {
             var project =
@@ -84,15 +74,15 @@ namespace WixSharp.Test
                     new Dir(@"%ProgramFiles%\MyCompany",
                         new Dir("MyWebApp",
                             new File(@"MyWebApp\Default.aspx",
-                                new IISVirtualDir
-                                {
-                                    Name = "MyWebApp",
-                                    AppName = "Test",
-                                    WebSite = new WebSite("DefaultWebSite", "[IIS_SITE_ADDRESS]:[IIS_SITE_PORT]", "Default Web Site"),
-                                    WebAppPool = new WebAppPool("MyWebApp", "Identity=applicationPoolIdentity") 
-                                }))));
-            
-            
+                            new IISVirtualDir
+                            {
+                                Name = "MyWebApp",
+                                AppName = "Test",
+                                WebSite = new WebSite("DefaultWebSite", "[IIS_SITE_ADDRESS]:[IIS_SITE_PORT]", "[IIS_SITE_NAME]"),
+                                WebAppPool = new WebAppPool("MyWebApp", "Identity=applicationPoolIdentity")
+                            }))));
+
+
             string wxs = project.BuildWxs();
 
             var address = XDocument.Load(wxs)

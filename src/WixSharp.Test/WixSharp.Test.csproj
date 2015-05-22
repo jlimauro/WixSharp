@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BootstrapperTest.cs" />
     <Compile Include="GenericTest.cs" />
     <Compile Include="ManagedActionsTest.cs" />
     <Compile Include="ManagedProjectTest.cs" />
