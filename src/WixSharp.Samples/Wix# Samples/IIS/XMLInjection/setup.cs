@@ -27,10 +27,10 @@ class Script
 
         project.Compiler.PreserveTempFiles = true;
         project.Compiler.WixSourceGenerated += Compiler_WixSourceGenerated;
-        
-        project.BuildMsiCmd();
+
+        project.BuildMsi();
     }
-    
+
     static void Compiler_WixSourceGenerated(System.Xml.Linq.XDocument document)
     {
         XElement aspxFileComponent = (from e in document.Descendants("File")
@@ -40,24 +40,24 @@ class Script
                                      .Parent;
 
         string dirID = aspxFileComponent.Parent.Attribute("Id").Value;
-        
+
         XNamespace ns = "http://schemas.microsoft.com/wix/IIsExtension";
-        
-        aspxFileComponent.Add(new XElement(ns+"WebVirtualDir",
+
+        aspxFileComponent.Add(new XElement(ns + "WebVirtualDir",
                                   new XAttribute("Id", "MyWebApp"),
                                   new XAttribute("Alias", "MyWebApp"),
                                   new XAttribute("Directory", dirID),
                                   new XAttribute("WebSite", "DefaultWebSite"),
-                                  new XElement(ns+"WebApplication",
+                                  new XElement(ns + "WebApplication",
                                       new XAttribute("Id", "TestWebApplication"),
                                       new XAttribute("Name", "Test"))));
 
         document.Root.Select("Product")
                      .Add(new XElement(ns + "WebSite",
                               new XAttribute("Id", "DefaultWebSite"),
-                              new XAttribute("Description","Default Web Site"),
+                              new XAttribute("Description", "Default Web Site"),
                               new XAttribute("Directory", dirID),
-                              new XElement(ns+"WebAddress",
+                              new XElement(ns + "WebAddress",
                                    new XAttribute("Id", "AllUnassigned"),
                                     new XAttribute("Port", "80"))));
     }

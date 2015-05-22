@@ -135,7 +135,7 @@ namespace WixSharp
         Dictionary<string, string> attributes = new Dictionary<string, string>();
 
         /// <summary>
-        /// Optional attributes of the <c>WiX Element</c> (e.g. Secure:YesNoPath). 
+        /// Optional attributes of the <c>WiX Element</c> (e.g. Secure:YesNoPath) expressed as a string KeyValue pairs (e.g. "StartOnInstall=Yes; Sequence=1"). 
         /// <para>OptionalAttributes just redirects all access calls to the <see cref="T:WixEntity.Attributes"/> member.</para>
         /// <para>You can also use <see cref="T:WixEntity.AttributesDefinition"/> to keep the code cleaner.</para>
         /// </summary>

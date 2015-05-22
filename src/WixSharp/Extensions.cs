@@ -249,6 +249,20 @@ namespace WixSharp
         }
 
         /// <summary>
+        /// Reads the attribute value. Returns null if attribute doesn't exist.
+        /// </summary>
+        /// <param name="e">The e.</param>
+        /// <param name="attributeName">Name of the attribute.</param>
+        /// <returns></returns>
+        public static string ReadAttribute(this XElement e, string attributeName)
+        {
+            if (e.Attribute(attributeName) != null)
+                return e.Attribute(attributeName).Value;
+            else
+                return null;
+        }
+
+        /// <summary>
         /// A generic LINQ equivalent of C# foreach loop.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -437,6 +451,11 @@ namespace WixSharp
             return path.ExpandWixEnvConsts()
                        .Replace("\\", ".")
                        .EscapeIllegalCharacters();
+        }
+
+        public static bool ContainsWixConstants(this string data)
+        {
+            return data.Contains("[") || data.Contains("]"); 
         }
 
         public static string Map64Dirs(this string path)
@@ -714,21 +733,9 @@ namespace WixSharp
         /// <param name="element">The element to be searched.</param>
         /// <param name="elementName">The element local name.</param>
         /// <returns>The elements matching the name.</returns>
-        public static XElement FindSingle(this XElement element, string elementName)
+        public static XElement FindSingle(this XContainer container, string elementName)
         {
-            return element.Descendants().Single(x => x.Name.LocalName == elementName);
-        }
-
-
-        /// <summary>
-        /// Selects single descendant element with a given name (LocalName). Throws if no or more then one match found
-        /// </summary>
-        /// <param name="element">The element to be searched.</param>
-        /// <param name="elementName">The element local name.</param>
-        /// <returns>The elements matching the name.</returns>
-        public static XElement FindSingle(this XDocument document, string elementName)
-        {
-            return document.Root.FindSingle(elementName);
+            return container.Descendants().Single(x => x.Name.LocalName == elementName);
         }
 
         /// <summary>
@@ -737,19 +744,9 @@ namespace WixSharp
         /// <param name="element">The element to be searched.</param>
         /// <param name="elementName">The element local name.</param>
         /// <returns>The elements matching the name.</returns>
-        public static XElement[] FindAll(this XElement element, string elementName)
+        public static XElement[] FindAll(this XContainer element, string elementName)
         {
             return element.Descendants().Where(x => x.Name.LocalName == elementName).ToArray();
-        }
-        /// <summary>
-        /// Selects all descendant elements with a given name (LocalName). Throws if no or more then one match found
-        /// </summary>
-        /// <param name="element">The element to be searched.</param>
-        /// <param name="elementName">The element local name.</param>
-        /// <returns>The elements matching the name.</returns>
-        public static XElement[] FindAll(this XDocument document, string elementName)
-        {
-            return document.Root.FindAll(elementName);
         }
 
         /// <summary>

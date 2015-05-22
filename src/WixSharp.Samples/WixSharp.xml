@@ -85,7 +85,7 @@
         </member>
         <member name="P:WixSharp.WixEntity.AttributesDefinition">
             <summary>
-            Optional attributes of the <c>WiX Element</c> (e.g. Secure:YesNoPath). 
+            Optional attributes of the <c>WiX Element</c> (e.g. Secure:YesNoPath) expressed as a string KeyValue pairs (e.g. "StartOnInstall=Yes; Sequence=1"). 
             <para>OptionalAttributes just redirects all access calls to the <see cref="T:WixEntity.Attributes"/> member.</para>
             <para>You can also use <see cref="T:WixEntity.AttributesDefinition"/> to keep the code cleaner.</para>
             </summary>
@@ -491,6 +491,141 @@
             The disable automatic insertion of user profile registry elements.
             Required for: AllInOne, ConditionalInstallation, CustomAttributes, ReleaseFolder, Shortcuts,
             Shortcuts (advertised), Shortcuts-2, WildCardFiles samples.
+            </summary>
+        </member>
+        <member name="M:WixSharp.Bootstrapper.StandardBootstrapper.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="N:WixSharp.Bootstrapper"/> class.
+            </summary>
+        </member>
+        <member name="M:WixSharp.Bootstrapper.StandardBootstrapper.#ctor(System.String,WixSharp.Bootstrapper.ChainItem[])">
+            <summary>
+            Initializes a new instance of the <see cref="N:WixSharp.Bootstrapper"/> class.
+            </summary>
+            <param name="name">The name of the project. Typically it is the name of the product to be installed.</param>
+            <param name="items">The project installable items (e.g. directories, files, registry keys, Custom Actions).</param>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.DisableRollback">
+            <summary>
+            The disable rollbackSpecifies whether the bundle will attempt to rollback packages executed in the chain. 
+            If "yes" is specified then when a vital package fails to install only that package will rollback and the chain will stop with the error. 
+            The default is "no" which indicates all packages executed during the chain will be rolldback to their previous state when a vital package fails.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.DisableSystemRestore">
+            <summary>
+            Specifies whether the bundle will attempt to create a system restore point when executing the chain. If "yes" is specified then a system restore point will not be created. The default is "no" which indicates a system restore point will be created when the bundle is installed, uninstalled, repaired, modified, etc. If the system restore point cannot be created, the bundle will log the issue and continue.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.LicensePath">
+            <summary>
+            Source file of the RTF license file or URL target of the license link.	 
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.LogoFile">
+            <summary>
+            Source file of the logo graphic.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.IconFile">
+            <summary>
+            The icon file for the bootstrapper application.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.LocalizationFile">
+            <summary>
+            Source file of the theme localization .wxl file.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Chain">
+            <summary>
+            The sequence of the packages to be installed 
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.ChainItem.Vital">
+            <summary>
+            Specifies whether the package/item must succeed for the chain to continue. 
+            The default "yes" (true) indicates that if the package fails then the chain will fail and rollback or stop. 
+            If "no" is specified then the chain will continue even if the package reports failure.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.Package.Permanent">
+            <summary>
+            Specifies whether the package can be uninstalled. 
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.Package.SourceFile">
+            <summary>
+            Location of the package to add to the bundle. The default value is the Name attribute, if provided. At a minimum, the SourceFile or Name attribute must be specified.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.Package.Description">
+            <summary>
+            Specifies the description to place in the bootstrapper application data manifest for the package. By default, 
+            ExePackages use the FileName field from the version information, MsiPackages use the ARPCOMMENTS property, and MspPackages 
+            use the Description patch metadata property. Other package types must use this attribute to define a description in the 
+            bootstrapper application data manifest.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.Package.PerMachine">
+            <summary>
+            Indicates the package must be executed elevated.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.Package.DownloadUrl">
+            <summary>
+            The URL to use to download the package. The following substitutions are supported:
+            <para>{0} is replaced by the package Id.</para>
+            <para>{1} is replaced by the payload Id.</para>
+            <para>{2} is replaced by the payload file name.</para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.Package.InstallCondition">
+            <summary>
+            A condition to evaluate before installing the package. The package will only be installed if the condition evaluates to true. 
+            If the condition evaluates to false and the bundle is being installed, repaired, or modified, the package will be uninstalled.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.ExePackage.InstallCommand">
+            <summary>
+            The command-line arguments provided to the ExePackage during install. If this attribute 
+            is absent the executable will be launched with no command-line arguments
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.ExePackage.RepairCommand">
+            <summary>
+            The command-line arguments to specify to indicate a repair. If the executable package can be repaired but does not require any 
+            special command-line arguments to do so then set the attribute's value to blank. To indicate that the package does not support repair,
+            omit this attribute.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.ExePackage.UninstallCommand">
+            <summary>
+            The command-line arguments provided to the ExePackage during uninstall. If this attribute is absent the executable will be launched 
+            with no command-line arguments. To prevent an ExePackage from being uninstalled set the Permanent attribute to "yes".
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.ExePackage.DetectCondition">
+            <summary>
+            A condition that determines if the package is present on the target system.
+            This condition can use built-in variables and variables returned by searches.
+            This condition is necessary because Windows doesn't provide a method to detect the presence of an ExePackage.
+            Burn uses this condition to determine how to treat this package during a bundle action; for example, if this condition
+            is false or omitted and the bundle is being installed, Burn will install this package.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.MsiPackage.EnableFeatureSelection">
+            <summary>
+            Specifies whether the bundle will allow individual control over the installation state of Features inside the msi package. Managing 
+            feature selection requires special care to ensure the install, modify, update and uninstall behavior of the package is always correct.
+            The default is "no".
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.MsiPackage.DisplayInternalUI">
+            <summary>
+            Specifies whether the bundle will show the UI authored into the msi package. The default is "no" which means all information is routed to 
+            the bootstrapper application to provide a unified installation experience. If "yes" is specified the UI authored into the msi package will be 
+            displayed on top of any bootstrapper application UI.
             </summary>
         </member>
         <member name="T:WixSharp.CommonTasks.Tasks">
@@ -916,6 +1051,7 @@
             <para>The typical conditions are:</para>
             <para>   NETFRAMEWORK20="#1"</para>
             <para>   NETFRAMEWORK40FULL="#1"</para>
+            <para>   NETFRAMEWORK35="#1"</para>
             <para>   NETFRAMEWORK30_SP_LEVEL and NOT NETFRAMEWORK30_SP_LEVEL='#0'</para>
             <para>   ...</para>
             The full list of names and values can be found here http://wixtoolset.org/documentation/manual/v3/customactions/wixnetfxextension.html
@@ -1729,6 +1865,14 @@
             <param name="attributeName">Name of the source attribute to copy.</param>
             <returns>The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</returns>
         </member>
+        <member name="M:WixSharp.Extensions.ReadAttribute(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Reads the attribute value. Returns null if attribute doesn't exist.
+            </summary>
+            <param name="e">The e.</param>
+            <param name="attributeName">Name of the attribute.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
             <summary>
             A generic LINQ equivalent of C# foreach loop.
@@ -1952,15 +2096,7 @@
             <param name="elementName">The element name.</param>
             <returns>The elements matching the name.</returns>
         </member>
-        <member name="M:WixSharp.Extensions.FindSingle(System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Selects single descendant element with a given name (LocalName). Throws if no or more then one match found
-            </summary>
-            <param name="element">The element to be searched.</param>
-            <param name="elementName">The element local name.</param>
-            <returns>The elements matching the name.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.FindSingle(System.Xml.Linq.XDocument,System.String)">
+        <member name="M:WixSharp.Extensions.FindSingle(System.Xml.Linq.XContainer,System.String)">
             <summary>
             Selects single descendant element with a given name (LocalName). Throws if no or more then one match found
             </summary>
@@ -3782,7 +3918,7 @@
             Initializes a new instance of the <see cref="T:WixSharp.Project"/> class.
             </summary>
             <param name="name">The name of the project. Typically it is the name of the product to be installed.</param>
-            <param name="items">The project installable items (e.g. directories, files, registrty keys, Custom Actions).</param>
+            <param name="items">The project installable items (e.g. directories, files, registry keys, Custom Actions).</param>
         </member>
         <member name="F:WixSharp.Project.Manufacturer">
             <summary>

@@ -73,7 +73,7 @@ namespace WixSharp
         /// Initializes a new instance of the <see cref="Project"/> class.
         /// </summary>
         /// <param name="name">The name of the project. Typically it is the name of the product to be installed.</param>
-        /// <param name="items">The project installable items (e.g. directories, files, registrty keys, Custom Actions).</param>
+        /// <param name="items">The project installable items (e.g. directories, files, registry keys, Custom Actions).</param>
         public Project(string name, params WixObject[] items)
         {
             Name = name;

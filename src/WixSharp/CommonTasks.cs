@@ -721,6 +721,7 @@ namespace WixSharp.CommonTasks
         /// <para>The typical conditions are:</para>
         /// <para>   NETFRAMEWORK20="#1"</para>
         /// <para>   NETFRAMEWORK40FULL="#1"</para>
+        /// <para>   NETFRAMEWORK35="#1"</para>
         /// <para>   NETFRAMEWORK30_SP_LEVEL and NOT NETFRAMEWORK30_SP_LEVEL='#0'</para>
         /// <para>   ...</para>
         /// The full list of names and values can be found here http://wixtoolset.org/documentation/manual/v3/customactions/wixnetfxextension.html
@@ -733,7 +734,6 @@ namespace WixSharp.CommonTasks
         static public Project SetNetFxPrerequisite(this WixSharp.Project project, string versionCondition, string errorMessage = null)
         {
             var condition = Condition.Create(versionCondition);
-
             string message = errorMessage ?? "Please install the appropriate .NET version first.";
 
             project.LaunchConditions.Add(new LaunchCondition(condition, message));

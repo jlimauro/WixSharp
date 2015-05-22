@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
+using WixSharp.CommonTasks;
 using Xunit;
 
 namespace WixSharp.Test
@@ -66,7 +66,8 @@ namespace WixSharp.Test
 
 
         [Fact]
-        public void Should_Name_CustomActionsPSequentially()
+        [Description("Issue #37")]
+        public void Should_Name_CustomActionsSequentially()
         {
             //var project = new Project("CustomActionTest",
             //   new ManagedAction("MyAction", Return.check, When.Before, Step.LaunchConditions, Condition.NOT_Installed, Sequence.InstallUISequence),
@@ -75,6 +76,31 @@ namespace WixSharp.Test
             //var file = Compiler.BuildWxs(project);
         }
 
+        [Fact]
+        public void Should_Preserve_ConstantsInAttrDefs()
+        {
+            var project =
+                new Project("My Product",
+                    new Dir(@"%ProgramFiles%\MyCompany",
+                        new Dir("MyWebApp",
+                            new File(@"MyWebApp\Default.aspx",
+                                new IISVirtualDir
+                                {
+                                    Name = "MyWebApp",
+                                    AppName = "Test",
+                                    WebSite = new WebSite("DefaultWebSite", "[IIS_SITE_ADDRESS]:[IIS_SITE_PORT]", "Default Web Site"),
+                                    WebAppPool = new WebAppPool("MyWebApp", "Identity=applicationPoolIdentity") 
+                                }))));
+            
+            
+            string wxs = project.BuildWxs();
+
+            var address = XDocument.Load(wxs)
+                                   .FindSingle("WebAddress");
+
+            Assert.Equal("[IIS_SITE_ADDRESS]", address.ReadAttribute("Id"));
+            Assert.Equal("[IIS_SITE_PORT]", address.ReadAttribute("Port"));
+        }
 
         void CodeFormattingTestPad()
         {

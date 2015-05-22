@@ -101,8 +101,15 @@ namespace WixSharp
                     {
                         string[] tokens = addressDef.Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                         string address = tokens[0];
-                        int port = Convert.ToInt32(tokens[1]);
-                        addressesToAdd.Add(new WebAddress { Address = address, Port = port });
+                        string port = tokens[1];
+                        if (tokens[1].ContainsWixConstants())
+                        {
+                            addressesToAdd.Add(new WebAddress { Address = address, AttributesDefinition = "Port="+port });
+                        }
+                        else
+                        {
+                            addressesToAdd.Add(new WebAddress { Address = address, Port = Convert.ToInt32(port) });
+                        }
                     }
                     catch (Exception e)
                     {
