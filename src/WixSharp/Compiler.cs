@@ -38,6 +38,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using WixSharp.Bootstrapper;
 using IO = System.IO;
 
 //WIX References:
@@ -45,6 +46,7 @@ using IO = System.IO;
 
 namespace WixSharp
 {
+    
     /// <summary>
     /// This class holds the settings for Wix# XML auto-generation: generation of WiX XML elements, which do not have direct
     /// representation in the Wix# script. The detailed information about Wix# auto-generation can be found here: http://www.csscript.net/WixSharp/ID_Allocation.html.
@@ -412,6 +414,7 @@ namespace WixSharp
             BuildCmd(project, path, OutputType.MSI);
             return path;
         }
+       
 
         /// <summary>
         /// Builds the WiX source file and generates batch file capable of building
@@ -437,8 +440,8 @@ namespace WixSharp
             if (ClientAssembly.IsEmpty())
                 ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
 
-            string compiler = Utils.PathCombine(WixLocation, @"candle.exe");
-            string linker = Utils.PathCombine(WixLocation, @"light.exe");
+            string compiler = Utils.PathCombine(WixLocation, "candle.exe");
+            string linker = Utils.PathCombine(WixLocation, "light.exe");
             string batchFile = path;
 
             if (!IO.File.Exists(compiler) && !IO.File.Exists(linker))
@@ -516,7 +519,7 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Specifies the typr of the setup binaries to build.
+        /// Specifies the type of the setup binaries to build.
         /// </summary>
         public enum OutputType
         {
@@ -1485,7 +1488,11 @@ namespace WixSharp
             if (wProject.Dirs.Count() == 0)
             {
                 //WIX/MSI does not like no-directory deployments thus create fake one
-                wProject.Dirs = new[] { new Dir(@"%ProgramFiles%\WixSharp\DummyDir") }; //C:\Documents and Settings\UserName\Application Data\WixSharp\DummyDir
+                string dummyDir = @"%ProgramFiles%\WixSharp\DummyDir";
+                if(wProject.Platform == Platform.x64)
+                    dummyDir = dummyDir.Map64Dirs();
+
+                wProject.Dirs = new[] { new Dir(dummyDir) };
             }
 
             Dir[] wDirs = wProject.Dirs;
@@ -1975,7 +1982,12 @@ namespace WixSharp
 
                     if (existingBinary == null)
                     {
-                        PackageManagedAsm(asmFile, packageFile, wManagedAction.RefAssemblies.Concat(wProject.DefaultRefAssemblies).Distinct().ToArray(), wProject.OutDir);
+                        PackageManagedAsm(
+                            asmFile, 
+                            packageFile, 
+                            wManagedAction.RefAssemblies.Concat(wProject.DefaultRefAssemblies).Distinct().ToArray(), 
+                            wProject.OutDir,
+                            wProject.Platform);
 
                         bynaryKey = wAction.Name.Expand() + "_File";
                         product.Add(new XElement("Binary",
@@ -2149,13 +2161,14 @@ namespace WixSharp
         /// </summary>
         static public bool IgnoreClientAssemblyPDB = false;
 
-        static void PackageManagedAsm(string asm, string nativeDll, string[] refAssemblies, string outDir)
+        static void PackageManagedAsm(string asm, string nativeDll, string[] refAssemblies, string outDir, Platform? platorm = null)
         {
-            var makeSfxCA = Utils.PathCombine(WixSdkLocation, @"MakeSfxCA.exe");
-            var sfxcaDll = Utils.PathCombine(WixSdkLocation, @"x86\sfxca.dll");
+            string platformDir = "x86";
+            if (platorm.HasValue && platorm.Value == Platform.x64)
+                platformDir = "x64";
 
-            //if ("".GetType().Assembly.Location.Contains("Framework64")) //x64 CLR  //will lead to install failure on x86
-            //    sfxcaDll = Utils.PathCombine(WixSdkLocation, @"x64\sfxca.dll");
+            var makeSfxCA = Utils.PathCombine(WixSdkLocation, @"MakeSfxCA.exe");
+            var sfxcaDll = Utils.PathCombine(WixSdkLocation, platformDir +"\\sfxca.dll");
 
             outDir = IO.Path.GetFullPath(outDir);
 

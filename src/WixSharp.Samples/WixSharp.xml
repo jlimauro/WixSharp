@@ -629,6 +629,36 @@
             The sequence of the packages to be installed
             </summary>
         </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.WixNamespaces">
+            <summary>
+            Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root. 
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.WixExtensions">
+            <summary>
+            Collection of paths to the WiX extensions. 
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Language">
+            <summary>
+            Installation UI Language. If not specified <c>"en-US"</c> will be used.
+            </summary>
+        </member>
+        <member name="P:WixSharp.Bootstrapper.StandardBootstrapper.SourceBaseDir">
+            <summary>
+            Base directory for the relative paths of the bootstrapper items (e.g. <see cref="T:WixSharp.Bootstrapper.MsiPackage"></see>). 
+            </summary>
+        </member>
+        <member name="P:WixSharp.Bootstrapper.StandardBootstrapper.OutFileName">
+            <summary>
+            Name of the MSI/MSM file (without extension) to be build.
+            </summary>
+        </member>
+        <member name="P:WixSharp.Bootstrapper.StandardBootstrapper.OutDir">
+            <summary>
+            The output directory. The directory where all msi and temporary files should be assembled. The <c>CurrentDirectory</c> will be used if <see cref="P:WixSharp.Bootstrapper.StandardBootstrapper.OutDir"/> is left unassigned.
+            </summary>
+        </member>
         <member name="F:WixSharp.Bootstrapper.ChainItem.Vital">
             <summary>
             Specifies whether the package/item must succeed for the chain to continue. 
@@ -636,17 +666,17 @@
             If "no" is specified then the chain will continue even if the package reports failure.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Package.Permanent">
+        <member name="F:WixSharp.Bootstrapper.Packages.Permanent">
             <summary>
             Specifies whether the package can be uninstalled.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Package.SourceFile">
+        <member name="F:WixSharp.Bootstrapper.Packages.SourceFile">
             <summary>
             Location of the package to add to the bundle. The default value is the Name attribute, if provided. At a minimum, the SourceFile or Name attribute must be specified.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Package.Description">
+        <member name="F:WixSharp.Bootstrapper.Packages.Description">
             <summary>
             Specifies the description to place in the bootstrapper application data manifest for the package. By default,
             ExePackages use the FileName field from the version information, MsiPackages use the ARPCOMMENTS property, and MspPackages
@@ -654,12 +684,12 @@
             bootstrapper application data manifest.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Package.PerMachine">
+        <member name="F:WixSharp.Bootstrapper.Packages.PerMachine">
             <summary>
             Indicates the package must be executed elevated.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Package.DownloadUrl">
+        <member name="F:WixSharp.Bootstrapper.Packages.DownloadUrl">
             <summary>
             The URL to use to download the package. The following substitutions are supported:
             <para>{0} is replaced by the package Id.</para>
@@ -667,7 +697,7 @@
             <para>{2} is replaced by the payload file name.</para>
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Package.InstallCondition">
+        <member name="F:WixSharp.Bootstrapper.Packages.InstallCondition">
             <summary>
             A condition to evaluate before installing the package. The package will only be installed if the condition evaluates to true.
             If the condition evaluates to false and the bundle is being installed, repaired, or modified, the package will be uninstalled.
@@ -1234,6 +1264,327 @@
             <value>
             The latest framework directory.
             </value>
+        </member>
+        <member name="T:WixSharp.Compiler">
+             <summary>
+             Represents Wix# compiler. This class is responsible for conversion of CLR object <see cref="T:WixSharp.Project"/> into WiX XML source file.
+             <see cref="T:WixSharp.Compiler"/> allows building complete MSI or WiX source file. It also can prepare WiX source file and generate corresponding batch file
+             for building MSI WiX way: <c>candle.exe</c> + <c>light.exe</c>.
+             <para>
+             This class contains only static members as it is to be used only for the actual MSI/WXS building operations:
+             </para>
+             </summary>
+            
+             <example>
+            
+             <list type="bullet">
+            
+             <item>
+             <description>Building MSI file
+             <code>
+             var project = new Project();
+             ...
+             Compiler.BuildMsi(project);
+             </code>
+             </description>
+             </item>
+            
+             <item>
+             <description>Building WiX source file only:
+             <code>
+             var project = new Project();
+             ...
+             Compiler.BuildWxs(project);
+             </code>
+             </description>
+             </item>
+            
+             <item>
+             <description>Preparing batch file for building MSI with WiX toolset:
+             <code>
+             var project = new Project();
+             ...
+             Compiler.BuildWxsCmd(project);
+             </code>
+             </description>
+             </item>
+            
+             </list>
+            
+             </example>
+        </member>
+        <member name="F:WixSharp.Compiler.AutoGeneration">
+            <summary>
+            Contains settings for XML auto-generation.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Compiler.LightOptions">
+            <summary>
+            WiX linker <c>Light.exe</c> options.
+            <para>The default value is "-sw1076 -sw1079" (disable warning 1076 and 1079).</para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.Compiler.CandleOptions">
+            <summary>
+            WiX compiler <c>Candle.exe</c> options.
+            <para>The default value is "-sw1076" (disable warning 1026).</para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.Compiler.PreserveTempFiles">
+            <summary>
+            Forces <see cref="T:WixSharp.Compiler"/> to preserve all temporary build files (e.g. *.wxs).
+            <para>The default value is <c>false</c>: all temporary files are deleted at the end of the build/compilation.</para>
+            <para>Note: if <see cref="T:WixSharp.Compiler"/> fails to build MSI the <c>PreserveTempFiles</c>
+            value is ignored and all temporary files are preserved.</para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.Compiler.EmitRelativePaths">
+            <summary>
+            Indicates whether compiler should emit relative or absolute paths in the WiX XML source.
+            </summary>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildMsi(WixSharp.Project)">
+            <summary>
+            Builds the MSI file from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <returns>Path to the built MSI file. Returns <c>null</c> if <c>MSI</c> cannot be built.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildMsiCmd(WixSharp.Project)">
+            <summary>
+            Builds the WiX source file and generates batch file capable of building
+            MSI with WiX toolset.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <returns>Path to the batch file.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildMsmCmd(WixSharp.Project)">
+            <summary>
+            Builds the WiX source file and generates batch file capable of building
+            MSM with WiX toolset.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <returns>Path to the batch file.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildMsiCmd(WixSharp.Project,System.String)">
+            <summary>
+            Builds the WiX source file and generates batch file capable of building
+            MSI with WiX toolset.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <param name="path">The path to the batch file to be build.</param>
+            <returns>Path to the batch file.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildMsmCmd(WixSharp.Project,System.String)">
+            <summary>
+            Builds the WiX source file and generates batch file capable of building
+            MSM with WiX toolset.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <param name="path">The path to the batch file to be build.</param>
+            <returns>Path to the batch file.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildMsi(WixSharp.Project,System.String)">
+            <summary>
+            Builds the MSI file from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <param name="path">The path to the MSI file to be build.</param>
+            <returns>Path to the built MSI file.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildMsm(WixSharp.Project)">
+            <summary>
+            Builds the MSM file from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <returns>Path to the built MSM file. Returns <c>null</c> if <c>msm</c> cannot be built.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildMsm(WixSharp.Project,System.String)">
+            <summary>
+            Builds the MSM file from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <param name="path">The path to the MSM file to be build.</param>
+            <returns>Path to the built MSM file.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildWxs(WixSharp.Project)">
+            <summary>
+            Builds the WiX source file (*.wxs) from the specified <see cref="T:WixSharp.Project"/> instance for further compiling into MSI file.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <returns>Path to the built WXS file.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildWxs(WixSharp.Project,WixSharp.Compiler.OutputType)">
+            <summary>
+            Builds the WiX source file (*.wxs) from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <param name="type">The type (<see cref="T:WixSharp.Compiler.OutputType"/>) of the setup file to be defined in the source file (MSI vs. MSM).</param>
+            <returns>Path to the built WXS file.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildWxs(WixSharp.Project,System.String,WixSharp.Compiler.OutputType)">
+            <summary>
+            Builds the WiX source file (*.wxs) from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <param name="path">The path to the WXS file to be build.</param>
+            <param name="type">The type (<see cref="T:WixSharp.Compiler.OutputType"/>) of the setup file to be defined in the source file (MSI vs. MSM).</param>
+            <returns>Path to the built WXS file.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.DefaultWixSourceGeneratedHandler(System.Xml.Linq.XDocument)">
+            <summary>
+            The default <see cref="E:WixSharp.Compiler.WixSourceGenerated"/> event handler.
+            </summary>
+            <param name="doc">The XDocument object representing WiX XML source code.</param>
+        </member>
+        <member name="M:WixSharp.Compiler.DefaultWixSourceFormatedHandler(System.String@)">
+            <summary>
+            The default <see cref="E:WixSharp.Compiler.WixSourceFormated"/> event handler.
+            </summary>
+            <param name="xml">The XML text string representing WiX XML source code.</param>
+        </member>
+        <member name="M:WixSharp.Compiler.GenerateWixProj(WixSharp.Project)">
+            <summary>
+            Generates WiX XML source file the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
+            <returns>Instance of XDocument class representing in-memory WiX XML source file.</returns>
+        </member>
+        <member name="F:WixSharp.Compiler.AllowNonRtfLicense">
+            <summary>
+            Defines if license file can be have non RTF extension.
+            </summary>
+        </member>
+        <member name="M:WixSharp.Compiler.ProcessCustomActions(WixSharp.Project,System.Xml.Linq.XElement)">
+            <summary>
+            Processes the custom actions.
+            </summary>
+            <param name="wProject">The w project.</param>
+            <param name="product">The product.</param>
+            <exception cref="T:System.Exception">Step.PreviousAction is specified for the very first 'Custom Action'.\nThere cannot be any previous action as it is the very first one in the sequence.</exception>
+        </member>
+        <member name="F:WixSharp.Compiler.IgnoreClientAssemblyPDB">
+            <summary>
+            Flag indicating whether to include PDB file of the assembly implementing ManagedCustomAction into MSI.  Default value is <c>False</c>.
+            <para>If set to <c>false</c> PDB file will not be included and debugging of such CustomAction will not be possible.</para>
+            </summary>
+        </member>
+        <member name="E:WixSharp.Compiler.WixSourceGenerated">
+            <summary>
+            Occurs when WiX source code generated. Use this event if you need to modify generated XML (XDocument)
+            before it is compiled into MSI.
+            </summary>
+        </member>
+        <member name="E:WixSharp.Compiler.WixSourceSaved">
+            <summary>
+            Occurs when WiX source file is saved. Use this event if you need to do any post-processing of the generated/saved file.
+            </summary>
+        </member>
+        <member name="E:WixSharp.Compiler.WixSourceFormated">
+            <summary>
+            Occurs when WiX source file is formatted and ready to be saved. Use this event if you need to do any custom formatting of the XML content before
+            it is saved by the compiler.
+            </summary>
+        </member>
+        <member name="P:WixSharp.Compiler.WixLocation">
+            <summary>
+            Gets or sets the location of WiX binaries (compiler/linker/dlls).
+            The default value is the content of environment variable <c>WIXSHARP_WIXDIR</c>.
+            <para>If user does not set this property explicitly and WIXSHARP_WIXDIR is not defined
+            <see cref="T:WixSharp.Compiler"/> will try to locate WiX binaries in <c>Program Files\Windows Installer XML v&lt;max_of 3*&gt;\bin</c>
+            </para>
+            </summary>
+            <value>The WiX binaries' location.</value>
+        </member>
+        <member name="P:WixSharp.Compiler.WixSdkLocation">
+            <summary>
+            Gets or sets the location of WiX SDK binaries (e.g. MakeSfxCA.exe).
+            The default value is the 'SDK' sub-directory of WixSharp.Compiler.WixLocation directory.
+            <para>
+            If for whatever reason the default location is invalid, you can always set this property to the location of your choice.
+            </para>
+            </summary>
+            <value>
+            The WiX SDK location.
+            </value>
+            <exception cref="T:System.Exception">WiX SDK binaries cannot be found. Please set WixSharp.Compiler.WixSdkLocation to valid path to the Wix SDK binaries.</exception>
+        </member>
+        <member name="P:WixSharp.Compiler.GuidGenerator">
+             <summary>
+             Gets or sets the GUID generator algorithm. You can use either one of the built-in algorithms or define your own.
+             The default value is <see cref="M:WixSharp.GuidGenerators.Default(System.Object)"/>.
+             <description>Possible WiX source file only:
+             <code>
+             //default built-in seeded GUID generator
+             Compiler.GuidGenerator = GuidGenerators.Default;
+            
+             //sequential built-in GUID generator
+             Compiler.GuidGenerator = GuidGenerators.Sequential;
+            
+             //Custom 'aways-same' GUID generator
+             Compiler.GuidGenerator = (seed) =&gt; Guid.Parse("9e2974a1-9539-4c5c-bef7-80fc35b9d7b0");
+            
+             //Custom random GUID generator
+             Compiler.GuidGenerator = (seed) =&gt; Guid.NewGuid();
+             </code>
+             </description>
+             </summary>
+             <value>
+             The GUID generator algorithm.
+             </value>
+        </member>
+        <member name="P:WixSharp.Compiler.ClientAssembly">
+            <summary>
+            Path to the <c>WixSharp.dll</c> client assembly. Typically it is the Wix# setup script assembly.
+            <para>This value is used to resolve <c>%this%</c> of the <see cref="T:WixSharp.ManagedAction"/>. If this value is not specified
+            <see cref="T:WixSharp.Compiler"/> will set it to the caller of its <c>Build</c> method.</para>
+            </summary>
+        </member>
+        <member name="T:WixSharp.Compiler.OutputType">
+            <summary>
+            Specifies the type of the setup binaries to build.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Compiler.OutputType.MSI">
+            <summary>
+            MSI file.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Compiler.OutputType.MSM">
+            <summary>
+            Merge Module (MSM) file.
+            </summary>
+        </member>
+        <member name="T:WixSharp.Compiler.Wildcard">
+            <summary>
+            Represents a wildcard running on the
+            <see cref="T:System.Text.RegularExpressions"/> engine.
+            </summary>
+            <remarks>
+            This class was developed and described by <c>reinux</c> in "Converting Wildcards to Regexes"
+            on CodeProject (<c>http://www.codeproject.com/KB/recipes/wildcardtoregex.aspx</c>).
+            </remarks>
+        </member>
+        <member name="M:WixSharp.Compiler.Wildcard.#ctor(System.String)">
+            <summary>
+            Initializes a wildcard with the given search pattern.
+            </summary>
+            <param name="pattern">The wildcard pattern to match.</param>
+        </member>
+        <member name="M:WixSharp.Compiler.Wildcard.#ctor(System.String,System.Text.RegularExpressions.RegexOptions)">
+            <summary>
+            Initializes a wildcard with the given search pattern and options.
+            </summary>
+            <param name="pattern">The wildcard pattern to match.</param>
+            <param name="options">A combination of one or more
+            <see cref="T:System.Text.RegexOptions"/>.</param>
+        </member>
+        <member name="M:WixSharp.Compiler.Wildcard.WildcardToRegex(System.String)">
+            <summary>
+            Converts a wildcard to a regex.
+            </summary>
+            <param name="pattern">The wildcard pattern to convert.</param>
+            <returns>A regex equivalent of the given wildcard.</returns>
         </member>
         <member name="T:WixSharp.Control">
             <summary>
@@ -4991,327 +5342,6 @@
             <summary>
             Delegate for  <see cref="T:WixSharp.Compiler"/> event <c>WixSourceFormated</c>
             </summary>
-        </member>
-        <member name="T:WixSharp.Compiler">
-             <summary>
-             Represents Wix# compiler. This class is responsible for conversion of CLR object <see cref="T:WixSharp.Project"/> into WiX XML source file.
-             <see cref="T:WixSharp.Compiler"/> allows building complete MSI or WiX source file. It also can prepare WiX source file and generate corresponding batch file
-             for building MSI WiX way: <c>candle.exe</c> + <c>light.exe</c>.
-             <para>
-             This class contains only static members as it is to be used only for the actual MSI/WXS building operations:
-             </para>
-             </summary>
-            
-             <example>
-            
-             <list type="bullet">
-            
-             <item>
-             <description>Building MSI file
-             <code>
-             var project = new Project();
-             ...
-             Compiler.BuildMsi(project);
-             </code>
-             </description>
-             </item>
-            
-             <item>
-             <description>Building WiX source file only:
-             <code>
-             var project = new Project();
-             ...
-             Compiler.BuildWxs(project);
-             </code>
-             </description>
-             </item>
-            
-             <item>
-             <description>Preparing batch file for building MSI with WiX toolset:
-             <code>
-             var project = new Project();
-             ...
-             Compiler.BuildWxsCmd(project);
-             </code>
-             </description>
-             </item>
-            
-             </list>
-            
-             </example>
-        </member>
-        <member name="F:WixSharp.Compiler.AutoGeneration">
-            <summary>
-            Contains settings for XML auto-generation.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Compiler.LightOptions">
-            <summary>
-            WiX linker <c>Light.exe</c> options.
-            <para>The default value is "-sw1076 -sw1079" (disable warning 1076 and 1079).</para>
-            </summary>
-        </member>
-        <member name="F:WixSharp.Compiler.CandleOptions">
-            <summary>
-            WiX compiler <c>Candle.exe</c> options.
-            <para>The default value is "-sw1076" (disable warning 1026).</para>
-            </summary>
-        </member>
-        <member name="F:WixSharp.Compiler.PreserveTempFiles">
-            <summary>
-            Forces <see cref="T:WixSharp.Compiler"/> to preserve all temporary build files (e.g. *.wxs).
-            <para>The default value is <c>false</c>: all temporary files are deleted at the end of the build/compilation.</para>
-            <para>Note: if <see cref="T:WixSharp.Compiler"/> fails to build MSI the <c>PreserveTempFiles</c>
-            value is ignored and all temporary files are preserved.</para>
-            </summary>
-        </member>
-        <member name="F:WixSharp.Compiler.EmitRelativePaths">
-            <summary>
-            Indicates whether compiler should emit relative or absolute paths in the WiX XML source.
-            </summary>
-        </member>
-        <member name="M:WixSharp.Compiler.BuildMsi(WixSharp.Project)">
-            <summary>
-            Builds the MSI file from the specified <see cref="T:WixSharp.Project"/> instance.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <returns>Path to the built MSI file. Returns <c>null</c> if <c>MSI</c> cannot be built.</returns>
-        </member>
-        <member name="M:WixSharp.Compiler.BuildMsiCmd(WixSharp.Project)">
-            <summary>
-            Builds the WiX source file and generates batch file capable of building
-            MSI with WiX toolset.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <returns>Path to the batch file.</returns>
-        </member>
-        <member name="M:WixSharp.Compiler.BuildMsmCmd(WixSharp.Project)">
-            <summary>
-            Builds the WiX source file and generates batch file capable of building
-            MSM with WiX toolset.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <returns>Path to the batch file.</returns>
-        </member>
-        <member name="M:WixSharp.Compiler.BuildMsiCmd(WixSharp.Project,System.String)">
-            <summary>
-            Builds the WiX source file and generates batch file capable of building
-            MSI with WiX toolset.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <param name="path">The path to the batch file to be build.</param>
-            <returns>Path to the batch file.</returns>
-        </member>
-        <member name="M:WixSharp.Compiler.BuildMsmCmd(WixSharp.Project,System.String)">
-            <summary>
-            Builds the WiX source file and generates batch file capable of building
-            MSM with WiX toolset.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <param name="path">The path to the batch file to be build.</param>
-            <returns>Path to the batch file.</returns>
-        </member>
-        <member name="M:WixSharp.Compiler.BuildMsi(WixSharp.Project,System.String)">
-            <summary>
-            Builds the MSI file from the specified <see cref="T:WixSharp.Project"/> instance.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <param name="path">The path to the MSI file to be build.</param>
-            <returns>Path to the built MSI file.</returns>
-        </member>
-        <member name="M:WixSharp.Compiler.BuildMsm(WixSharp.Project)">
-            <summary>
-            Builds the MSM file from the specified <see cref="T:WixSharp.Project"/> instance.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <returns>Path to the built MSM file. Returns <c>null</c> if <c>msm</c> cannot be built.</returns>
-        </member>
-        <member name="M:WixSharp.Compiler.BuildMsm(WixSharp.Project,System.String)">
-            <summary>
-            Builds the MSM file from the specified <see cref="T:WixSharp.Project"/> instance.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <param name="path">The path to the MSM file to be build.</param>
-            <returns>Path to the built MSM file.</returns>
-        </member>
-        <member name="M:WixSharp.Compiler.BuildWxs(WixSharp.Project)">
-            <summary>
-            Builds the WiX source file (*.wxs) from the specified <see cref="T:WixSharp.Project"/> instance for further compiling into MSI file.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <returns>Path to the built WXS file.</returns>
-        </member>
-        <member name="M:WixSharp.Compiler.BuildWxs(WixSharp.Project,WixSharp.Compiler.OutputType)">
-            <summary>
-            Builds the WiX source file (*.wxs) from the specified <see cref="T:WixSharp.Project"/> instance.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <param name="type">The type (<see cref="T:WixSharp.Compiler.OutputType"/>) of the setup file to be defined in the source file (MSI vs. MSM).</param>
-            <returns>Path to the built WXS file.</returns>
-        </member>
-        <member name="M:WixSharp.Compiler.BuildWxs(WixSharp.Project,System.String,WixSharp.Compiler.OutputType)">
-            <summary>
-            Builds the WiX source file (*.wxs) from the specified <see cref="T:WixSharp.Project"/> instance.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <param name="path">The path to the WXS file to be build.</param>
-            <param name="type">The type (<see cref="T:WixSharp.Compiler.OutputType"/>) of the setup file to be defined in the source file (MSI vs. MSM).</param>
-            <returns>Path to the built WXS file.</returns>
-        </member>
-        <member name="M:WixSharp.Compiler.DefaultWixSourceGeneratedHandler(System.Xml.Linq.XDocument)">
-            <summary>
-            The default <see cref="E:WixSharp.Compiler.WixSourceGenerated"/> event handler.
-            </summary>
-            <param name="doc">The XDocument object representing WiX XML source code.</param>
-        </member>
-        <member name="M:WixSharp.Compiler.DefaultWixSourceFormatedHandler(System.String@)">
-            <summary>
-            The default <see cref="E:WixSharp.Compiler.WixSourceFormated"/> event handler.
-            </summary>
-            <param name="xml">The XML text string representing WiX XML source code.</param>
-        </member>
-        <member name="M:WixSharp.Compiler.GenerateWixProj(WixSharp.Project)">
-            <summary>
-            Generates WiX XML source file the specified <see cref="T:WixSharp.Project"/> instance.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <returns>Instance of XDocument class representing in-memory WiX XML source file.</returns>
-        </member>
-        <member name="F:WixSharp.Compiler.AllowNonRtfLicense">
-            <summary>
-            Defines if license file can be have non RTF extension.
-            </summary>
-        </member>
-        <member name="M:WixSharp.Compiler.ProcessCustomActions(WixSharp.Project,System.Xml.Linq.XElement)">
-            <summary>
-            Processes the custom actions.
-            </summary>
-            <param name="wProject">The w project.</param>
-            <param name="product">The product.</param>
-            <exception cref="T:System.Exception">Step.PreviousAction is specified for the very first 'Custom Action'.\nThere cannot be any previous action as it is the very first one in the sequence.</exception>
-        </member>
-        <member name="F:WixSharp.Compiler.IgnoreClientAssemblyPDB">
-            <summary>
-            Flag indicating whether to include PDB file of the assembly implementing ManagedCustomAction into MSI.  Default value is <c>False</c>.
-            <para>If set to <c>false</c> PDB file will not be included and debugging of such CustomAction will not be possible.</para>
-            </summary>
-        </member>
-        <member name="E:WixSharp.Compiler.WixSourceGenerated">
-            <summary>
-            Occurs when WiX source code generated. Use this event if you need to modify generated XML (XDocument)
-            before it is compiled into MSI.
-            </summary>
-        </member>
-        <member name="E:WixSharp.Compiler.WixSourceSaved">
-            <summary>
-            Occurs when WiX source file is saved. Use this event if you need to do any post-processing of the generated/saved file.
-            </summary>
-        </member>
-        <member name="E:WixSharp.Compiler.WixSourceFormated">
-            <summary>
-            Occurs when WiX source file is formatted and ready to be saved. Use this event if you need to do any custom formatting of the XML content before
-            it is saved by the compiler.
-            </summary>
-        </member>
-        <member name="P:WixSharp.Compiler.WixLocation">
-            <summary>
-            Gets or sets the location of WiX binaries (compiler/linker/dlls).
-            The default value is the content of environment variable <c>WIXSHARP_WIXDIR</c>.
-            <para>If user does not set this property explicitly and WIXSHARP_WIXDIR is not defined
-            <see cref="T:WixSharp.Compiler"/> will try to locate WiX binaries in <c>Program Files\Windows Installer XML v&lt;max_of 3*&gt;\bin</c>
-            </para>
-            </summary>
-            <value>The WiX binaries' location.</value>
-        </member>
-        <member name="P:WixSharp.Compiler.WixSdkLocation">
-            <summary>
-            Gets or sets the location of WiX SDK binaries (e.g. MakeSfxCA.exe).
-            The default value is the 'SDK' sub-directory of WixSharp.Compiler.WixLocation directory.
-            <para>
-            If for whatever reason the default location is invalid, you can always set this property to the location of your choice.
-            </para>
-            </summary>
-            <value>
-            The WiX SDK location.
-            </value>
-            <exception cref="T:System.Exception">WiX SDK binaries cannot be found. Please set WixSharp.Compiler.WixSdkLocation to valid path to the Wix SDK binaries.</exception>
-        </member>
-        <member name="P:WixSharp.Compiler.GuidGenerator">
-             <summary>
-             Gets or sets the GUID generator algorithm. You can use either one of the built-in algorithms or define your own.
-             The default value is <see cref="M:WixSharp.GuidGenerators.Default(System.Object)"/>.
-             <description>Possible WiX source file only:
-             <code>
-             //default built-in seeded GUID generator
-             Compiler.GuidGenerator = GuidGenerators.Default;
-            
-             //sequential built-in GUID generator
-             Compiler.GuidGenerator = GuidGenerators.Sequential;
-            
-             //Custom 'aways-same' GUID generator
-             Compiler.GuidGenerator = (seed) =&gt; Guid.Parse("9e2974a1-9539-4c5c-bef7-80fc35b9d7b0");
-            
-             //Custom random GUID generator
-             Compiler.GuidGenerator = (seed) =&gt; Guid.NewGuid();
-             </code>
-             </description>
-             </summary>
-             <value>
-             The GUID generator algorithm.
-             </value>
-        </member>
-        <member name="P:WixSharp.Compiler.ClientAssembly">
-            <summary>
-            Path to the <c>WixSharp.dll</c> client assembly. Typically it is the Wix# setup script assembly.
-            <para>This value is used to resolve <c>%this%</c> of the <see cref="T:WixSharp.ManagedAction"/>. If this value is not specified
-            <see cref="T:WixSharp.Compiler"/> will set it to the caller of its <c>Build</c> method.</para>
-            </summary>
-        </member>
-        <member name="T:WixSharp.Compiler.OutputType">
-            <summary>
-            Specifies the typr of the setup binaries to build.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Compiler.OutputType.MSI">
-            <summary>
-            MSI file.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Compiler.OutputType.MSM">
-            <summary>
-            Merge Module (MSM) file.
-            </summary>
-        </member>
-        <member name="T:WixSharp.Compiler.Wildcard">
-            <summary>
-            Represents a wildcard running on the
-            <see cref="T:System.Text.RegularExpressions"/> engine.
-            </summary>
-            <remarks>
-            This class was developed and described by <c>reinux</c> in "Converting Wildcards to Regexes"
-            on CodeProject (<c>http://www.codeproject.com/KB/recipes/wildcardtoregex.aspx</c>).
-            </remarks>
-        </member>
-        <member name="M:WixSharp.Compiler.Wildcard.#ctor(System.String)">
-            <summary>
-            Initializes a wildcard with the given search pattern.
-            </summary>
-            <param name="pattern">The wildcard pattern to match.</param>
-        </member>
-        <member name="M:WixSharp.Compiler.Wildcard.#ctor(System.String,System.Text.RegularExpressions.RegexOptions)">
-            <summary>
-            Initializes a wildcard with the given search pattern and options.
-            </summary>
-            <param name="pattern">The wildcard pattern to match.</param>
-            <param name="options">A combination of one or more
-            <see cref="T:System.Text.RegexOptions"/>.</param>
-        </member>
-        <member name="M:WixSharp.Compiler.Wildcard.WildcardToRegex(System.String)">
-            <summary>
-            Converts a wildcard to a regex.
-            </summary>
-            <param name="pattern">The wildcard pattern to convert.</param>
-            <returns>A regex equivalent of the given wildcard.</returns>
         </member>
         <member name="T:WixSharp.Condition">
             <summary>

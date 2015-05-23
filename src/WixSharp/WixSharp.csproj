@@ -105,8 +105,9 @@
     <Compile Include="AutoElements.cs" />
     <Compile Include="Bootstrapper\Bootstrapper.cs" />
     <Compile Include="Bootstrapper\BootstrapperApplication.cs" />
-    <Compile Include="Bootstrapper\Package.cs" />
+    <Compile Include="Bootstrapper\Packages.cs" />
     <Compile Include="CommonTasks.cs" />
+    <Compile Include="Compiler.Bootstrapper.cs" />
     <Compile Include="Controls\Control.cs" />
     <Compile Include="Controls\ControlType.cs" />
     <Compile Include="Controls\CustomUI.cs" />
