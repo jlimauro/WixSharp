@@ -631,12 +631,12 @@
         </member>
         <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.WixNamespaces">
             <summary>
-            Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root. 
+            Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root.
             </summary>
         </member>
         <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.WixExtensions">
             <summary>
-            Collection of paths to the WiX extensions. 
+            Collection of paths to the WiX extensions.
             </summary>
         </member>
         <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Language">
@@ -646,7 +646,7 @@
         </member>
         <member name="P:WixSharp.Bootstrapper.StandardBootstrapper.SourceBaseDir">
             <summary>
-            Base directory for the relative paths of the bootstrapper items (e.g. <see cref="T:WixSharp.Bootstrapper.MsiPackage"></see>). 
+            Base directory for the relative paths of the bootstrapper items (e.g. <see cref="T:WixSharp.Bootstrapper.MsiPackage"></see>).
             </summary>
         </member>
         <member name="P:WixSharp.Bootstrapper.StandardBootstrapper.OutFileName">

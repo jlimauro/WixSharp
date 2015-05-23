@@ -13,10 +13,8 @@ namespace WixSharp.Bootstrapper
         {
             WixExtensions.Add("WiXNetFxExtension");
             WixExtensions.Add("WiXBalFxExtension");
-            
 
             //project.WixNamespaces.Add("netfx=\"http://schemas.microsoft.com/wix/NetFxExtension\"");
-
         }
 
         /// <summary>
@@ -27,14 +25,15 @@ namespace WixSharp.Bootstrapper
         public StandardBootstrapper(string name, params ChainItem[] items)
         {
             WixExtensions.Add("WiXNetFxExtension");
-            WixExtensions.Add("WiXBalFxExtension");
+            WixExtensions.Add("WiXBalExtension");
             Name = name;
             Chain.AddRange(items);
         }
 
         string sourceBaseDir = "";
+
         /// <summary>
-        /// Base directory for the relative paths of the bootstrapper items (e.g. <see cref="MsiPackage"></see>). 
+        /// Base directory for the relative paths of the bootstrapper items (e.g. <see cref="MsiPackage"></see>).
         /// </summary>
         public string SourceBaseDir
         {
@@ -43,12 +42,14 @@ namespace WixSharp.Bootstrapper
         }
 
         string outFileName = "setup";
+
         /// <summary>
         /// Name of the MSI/MSM file (without extension) to be build.
         /// </summary>
         public string OutFileName { get { return outFileName; } set { outFileName = value; } }
 
         string outDir;
+
         /// <summary>
         /// The output directory. The directory where all msi and temporary files should be assembled. The <c>CurrentDirectory</c> will be used if <see cref="OutDir"/> is left unassigned.
         /// </summary>
@@ -84,7 +85,6 @@ namespace WixSharp.Bootstrapper
         /// </summary>
         [Xml]
         public string Copyright;
-
 
         /// <summary>
         /// A URL for more information about the bundle to display in Programs and Features (also known as Add/Remove Programs).
@@ -211,12 +211,12 @@ namespace WixSharp.Bootstrapper
         public BootstrapperApplicationRef ApplicationRef = StandardBootstrapperApplication.RtfLicense;
 
         /// <summary>
-        /// Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root. 
+        /// Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root.
         /// </summary>
         public List<string> WixNamespaces = new List<string>();
 
         /// <summary>
-        /// Collection of paths to the WiX extensions. 
+        /// Collection of paths to the WiX extensions.
         /// </summary>
         public List<string> WixExtensions = new List<string>();
 
@@ -224,7 +224,7 @@ namespace WixSharp.Bootstrapper
         /// Installation UI Language. If not specified <c>"en-US"</c> will be used.
         /// </summary>
         public string Language = "en-US";
-        
+
         public XContainer[] ToXml()
         {
             var result = new List<XContainer>();
@@ -234,10 +234,6 @@ namespace WixSharp.Bootstrapper
 
             root.AddAttributes(this.Attributes);
             root.Add(this.MapToXmlAttributes());
-
-            var xChain = root.AddElement("Chain");
-            foreach (var item in this.Chain)
-                xChain.Add(item.ToXml());
 
             var appRef = root.AddElement("BootstrapperApplicationRef")
                              .SetAttribute("Id", ApplicationRef.Id);
@@ -257,6 +253,10 @@ namespace WixSharp.Bootstrapper
             }
 
             appRef.Add(app);
+
+            var xChain = root.AddElement("Chain");
+            foreach (var item in this.Chain)
+                xChain.Add(item.ToXml());
 
             result.Add(root);
             return result.ToArray();
