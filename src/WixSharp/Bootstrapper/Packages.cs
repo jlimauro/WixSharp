@@ -143,12 +143,13 @@ namespace WixSharp.Bootstrapper
         /// the bootstrapper application to provide a unified installation experience. If "yes" is specified the UI authored into the msi package will be 
         /// displayed on top of any bootstrapper application UI.
         /// </summary>
+        [Xml]
         public bool? DisplayInternalUI;
 
         /// <summary>
         /// MSI properties to be set based on the value of a burn engine expression. This is a KeyValue mapping expression of the following format:
         /// <para>&lt;key&gt;=&lt;value&gt;[;&lt;key&gt;=&lt;value&gt;]</para>
-        /// <para><c>Example:</c> "TRANSFORMS=[CommandArgs];GLOBAL=yes"</para>
+        /// <para><c>Example:</c> "COMMANDARGS=[CommandArgs];GLOBAL=yes""</para>
         /// </summary>
         public string MsiProperties;
 

@@ -609,21 +609,6 @@
             The version of the bundle. Newer versions upgrade earlier versions of the bundles with matching UpgradeCodes. If the bundle is registered in Programs and Features then this attribute will be displayed in the Programs and Features user interface.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.LogoFile">
-            <summary>
-            Source file of the logo graphic.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.LicensePath">
-            <summary>
-            Source file of the RTF license file or URL target of the license link.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.LocalizationFile">
-            <summary>
-            Source file of the theme localization .wxl file.
-            </summary>
-        </member>
         <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Chain">
             <summary>
             The sequence of the packages to be installed
@@ -657,6 +642,21 @@
         <member name="P:WixSharp.Bootstrapper.StandardBootstrapper.OutDir">
             <summary>
             The output directory. The directory where all msi and temporary files should be assembled. The <c>CurrentDirectory</c> will be used if <see cref="P:WixSharp.Bootstrapper.StandardBootstrapper.OutDir"/> is left unassigned.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.WixStandardBootstrapperApplication.LicensePath">
+            <summary>
+            Source file of the RTF license file or URL target of the license link.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.WixStandardBootstrapperApplication.LogoFile">
+            <summary>
+            Source file of the logo graphic.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.WixStandardBootstrapperApplication.LocalizationFile">
+            <summary>
+            Source file of the theme localization .wxl file.
             </summary>
         </member>
         <member name="F:WixSharp.Bootstrapper.ChainItem.Vital">
@@ -749,7 +749,7 @@
             <summary>
             MSI properties to be set based on the value of a burn engine expression. This is a KeyValue mapping expression of the following format:
             <para>&lt;key&gt;=&lt;value&gt;[;&lt;key&gt;=&lt;value&gt;]</para>
-            <para><c>Example:</c> "TRANSFORMS=[CommandArgs];GLOBAL=yes"</para>
+            <para><c>Example:</c> "COMMANDARGS=[CommandArgs];GLOBAL=yes""</para>
             </summary>
         </member>
         <member name="T:WixSharp.CommonTasks.Tasks">

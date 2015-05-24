@@ -4,6 +4,9 @@ using System.Xml.Linq;
 
 namespace WixSharp.Bootstrapper
 {
+    //Useful stuff to have a look at: 
+    //http://neilsleightholm.blogspot.com.au/2012/05/wix-burn-tipstricks.html
+    //https://wixwpf.codeplex.com/
     public partial class StandardBootstrapper : WixEntity
     {
         /// <summary>
@@ -13,8 +16,6 @@ namespace WixSharp.Bootstrapper
         {
             WixExtensions.Add("WiXNetFxExtension");
             WixExtensions.Add("WiXBalFxExtension");
-
-            //project.WixNamespaces.Add("netfx=\"http://schemas.microsoft.com/wix/NetFxExtension\"");
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace WixSharp.Bootstrapper
         }
 
         string outFileName = "setup";
-
+         
         /// <summary>
         /// Name of the MSI/MSM file (without extension) to be build.
         /// </summary>
@@ -187,28 +188,12 @@ namespace WixSharp.Bootstrapper
         [Xml]
         public Version Version;
 
-        //WixStandardBootstrapperApplication attributes
-        /// <summary>
-        /// Source file of the logo graphic.
-        /// </summary>
-        public string LogoFile = "app_icon.ico";
-
-        /// <summary>
-        /// Source file of the RTF license file or URL target of the license link.
-        /// </summary>
-        public string LicensePath;
-
-        /// <summary>
-        /// Source file of the theme localization .wxl file.
-        /// </summary>
-        public string LocalizationFile;
-
         /// <summary>
         /// The sequence of the packages to be installed
         /// </summary>
         public List<ChainItem> Chain = new List<ChainItem>();
 
-        public BootstrapperApplicationRef ApplicationRef = StandardBootstrapperApplication.RtfLicense;
+        public WixStandardBootstrapperApplication Application = new LicenseBootstrapperApplication();
 
         /// <summary>
         /// Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root.
@@ -235,24 +220,8 @@ namespace WixSharp.Bootstrapper
             root.AddAttributes(this.Attributes);
             root.Add(this.MapToXmlAttributes());
 
-            var appRef = root.AddElement("BootstrapperApplicationRef")
-                             .SetAttribute("Id", ApplicationRef.Id);
 
-            XNamespace bal = "http://schemas.microsoft.com/wix/BalExtension";
-
-            var app = new XElement(bal + "WixStandardBootstrapperApplication")
-                          .SetAttribute("LogoFile", this.LogoFile)
-                          .SetAttribute("LocalizationFile", this.LocalizationFile);
-
-            if (LicensePath.IsNotEmpty())
-            {
-                if (LicensePath.EndsWith(".rtf", StringComparison.OrdinalIgnoreCase))
-                    app.SetAttribute("LicenseFile", this.LicensePath);
-                else
-                    app.SetAttribute("LicenseUrl", this.LicensePath);
-            }
-
-            appRef.Add(app);
+            root.Add(Application.ToXml());
 
             var xChain = root.AddElement("Chain");
             foreach (var item in this.Chain)
