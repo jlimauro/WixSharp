@@ -24,7 +24,7 @@ class Script
         //The x64 install can be achieved by "project.Platform = Platform.x64;"
 
         //project specific build event
-        project.Compiler.WixSourceGenerated += InjectImages;
+        project.WixSourceGenerated += InjectImages;
 
         //global build event
         Compiler.WixSourceGenerated += document =>

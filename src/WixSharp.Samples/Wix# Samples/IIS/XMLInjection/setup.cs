@@ -25,8 +25,8 @@ class Script
         project.WixExtensions.Add("WixIIsExtension.dll");
         project.WixNamespaces.Add("xmlns:iis=\"http://schemas.microsoft.com/wix/IIsExtension\"");
 
-        project.Compiler.PreserveTempFiles = true;
-        project.Compiler.WixSourceGenerated += Compiler_WixSourceGenerated;
+        project.PreserveTempFiles = true;
+        project.WixSourceGenerated += Compiler_WixSourceGenerated;
 
         project.BuildMsi();
     }

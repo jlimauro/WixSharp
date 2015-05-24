@@ -63,8 +63,8 @@ class Script
             project.SourceBaseDir = Environment.CurrentDirectory;
             project.OutFileName = "MyApp";
             
-            //project.Compiler.PreserveTempFiles = true;
-            project.Compiler.WixSourceGenerated += Compiler_WixSourceGenerated;
+            //project.PreserveTempFiles = true;
+            project.WixSourceGenerated += Compiler_WixSourceGenerated;
             project.BuildMsi();
         }
         catch (System.Exception ex)

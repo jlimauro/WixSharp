@@ -37,8 +37,8 @@ class Script
         project.UI = WUI.WixUI_ProgressOnly;
         project.OutFileName = "setup";
 
-        project.Compiler.PreserveTempFiles = true;
-        project.Compiler.WixSourceGenerated += doc =>
+        project.PreserveTempFiles = true;
+        project.WixSourceGenerated += doc =>
         {
             //ConfigureIfExists requires that webSite is contained by the Component not a Product element. So move it.
             var webSite = doc.FindSingle("WebSite");

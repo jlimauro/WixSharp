@@ -633,7 +633,7 @@ namespace WixSharp
                     }
                 }
 
-                if (!PreserveTempFiles && !project.Compiler.PreserveTempFiles)
+                if (!PreserveTempFiles && !project.PreserveTempFiles)
                     foreach (var file in tempFiles)
                         try
                         {
@@ -712,7 +712,7 @@ namespace WixSharp
                 ConvertMsiToMsm(doc);
             }
 
-            project.Compiler.InvokeWixSourceGenerated(doc);
+            project.InvokeWixSourceGenerated(doc);
             if (WixSourceGenerated != null)
                 WixSourceGenerated(doc);
 
@@ -729,7 +729,7 @@ namespace WixSharp
 
             DefaultWixSourceFormatedHandler(ref xml);
 
-            project.Compiler.InvokeWixSourceFormated(ref xml);
+            project.InvokeWixSourceFormated(ref xml);
             if (WixSourceFormated != null)
                 WixSourceFormated(ref xml);
 
@@ -739,7 +739,7 @@ namespace WixSharp
             Console.WriteLine("\n----------------------------------------------------------\n");
             Console.WriteLine("Wix project file has been built: " + path + "\n");
 
-            project.Compiler.InvokeWixSourceSaved(path);
+            project.InvokeWixSourceSaved(path);
             if (WixSourceSaved != null)
                 WixSourceSaved(path);
 

@@ -14,7 +14,7 @@ public class Script
 
         project.EmbeddedUI = new EmbeddedAssembly(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
-        project.Compiler.PreserveTempFiles = true;
+        project.PreserveTempFiles = true;
         project.BuildMsi();
     }
 }

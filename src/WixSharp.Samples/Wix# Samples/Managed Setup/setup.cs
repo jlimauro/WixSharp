@@ -63,7 +63,7 @@ public class Script
         project.EmitConsistentPackageId = true;
         Compiler.CandleOptions += " -sw1091";
 
-        project.Compiler.PreserveTempFiles = true;
+        project.PreserveTempFiles = true;
         project.BuildMsi();
     }
 

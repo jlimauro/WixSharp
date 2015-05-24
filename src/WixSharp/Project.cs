@@ -152,65 +152,6 @@ namespace WixSharp
         [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).")]
         public string Comments = "";
 
-        CompilerProxy compiler = new CompilerProxy();
-
-        /// <summary>
-        /// Gets the <c>Compiler</c> container for project specific Compiler properties and events.
-        /// </summary>
-        /// <value>
-        /// The events container object.
-        /// </value>
-        public CompilerProxy Compiler { get { return compiler; } }
-
-        /// <summary>
-        /// Container for project specific Compiler properties events.
-        /// </summary>
-        public class CompilerProxy
-        {
-            /// <summary>
-            /// Occurs when WiX source code generated. Use this event if you need to modify generated XML (XDocument)
-            /// before it is compiled into MSI.
-            /// </summary>
-            public event XDocumentGeneratedDlgt WixSourceGenerated;
-
-            /// <summary>
-            /// Occurs when WiX source file is saved. Use this event if you need to do any post-processing of the generated/saved file.
-            /// </summary>
-            public event XDocumentSavedDlgt WixSourceSaved;
-
-            /// <summary>
-            /// Occurs when WiX source file is formatted and ready to be saved. Use this event if you need to do any custom formatting of the XML content before
-            /// it is saved by the compiler.
-            /// </summary>
-            public event XDocumentFormatedDlgt WixSourceFormated;
-
-            /// <summary>
-            /// Forces <see cref="Compiler"/> to preserve all temporary build files (e.g. *.wxs).
-            /// <para>The default value is <c>false</c>: all temporary files are deleted at the end of the build/compilation.</para>
-            /// <para>Note: if <see cref="Compiler"/> fails to build MSI the <c>PreserveTempFiles</c>
-            /// value is ignored and all temporary files are preserved.</para>
-            /// </summary>
-            public bool PreserveTempFiles = false;
-
-            internal void InvokeWixSourceGenerated(XDocument doc)
-            {
-                if (WixSourceGenerated != null)
-                    WixSourceGenerated(doc);
-            }
-
-            internal void InvokeWixSourceSaved(string fileName)
-            {
-                if (WixSourceSaved != null)
-                    WixSourceSaved(fileName);
-            }
-
-            internal void InvokeWixSourceFormated(ref string content)
-            {
-                if (WixSourceFormated != null)
-                    WixSourceFormated(ref content);
-            }
-        }
-
         internal virtual void Preprocess()
         {
             var managedActions = this.Actions.OfType<ManagedAction>()
