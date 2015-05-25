@@ -604,7 +604,7 @@ namespace WixSharp
         /// <param name="element">The element to be searched.</param>
         /// <param name="path">The path.</param>
         /// <returns>The element matching the path.</returns>
-        public static XElement Select(this XElement element, string path)
+        public static XElement Select(this XContainer element, string path)
         {
             string[] parts = path.Split('/');
 
@@ -622,27 +622,27 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Selects from the given element the first child element matching the specified path (e.g. <c>Select("Product/Package")</c>).
-        /// </summary>
-        /// <param name="element">The element to be searched.</param>
-        /// <param name="path">The path.</param>
-        /// <returns>The element matching the path.</returns>
-        public static XElement Select(this XDocument document, string path)
-        {
-            string[] parts = path.Split('/');
+        ///// Selects from the given element the first child element matching the specified path (e.g. <c>Select("Product/Package")</c>).
+        ///// </summary>
+        ///// <param name="element">The element to be searched.</param>
+        ///// <param name="path">The path.</param>
+        ///// <returns>The element matching the path.</returns>
+        //public static XElement Select(this XDocument document, string path)
+        //{
+        //    string[] parts = path.Split('/');
 
-            var e = (from el in document.Root.Elements()
-                     where el.Name.LocalName == parts[0]
-                     select el).GetEnumerator();
+        //    var e = (from el in document.Root.Elements()
+        //             where el.Name.LocalName == parts[0]
+        //             select el).GetEnumerator();
 
-            if (!e.MoveNext())
-                return null;
+        //    if (!e.MoveNext())
+        //        return null;
 
-            if (parts.Length == 1) //the last link in the chain
-                return e.Current;
-            else
-                return e.Current.Select(path.Substring(parts[0].Length + 1)); //be careful RECURSION
-        }
+        //    if (parts.Length == 1) //the last link in the chain
+        //        return e.Current;
+        //    else
+        //        return e.Current.Select(path.Substring(parts[0].Length + 1)); //be careful RECURSION
+        //}
 
         /// <summary>
         /// Selects from the given element the first child element Directory matching the specified path (e.g. <c>Select("ProgramFiles/MyCompany") by </c>).
@@ -730,7 +730,7 @@ namespace WixSharp
         /// <summary>
         /// Selects single descendant element with a given name (LocalName). Throws if no or more then one match found
         /// </summary>
-        /// <param name="element">The element to be searched.</param>
+        /// <param name="container">The element to be searched.</param>
         /// <param name="elementName">The element local name.</param>
         /// <returns>The elements matching the name.</returns>
         public static XElement FindSingle(this XContainer container, string elementName)
@@ -991,6 +991,11 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Determines whether the product associated with the session is installed.
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <returns></returns>
         public static bool IsInstalled(this Session session)
         {
             return session.Property("Installed").IsNotEmpty();
@@ -1052,7 +1057,7 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Saves the binary (from the Binary table) ito the file.
+        /// Saves the binary (from the Binary table) into the file.
         /// </summary>
         /// <param name="session">The session.</param>
         /// <param name="binary">The binary.</param>
@@ -1095,6 +1100,12 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Tries the read the binary (from the Binary table) into the byte array.
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <param name="binary">The binary.</param>
+        /// <returns></returns>
         public static byte[] TryReadBinary(this Session session, string binary)
         {
             try
@@ -1107,6 +1118,12 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Read the binary (from the Binary table) into the byte array.
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <param name="binary">The binary.</param>
+        /// <returns></returns>
         public static byte[] ReadBinary(this Session session, string binary)
         {
             //If binary is accessed this way it will raise "stream handle is not valid" exception
@@ -1180,8 +1197,16 @@ namespace WixSharp
         }
     }
 
+    /// <summary>
+    /// 'Byte array to string' serialization methods.
+    /// </summary>
     public static class SerializingExtensions
     {
+        /// <summary>
+        /// Decodes hexadecimal string representation into the byte array.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns></returns>
         public static byte[] DecodeFromHex(this string obj)
         {
             var data = new List<byte>();
@@ -1198,11 +1223,22 @@ namespace WixSharp
             return data.ToArray();
         }
 
+        /// <summary>
+        /// Encodes byte array into its hexadecimal string representation.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
         public static string EncodeToHex(this byte[] data)
         {
             return BitConverter.ToString(data).Replace("-", string.Empty);
         }
 
+        /// <summary>
+        /// Converts bytes into text according the specified Encoding..
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="encoding">The encoding.</param>
+        /// <returns></returns>
         public static string GetString(this byte[] obj, Encoding encoding = null)
         {
             if (obj == null) return null;
@@ -1212,6 +1248,12 @@ namespace WixSharp
                 return encoding.GetString(obj);
         }
 
+        /// <summary>
+        /// Gets the bytes of the text according the specified Encoding.
+        /// </summary>
+        /// <param name="obj">The text.</param>
+        /// <param name="encoding">The encoding.</param>
+        /// <returns></returns>
         public static byte[] GetBytes(this string obj, Encoding encoding = null)
         {
             if (encoding == null)

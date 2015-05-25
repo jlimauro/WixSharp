@@ -13,6 +13,8 @@
 using System;
 using Microsoft.Deployment.WindowsInstaller;
 
+#pragma warning disable 1591
+
 namespace Microsoft.Deployment.Samples.EmbeddedUI
 {
 

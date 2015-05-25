@@ -109,7 +109,7 @@
             <summary>
             Initializes from WiX localization data (*.wxl).
             </summary>
-            <param name="wxlFile">The WXL file bytes.</param>
+            <param name="wxlData">The WXL file bytes.</param>
             <returns></returns>
         </member>
         <member name="F:WixSharp.UIShell.components">

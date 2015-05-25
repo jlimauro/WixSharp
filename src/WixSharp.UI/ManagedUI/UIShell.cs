@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using Microsoft.Deployment.Samples.EmbeddedUI;
 using Microsoft.Deployment.WindowsInstaller;
 
+#pragma warning disable 1591
+
 namespace WixSharp
 {
     public interface IUIShell

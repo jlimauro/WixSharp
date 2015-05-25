@@ -8,6 +8,8 @@ using Microsoft.Deployment.WindowsInstaller;
 using WixSharp.CommonTasks;
 using IO = System.IO;
 
+#pragma warning disable 1591
+
 namespace WixSharp
 {
     /// <summary>

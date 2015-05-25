@@ -42,11 +42,11 @@ namespace WixSharp
     /// var project = new Project("MyProduct",
     ///     
     ///         new Dir(@"%ProgramFiles%\My Company\My Product",
-    ///             new File(@"readme.txt")),
+    ///             new File("readme.txt")),
     ///             ...
     ///             
-    ///         new Binary(@"CRTSetup.msi"),
-    ///         new ManagedAction(@"InstallCRTAction",
+    ///         new Binary("CRTSetup.msi"),
+    ///         new ManagedAction("InstallCRTAction",
     ///         ... 
     ///                             
     /// </code>
@@ -76,9 +76,36 @@ namespace WixSharp
             Name = sourcePath;
         }
 
+        /// <summary>
+        /// The flag that indicates if the binary file is a .NET assembly.
+        /// </summary>
         public bool IsAssembly = false;
     }
 
+    /// <summary>
+    /// Defines assembly file to be embedded into MSI (<c>Binary</c> table).
+    /// <para>
+    /// You can use this class to embed any .NET assembly to be used during the installation. 
+    /// Note that none of the binary files are installed on the target system. They are just available at installation time
+    /// for using <c>CustomActions</c>.
+    /// </para>
+    /// </summary>
+    /// 
+    /// <example>The following is an example of embedding <c>CRTSetup.msi</c> file into MSI for further use in 
+    /// <c>InstallCRTAction</c>  <see cref="ManagedAction"/>.
+    /// <code>
+    /// var project = new Project("MyProduct",
+    ///     
+    ///         new Dir(@"%ProgramFiles%\My Company\My Product",
+    ///             new File(@"readme.txt")),
+    ///             ...
+    ///             
+    ///         new EmbeddedAssembly("config.exe") { RefAssemblies = new [] { "utils.dll" }},
+    ///         new ManagedAction("InstallCRTAction",
+    ///         ... 
+    ///                             
+    /// </code>
+    /// </example>
     public partial class EmbeddedAssembly: Binary
     {
         /// <summary>
@@ -102,6 +129,9 @@ namespace WixSharp
         {
         }
 
+        /// <summary>
+        /// The referenced assemblies the EmbeddedAssembly depends on.
+        /// </summary>
         public string[] RefAssemblies = new string[0];
     }
 }

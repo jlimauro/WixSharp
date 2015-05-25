@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 
+#pragma warning disable 1591
+
 namespace WixSharp
 {
     /// <summary>
@@ -212,7 +214,7 @@ namespace WixSharp
                 return string.Join("\n", this.Select(x => x.Key + "=" + x.Value.Replace("\n", "{$NL}")).ToArray());
             }
 
-            public string this[string key]
+            public new string this[string key]
             {
                 get
                 {

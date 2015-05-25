@@ -32,17 +32,6 @@ class Script
         Compiler.BuildMsi(project);
     }
 
-    static public void CheckDotNetWithBuildinTaskObsolete()
-    {
-        var project = new Project("Setup",
-           new Dir(@"%ProgramFiles%\My Company\My Product",
-                new File(@"Files\MyApp.exe")));
-
-        project.SetClrPrerequisite("v2.0.50727", null);
-
-        Compiler.BuildMsi(project);
-    }
-
     static public void CheckDotNetWithBuildinTask()
     {
         var project = new Project("Setup",

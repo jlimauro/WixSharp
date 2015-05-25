@@ -7,6 +7,12 @@ namespace WixSharp.Bootstrapper
     //Useful stuff to have a look at: 
     //http://neilsleightholm.blogspot.com.au/2012/05/wix-burn-tipstricks.html
     //https://wixwpf.codeplex.com/
+
+
+
+    /// <summary>
+    /// Class for defining a WiX standard Burn-based bootstrapper.
+    /// </summary>
     public partial class StandardBootstrapper : WixEntity
     {
         /// <summary>
@@ -193,6 +199,9 @@ namespace WixSharp.Bootstrapper
         /// </summary>
         public List<ChainItem> Chain = new List<ChainItem>();
 
+        /// <summary>
+        /// The instance of the Bootstrapper application class application. By default it is a LicenseBootstrapperApplication object.
+        /// </summary>
         public WixStandardBootstrapperApplication Application = new LicenseBootstrapperApplication();
 
         /// <summary>
@@ -209,7 +218,11 @@ namespace WixSharp.Bootstrapper
         /// Installation UI Language. If not specified <c>"en-US"</c> will be used.
         /// </summary>
         public string Language = "en-US";
-
+        
+        /// <summary>
+        /// Emits WiX XML.
+        /// </summary>
+        /// <returns></returns>
         public XContainer[] ToXml()
         {
             var result = new List<XContainer>();

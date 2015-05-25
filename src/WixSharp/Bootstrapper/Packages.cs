@@ -3,6 +3,9 @@ using System.Xml.Linq;
 
 namespace WixSharp.Bootstrapper
 {
+    /// <summary>
+    /// Container class for common members of the Bootstrapper packages
+    /// </summary>
     public abstract class Packages : ChainItem
     {
         /// <summary>
@@ -47,9 +50,15 @@ namespace WixSharp.Bootstrapper
         [Xml]
         public string InstallCondition;
 
+        /// <summary>
+        /// Collection of paths to the package dependencies.
+        /// </summary>
         public string[] Payloads = new string[0];
     }
 
+    /// <summary>
+    /// Container class for common members of the Bootstrapper chained items
+    /// </summary>
     public abstract class ChainItem : WixEntity
     {
         /// <summary>
@@ -60,15 +69,29 @@ namespace WixSharp.Bootstrapper
         [Xml]
         public bool? Vital;
 
+        /// <summary>
+        /// Emits WiX XML.
+        /// </summary>
+        /// <returns></returns>
         abstract public XContainer[] ToXml();
     }
 
+    /// <summary>
+    /// Standard WiX ExePackage.
+    /// </summary>
     public class ExePackage : Packages
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExePackage"/> class.
+        /// </summary>
         public ExePackage()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExePackage"/> class.
+        /// </summary>
+        /// <param name="path">The path.</param>
         public ExePackage(string path)
         {
             //Name = System.IO.Path.GetFileName(path).Expand();
@@ -103,6 +126,10 @@ namespace WixSharp.Bootstrapper
         [Xml]
         public string DetectCondition;
 
+        /// <summary>
+        /// Emits WiX XML.
+        /// </summary>
+        /// <returns></returns>
         public override XContainer[] ToXml()
         {
             var root = new XElement("ExePackage");
@@ -122,6 +149,9 @@ namespace WixSharp.Bootstrapper
         }
     }
 
+    /// <summary>
+    /// Standard WiX MsiPackage.
+    /// </summary>
     public class MsiPackage : Packages
     {
         /// <summary>
@@ -130,9 +160,16 @@ namespace WixSharp.Bootstrapper
         /// The default is "no".
         /// </summary>
         public bool? EnableFeatureSelection;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MsiPackage"/> class.
+        /// </summary>
         public MsiPackage()
         {
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MsiPackage"/> class.
+        /// </summary>
+        /// <param name="path">The path.</param>
         public MsiPackage(string path)
         {
             SourceFile = path;
@@ -153,6 +190,10 @@ namespace WixSharp.Bootstrapper
         /// </summary>
         public string MsiProperties;
 
+        /// <summary>
+        /// Emits WiX XML.
+        /// </summary>
+        /// <returns></returns>
         public override XContainer[] ToXml()
         {
             var root = new XElement("MsiPackage");
@@ -180,13 +221,25 @@ namespace WixSharp.Bootstrapper
 
     //class MspPackage : ChainItem { }
     //class MsuPackage : ChainItem { }
+
+    /// <summary>
+    /// Standard WiX PackageGroupRef.
+    /// </summary>
     public class PackageGroupRef : ChainItem
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackageGroupRef"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public PackageGroupRef(string name)
         {
             this.Id = new Id(name);
         }
 
+        /// <summary>
+        /// Emits WiX XML.
+        /// </summary>
+        /// <returns></returns>
         public override XContainer[] ToXml()
         {
             var root = new XElement("PackageGroupRef");
@@ -201,8 +254,15 @@ namespace WixSharp.Bootstrapper
         }
     }
 
+    /// <summary>
+    /// Standard WiX RollbackBoundary.
+    /// </summary>
     public class RollbackBoundary : ChainItem
     {
+        /// <summary>
+        /// Emits WiX XML.
+        /// </summary>
+        /// <returns></returns>
         public override XContainer[] ToXml()
         {
             return new[] { new XElement("RollbackBoundary") };

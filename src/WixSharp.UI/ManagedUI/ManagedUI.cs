@@ -7,9 +7,10 @@ using Microsoft.Deployment.WindowsInstaller;
 using System.Diagnostics;
 using System;
 
+#pragma warning disable 1591
+
 namespace WixSharp
 {
-
     public class ManagedUI : IManagedUI, IEmbeddedUI
     {
         static public ManagedUI Default = new ManagedUI

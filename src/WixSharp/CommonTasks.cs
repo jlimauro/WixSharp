@@ -510,7 +510,7 @@ namespace WixSharp.CommonTasks
         /// </summary>
         /// <param name="project">The <see cref="Project"/> instance.</param>
         /// <param name="path">The path to the WXS file to be build.</param>
-        /// <param name="type">The type (<see cref="OutputType"/>) of the setup file to be defined in the source file (MSI vs. MSM).</param>
+        /// <param name="type">The type (<see cref="Compiler.OutputType"/>) of the setup file to be defined in the source file (MSI vs. MSM).</param>
         /// <returns>Path to the built WXS file.</returns>
         static public string BuildWxs(this Project project, Compiler.OutputType type = Compiler.OutputType.MSI ,string path = null)
         {
@@ -703,7 +703,7 @@ namespace WixSharp.CommonTasks
         /// </param>
         /// <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
         /// <returns></returns>
-        [Obsolete("SetClrPrerequisite is obsolete. Please use more reliable SetNetFxPrerequisite instead.")]
+        [Obsolete("SetClrPrerequisite is obsolete. Please use more reliable SetNetFxPrerequisite instead.", true)]
         static public Project SetClrPrerequisite(this WixSharp.Project project, string version, string errorMessage = null)
         {
             string message = errorMessage ?? "Please install .NET " + version + " first.";

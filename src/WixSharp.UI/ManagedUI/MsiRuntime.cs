@@ -4,6 +4,8 @@ using System.Text;
 using System.Xml.Linq;
 using Microsoft.Deployment.WindowsInstaller;
 
+#pragma warning disable 1591
+
 namespace WixSharp
 {
     public class MsiRuntime
@@ -28,7 +30,7 @@ namespace WixSharp
         /// <summary>
         /// Initializes from WiX localization data (*.wxl).
         /// </summary>
-        /// <param name="wxlFile">The WXL file bytes.</param>
+        /// <param name="wxlData">The WXL file bytes.</param>
         /// <returns></returns>
         public void InitFromWxl(byte[] wxlData)
         {

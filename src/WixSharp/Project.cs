@@ -45,7 +45,7 @@ namespace WixSharp
     /// <summary>
     /// Represents Wix# project. This class defines the WiX/MSI entities and their relationships.
     /// <para>
-    /// 		<see cref="Project"/> instance can be compiled into complete MSI or WiX source file with one of the <see cref="CompilerProxy"/> "Build" methods.
+    /// 		<see cref="Project"/> instance can be compiled into complete MSI or WiX source file with one of the <see cref="Compiler"/> "Build" methods.
     /// </para>
     /// 	<para>
     /// Use <see cref="Project"/> non-default constructor or C# initializers to specify required installation components.
@@ -308,6 +308,9 @@ namespace WixSharp
         /// </summary>
         public WUI UI = WUI.WixUI_Minimal;
 
+        /// <summary>
+        /// The Binary (assembly) implemening WiX embedded UI
+        /// </summary>
         public Binary EmbeddedUI = null;
 
         /// <summary>
@@ -494,7 +497,7 @@ namespace WixSharp
         public bool EmitConsistentPackageId = false;
         /// <summary>
         /// Collection of WiX/MSI <see cref="Binary"/> objects to be embedded into MSI database. 
-        /// Normally you doe not need to deal with this property as <see cref="CompilerProxy"/> will populate
+        /// Normally you doe not need to deal with this property as <see cref="Compiler"/> will populate
         /// it automatically.
         /// </summary>
         public Binary[] Binaries = new Binary[0];
@@ -533,7 +536,7 @@ namespace WixSharp
         /// <summary>
         /// Resolves all wild card specifications if any.
         /// <para>
-        /// This method is called by <see cref="CompilerProxy" /> during the compilation. However it might be convenient
+        /// This method is called by <see cref="Compiler" /> during the compilation. However it might be convenient
         /// to call it before the compilation if any files matching the wild card mask need to be handled in special
         /// way (e.g. shortcuts created). See <c>WildCard Files</c> example.
         /// </para><remarks><see cref="ResolveWildCards" /> should be called only after <see cref="SourceBaseDir" /> is set.
@@ -725,7 +728,7 @@ namespace WixSharp
         /// <summary>
         /// Path to the Localization file. This value is used only if the setup language is not <c>"en-US"</c>.
         /// <para>If the <see cref="LocalizationFile"/> is not specified and the setup language 
-        /// <see cref="CompilerProxy"/> will generate <see cref="LocalizationFile"/> value as following:
+        /// <see cref="Compiler"/> will generate <see cref="LocalizationFile"/> value as following:
         /// <c>WixUI_[Language].wxl</c>.
         /// </para>
         /// </summary>

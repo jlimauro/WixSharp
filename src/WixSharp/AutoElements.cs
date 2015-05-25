@@ -419,11 +419,11 @@ namespace WixSharp
                             
                 };
 
-            normalize(doc.Root.AllElements("Icon"), "SourceFile");
-            normalize(doc.Root.AllElements("File"), "Source");
-            normalize(doc.Root.AllElements("Merge"), "SourceFile");
-            normalize(doc.Root.AllElements("Binary"), "SourceFile");
-            normalize(doc.Root.AllElements("EmbeddedUI"), "SourceFile");
+            normalize(doc.Root.FindAll("Icon"), "SourceFile");
+            normalize(doc.Root.FindAll("File"), "Source");
+            normalize(doc.Root.FindAll("Merge"), "SourceFile");
+            normalize(doc.Root.FindAll("Binary"), "SourceFile");
+            normalize(doc.Root.FindAll("EmbeddedUI"), "SourceFile");
         }
     }
 }
