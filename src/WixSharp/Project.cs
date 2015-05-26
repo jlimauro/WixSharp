@@ -60,7 +60,7 @@ namespace WixSharp
     /// Compiler.BuildMsi(project);
     /// </code>
     /// </example>
-    public partial class Project : WixEntity
+    public partial class Project : WixProject 
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Project"/> class.
@@ -185,31 +185,6 @@ namespace WixSharp
             }
         }
 
-        string sourceBaseDir = "";
-        /// <summary>
-        /// Base directory for the relative paths of the project items (e.g. <see cref="File"></see>). 
-        /// </summary>
-        public string SourceBaseDir
-        {
-            get { return sourceBaseDir.ExpandEnvVars(); }
-            set { sourceBaseDir = value; }
-        }
-
-        string outDir;
-        /// <summary>
-        /// The output directory. The directory where all msi and temporary files should be assembled. The <c>CurrentDirectory</c> will be used if <see cref="OutDir"/> is left unassigned.
-        /// </summary>
-        public string OutDir
-        {
-            get
-            {
-                return outDir.IsEmpty() ? Environment.CurrentDirectory : outDir.ExpandEnvVars();
-            }
-            set
-            {
-                outDir = value;
-            }
-        }
         /// <summary>
         /// Generic <see cref="T:WixSharp.WixEntity"/> container for defining WiX <c>Package</c> element attributes.
         /// <para>These attributes are the properties about the package to be placed in the Summary Information Stream. These are visible from COM through the IStream interface, and these properties can be seen on the package in Explorer. </para>
@@ -503,14 +478,6 @@ namespace WixSharp
         /// Collection of paths to the assemblies referenced by <see cref="ManagedAction"/>s.
         /// </summary>
         public List<string> DefaultRefAssemblies = new List<string>();
-        /// <summary>
-        /// Collection of paths to the WiX extensions. 
-        /// </summary>
-        public List<string> WixExtensions = new List<string>();
-        /// <summary>
-        /// Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root. 
-        /// </summary>
-        public List<string> WixNamespaces = new List<string>();
         /// <summary>
         /// Collection of the <see cref="T:WixSharp.LaunchCondition"/>s associated with the setup.
         /// </summary>

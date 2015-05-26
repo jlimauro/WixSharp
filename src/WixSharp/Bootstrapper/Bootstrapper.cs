@@ -13,7 +13,7 @@ namespace WixSharp.Bootstrapper
     /// <summary>
     /// Class for defining a WiX standard Burn-based bootstrapper.
     /// </summary>
-    public partial class StandardBootstrapper : WixEntity
+    public partial class StandardBootstrapper : WixProject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Bootstrapper"/> class.
@@ -35,41 +35,6 @@ namespace WixSharp.Bootstrapper
             WixExtensions.Add("WiXBalExtension");
             Name = name;
             Chain.AddRange(items);
-        }
-
-        string sourceBaseDir = "";
-
-        /// <summary>
-        /// Base directory for the relative paths of the bootstrapper items (e.g. <see cref="MsiPackage"></see>).
-        /// </summary>
-        public string SourceBaseDir
-        {
-            get { return sourceBaseDir.ExpandEnvVars(); }
-            set { sourceBaseDir = value; }
-        }
-
-        string outFileName = "setup";
-         
-        /// <summary>
-        /// Name of the MSI/MSM file (without extension) to be build.
-        /// </summary>
-        public string OutFileName { get { return outFileName; } set { outFileName = value; } }
-
-        string outDir;
-
-        /// <summary>
-        /// The output directory. The directory where all msi and temporary files should be assembled. The <c>CurrentDirectory</c> will be used if <see cref="OutDir"/> is left unassigned.
-        /// </summary>
-        public string OutDir
-        {
-            get
-            {
-                return outDir.IsEmpty() ? Environment.CurrentDirectory : outDir.ExpandEnvVars();
-            }
-            set
-            {
-                outDir = value;
-            }
         }
 
         /// <summary>
@@ -204,21 +169,6 @@ namespace WixSharp.Bootstrapper
         /// </summary>
         public WixStandardBootstrapperApplication Application = new LicenseBootstrapperApplication();
 
-        /// <summary>
-        /// Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root.
-        /// </summary>
-        public List<string> WixNamespaces = new List<string>();
-
-        /// <summary>
-        /// Collection of paths to the WiX extensions.
-        /// </summary>
-        public List<string> WixExtensions = new List<string>();
-
-        /// <summary>
-        /// Installation UI Language. If not specified <c>"en-US"</c> will be used.
-        /// </summary>
-        public string Language = "en-US";
-        
         /// <summary>
         /// Emits WiX XML.
         /// </summary>
