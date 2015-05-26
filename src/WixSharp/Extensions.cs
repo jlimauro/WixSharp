@@ -437,7 +437,7 @@ namespace WixSharp
         /// </code>
         /// </example>
         /// </para>
-        /// For the list of supported constants analyse <c>WixSharp.Compiler.EnvironmentConstantsMapping.Keys</c>.
+        /// For the list of supported constants analyses <c>WixSharp.Compiler.EnvironmentConstantsMapping.Keys</c>.
         /// </summary>
         /// <param name="path">The Wix# directory path.</param>
         /// <returns>Replacement result.</returns>
@@ -453,11 +453,22 @@ namespace WixSharp
                        .EscapeIllegalCharacters();
         }
 
+        /// <summary>
+        /// Determines whether the string contains WiX constants (values enclosed into square brackets).
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
         public static bool ContainsWixConstants(this string data)
         {
             return data.Contains("[") || data.Contains("]"); 
         }
 
+        /// <summary>
+        /// Maps the Wix# constants included in path into their x64 equivalents.
+        /// <para>For example %ProgramFiles%\My Company\My Product should be preprocessed into %ProgramFiles64%\My Company\My Product</para>
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
         public static string Map64Dirs(this string path)
         {
             //directory ID (e.g. %ProgramFiles%\My Company\My Product should be preprocessed into %ProgramFiles64%\My Company\My Product)
@@ -620,29 +631,6 @@ namespace WixSharp
             else
                 return e.Current.Select(path.Substring(parts[0].Length + 1)); //be careful RECURSION
         }
-
-        /// <summary>
-        ///// Selects from the given element the first child element matching the specified path (e.g. <c>Select("Product/Package")</c>).
-        ///// </summary>
-        ///// <param name="element">The element to be searched.</param>
-        ///// <param name="path">The path.</param>
-        ///// <returns>The element matching the path.</returns>
-        //public static XElement Select(this XDocument document, string path)
-        //{
-        //    string[] parts = path.Split('/');
-
-        //    var e = (from el in document.Root.Elements()
-        //             where el.Name.LocalName == parts[0]
-        //             select el).GetEnumerator();
-
-        //    if (!e.MoveNext())
-        //        return null;
-
-        //    if (parts.Length == 1) //the last link in the chain
-        //        return e.Current;
-        //    else
-        //        return e.Current.Select(path.Substring(parts[0].Length + 1)); //be careful RECURSION
-        //}
 
         /// <summary>
         /// Selects from the given element the first child element Directory matching the specified path (e.g. <c>Select("ProgramFiles/MyCompany") by </c>).
