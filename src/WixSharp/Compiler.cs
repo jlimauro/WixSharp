@@ -458,12 +458,15 @@ namespace WixSharp
                 foreach (string dll in project.WixExtensions.Distinct())
                     extensionDlls += " -ext \"" + ResolveExtensionFile(dll) + "\"";
 
-                string batchFileContent = "\"" + compiler + "\" " + CandleOptions + " " + extensionDlls + " \"" + IO.Path.GetFileName(wxsFile) + "\"\r\n";
+                var candleOptions = CandleOptions + " " + project.CandleOptions;
+                var lightOptions = LightOptions + " " + project.LightOptions;
+
+                string batchFileContent = "\"" + compiler + "\" " + candleOptions + " " + extensionDlls + " \"" + IO.Path.GetFileName(wxsFile) + "\"\r\n";
 
                 if (project.IsLocalized && IO.File.Exists(project.LocalizationFile))
-                    batchFileContent += "\"" + linker + "\" " + LightOptions + " \"" + objFile + "\" " + extensionDlls + " -cultures:" + project.Language + " -loc " + project.LocalizationFile + "\r\npause";
+                    batchFileContent += "\"" + linker + "\" " + lightOptions + " \"" + objFile + "\" " + extensionDlls + " -cultures:" + project.Language + " -loc " + project.LocalizationFile + "\r\npause";
                 else
-                    batchFileContent += "\"" + linker + "\" " + LightOptions + " \"" + objFile + "\" " + extensionDlls + " -cultures:" + project.Language + "\r\npause";
+                    batchFileContent += "\"" + linker + "\" " + lightOptions + " \"" + objFile + "\" " + extensionDlls + " -cultures:" + project.Language + "\r\npause";
 
                 using (var sw = new IO.StreamWriter(batchFile))
                     sw.Write(batchFileContent);
@@ -586,8 +589,11 @@ namespace WixSharp
                     foreach (string dll in project.WixExtensions.Distinct())
                         extensionDlls += " -ext \"" + dll + "\"";
 
+                    var candleOptions = CandleOptions + " " + project.CandleOptions;
+                    var lightOptions = LightOptions + " " + project.LightOptions;
+
                     //AppDomain.CurrentDomain.ExecuteAssembly(compiler, null, new string[] { projFile }); //a bit unsafer version
-                    Run(compiler, CandleOptions + " " + extensionDlls + " \"" + wxsFile + "\" -out \"" + objFile + "\"");
+                    Run(compiler, candleOptions + " " + extensionDlls + " \"" + wxsFile + "\" -out \"" + objFile + "\"");
 
                     if (IO.File.Exists(objFile))
                     {
@@ -596,9 +602,9 @@ namespace WixSharp
                             IO.File.Delete(msiFile);
 
                         if (project.IsLocalized && IO.File.Exists(project.LocalizationFile))
-                            Run(linker, LightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language + " -loc \"" + project.LocalizationFile + "\"");
+                            Run(linker, lightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language + " -loc \"" + project.LocalizationFile + "\"");
                         else
-                            Run(linker, LightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language);
+                            Run(linker, lightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language);
 
                         if (IO.File.Exists(msiFile))
                         {

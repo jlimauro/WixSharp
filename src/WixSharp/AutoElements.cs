@@ -59,6 +59,7 @@ namespace WixSharp
         /// The disable automatic insertion of <c>CreateFolder</c> element.
         /// Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties,
         /// ReleaseFolder, Shortcuts and WildCardFiles samples.
+        /// <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
         /// </summary>
         public static bool DisableAutoCreateFolder = false;
 
@@ -66,6 +67,7 @@ namespace WixSharp
         /// The disable automatic insertion of user profile registry elements.
         /// Required for: AllInOne, ConditionalInstallation, CustomAttributes, ReleaseFolder, Shortcuts,
         /// Shortcuts (advertised), Shortcuts-2, WildCardFiles samples.
+        /// <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
         /// </summary>
         public static bool DisableAutoUserProfileRegistry = false;
 

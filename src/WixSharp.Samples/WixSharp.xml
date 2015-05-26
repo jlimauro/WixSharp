@@ -484,6 +484,7 @@
             The disable automatic insertion of <c>CreateFolder</c> element.
             Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties,
             ReleaseFolder, Shortcuts and WildCardFiles samples.
+            <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
             </summary>
         </member>
         <member name="F:WixSharp.AutoElements.DisableAutoUserProfileRegistry">
@@ -491,6 +492,7 @@
             The disable automatic insertion of user profile registry elements.
             Required for: AllInOne, ConditionalInstallation, CustomAttributes, ReleaseFolder, Shortcuts,
             Shortcuts (advertised), Shortcuts-2, WildCardFiles samples.
+            <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
             </summary>
         </member>
         <member name="T:WixSharp.Bootstrapper.StandardBootstrapper">
@@ -1802,6 +1804,18 @@
             Compiler.BuildMsi(project);
             </code>
             </example>
+        </member>
+        <member name="F:WixSharp.Project.LightOptions">
+            <summary>
+            WiX linker <c>Light.exe</c> options.
+            <para>The default value is "-sw1076 -sw1079" (disable warning 1076 and 1079).</para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.Project.CandleOptions">
+            <summary>
+            WiX compiler <c>Candle.exe</c> options.
+            <para>The default value is "-sw1076" (disable warning 1026).</para>
+            </summary>
         </member>
         <member name="F:WixSharp.Project.PreserveTempFiles">
             <summary>
