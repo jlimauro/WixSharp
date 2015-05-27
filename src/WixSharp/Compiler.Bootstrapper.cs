@@ -47,12 +47,12 @@ namespace WixSharp
     public partial class Compiler
     {
         /// <summary>
-        /// Builds WiX Bootstrapper application from the specified <see cref="StandardBootstrapper"/> project instance.
+        /// Builds WiX Bootstrapper application from the specified <see cref="Bundle"/> project instance.
         /// </summary>
         /// <param name="project">The project.</param>
         /// <param name="path">The path.</param>
         /// <exception cref="System.ApplicationException">Wix compiler/linker cannot be found</exception>
-        public static void Build(StandardBootstrapper project, string path)
+        public static string Build(Bundle project, string path)
         {
             if (Compiler.ClientAssembly.IsEmpty())
                 Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -133,27 +133,14 @@ namespace WixSharp
                             IO.File.Delete(file);
                         }
                         catch { }
+
             }
             finally
             {
                 Environment.CurrentDirectory = oldCurrDir;
             }
-        }
 
-        /// <summary>
-        /// Builds the WiX source file and generates batch file capable of building
-        /// WiX/MSI bootstrapper with WiX toolset.
-        /// </summary>
-        /// <param name="project">The project.</param>
-        /// <returns></returns>
-        public static string BuildCmd(StandardBootstrapper project)
-        {
-            string cmdFile = IO.Path.GetFullPath(IO.Path.Combine(project.OutDir, "Build_" + project.OutFileName) + ".cmd");
-
-            if (IO.File.Exists(cmdFile))
-                IO.File.Delete(cmdFile);
-            BuildCmd(project, cmdFile);
-            return cmdFile;
+            return path;
         }
 
         /// <summary>
@@ -163,10 +150,13 @@ namespace WixSharp
         /// <param name="project">The project.</param>
         /// <param name="path">The path to the batch file to be created.</param>
         /// <exception cref="System.ApplicationException">Wix compiler/linker cannot be found</exception>
-        public static void BuildCmd(StandardBootstrapper project, string path)
+        public static string BuildCmd(Bundle project, string path = null)
         {
             if (Compiler.ClientAssembly.IsEmpty())
                 Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
+            if(path == null)
+                path = IO.Path.GetFullPath(IO.Path.Combine(project.OutDir, "Build_" + project.OutFileName) + ".cmd");
 
             //System.Diagnostics.Debug.Assert(false);
             string compiler = Utils.PathCombine(WixLocation, "candle.exe");
@@ -205,15 +195,17 @@ namespace WixSharp
                 using (var sw = new IO.StreamWriter(batchFile))
                     sw.Write(batchFileContent);
             }
+
+            return path;
         }
 
 
         /// <summary>
-        /// Builds the WiX source file (*.wxs) from the specified <see cref="StandardBootstrapper"/> instance.
+        /// Builds the WiX source file (*.wxs) from the specified <see cref="Bundle"/> instance.
         /// </summary>
         /// <param name="project">The project.</param>
         /// <returns></returns>
-        public static string BuildWxs(StandardBootstrapper project)
+        public static string BuildWxs(Bundle project)
         {
             lock (typeof(Compiler))
             {
@@ -277,11 +269,11 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Builds WiX Bootstrapper application from the specified <see cref="StandardBootstrapper"/> project instance.
+        /// Builds WiX Bootstrapper application from the specified <see cref="Bundle"/> project instance.
         /// </summary>
         /// <param name="project">The project.</param>
         /// <returns></returns>
-        public static string Build(StandardBootstrapper project)
+        public static string Build(Bundle project)
         {
             if (Compiler.ClientAssembly.IsEmpty())
                 Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;

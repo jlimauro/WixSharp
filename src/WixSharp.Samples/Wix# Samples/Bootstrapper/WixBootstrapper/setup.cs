@@ -29,7 +29,7 @@ public class InstallScript
         //---------------------------------------------------------
 
         var bootstrapper =
-                new StandardBootstrapper("My Product",
+                new Bundle("My Product",
                     new PackageGroupRef("NetFx40Web"),
                     new MsiPackage(crtMsi) { DisplayInternalUI = true },
                     new MsiPackage(productMsi) { DisplayInternalUI = true });
@@ -44,7 +44,7 @@ public class InstallScript
         //bootstrapper.Application.LicensePath = "http://opensource.org/licenses/MIT"; //HyperlinkLicense app with online license file
         //bootstrapper.Application.LicensePath = null; //HyperlinkLicense app with no license
 
-        Compiler.Build(bootstrapper);
+        bootstrapper.Build();
         //---------------------------------------------------------
 
         if(io.File.Exists(productMsi))

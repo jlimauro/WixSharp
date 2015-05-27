@@ -47,7 +47,7 @@ namespace WixSharp.Bootstrapper
     /// <example>The following is an example of defining a simple bootstrapper displaying the license as an 
     /// embedded HTML file.
     /// <code>
-    /// var bootstrapper = new StandardBootstrapper("My Product",
+    /// var bootstrapper = new Bundle("My Product",
     ///                         new PackageGroupRef("NetFx40Web"),
     ///                         new MsiPackage(productMsi) { DisplayInternalUI = true });
     ///                         
@@ -58,7 +58,7 @@ namespace WixSharp.Bootstrapper
     /// bootstrapper.Application.LogoFile = "logo.png";
     /// bootstrapper.Application.LicensePath = "licence.html"; 
     /// 
-    /// Compiler.Build(bootstrapper);
+    /// bootstrapper.Build();
     /// </code>
     /// </example>
     public class LicenseBootstrapperApplication : WixStandardBootstrapperApplication

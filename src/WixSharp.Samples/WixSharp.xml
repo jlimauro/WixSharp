@@ -495,7 +495,7 @@
             <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
             </summary>
         </member>
-        <member name="T:WixSharp.Bootstrapper.StandardBootstrapper">
+        <member name="T:WixSharp.Bootstrapper.Bundle">
             <summary>
             Class for defining a WiX standard Burn-based bootstrapper.
             </summary>
@@ -567,55 +567,55 @@
             it is saved by the compiler.
             </summary>
         </member>
-        <member name="M:WixSharp.Bootstrapper.StandardBootstrapper.#ctor">
+        <member name="M:WixSharp.Bootstrapper.Bundle.#ctor">
             <summary>
             Initializes a new instance of the <see cref="N:WixSharp.Bootstrapper"/> class.
             </summary>
         </member>
-        <member name="M:WixSharp.Bootstrapper.StandardBootstrapper.#ctor(System.String,WixSharp.Bootstrapper.ChainItem[])">
+        <member name="M:WixSharp.Bootstrapper.Bundle.#ctor(System.String,WixSharp.Bootstrapper.ChainItem[])">
             <summary>
             Initializes a new instance of the <see cref="N:WixSharp.Bootstrapper"/> class.
             </summary>
             <param name="name">The name of the project. Typically it is the name of the product to be installed.</param>
             <param name="items">The project installable items (e.g. directories, files, registry keys, Custom Actions).</param>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.DisableRollback">
+        <member name="F:WixSharp.Bootstrapper.Bundle.DisableRollback">
             <summary>
             The disable rollbackSpecifies whether the bundle will attempt to rollback packages executed in the chain.
             If "yes" is specified then when a vital package fails to install only that package will rollback and the chain will stop with the error.
             The default is "no" which indicates all packages executed during the chain will be rolldback to their previous state when a vital package fails.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.DisableSystemRestore">
+        <member name="F:WixSharp.Bootstrapper.Bundle.DisableSystemRestore">
             <summary>
             Specifies whether the bundle will attempt to create a system restore point when executing the chain. If "yes" is specified then a system restore point will not be created. The default is "no" which indicates a system restore point will be created when the bundle is installed, uninstalled, repaired, modified, etc. If the system restore point cannot be created, the bundle will log the issue and continue.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Copyright">
+        <member name="F:WixSharp.Bootstrapper.Bundle.Copyright">
             <summary>
             The legal copyright found in the version resources of final bundle executable.
             If this attribute is not provided the copyright will be set to "Copyright (c) [Bundle/@Manufacturer]. All rights reserved.".
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.AboutUrl">
+        <member name="F:WixSharp.Bootstrapper.Bundle.AboutUrl">
             <summary>
             A URL for more information about the bundle to display in Programs and Features (also known as Add/Remove Programs).
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Compressed">
+        <member name="F:WixSharp.Bootstrapper.Bundle.Compressed">
             <summary>
             Whether Packages and Payloads not assigned to a container should be added to the default attached container or if they
             should be external. The default is yes.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Condition">
+        <member name="F:WixSharp.Bootstrapper.Bundle.Condition">
             <summary>
             The condition of the bundle. If the condition is not met, the bundle will refuse to run. Conditions are checked before the
             bootstrapper application is loaded (before detect), and thus can only reference built-in variables such as variables which
             indicate the version of the OS.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.DisableRemove">
+        <member name="F:WixSharp.Bootstrapper.Bundle.DisableRemove">
             <summary>
             Determines whether the bundle can be removed via the Programs and Features (also known as Add/Remove Programs). If the value is
             "yes" then the "Uninstall" button will not be displayed. The default is "no" which ensures there is an "Uninstall" button to remove
@@ -623,7 +623,7 @@
             Features and another mechanism (such as registering as a related bundle addon) must be used to ensure the bundle can be removed.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.DisableModify">
+        <member name="F:WixSharp.Bootstrapper.Bundle.DisableModify">
             <summary>
             Determines whether the bundle can be modified via the Programs and Features (also known as Add/Remove Programs). If the value is
             "button" then Programs and Features will show a single "Uninstall/Change" button. If the value is "yes" then Programs and Features
@@ -631,72 +631,87 @@
             attribute for information how to not display the bundle in Programs and Features.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.HelpTelephone">
+        <member name="F:WixSharp.Bootstrapper.Bundle.HelpTelephone">
             <summary>
             A telephone number for help to display in Programs and Features (also known as Add/Remove Programs).
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.HelpUrl">
+        <member name="F:WixSharp.Bootstrapper.Bundle.HelpUrl">
             <summary>
             A URL to the help for the bundle to display in Programs and Features (also known as Add/Remove Programs).
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.IconFile">
+        <member name="F:WixSharp.Bootstrapper.Bundle.IconFile">
             <summary>
             Path to an icon that will replace the default icon in the final Bundle executable. This icon will also be displayed in Programs and Features (also known as Add/Remove Programs).
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Manufacturer">
+        <member name="F:WixSharp.Bootstrapper.Bundle.Manufacturer">
             <summary>
             The publisher of the bundle to display in Programs and Features (also known as Add/Remove Programs).
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.ParentName">
+        <member name="F:WixSharp.Bootstrapper.Bundle.ParentName">
             <summary>
             The name of the parent bundle to display in Installed Updates (also known as Add/Remove Programs). This name is used to nest or group bundles that will appear as updates. If the
             parent name does not actually exist, a virtual parent is created automatically.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.SplashScreenSource">
+        <member name="F:WixSharp.Bootstrapper.Bundle.SplashScreenSource">
             <summary>
             Path to a bitmap that will be shown as the bootstrapper application is being loaded. If this attribute is not specified, no splash screen will be displayed.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Tag">
+        <member name="F:WixSharp.Bootstrapper.Bundle.Tag">
             <summary>
             Set this string to uniquely identify this bundle to its own BA, and to related bundles. The value of this string only matters to the BA, and its value has no direct
             effect on engine functionality.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.UpdateUrl">
+        <member name="F:WixSharp.Bootstrapper.Bundle.UpdateUrl">
             <summary>
             A URL for updates of the bundle to display in Programs and Features (also known as Add/Remove Programs).
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.UpgradeCode">
+        <member name="F:WixSharp.Bootstrapper.Bundle.UpgradeCode">
             <summary>
             Unique identifier for a family of bundles. If two bundles have the same UpgradeCode the bundle with the highest version will be installed.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Version">
+        <member name="F:WixSharp.Bootstrapper.Bundle.Version">
             <summary>
             The version of the bundle. Newer versions upgrade earlier versions of the bundles with matching UpgradeCodes. If the bundle is registered in Programs and Features then this attribute will be displayed in the Programs and Features user interface.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Chain">
+        <member name="F:WixSharp.Bootstrapper.Bundle.Chain">
             <summary>
             The sequence of the packages to be installed
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.StandardBootstrapper.Application">
+        <member name="F:WixSharp.Bootstrapper.Bundle.Application">
             <summary>
             The instance of the Bootstrapper application class application. By default it is a LicenseBootstrapperApplication object.
             </summary>
         </member>
-        <member name="M:WixSharp.Bootstrapper.StandardBootstrapper.ToXml">
+        <member name="M:WixSharp.Bootstrapper.Bundle.ToXml">
             <summary>
             Emits WiX XML.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Bootstrapper.Bundle.Build(System.String)">
+            <summary>
+            Builds WiX Bootstrapper application from the specified <see cref="T:WixSharp.Bootstrapper.Bundle"/> project instance.
+            </summary>
+            <param name="path">The path to the bootstrapper to be build.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Bootstrapper.Bundle.BuildCmd(System.String)">
+            <summary>
+            Builds the WiX source file and generates batch file capable of building
+            WiX/MSI bootstrapper with WiX toolset.
+            </summary>
+            <param name="path">The path to the batch file to be created.</param>
             <returns></returns>
         </member>
         <member name="T:WixSharp.Bootstrapper.WixStandardBootstrapperApplication">
@@ -740,7 +755,7 @@
             <example>The following is an example of defining a simple bootstrapper displaying the license as an 
             embedded HTML file.
             <code>
-            var bootstrapper = new StandardBootstrapper("My Product",
+            var bootstrapper = new Bundle("My Product",
                                     new PackageGroupRef("NetFx40Web"),
                                     new MsiPackage(productMsi) { DisplayInternalUI = true });
                                     
@@ -751,7 +766,7 @@
             bootstrapper.Application.LogoFile = "logo.png";
             bootstrapper.Application.LicensePath = "licence.html"; 
             
-            Compiler.Build(bootstrapper);
+            bootstrapper.Build();
             </code>
             </example>
         </member>
@@ -1261,49 +1276,6 @@
             </code>
             </example>
         </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.BuildMsi(WixSharp.Project,System.String)">
-            <summary>
-            Builds the MSI file from the specified <see cref="T:WixSharp.Project"/> instance.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <param name="path">The path to the MSI file to be build.</param>
-            <returns>Path to the built MSI file.</returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.BuildMsiCmd(WixSharp.Project,System.String)">
-            <summary>
-            Builds the WiX source file and generates batch file capable of building
-            MSI with WiX toolset.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <param name="path">The path to the batch file to be build.</param>
-            <returns>Path to the batch file.</returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.BuildWxs(WixSharp.Project,WixSharp.Compiler.OutputType,System.String)">
-            <summary>
-            Builds the WiX source file (*.wxs) from the specified <see cref="T:WixSharp.Project"/> instance.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <param name="path">The path to the WXS file to be build.</param>
-            <param name="type">The type (<see cref="T:WixSharp.Compiler.OutputType"/>) of the setup file to be defined in the source file (MSI vs. MSM).</param>
-            <returns>Path to the built WXS file.</returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.BuildMsm(WixSharp.Project,System.String)">
-            <summary>
-            Builds the MSM file from the specified <see cref="T:WixSharp.Project"/> instance.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <param name="path">The path to the MSM file to be build.</param>
-            <returns>Path to the built MSM file.</returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.BuildMsmCmd(WixSharp.Project,System.String)">
-            <summary>
-            Builds the WiX source file and generates batch file capable of building
-            MSM with WiX toolset.
-            </summary>
-            <param name="project">The <see cref="T:WixSharp.Project"/> instance.</param>
-            <param name="path">The path to the batch file to be build.</param>
-            <returns>Path to the batch file.</returns>
-        </member>
         <member name="M:WixSharp.CommonTasks.Tasks.InjectClrDialog(WixSharp.Project,System.String,System.String,System.String)">
              <summary>
              Injects CLR dialog between MSI dialogs 'prevDialog' and 'nextDialog'.
@@ -1508,23 +1480,15 @@
             
              </example>
         </member>
-        <member name="M:WixSharp.Compiler.Build(WixSharp.Bootstrapper.StandardBootstrapper,System.String)">
+        <member name="M:WixSharp.Compiler.Build(WixSharp.Bootstrapper.Bundle,System.String)">
             <summary>
-            Builds WiX Bootstrapper application from the specified <see cref="T:WixSharp.Bootstrapper.StandardBootstrapper"/> project instance.
+            Builds WiX Bootstrapper application from the specified <see cref="T:WixSharp.Bootstrapper.Bundle"/> project instance.
             </summary>
             <param name="project">The project.</param>
             <param name="path">The path.</param>
             <exception cref="T:System.ApplicationException">Wix compiler/linker cannot be found</exception>
         </member>
-        <member name="M:WixSharp.Compiler.BuildCmd(WixSharp.Bootstrapper.StandardBootstrapper)">
-            <summary>
-            Builds the WiX source file and generates batch file capable of building
-            WiX/MSI bootstrapper with WiX toolset.
-            </summary>
-            <param name="project">The project.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Compiler.BuildCmd(WixSharp.Bootstrapper.StandardBootstrapper,System.String)">
+        <member name="M:WixSharp.Compiler.BuildCmd(WixSharp.Bootstrapper.Bundle,System.String)">
             <summary>
             Builds the WiX source file and generates batch file capable of building
             WiX/MSI bootstrapper with WiX toolset.
@@ -1533,16 +1497,16 @@
             <param name="path">The path to the batch file to be created.</param>
             <exception cref="T:System.ApplicationException">Wix compiler/linker cannot be found</exception>
         </member>
-        <member name="M:WixSharp.Compiler.BuildWxs(WixSharp.Bootstrapper.StandardBootstrapper)">
+        <member name="M:WixSharp.Compiler.BuildWxs(WixSharp.Bootstrapper.Bundle)">
             <summary>
-            Builds the WiX source file (*.wxs) from the specified <see cref="T:WixSharp.Bootstrapper.StandardBootstrapper"/> instance.
+            Builds the WiX source file (*.wxs) from the specified <see cref="T:WixSharp.Bootstrapper.Bundle"/> instance.
             </summary>
             <param name="project">The project.</param>
             <returns></returns>
         </member>
-        <member name="M:WixSharp.Compiler.Build(WixSharp.Bootstrapper.StandardBootstrapper)">
+        <member name="M:WixSharp.Compiler.Build(WixSharp.Bootstrapper.Bundle)">
             <summary>
-            Builds WiX Bootstrapper application from the specified <see cref="T:WixSharp.Bootstrapper.StandardBootstrapper"/> project instance.
+            Builds WiX Bootstrapper application from the specified <see cref="T:WixSharp.Bootstrapper.Bundle"/> project instance.
             </summary>
             <param name="project">The project.</param>
             <returns></returns>
@@ -4935,6 +4899,44 @@
             <summary>
             Name (path) of the directory which was assigned <see cref="T:WixSharp.Compiler.AutoGeneration.InstallDirDefaultId"/> ID as part of XML auto-generation (see <see cref="T:WixSharp.AutoGenerationOptions"/>).
             </summary>
+        </member>
+        <member name="M:WixSharp.Project.BuildMsi(System.String)">
+            <summary>
+            Builds the MSI file from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="path">The path to the MSI file to be build.</param>
+            <returns>Path to the built MSI file.</returns>
+        </member>
+        <member name="M:WixSharp.Project.BuildMsiCmd(System.String)">
+            <summary>
+            Builds the WiX source file and generates batch file capable of building
+            MSI with WiX toolset.
+            </summary>
+            <param name="path">The path to the batch file to be build.</param>
+            <returns>Path to the batch file.</returns>
+        </member>
+        <member name="M:WixSharp.Project.BuildWxs(WixSharp.Compiler.OutputType,System.String)">
+            <summary>
+            Builds the WiX source file (*.wxs) from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="path">The path to the WXS file to be build.</param>
+            <param name="type">The type (<see cref="T:WixSharp.Compiler.OutputType"/>) of the setup file to be defined in the source file (MSI vs. MSM).</param>
+            <returns>Path to the built WXS file.</returns>
+        </member>
+        <member name="M:WixSharp.Project.BuildMsm(System.String)">
+            <summary>
+            Builds the MSM file from the specified <see cref="T:WixSharp.Project"/> instance.
+            </summary>
+            <param name="path">The path to the MSM file to be build.</param>
+            <returns>Path to the built MSM file.</returns>
+        </member>
+        <member name="M:WixSharp.Project.BuildMsmCmd(System.String)">
+            <summary>
+            Builds the WiX source file and generates batch file capable of building
+            MSM with WiX toolset.
+            </summary>
+            <param name="path">The path to the batch file to be build.</param>
+            <returns>Path to the batch file.</returns>
         </member>
         <member name="P:WixSharp.Project.MSIFileName">
             <summary>

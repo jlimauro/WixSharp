@@ -1,5 +1,6 @@
 ﻿using Microsoft.Deployment.WindowsInstaller;
 using System.Diagnostics;
+using sys=System.Reflection;
 using WixSharp;
 using WixSharp.CommonTasks;
 
@@ -12,7 +13,7 @@ public class Script
                  new Dir(@"%ProgramFiles%\My Company\My Product",
                      new File("readme.txt")));
 
-        project.EmbeddedUI = new EmbeddedAssembly(System.Reflection.Assembly.GetExecutingAssembly().Location);
+        project.EmbeddedUI = new EmbeddedAssembly(sys.Assembly.GetExecutingAssembly().Location);
 
         project.PreserveTempFiles = true;
         project.BuildMsi();

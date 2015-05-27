@@ -655,35 +655,6 @@ namespace WixSharp
                 return e.Current.FindDirectory(path.Substring(parts[0].Length + 1)); //be careful RECURSION
         }
 
-        //not sure if required as it is not working correctly right now selects only top line branches
-        ///// <summary>
-        ///// Selects from the given element all child elements matching the specified path (e.g. <c>Select("Product/Package")</c>).
-        ///// </summary>
-        ///// <param name="element">The element to be searched.</param>
-        ///// <param name="path">The path.</param>
-        ///// <returns>The element matching the path.</returns>
-        //private static XElement[] SelectAll(this XElement element, string path)
-        //{
-        //    string[] parts = path.Split('/');
-
-        //    var query = (from el in element.Elements()
-        //                 where el.Name.LocalName == parts[0]
-        //                 select el);
-
-        //    var e = query.GetEnumerator();
-
-        //    if (!e.MoveNext())
-        //        return new XElement[0];
-
-        //    if (parts.Length == 1) //the last link in the chain
-        //    {
-        //        return query.ToArray();
-        //    }
-        //    else
-        //        return e.Current.SelectAll(path.Substring(parts[0].Length + 1)); //be careful RECURSION
-        //}
-
-
         /// <summary>
         /// Flattened "view" of all elements with a given name (LocalName).
         /// </summary>

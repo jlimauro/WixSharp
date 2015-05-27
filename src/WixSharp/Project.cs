@@ -707,5 +707,88 @@ namespace WixSharp
         /// Name (path) of the directory which was assigned <see cref="T:WixSharp.Compiler.AutoGeneration.InstallDirDefaultId"/> ID as part of XML auto-generation (see <see cref="T:WixSharp.AutoGenerationOptions"/>).
         /// </summary>
         public string AutoAssignedInstallDirPath = "";
+
+        /// <summary>
+        /// Builds the MSI file from the specified <see cref="Project"/> instance.
+        /// </summary>
+        /// <param name="path">The path to the MSI file to be build.</param>
+        /// <returns>Path to the built MSI file.</returns>
+        public string BuildMsi(string path = null)
+        {
+            if (Compiler.ClientAssembly.IsEmpty())
+                Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
+            if (path == null)
+                return Compiler.BuildMsi(this);
+            else
+                return Compiler.BuildMsi(this, path);
+        }
+
+        /// <summary>
+        /// Builds the WiX source file and generates batch file capable of building
+        /// MSI with WiX toolset.
+        /// </summary>
+        /// <param name="path">The path to the batch file to be build.</param>
+        /// <returns>Path to the batch file.</returns>
+        public string BuildMsiCmd(string path = null)
+        {
+            if (Compiler.ClientAssembly.IsEmpty())
+                Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
+            if (path == null)
+                return Compiler.BuildMsiCmd(this);
+            else
+                return Compiler.BuildMsiCmd(this, path);
+        }
+
+        /// <summary>
+        /// Builds the WiX source file (*.wxs) from the specified <see cref="Project"/> instance.
+        /// </summary>
+        /// <param name="path">The path to the WXS file to be build.</param>
+        /// <param name="type">The type (<see cref="Compiler.OutputType"/>) of the setup file to be defined in the source file (MSI vs. MSM).</param>
+        /// <returns>Path to the built WXS file.</returns>
+        public string BuildWxs(Compiler.OutputType type = Compiler.OutputType.MSI, string path = null)
+        {
+            if (Compiler.ClientAssembly.IsEmpty())
+                Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
+            if (path == null)
+                return Compiler.BuildWxs(this, type);
+            else
+                return Compiler.BuildWxs(this, path, type);
+        }
+
+        /// <summary>
+        /// Builds the MSM file from the specified <see cref="Project"/> instance.
+        /// </summary>
+        /// <param name="path">The path to the MSM file to be build.</param>
+        /// <returns>Path to the built MSM file.</returns>
+        public string BuildMsm(string path = null)
+        {
+            if (Compiler.ClientAssembly.IsEmpty())
+                Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
+            if (path == null)
+                return Compiler.BuildMsm(this);
+            else
+                return Compiler.BuildMsm(this, path);
+        }
+
+        /// <summary>
+        /// Builds the WiX source file and generates batch file capable of building
+        /// MSM with WiX toolset.
+        /// </summary>
+        /// <param name="path">The path to the batch file to be build.</param>
+        /// <returns>Path to the batch file.</returns>
+        public string BuildMsmCmd(string path = null)
+        {
+            if (Compiler.ClientAssembly.IsEmpty())
+                Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
+            if (path == null)
+                return Compiler.BuildMsmCmd(this);
+            else
+                return Compiler.BuildMsmCmd(this, path);
+        }
     }
 }
