@@ -1364,6 +1364,26 @@ namespace WixSharp
 
                 //insert file related IIS virtual directories
                 InsertIISElements(dirItem, comp, wFile.IISVirtualDirs, wProject);
+
+                //insert file owned permissions
+                if (wFile.Permissions.Any())
+                {
+                    const string utilExtension = "WixUtilExtension.dll";
+                    const string utilNS = "http://schemas.microsoft.com/wix/UtilExtension";
+                    const string utilDeclaration = "xmlns:util=\"" + utilNS + "\"";                    
+
+                    if (!wProject.WixExtensions.Contains(utilExtension)) wProject.WixExtensions.Add(utilExtension);
+                    if (!wProject.WixNamespaces.Contains(utilDeclaration)) wProject.WixNamespaces.Add(utilDeclaration);
+
+                    XNamespace utilNamespace = utilNS;
+
+                    foreach (var permission in wFile.Permissions)
+                    {
+                        var element = new XElement(utilNamespace + "PermissionEx");
+                        permission.EmitAttributes(element);
+                        file.Add(element);
+                    }
+                }
             }
 
             //insert directory owned shortcuts
