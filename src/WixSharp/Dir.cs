@@ -30,6 +30,7 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using IO = System.IO;
 
 namespace WixSharp
@@ -239,6 +240,11 @@ namespace WixSharp
         public ExeFileShortcut[] Shortcuts = new ExeFileShortcut[0];
 
         /// <summary>
+        /// Collection of directory permissions to be applied to this directory.
+        /// </summary>
+        public DirPermission[] Permissions = new DirPermission[0];
+
+        /// <summary>
         /// <see cref="Feature"></see> the directory is included in.
         /// </summary>
         public Feature Feature;
@@ -307,6 +313,7 @@ namespace WixSharp
             var dirItemsCollections = new List<Files>();
             var shortcuts = new List<ExeFileShortcut>();
             var mergeModules = new List<Merge>();
+            var dirPermissions = new List<DirPermission>();
 
             foreach (WixEntity item in items)
                 if (item is Dir)
@@ -321,6 +328,8 @@ namespace WixSharp
                     shortcuts.Add(item as ExeFileShortcut);
                 else if (item is Merge)
                     mergeModules.Add(item as Merge);
+                else if (item is DirPermission)
+                    dirPermissions.Add(item as DirPermission);
                 else
                     throw new Exception(item.GetType().Name + " is not expected to be a child of WixSharp.Dir");
 
@@ -330,6 +339,275 @@ namespace WixSharp
             FileCollections = dirItemsCollections.ToArray();
             Shortcuts = shortcuts.ToArray();
             MergeModules = mergeModules.ToArray();
+            Permissions = dirPermissions.ToArray();
         }
     }
+
+    /// <summary>
+    /// Represents applying permission(s) to the containing File entity
+    /// </summary>
+    public class DirPermission : WixEntity
+    {
+
+        /// <summary>
+        /// Creates a FilePermission instance for <paramref name="user"/>
+        /// </summary>
+        /// <param name="user"></param>
+        public DirPermission(string user)
+        {
+            if (string.IsNullOrEmpty(user))
+                throw new ArgumentNullException("user", "User is a required value for Permission");
+            User = user;
+        }
+
+        /// <summary>
+        /// Creates a FilePermission instance for <paramref name="user"/>@<paramref name="domain"/>
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="domain"></param>
+        public DirPermission(string user, string domain)
+        {
+            if (string.IsNullOrEmpty(user))
+                throw new ArgumentNullException("user", "User is a required value for Permission");
+
+            User = user;
+            Domain = domain;
+        }
+
+        /// <summary>
+        /// Creates a FilePermission instance for <paramref name="user"/> with generic permissions described by <paramref name="permission"/>
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="permission"></param>
+        public DirPermission(string user, GenericPermission permission)
+        {
+            if (string.IsNullOrEmpty(user))
+                throw new ArgumentNullException("user", "User is a required value for Permission");
+
+            User = user;
+
+            SetGenericPermission(permission);
+        }
+
+        /// <summary>
+        /// Creates a FilePermission instance for <paramref name="user"/>@<paramref name="domain"/> with generic permissions described by <paramref name="permission"/>
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="domain"></param>
+        /// <param name="permission"></param>
+        public DirPermission(string user, string domain, GenericPermission permission)
+        {
+            if (string.IsNullOrEmpty(user))
+                throw new ArgumentNullException("user", "User is a required value for Permission");
+
+            User = user;
+            Domain = domain;
+
+            SetGenericPermission(permission);
+        }
+
+        private void SetGenericPermission(GenericPermission permission)
+        {
+            if (permission == GenericPermission.All)
+            {
+                GenericAll = true;
+                return;
+            }
+
+            if ((permission & GenericPermission.Execute) == GenericPermission.Execute)
+                GenericExecute = true;
+
+            if ((permission & GenericPermission.Write) == GenericPermission.Write)
+                GenericWrite = true;
+
+            if ((permission & GenericPermission.Read) == GenericPermission.Read)
+                GenericRead = true;
+        }
+
+        /// <summary>
+        /// Maps to the User property of PermissionEx
+        /// </summary>
+        public string User { get; set; }
+        /// <summary>
+        /// Maps to the Domain property of PermissionEx
+        /// </summary>
+        public string Domain { get; set; }
+
+        /// <summary>
+        /// Maps to the Append property of PermissionEx
+        /// </summary>
+        public bool? Append { get; set; }
+
+        /// <summary>
+        /// Maps to the ChangePermission property of PermissionEx
+        /// </summary>
+        public bool? ChangePermission { get; set; }
+
+        /// <summary>
+        /// Maps to the CreateChild property of PermissionEx
+        /// </summary>
+        public bool? CreateChild { get; set; }
+        
+        /// <summary>
+        /// Maps to the CreateFile property of PermissionEx
+        /// </summary>
+        public bool? CreateFile { get; set; }
+
+        /// <summary>
+        /// Maps to the CreateLink property of PermissionEx
+        /// </summary>
+        public bool? CreateLink { get; set; }
+
+        /// <summary>
+        /// Maps to the CreateSubkeys property of PermissionEx
+        /// </summary>
+        public bool? CreateSubkeys { get; set; }
+
+        /// <summary>
+        /// Maps to the Delete property of PermissionEx
+        /// </summary>
+        public bool? Delete { get; set; }
+
+        /// <summary>
+        /// Maps to the DeleteChild property of PermissionEx
+        /// </summary>
+        public bool? DeleteChild { get; set; }
+
+        /// <summary>
+        /// Maps to the EnumerateSubkeys property of PermissionEx
+        /// </summary>
+        public bool? EnumerateSubkeys { get; set; }
+
+        /// <summary>
+        /// Maps to the Execute property of PermissionEx
+        /// </summary>
+        public bool? Execute { get; set; }
+
+        /// <summary>
+        /// Maps to the GenericAll property of PermissionEx
+        /// </summary>
+        public bool? GenericAll { get; set; }
+
+        /// <summary>
+        /// Maps to the GenericExecute property of PermissionEx
+        /// </summary>
+        public bool? GenericExecute { get; set; }
+
+        /// <summary>
+        /// Maps to the GenericRead property of PermissionEx
+        /// </summary>
+        public bool? GenericRead { get; set; }
+
+        /// <summary>
+        /// Maps to the GenericWrite property of PermissionEx
+        /// </summary>
+        public bool? GenericWrite { get; set; }
+
+        /// <summary>
+        /// Maps to the Notify property of PermissionEx
+        /// </summary>
+        public bool? Notify { get; set; }
+
+        /// <summary>
+        /// Maps to the Read property of PermissionEx
+        /// </summary>
+        public bool? Read { get; set; }
+
+        /// <summary>
+        /// Maps to the Readattributes property of PermissionEx
+        /// </summary>
+        public bool? Readattributes { get; set; }
+
+        /// <summary>
+        /// Maps to the ReadExtendedAttributes property of PermissionEx
+        /// </summary>
+        public bool? ReadExtendedAttributes { get; set; }
+
+        /// <summary>
+        /// Maps to the ReadPermission property of PermissionEx
+        /// </summary>
+        public bool? ReadPermission { get; set; }
+
+        /// <summary>
+        /// Maps to the Synchronize property of PermissionEx
+        /// </summary>
+        public bool? Synchronize { get; set; }
+
+        /// <summary>
+        /// Maps to the TakeOwnership property of PermissionEx
+        /// </summary>
+        public bool? TakeOwnership { get; set; }
+
+        /// <summary>
+        /// Maps to the Traverse property of PermissionEx
+        /// </summary>
+        public bool? Traverse { get; set; }
+
+        /// <summary>
+        /// Maps to the Write property of PermissionEx
+        /// </summary>
+        public bool? Write { get; set; }
+
+        /// <summary>
+        /// Maps to the WriteAttributes property of PermissionEx
+        /// </summary>
+        public bool? WriteAttributes { get; set; }
+
+        /// <summary>
+        /// Maps to the WriteExtendedAttributes property of PermissionEx
+        /// </summary>
+        public bool? WriteExtendedAttributes { get; set; }
+
+        /// <summary>
+        /// <see cref="Feature"></see> the Permission is included in.
+        /// </summary>
+        public Feature Feature;
+
+    }
+
+    internal static class DirPermissionExt
+    {
+
+        static void Do<T>(this T? nullable, Action<T> action) where T : struct
+        {
+            if (!nullable.HasValue) return;
+            action(nullable.Value);
+        }
+
+        public static void EmitAttributes(this DirPermission dirPermission, XElement permissionElement)
+        {
+            //required
+            permissionElement.SetAttributeValue("User", dirPermission.User);
+            //optional
+            if (dirPermission.Domain.IsNotEmpty()) permissionElement.SetAttributeValue("Domain", dirPermission.Domain);
+
+            //optional
+            dirPermission.Append.Do(b => permissionElement.SetAttributeValue("Append", b.ToYesNo()));
+            dirPermission.ChangePermission.Do(b => permissionElement.SetAttributeValue("ChangePermission", b.ToYesNo()));
+            dirPermission.CreateLink.Do(b => permissionElement.SetAttributeValue("CreateLink", b.ToYesNo()));
+            dirPermission.CreateChild.Do(b => permissionElement.SetAttribute("CreateChild", b.ToYesNo()));
+            dirPermission.CreateFile.Do(b => permissionElement.SetAttribute("CreateFile", b.ToYesNo()));
+            dirPermission.CreateSubkeys.Do(b => permissionElement.SetAttributeValue("CreateSubkeys", b.ToYesNo()));
+            dirPermission.Delete.Do(b => permissionElement.SetAttributeValue("Delete", b.ToYesNo()));
+            dirPermission.DeleteChild.Do(b => permissionElement.SetAttribute("DeleteChild", b.ToYesNo()));
+            dirPermission.EnumerateSubkeys.Do(b => permissionElement.SetAttributeValue("EnumerateSubkeys", b.ToYesNo()));
+            dirPermission.Execute.Do(b => permissionElement.SetAttributeValue("Execute", b.ToYesNo()));
+            dirPermission.GenericAll.Do(b => permissionElement.SetAttributeValue("GenericAll", b.ToYesNo()));
+            dirPermission.GenericExecute.Do(b => permissionElement.SetAttributeValue("GenericExecute", b.ToYesNo()));
+            dirPermission.GenericRead.Do(b => permissionElement.SetAttributeValue("GenericRead", b.ToYesNo()));
+            dirPermission.GenericWrite.Do(b => permissionElement.SetAttributeValue("GenericWrite", b.ToYesNo()));
+            dirPermission.Notify.Do(b => permissionElement.SetAttributeValue("Notify", b.ToYesNo()));
+            dirPermission.Read.Do(b => permissionElement.SetAttributeValue("Read", b.ToYesNo()));
+            dirPermission.Readattributes.Do(b => permissionElement.SetAttributeValue("Readattributes", b.ToYesNo()));
+            dirPermission.ReadExtendedAttributes.Do(b => permissionElement.SetAttributeValue("ReadExtendedAttributes", b.ToYesNo()));
+            dirPermission.ReadPermission.Do(b => permissionElement.SetAttributeValue("ReadPermission", b.ToYesNo()));
+            dirPermission.Synchronize.Do(b => permissionElement.SetAttributeValue("Synchronize", b.ToYesNo()));
+            dirPermission.TakeOwnership.Do(b => permissionElement.SetAttributeValue("TakeOwnership", b.ToYesNo()));
+            dirPermission.Traverse.Do(b => permissionElement.SetAttribute("Traverse", b.ToYesNo()));
+            dirPermission.Write.Do(b => permissionElement.SetAttributeValue("Write", b.ToYesNo()));
+            dirPermission.WriteAttributes.Do(b => permissionElement.SetAttributeValue("WriteAttributes", b.ToYesNo()));
+            dirPermission.WriteExtendedAttributes.Do(b => permissionElement.SetAttributeValue("WriteExtendedAttributes", b.ToYesNo()));
+        }
+    }
+
 }
