@@ -184,6 +184,7 @@ namespace WixSharp.Bootstrapper
             root.AddAttributes(this.Attributes);
             root.Add(this.MapToXmlAttributes());
 
+            Application.AutoGenerateSources(this.OutDir);
 
             root.Add(Application.ToXml());
 

@@ -426,6 +426,9 @@ namespace WixSharp
             normalize(doc.Root.FindAll("Merge"), "SourceFile");
             normalize(doc.Root.FindAll("Binary"), "SourceFile");
             normalize(doc.Root.FindAll("EmbeddedUI"), "SourceFile");
+            normalize(doc.Root.FindAll("Payload"), "SourceFile");
+            normalize(doc.Root.FindAll("MsiPackage"), "SourceFile");
+            normalize(doc.Root.FindAll("ExePackage"), "SourceFile");
         }
     }
 }

@@ -46,7 +46,7 @@ using IO = System.IO;
 
 namespace WixSharp
 {
-    
+
     /// <summary>
     /// This class holds the settings for Wix# XML auto-generation: generation of WiX XML elements, which do not have direct
     /// representation in the Wix# script. The detailed information about Wix# auto-generation can be found here: http://www.csscript.net/WixSharp/ID_Allocation.html.
@@ -326,7 +326,7 @@ namespace WixSharp
             set { WixGuid.Generator = value; }
         }
 
-        static List<string> tempFiles = new List<string>();
+        internal static List<string> TempFiles = new List<string>();
 
         /// <summary>
         /// Builds the MSI file from the specified <see cref="Project"/> instance.
@@ -414,7 +414,7 @@ namespace WixSharp
             BuildCmd(project, path, OutputType.MSI);
             return path;
         }
-       
+
 
         /// <summary>
         /// Builds the WiX source file and generates batch file capable of building
@@ -563,7 +563,7 @@ namespace WixSharp
             try
             {
                 //System.Diagnostics.Debug.Assert(false);
-                tempFiles.Clear();
+                Compiler.TempFiles.Clear();
                 string compiler = Utils.PathCombine(WixLocation, @"candle.exe");
                 string linker = Utils.PathCombine(WixLocation, @"light.exe");
 
@@ -608,7 +608,7 @@ namespace WixSharp
 
                         if (IO.File.Exists(msiFile))
                         {
-                            tempFiles.Add(wxsFile);
+                            Compiler.TempFiles.Add(wxsFile);
 
                             Console.WriteLine("\n----------------------------------------------------------\n");
                             Console.WriteLine(type + " file has been built: " + path + "\n");
@@ -640,10 +640,11 @@ namespace WixSharp
                 }
 
                 if (!PreserveTempFiles && !project.PreserveTempFiles)
-                    foreach (var file in tempFiles)
+                    foreach (var file in Compiler.TempFiles)
                         try
                         {
-                            IO.File.Delete(file);
+                            if (IO.File.Exists(file))
+                                IO.File.Delete(file);
                         }
                         catch { }
             }
@@ -1007,13 +1008,13 @@ namespace WixSharp
 
                     bynaryPath = asmBin.Name.PathChangeDirectory(project.OutDir)
                                             .PathChangeExtension(".CA.dll");
-                    
+
                     var refAsms = asmBin.RefAssemblies.Add(typeof(Session).Assembly.Location)
                                                       .Concat(project.DefaultRefAssemblies)
                                                       .Distinct()
                                                       .ToArray();
 
-                    PackageManagedAsm(asmBin.Name, bynaryPath, refAsms, project.OutDir);
+                    PackageManagedAsm(asmBin.Name, bynaryPath, refAsms, project.OutDir, project.CustomActionConfig);
                 }
 
                 product.AddElement("UI")
@@ -1120,8 +1121,11 @@ namespace WixSharp
                     {
                         wChild.Parent = wFeature;
                         XElement xFeature = feature2XML[wFeature];
-                        XElement xChild = feature2XML[wChild];
-                        xFeature.Add(xChild);
+                        if (feature2XML.ContainsKey(wChild))
+                        {
+                            XElement xChild = feature2XML[wChild];
+                            xFeature.Add(xChild);
+                        }
                     }
                 }
             }
@@ -1495,7 +1499,7 @@ namespace WixSharp
             {
                 //WIX/MSI does not like no-directory deployments thus create fake one
                 string dummyDir = @"%ProgramFiles%\WixSharp\DummyDir";
-                if(wProject.Platform == Platform.x64)
+                if (wProject.Platform == Platform.x64)
                     dummyDir = dummyDir.Map64Dirs();
 
                 wProject.Dirs = new[] { new Dir(dummyDir) };
@@ -1869,7 +1873,7 @@ namespace WixSharp
                     bynaryPath = asmBin.Name.PathChangeDirectory(wProject.OutDir)
                                             .PathChangeExtension(".CA.dll");
 
-                    PackageManagedAsm(asmBin.Name, bynaryPath, asmBin.RefAssemblies.Concat(wProject.DefaultRefAssemblies).Distinct().ToArray(), wProject.OutDir);
+                    PackageManagedAsm(asmBin.Name, bynaryPath, asmBin.RefAssemblies.Concat(wProject.DefaultRefAssemblies).Distinct().ToArray(), wProject.OutDir, wProject.CustomActionConfig);
                 }
 
                 product.Add(new XElement("Binary",
@@ -1989,10 +1993,11 @@ namespace WixSharp
                     if (existingBinary == null)
                     {
                         PackageManagedAsm(
-                            asmFile, 
-                            packageFile, 
-                            wManagedAction.RefAssemblies.Concat(wProject.DefaultRefAssemblies).Distinct().ToArray(), 
+                            asmFile,
+                            packageFile,
+                            wManagedAction.RefAssemblies.Concat(wProject.DefaultRefAssemblies).Distinct().ToArray(),
                             wProject.OutDir,
+                            wProject.CustomActionConfig,
                             wProject.Platform);
 
                         bynaryKey = wAction.Name.Expand() + "_File";
@@ -2167,45 +2172,44 @@ namespace WixSharp
         /// </summary>
         static public bool IgnoreClientAssemblyPDB = false;
 
-        static void PackageManagedAsm(string asm, string nativeDll, string[] refAssemblies, string outDir, Platform? platorm = null)
+        internal static string ResolveClientAsm(string asmName, string outDir)
+        {
+            //restore the original assembly name as MakeSfxCA does not like renamed assemblies
+            string newName = Utils.OriginalAssemblyFile(ClientAssembly);
+            newName = newName.PathChangeDirectory(outDir);
+
+            if (!ClientAssembly.SamePathAs(newName))
+            {
+                IO.File.Copy(ClientAssembly, newName, true);
+                Compiler.TempFiles.Add(newName);
+
+                var clientPdb = IO.Path.ChangeExtension(ClientAssembly, ".pdb");
+
+                if (IO.File.Exists(clientPdb))
+                {
+                    IO.File.Copy(clientPdb, IO.Path.ChangeExtension(newName, ".pdb"), true);
+                    Compiler.TempFiles.Add(IO.Path.ChangeExtension(newName, ".pdb"));
+                }
+            }
+            return newName;
+        }
+
+        static void PackageManagedAsm(string asm, string nativeDll, string[] refAssemblies, string outDir, string configFilePath, Platform? platform = null)
         {
             string platformDir = "x86";
-            if (platorm.HasValue && platorm.Value == Platform.x64)
+            if (platform.HasValue && platform.Value == Platform.x64)
                 platformDir = "x64";
 
             var makeSfxCA = Utils.PathCombine(WixSdkLocation, @"MakeSfxCA.exe");
-            var sfxcaDll = Utils.PathCombine(WixSdkLocation, platformDir +"\\sfxca.dll");
+            var sfxcaDll = Utils.PathCombine(WixSdkLocation, platformDir + "\\sfxca.dll");
 
             outDir = IO.Path.GetFullPath(outDir);
 
             var outDll = IO.Path.Combine(outDir, nativeDll);
             var asmFile = IO.Path.GetFullPath(asm);
-            //var originalAsmCopy = asmFile; //to be used to verify assembly health
-
-            Func<string, string> resolveClientAsm = (asmName) =>
-                {
-                    //restore the original assembly name as MakeSfxCA does not like renamed assemblies
-                    string newName = Utils.OriginalAssemblyFileName(ClientAssembly);
-                    newName = newName.PathChangeDirectory(outDir);
-
-                    if (!ClientAssembly.SamePathAs(newName))
-                    {
-                        IO.File.Copy(ClientAssembly, newName, true);
-                        tempFiles.Add(newName);
-
-                        var clientPdb = IO.Path.ChangeExtension(ClientAssembly, ".pdb");
-
-                        if (IO.File.Exists(clientPdb))
-                        {
-                            IO.File.Copy(clientPdb, IO.Path.ChangeExtension(newName, ".pdb"), true);
-                            tempFiles.Add(IO.Path.ChangeExtension(newName, ".pdb"));
-                        }
-                    }
-                    return newName;
-                };
 
             if (asmFile.EndsWith("%this%"))
-                asmFile = resolveClientAsm(asmFile);
+                asmFile = ResolveClientAsm(asmFile, outDir);
 
             var requiredAsms = new List<string>(refAssemblies);
 
@@ -2226,17 +2230,17 @@ namespace WixSharp
 
                 if (file == "%this%")
                 {
-                    refAasmFile = resolveClientAsm(file);
+                    refAasmFile = ResolveClientAsm(file, outDir);
                 }
                 else
                 {
-                    refAasmFile = Utils.OriginalAssemblyFileName(file);
+                    refAasmFile = Utils.OriginalAssemblyFile(file);
 
                     if (!file.SamePathAs(refAasmFile))
                     {
                         refAasmFile = refAasmFile.PathChangeDirectory(outDir);
                         IO.File.Copy(file, refAasmFile, true);
-                        tempFiles.Add(refAasmFile);
+                        Compiler.TempFiles.Add(refAasmFile);
                     }
                 }
 
@@ -2245,8 +2249,14 @@ namespace WixSharp
 
             var configFile = IO.Path.GetFullPath("CustomAction.config");
 
-            using (var writer = new IO.StreamWriter(configFile))
-                writer.Write(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
+            if (configFilePath.IsNotEmpty())
+            {
+                configFile = configFilePath;
+            }
+            else
+            {
+                using (var writer = new IO.StreamWriter(configFile))
+                    writer.Write(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
                                                 <configuration>
                                                     <startup useLegacyV2RuntimeActivationPolicy=""true"">
 
@@ -2258,8 +2268,8 @@ namespace WixSharp
                                                         <supportedRuntime version=""v1.1.4322""/>
                                                     </startup>
                                                 </configuration>");
-
-            tempFiles.Add(configFile);
+            }
+            Compiler.TempFiles.Add(configFile);
 
             string pdbFileArgument = null;
             if (!IgnoreClientAssemblyPDB && IO.File.Exists(IO.Path.ChangeExtension(asmFile, ".pdb")))
@@ -2287,7 +2297,7 @@ namespace WixSharp
             if (!IO.File.Exists(outDll))
                 throw new ApplicationException("Cannot package ManagedCA assembly(" + asm + ")");
 
-            tempFiles.Add(outDll);
+            Compiler.TempFiles.Add(outDll);
         }
 
         static void ValidateCAAssembly(string file)

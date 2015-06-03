@@ -583,15 +583,7 @@ namespace WixSharp
         {
             return s.Length - s.TrimStart('\n', '\r', '\t', ' ').Length;
         }
-        /// <summary>
-        /// Converts the given string path into the full path.
-        /// </summary>
-        /// <param name="s">The string path.</param>
-        /// <returns>The full string path.</returns>
-        public static string ToFullPath(this string s)
-        {
-            return IO.Path.GetFullPath(s);
-        }
+        
 
         /// <summary>
         /// Concats the specified strings. In the result string all items are separated with the specified delimiter.

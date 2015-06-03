@@ -94,7 +94,7 @@ namespace WixSharp
             return fields;
         }
 
-        internal static string OriginalAssemblyFileName(string file)
+        internal static string OriginalAssemblyFile(string file)
         {
             string dir = IO.Path.GetDirectoryName(IO.Path.GetFullPath(file));
             return IO.Path.Combine(dir, System.Reflection.Assembly.ReflectionOnlyLoadFrom(file).ManifestModule.ScopeName);

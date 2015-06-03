@@ -62,7 +62,7 @@ namespace WixSharp
             try
             {
                 //System.Diagnostics.Debug.Assert(false);
-                tempFiles.Clear();
+                Compiler.TempFiles.Clear();
                 string compiler = Utils.PathCombine(WixLocation, "candle.exe");
                 string linker = Utils.PathCombine(WixLocation, "light.exe");
 
@@ -100,7 +100,7 @@ namespace WixSharp
 
                         if (IO.File.Exists(msiFile))
                         {
-                            tempFiles.Add(wxsFile);
+                            Compiler.TempFiles.Add(wxsFile);
 
                             Console.WriteLine("\n----------------------------------------------------------\n");
                             Console.WriteLine("Bootstrapper file has been built: " + path + "\n");
@@ -125,12 +125,12 @@ namespace WixSharp
                     }
                 }
 
-                //if (!PreserveTempFiles && !project.Compiler.PreserveTempFiles)
-                if (!PreserveTempFiles)
-                    foreach (var file in tempFiles)
+                if (!PreserveTempFiles && !project.PreserveTempFiles)
+                    foreach (var file in Compiler.TempFiles)
                         try
                         {
-                            IO.File.Delete(file);
+                            if (IO.File.Exists(file))
+                                IO.File.Delete(file);
                         }
                         catch { }
 
@@ -155,7 +155,7 @@ namespace WixSharp
             if (Compiler.ClientAssembly.IsEmpty())
                 Compiler.ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
 
-            if(path == null)
+            if (path == null)
                 path = IO.Path.GetFullPath(IO.Path.Combine(project.OutDir, "Build_" + project.OutFileName) + ".cmd");
 
             //System.Diagnostics.Debug.Assert(false);
@@ -233,7 +233,7 @@ namespace WixSharp
 
                 AutoElements.NormalizeFilePaths(doc, project.SourceBaseDir, EmitRelativePaths);
 
-                //project.Compiler.InvokeWixSourceGenerated(doc); //zos
+                project.InvokeWixSourceGenerated(doc);
                 if (WixSourceGenerated != null)
                     WixSourceGenerated(doc);
 
@@ -250,7 +250,7 @@ namespace WixSharp
 
                 DefaultWixSourceFormatedHandler(ref xml);
 
-                //project.Compiler.InvokeWixSourceFormated(ref xml); //zos
+                project.InvokeWixSourceFormated(ref xml);
                 if (WixSourceFormated != null)
                     WixSourceFormated(ref xml);
 
@@ -260,7 +260,7 @@ namespace WixSharp
                 Console.WriteLine("\n----------------------------------------------------------\n");
                 Console.WriteLine("Wix project file has been built: " + file + "\n");
 
-                //project.Compiler.InvokeWixSourceSaved(path);
+                project.InvokeWixSourceSaved(file);
                 if (WixSourceSaved != null)
                     WixSourceSaved(file);
 
