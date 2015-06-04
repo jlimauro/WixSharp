@@ -19,6 +19,11 @@ class Script
                     new File(@"Files\Registrator.exe"))
             },
 
+            Binaries = new []
+            {
+                new Binary(new Id("EchoBin"), @"Files\Echo.exe") 
+            },
+
             Actions = new WixSharp.Action[] 
             { 	
                 //execute installed application
@@ -33,7 +38,12 @@ class Script
                 new ScriptAction(@"MsgBox ""Executing VBScript code...""", Return.ignore, When.After, Step.PreviousAction, Condition.NOT_Installed),
                 
                 //execute embedded VBS file
-                new ScriptFileAction(@"Files\Sample.vbs", "Execute" , Return.ignore, When.After, Step.PreviousAction, Condition.NOT_Installed)
+                new ScriptFileAction(@"Files\Sample.vbs", "Execute" , Return.ignore, When.After, Step.PreviousAction, Condition.NOT_Installed),
+
+                new BinaryFileAction("EchoBin", "Executing Binary file...", Return.check, When.After, Step.InstallFiles, Condition.NOT_Installed)
+                {
+                    Execute = Execute.deferred
+                }
             }
         };
 

@@ -495,6 +495,79 @@
             <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
             </summary>
         </member>
+        <member name="M:WixSharp.BinaryFileAction.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.BinaryFileAction"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="key">The key (file name) of the installed file to be executed.</param>
+            <param name="args">The arguments to be passed to the file during the execution.</param>
+        </member>
+        <member name="M:WixSharp.BinaryFileAction.#ctor(WixSharp.Id,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.BinaryFileAction"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.BinaryFileAction"/> instance.</param>
+            <param name="key">The key (file name) of the installed file to be executed.</param>
+            <param name="args">The arguments to be passed to the file during the execution.</param>
+        </member>
+        <member name="M:WixSharp.BinaryFileAction.#ctor(System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.BinaryFileAction"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="key">The key (file name) of the installed file to be executed.</param>
+            <param name="args">The arguments to be passed to the file during the execution.</param>
+            <param name="returnType">The return type of the action.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
+            <param name="condition">The launch condition for the <see cref="T:WixSharp.BinaryFileAction"/>.</param>
+        </member>
+        <member name="M:WixSharp.BinaryFileAction.#ctor(WixSharp.Id,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.BinaryFileAction"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.BinaryFileAction"/> instance.</param>
+            <param name="key">The key (file name) of the installed file to be executed.</param>
+            <param name="args">The arguments to be passed to the file during the execution.</param>
+            <param name="returnType">The return type of the action.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
+            <param name="condition">The launch condition for the <see cref="T:WixSharp.BinaryFileAction"/>.</param>
+        </member>
+        <member name="M:WixSharp.BinaryFileAction.#ctor(System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.BinaryFileAction"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="key">The key (file name) of the installed file to be executed.</param>
+            <param name="args">The arguments to be passed to the file during the execution.</param>
+            <param name="returnType">The return type of the action.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
+            <param name="condition">The launch condition for the <see cref="T:WixSharp.BinaryFileAction"/>.</param>
+            <param name="sequence">The MSI sequence the action belongs to.</param>
+        </member>
+        <member name="M:WixSharp.BinaryFileAction.#ctor(WixSharp.Id,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.BinaryFileAction"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.BinaryFileAction"/> instance.</param>
+            <param name="key">The key (file name) of the installed file to be executed.</param>
+            <param name="args">The arguments to be passed to the file during the execution.</param>
+            <param name="returnType">The return type of the action.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
+            <param name="condition">The launch condition for the <see cref="T:WixSharp.BinaryFileAction"/>.</param>
+            <param name="sequence">The MSI sequence the action belongs to.</param>
+        </member>
+        <member name="F:WixSharp.BinaryFileAction.Key">
+            <summary>
+            The key (file name) of the installed file to be executed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.BinaryFileAction.Args">
+            <summary>
+            The arguments to be passed to the file during the execution.
+            </summary>
+        </member>
         <member name="T:WixSharp.Bootstrapper.Bundle">
             <summary>
             Class for defining a WiX standard Burn-based bootstrapper.
