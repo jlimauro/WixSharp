@@ -108,6 +108,7 @@
     <Compile Include="Bootstrapper\Packages.cs" />
     <Compile Include="CommonTasks.cs" />
     <Compile Include="Compiler.Bootstrapper.cs" />
+    <Compile Include="Permissions.cs" />
     <Compile Include="WixProject.cs" />
     <Compile Include="Controls\Control.cs" />
     <Compile Include="Controls\ControlType.cs" />
