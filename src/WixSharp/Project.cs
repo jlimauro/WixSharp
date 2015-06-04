@@ -349,6 +349,8 @@ namespace WixSharp
         /// </summary>
         public Version Version = new Version("1.0.0.0");
 
+
+
         /// <summary>
         /// Defines Major Upgrade behavior. By default it is <c>null</c> thus upgrade is not supported.
         /// <para>If you need to implement Major Upgrade define this member to appropriate 

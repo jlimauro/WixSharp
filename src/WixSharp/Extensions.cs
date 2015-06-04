@@ -159,6 +159,25 @@ namespace WixSharp
                 obj.SetAttributeValue(name, value);
             return obj;
         }
+
+        /// <summary>
+        /// Sets the value of the attribute. This is a fluent version of XElement.SetAttributeValue that takes the Name/Value 
+        /// string definition as a single input parameter.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="nameValuePair">The attribute name/value pair of the "[name]=[value]" format (e.g. ""Version=!(bind.FileVersion.Utils.dll)").</param>
+        /// <returns></returns>
+        public static XElement SetAttribute(this XElement obj, string nameValuePair)
+        {
+            var pair = nameValuePair.ToDictionary().FirstOrDefault();
+
+            if (pair.Value is string && pair.Value.IsEmpty())
+                obj.SetAttributeValue(pair.Key, null);
+            else
+                obj.SetAttributeValue(pair.Key, pair.Value);
+            return obj;
+        }
+
         /// <summary>
         /// Adds the attributes to the to a given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
         /// </summary>
@@ -610,6 +629,8 @@ namespace WixSharp
         public static XElement Select(this XContainer element, string path)
         {
             string[] parts = path.Split('/');
+
+            var ttt = element.Elements().ToArray();
 
             var e = (from el in element.Elements()
                      where el.Name.LocalName == parts[0]
