@@ -103,6 +103,7 @@
     <Compile Include="Action.cs" />
     <Compile Include="Assembly.cs" />
     <Compile Include="AutoElements.cs" />
+    <Compile Include="BinaryFileAction.cs" />
     <Compile Include="Bootstrapper\Bundle.cs" />
     <Compile Include="Bootstrapper\BootstrapperApplication.cs" />
     <Compile Include="Bootstrapper\Packages.cs" />

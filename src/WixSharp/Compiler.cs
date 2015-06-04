@@ -2153,6 +2153,25 @@ namespace WixSharp
 
                     actionElement.Add(new XAttribute("FileKey", fileAction.Key));
                 }
+                else if (wAction is BinaryFileAction)
+                {
+                    var binaryAction = (BinaryFileAction)wAction;
+
+                    sequences.ForEach(sequence =>
+                        sequence.Add(
+                            new XElement("Custom", wAction.Condition.ToString(),
+                                new XAttribute("Action", wAction.Id),
+                                sequenceNumberAttr)));
+
+                    var actionElement = product.AddElement(
+                        new XElement("CustomAction",
+                            new XAttribute("Id", wAction.Name.Expand()),
+                            new XAttribute("ExeCommand", binaryAction.Args.ExpandCommandPath()),
+                            new XAttribute("Return", wAction.Return))
+                            .AddAttributes(wAction.Attributes));
+
+                    actionElement.Add(new XAttribute("BinaryKey", binaryAction.Key));
+                }
                 else if (wAction is PathFileAction)
                 {
                     var fileAction = (PathFileAction)wAction;
