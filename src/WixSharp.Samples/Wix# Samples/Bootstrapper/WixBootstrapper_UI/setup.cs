@@ -7,9 +7,10 @@ using sys = System.Reflection;
 //using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
 using WixSharp;
 using WixSharp.Bootstrapper;
-using Microsoft.Deployment.WindowsInstaller; 
+using Microsoft.Deployment.WindowsInstaller;
 using System.Windows.Forms;
 using System.Diagnostics;
+using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
 
 public class InstallScript
 {
@@ -19,10 +20,9 @@ public class InstallScript
             new Project("My Product",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
                     new File("readme.txt"))) { InstallScope = InstallScope.perUser };
+        
+        productProj.GUID = new Guid("6f330b47-2577-43ad-9095-1861bb258777");
         string productMsi = productProj.BuildMsi();
-
-        //string productMsi = @"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Bootstrapper\WixBootstrapper_UI\My Product.msi";
-        //---------------------------------------------------------
 
         var bootstrapper =
                 new Bundle("My Product",
@@ -31,98 +31,10 @@ public class InstallScript
 
         bootstrapper.Version = new Version("1.0.0.0");
         bootstrapper.UpgradeCode = new Guid("6f330b47-2577-43ad-9095-1861bb25889b");
-        bootstrapper.Application = new ManagedBootstrapperApplication(@"..\ManagedBA\bin\Release\ManagedBA.dll");
+        //bootstrapper.Application = new ManagedBootstrapperApplication(@"..\ManagedBA\bin\Debug\ManagedBA.dll");
+        bootstrapper.Application = new SilentBootstrapperApplication();
 
         bootstrapper.PreserveTempFiles = true;
-        bootstrapper.Build();
-        //Process.Start("setup.exe");
+        var setup = bootstrapper.Build();
     }
-
-    //E:\temp\WiX\TestBA\BootstrapperSetup\Bundle.wxs
-    //[assembly: BootstrapperApplication(typeof(CustomBootstrapperApplication))]
-
-    //public class CustomBootstrapperApplication : BootstrapperApplication
-    //{
-
-    //    /// <summary>
-    //    /// Entry point of managed code
-    //    /// </summary>
-    //    protected override void Run()
-    //    {
-    //        //System.Diagnostics.Debugger.Launch();
-
-    //        this.Engine.Log(LogLevel.Verbose, "Running the TestBA.");
-    //        MessageBox.Show("MBA is loaded");
-    //        this.Engine.Quit(0);
-    //        //... do your thing here 
-    //    }
-    //}
 }
-
-//public class BootstrapperViewModel
-//{
-//    public BootstrapperViewModel(BootstrapperApplication bootstrapper)
-//    {
-//        this.Bootstrapper = bootstrapper;
-//        this.Bootstrapper.ApplyComplete += this.OnApplyComplete;
-//        this.Bootstrapper.DetectPackageComplete += this.OnDetectPackageComplete;
-//        this.Bootstrapper.PlanComplete += this.OnPlanComplete;
-//    }
-
-//    public bool CanInstall { get; set; }
-//    public bool CanUninstall { get; set; } 
-//    public bool IsBusy { get; set; } 
-
-//    public BootstrapperApplication Bootstrapper { get; set; }
-
-//    void InstallExecute()
-//    {
-//        IsBusy = true;
-//        Bootstrapper.Engine.Plan(LaunchAction.Install);
-//    }
-
-//    void UninstallExecute()
-//    {
-//        IsBusy = true;
-//        Bootstrapper.Engine.Plan(LaunchAction.Uninstall);
-//    }
-
-//    /// <summary>
-//    /// This is called after a bundle installation has completed. 
-//    /// </summary>
-//    private void OnApplyComplete(object sender, ApplyCompleteEventArgs e)
-//    {
-//        CanInstall = false;
-//        CanUninstall = false;
-//    }
-
-//    /// <summary>
-//    /// Method that gets invoked when the Bootstrapper DetectPackageComplete event is fired.
-//    /// Checks the PackageId and sets the installation scenario. The PackageId is the ID
-//    /// specified in one of the package elements (msipackage, exepackage, msppackage,
-//    /// msupackage) in the WiX bundle.
-//    /// </summary>
-//    private void OnDetectPackageComplete(object sender, DetectPackageCompleteEventArgs e)
-//    {
-//        if (e.PackageId == "DummyInstallationPackageId")
-//        {
-//            if (e.State == PackageState.Absent)
-//                CanInstall = true;
-
-//            else if (e.State == PackageState.Present)
-//                CanUninstall = true;
-//        }
-//    }
-
-//    /// <summary>
-//    /// Method that gets invoked when the Bootstrapper PlanComplete event is fired.
-//    /// If the planning was successful, it instructs the Bootstrapper Engine to 
-//    /// install the packages.
-//    /// </summary>
-//    private void OnPlanComplete(object sender, PlanCompleteEventArgs e)
-//    {
-//        if (e.Status >= 0)
-//            Bootstrapper.Engine.Apply(IntPtr.Zero);
-//    }
-//}
-

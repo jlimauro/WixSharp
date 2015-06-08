@@ -500,6 +500,12 @@
             Class for defining a WiX standard Burn-based bootstrapper.
             </summary>
         </member>
+        <member name="F:WixSharp.WixProject.CAConfigFile">
+            <summary>
+            The location of the config file for Managed Custom Action.
+            <para>The config file (CustomAction.config) is the file to be passed to the MakeSfxCA.exe when packing the Custom Action assembly.</para>
+            </summary>
+        </member>
         <member name="F:WixSharp.WixProject.WixNamespaces">
             <summary>
             Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root.
@@ -699,6 +705,20 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="F:WixSharp.Bootstrapper.Bundle.StringVariablesDefinition">
+            <summary>
+            The Bundle string variables. 
+            </summary>
+            <para>The variables are defined as a named values map.</para>
+            <example>
+            <code>
+            new ManagedBootstrapperApplication("ManagedBA.dll")
+            {
+                StringVariablesDefinition = "FullInstall=Yes; Silent=No"
+            }
+            </code>
+            </example>
+        </member>
         <member name="M:WixSharp.Bootstrapper.Bundle.Build(System.String)">
             <summary>
             Builds WiX Bootstrapper application from the specified <see cref="T:WixSharp.Bootstrapper.Bundle"/> project instance.
@@ -717,11 +737,6 @@
         <member name="T:WixSharp.Bootstrapper.WixStandardBootstrapperApplication">
             <summary>
             Container class for common members of the Bootstrapper standard applications.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Bootstrapper.WixStandardBootstrapperApplication.License">
-            <summary>
-            The predefined instance of the License-based bootstrapper application.
             </summary>
         </member>
         <member name="F:WixSharp.Bootstrapper.WixStandardBootstrapperApplication.LicensePath">
@@ -744,6 +759,42 @@
             Emits WiX XML.
             </summary>
             <returns></returns>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.WixStandardBootstrapperApplication.Payloads">
+            <summary>
+            Collection of paths to the package dependencies.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.WixStandardBootstrapperApplication.StringVariablesDefinition">
+            <summary>
+            The Bundle string variables associated with the Bootstrapper application.
+            <para>The variables are defined as a named values map.</para>
+            </summary>
+            <example>
+            <code>
+            new ManagedBootstrapperApplication("ManagedBA.dll")
+            {
+                StringVariablesDefinition = "FullInstall=Yes; Silent=No"
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:WixSharp.Bootstrapper.ManagedBootstrapperApplication.ToXml">
+            <summary>
+            Emits WiX XML.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:WixSharp.Bootstrapper.ManagedBootstrapperApplication.primaryPackageId">
+            <summary>
+            Gets or sets the IDd of the primary package from the bundle.
+            <para>This ID is used by the application to detect the presence of the package on the target system 
+            and trigger either install or uninstall action.</para>
+            <para>If it is not set then it is the Id of the last package in th bundle.</para>
+            </summary>
+            <value>
+            The primary package identifier.
+            </value>
         </member>
         <member name="T:WixSharp.Bootstrapper.LicenseBootstrapperApplication">
             <summary>
@@ -776,7 +827,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:WixSharp.Bootstrapper.Packages">
+        <member name="T:WixSharp.Bootstrapper.Package">
             <summary>
             Container class for common members of the Bootstrapper packages
             </summary>
@@ -799,17 +850,17 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Packages.Permanent">
+        <member name="F:WixSharp.Bootstrapper.Package.Permanent">
             <summary>
             Specifies whether the package can be uninstalled.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Packages.SourceFile">
+        <member name="F:WixSharp.Bootstrapper.Package.SourceFile">
             <summary>
             Location of the package to add to the bundle. The default value is the Name attribute, if provided. At a minimum, the SourceFile or Name attribute must be specified.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Packages.Description">
+        <member name="F:WixSharp.Bootstrapper.Package.Description">
             <summary>
             Specifies the description to place in the bootstrapper application data manifest for the package. By default,
             ExePackages use the FileName field from the version information, MsiPackages use the ARPCOMMENTS property, and MspPackages
@@ -817,12 +868,12 @@
             bootstrapper application data manifest.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Packages.PerMachine">
+        <member name="F:WixSharp.Bootstrapper.Package.PerMachine">
             <summary>
             Indicates the package must be executed elevated.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Packages.DownloadUrl">
+        <member name="F:WixSharp.Bootstrapper.Package.DownloadUrl">
             <summary>
             The URL to use to download the package. The following substitutions are supported:
             <para>{0} is replaced by the package Id.</para>
@@ -830,13 +881,13 @@
             <para>{2} is replaced by the payload file name.</para>
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Packages.InstallCondition">
+        <member name="F:WixSharp.Bootstrapper.Package.InstallCondition">
             <summary>
             A condition to evaluate before installing the package. The package will only be installed if the condition evaluates to true.
             If the condition evaluates to false and the bundle is being installed, repaired, or modified, the package will be uninstalled.
             </summary>
         </member>
-        <member name="F:WixSharp.Bootstrapper.Packages.Payloads">
+        <member name="F:WixSharp.Bootstrapper.Package.Payloads">
             <summary>
             Collection of paths to the package dependencies.
             </summary>
@@ -1275,6 +1326,16 @@
             Compiler.BuildMsi(project);
             </code>
             </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.SetVersionFrom(WixSharp.Project,System.String)">
+            <summary>
+            Sets the Project version from the file version of the file specified by it's ID.
+            <para>This method sets project WixSourceGenerated event handler and injects 
+            "!(bind.FileVersion.&lt;file ID&gt;" into the XML Product's Version attribute.</para>
+            </summary>
+            <param name="project">The project.</param>
+            <param name="fileId">The file identifier.</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.CommonTasks.Tasks.InjectClrDialog(WixSharp.Project,System.String,System.String,System.String)">
              <summary>
@@ -2461,6 +2522,15 @@
             <param name="value">The value.</param>
             <returns></returns>
         </member>
+        <member name="M:WixSharp.Extensions.SetAttribute(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Sets the value of the attribute. This is a fluent version of XElement.SetAttributeValue that takes the Name/Value 
+            string definition as a single input parameter.
+            </summary>
+            <param name="obj">The object.</param>
+            <param name="nameValuePair">The attribute name/value pair of the "[name]=[value]" format (e.g. ""Version=!(bind.FileVersion.Utils.dll)").</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.AddAttributes(System.Xml.Linq.XElement,System.Collections.Generic.Dictionary{System.String,System.String})">
             <summary>
             Adds the attributes to the to a given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
@@ -2706,13 +2776,6 @@
             <returns>
             	Total count of leading white-space characters
             </returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ToFullPath(System.String)">
-            <summary>
-            Converts the given string path into the full path.
-            </summary>
-            <param name="s">The string path.</param>
-            <returns>The full string path.</returns>
         </member>
         <member name="M:WixSharp.Extensions.ConcatItems(System.Collections.Generic.IEnumerable{System.String},System.String)">
             <summary>
