@@ -6,7 +6,7 @@ namespace WixSharp.Bootstrapper
     /// <summary>
     /// Container class for common members of the Bootstrapper packages
     /// </summary>
-    public abstract class Packages : ChainItem
+    public abstract class Package : ChainItem
     {
         /// <summary>
         /// Specifies whether the package can be uninstalled.
@@ -54,6 +54,14 @@ namespace WixSharp.Bootstrapper
         /// Collection of paths to the package dependencies.
         /// </summary>
         public string[] Payloads = new string[0];
+
+        internal void EnsureId()
+        {
+            if (!base.IsIdSet())
+            {
+                Name = System.IO.Path.GetFileName(SourceFile);
+            }
+        }
     }
 
     /// <summary>
@@ -79,7 +87,7 @@ namespace WixSharp.Bootstrapper
     /// <summary>
     /// Standard WiX ExePackage.
     /// </summary>
-    public class ExePackage : Packages
+    public class ExePackage : Package
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExePackage"/> class.
@@ -152,7 +160,7 @@ namespace WixSharp.Bootstrapper
     /// <summary>
     /// Standard WiX MsiPackage.
     /// </summary>
-    public class MsiPackage : Packages
+    public class MsiPackage : Package
     {
         /// <summary>
         /// Specifies whether the bundle will allow individual control over the installation state of Features inside the msi package. Managing 

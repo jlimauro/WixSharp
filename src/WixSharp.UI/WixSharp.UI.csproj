@@ -46,6 +46,10 @@
     <AssemblyOriginatorKeyFile>WixSharpStrongName.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BootstrapperCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WixSharp.Samples\Wix_bin\SDK\BootstrapperCore.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Deployment.WindowsInstaller">
       <HintPath>..\WixSharp.Samples\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll</HintPath>
     </Reference>
@@ -82,6 +86,7 @@
     <Compile Include="ManagedUI\RepairStartDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ManagedBA\SilentBA.cs" />
     <Compile Include="ManagedUI\UIShell.cs">
       <SubType>Form</SubType>
     </Compile>

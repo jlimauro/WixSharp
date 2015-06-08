@@ -8,7 +8,6 @@ using sys=System.IO;
 
 namespace WixSharp.Bootstrapper
 {
-
     public class ManagedBootstrapperApplication : WixStandardBootstrapperApplication
     {
         public string AppAssembly = "";
@@ -83,6 +82,25 @@ namespace WixSharp.Bootstrapper
 
             return new[] { root };
         }
+
+        /// <summary>
+        /// Gets or sets the IDd of the primary package from the bundle.
+        /// <para>This ID is used by the application to detect the presence of the package on the target system 
+        /// and trigger either install or uninstall action.</para>
+        /// <para>If it is not set then it is the Id of the last package in th bundle.</para>
+        /// </summary>
+        /// <value>
+        /// The primary package identifier.
+        /// </value>
+        string primaryPackageId;
+        
+        public string PrimaryPackageId
+        {
+            get { return primaryPackageId; }
+            set { primaryPackageId = value; }
+        }
+        
+        //public ChainItem DependencyPackage { get; set; }
     }
 
     /// <summary>
@@ -121,6 +139,20 @@ namespace WixSharp.Bootstrapper
         /// Collection of paths to the package dependencies.
         /// </summary>
         public string[] Payloads = new string[0];
+
+        /// <summary>
+        /// The Bundle string variables associated with the Bootstrapper application.
+        /// <para>The variables are defined as a named values map.</para>
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// new ManagedBootstrapperApplication("ManagedBA.dll")
+        /// {
+        ///     StringVariablesDefinition = "FullInstall=Yes; Silent=No"
+        /// }
+        /// </code>
+        /// </example>
+        public string StringVariablesDefinition = "";
     }
 
 

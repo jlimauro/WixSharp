@@ -1,16 +1,15 @@
 //css_dir ..\..\..\;
 //css_ref WixSharp.dll;
+//css_ref WixSharp.UI.dll;
 //css_ref System.Core.dll;
 //css_ref Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 using System;
 using sys = System.Reflection;
-//using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
 using WixSharp;
 using WixSharp.Bootstrapper;
 using Microsoft.Deployment.WindowsInstaller;
 using System.Windows.Forms;
 using System.Diagnostics;
-using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
 
 public class InstallScript
 {
@@ -31,7 +30,7 @@ public class InstallScript
 
         bootstrapper.Version = new Version("1.0.0.0");
         bootstrapper.UpgradeCode = new Guid("6f330b47-2577-43ad-9095-1861bb25889b");
-        //bootstrapper.Application = new ManagedBootstrapperApplication(@"..\ManagedBA\bin\Debug\ManagedBA.dll");
+        //bootstrapper.Application = new ManagedBootstrapperApplication(@"..\ManagedBA\bin\Debug\ManagedBA.dll"); //not ready yet
         bootstrapper.Application = new SilentBootstrapperApplication();
 
         bootstrapper.PreserveTempFiles = true;
