@@ -91,6 +91,22 @@ namespace WixSharp.Test
             Assert.Equal("[IIS_SITE_ADDRESS]", address.ReadAttribute("Id"));
             Assert.Equal("[IIS_SITE_PORT]", address.ReadAttribute("Port"));
         }
+        
+        [Fact]
+        [Description("Post 576142#post1428674")]
+        public void Should_Handle_NonstandardProductVersions()
+        {
+            Project project = new Project("MyProduct",
+                new Dir(@"%ProgramFiles%\My Company\My Product",
+                    new File(this.GetType().Assembly.Location)
+                )
+            );
+
+            project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
+            project.Version = new Version("2014.1.26.0");
+
+            Compiler.BuildMsi(project); 
+        }
 
         void CodeFormattingTestPad()
         {

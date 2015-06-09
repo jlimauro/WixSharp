@@ -1,18 +1,113 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
+using Microsoft.Deployment.WindowsInstaller;
+using System.IO;
+using sys=System.IO;
 
 namespace WixSharp.Bootstrapper
 {
+    public class ManagedBootstrapperApplication : WixStandardBootstrapperApplication
+    {
+        public string AppAssembly = "";
+        string rawAppAssembly = "";
+        string bootstrapperCoreConfig = "";
+
+        public ManagedBootstrapperApplication(string appAssembly, params string[] dependencies)
+        {
+            AppAssembly = appAssembly;
+            Payloads = Payloads.Add(AppAssembly)
+                               .AddRange(dependencies);
+        }
+
+        public override void AutoGenerateSources(string outDir)
+        {
+            //NOTE: while it is tempting, AutoGenerateSources cannot be called during initialization as it is too early. 
+            //The call must be triggered by Compiler.Build* calls. 
+            rawAppAssembly = AppAssembly;
+            if (rawAppAssembly.EndsWith("%this%"))
+                rawAppAssembly = Compiler.ResolveClientAsm(rawAppAssembly, outDir); //not if a new file is generated then the Compiler takes care for cleaning any temps
+
+            string asmName = Path.GetFileNameWithoutExtension(Utils.OriginalAssemblyFile(rawAppAssembly));
+
+            var suppliedConfig = Payloads.FirstOrDefault(x => Path.GetFileName(x).SameAs("BootstrapperCore.config", true));
+
+            bootstrapperCoreConfig = suppliedConfig;
+            if (bootstrapperCoreConfig == null)
+            {
+                bootstrapperCoreConfig = Path.Combine(outDir, "BootstrapperCore.config");
+
+                sys.File.WriteAllText(bootstrapperCoreConfig,
+    @"<?xml version=""1.0"" encoding=""utf-8"" ?>
+<configuration>
+    <configSections>
+        <sectionGroup name=""wix.bootstrapper"" type=""Microsoft.Tools.WindowsInstallerXml.Bootstrapper.BootstrapperSectionGroup, BootstrapperCore"">
+            <section name=""host"" type=""Microsoft.Tools.WindowsInstallerXml.Bootstrapper.HostSection, BootstrapperCore"" />
+        </sectionGroup>
+    </configSections>
+    <startup useLegacyV2RuntimeActivationPolicy=""true"">
+        <supportedRuntime version=""v4.0"" />
+    </startup>
+    <wix.bootstrapper>
+        <host assemblyName=""" + asmName + @""">
+            <supportedFramework version=""v4\Full"" />
+            <supportedFramework version=""v4\Client"" />
+        </host>
+    </wix.bootstrapper>
+</configuration>
+");
+                Compiler.TempFiles.Add(bootstrapperCoreConfig);
+            }
+        }
+
+        /// <summary>
+        /// Emits WiX XML.
+        /// </summary>
+        /// <returns></returns>
+        public override XContainer[] ToXml()
+        {
+            string winInstaller = typeof(Session).Assembly.Location;
+
+            var root = new XElement("BootstrapperApplicationRef");
+            root.SetAttribute("Id", "ManagedBootstrapperApplicationHost");
+
+            List<string> files = new List<string> { rawAppAssembly, bootstrapperCoreConfig };
+            files.AddRange(Payloads.Distinct());
+            if(!Payloads.Where(x=>Path.GetFileName(x).SameAs(Path.GetFileName(winInstaller))).Any())
+                files.Add(winInstaller);
+
+            if (files.Any())
+                files.Distinct().ForEach(p => root.Add(new XElement("Payload", new XAttribute("SourceFile", p))));
+
+            return new[] { root };
+        }
+
+        /// <summary>
+        /// Gets or sets the IDd of the primary package from the bundle.
+        /// <para>This ID is used by the application to detect the presence of the package on the target system 
+        /// and trigger either install or uninstall action.</para>
+        /// <para>If it is not set then it is the Id of the last package in th bundle.</para>
+        /// </summary>
+        /// <value>
+        /// The primary package identifier.
+        /// </value>
+        string primaryPackageId;
+        
+        public string PrimaryPackageId
+        {
+            get { return primaryPackageId; }
+            set { primaryPackageId = value; }
+        }
+        
+        //public ChainItem DependencyPackage { get; set; }
+    }
+
     /// <summary>
     /// Container class for common members of the Bootstrapper standard applications.
     /// </summary>
     public abstract class WixStandardBootstrapperApplication : WixEntity
     {
-        /// <summary>
-        /// The predefined instance of the License-based bootstrapper application.
-        /// </summary>
-        public static LicenseBootstrapperApplication License = new LicenseBootstrapperApplication();
-
         /// <summary>
         /// Source file of the RTF license file or URL target of the license link.
         /// </summary>
@@ -35,6 +130,29 @@ namespace WixSharp.Bootstrapper
         /// </summary>
         /// <returns></returns>
         public abstract XContainer[] ToXml();
+
+        public virtual void AutoGenerateSources(string outDir)
+        {
+        }
+
+        /// <summary>
+        /// Collection of paths to the package dependencies.
+        /// </summary>
+        public string[] Payloads = new string[0];
+
+        /// <summary>
+        /// The Bundle string variables associated with the Bootstrapper application.
+        /// <para>The variables are defined as a named values map.</para>
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// new ManagedBootstrapperApplication("ManagedBA.dll")
+        /// {
+        ///     StringVariablesDefinition = "FullInstall=Yes; Silent=No"
+        /// }
+        /// </code>
+        /// </example>
+        public string StringVariablesDefinition = "";
     }
 
 

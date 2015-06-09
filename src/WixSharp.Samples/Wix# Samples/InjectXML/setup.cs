@@ -2,10 +2,11 @@
 //css_ref Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 //css_ref System.Core.dll;
 using System;
-using WixSharp;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-using System.Linq;
+using WixSharp;
+using WixSharp.CommonTasks;
 
 class Script
 {

@@ -1,7 +1,8 @@
-using sys=System.IO;
+using sys = System.IO;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using System.Linq;
 
 namespace WixSharp.Bootstrapper
 {
@@ -183,9 +184,32 @@ namespace WixSharp.Bootstrapper
 
             root.AddAttributes(this.Attributes);
             root.Add(this.MapToXmlAttributes());
+            
+            if (Application is ManagedBootstrapperApplication)
+            {
+                var app = Application as ManagedBootstrapperApplication;
+                if (app.PrimaryPackageId == null)
+                {
+                    var lastPackage = Chain.OfType<WixSharp.Bootstrapper.Package>().LastOrDefault();
+                    if (lastPackage != null)
+                    {
+                        lastPackage.EnsureId();
+                        app.PrimaryPackageId = lastPackage.Id;
+                    }
+                }
+            }
 
+            //important to call AutoGenerateSources after PrimaryPackageId is set
+            Application.AutoGenerateSources(this.OutDir);
 
             root.Add(Application.ToXml());
+
+            string variabes = this.StringVariablesDefinition +";"+ Application.StringVariablesDefinition;
+
+            foreach (var entry in variabes.ToDictionary())
+            {
+                root.AddElement("Variable", "Name=" + entry.Key + ";Value=" + entry.Value + ";Persisted=yes;Type=string");
+            }
 
             var xChain = root.AddElement("Chain");
             foreach (var item in this.Chain)
@@ -194,6 +218,20 @@ namespace WixSharp.Bootstrapper
             result.Add(root);
             return result.ToArray();
         }
+
+        /// <summary>
+        /// The Bundle string variables. 
+        /// </summary>
+        /// <para>The variables are defined as a named values map.</para>
+        /// <example>
+        /// <code>
+        /// new ManagedBootstrapperApplication("ManagedBA.dll")
+        /// {
+        ///     StringVariablesDefinition = "FullInstall=Yes; Silent=No"
+        /// }
+        /// </code>
+        /// </example>
+        public string StringVariablesDefinition = "";
 
         /// <summary>
         /// Builds WiX Bootstrapper application from the specified <see cref="Bundle" /> project instance.

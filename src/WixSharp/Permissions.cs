@@ -3,7 +3,6 @@ using System.Xml.Linq;
 
 namespace WixSharp
 {
-
     /// <summary>
     /// Enumeration representing Generic* attributes of PermissionEx element
     /// </summary>
