@@ -83,6 +83,8 @@ namespace WixSharp
             var envvars = new List<EnvironmentVariable>();
             var props = new List<Property>();
             var bins = new List<Binary>();
+            var users = new List<User>();
+            var sqls = new List<SqlDatabase>();
 
             //var collections = items.Where(x=>x is WixItems).Sel
 
@@ -120,6 +122,10 @@ namespace WixSharp
                         bins.Add(item as Binary);
                     else if (item is WixGuid)
                         GUID = (item as WixGuid).Value;
+                    else if (item is User)
+                        users.Add(item as User);
+                    else if (item is SqlDatabase)
+                        sqls.Add(item as SqlDatabase);
                     else
                         throw new Exception("Unexpected object type is among Project constructor arguments: " + item.GetType().Name);
                 }
@@ -131,6 +137,8 @@ namespace WixSharp
             Properties = props.ToArray();
             Binaries = bins.ToArray();
             EnvironmentVariables = envvars.ToArray();
+            Users = users.ToArray();
+            SqlDatabases = sqls.ToArray();
         }
 
         /// <summary>
@@ -482,6 +490,18 @@ namespace WixSharp
         /// Collection of the <see cref="T:WixSharp.LaunchCondition"/>s associated with the setup.
         /// </summary>
         public List<LaunchCondition> LaunchConditions = new List<LaunchCondition>();
+
+        /// <summary>
+        /// Collection of Wix:UtilExtension User objects representings users 'for all kinds of things'
+        /// </summary>
+        public User[] Users = new User[0];
+
+        /// <summary>
+        /// Collection of WiX:SqlExtension SqlDatabase objects representing databases to be created,
+        /// modifed, or interacted with during MSI execution.
+        /// </summary>
+        public SqlDatabase[] SqlDatabases = new SqlDatabase[0];
+
         /// <summary>
         /// Installation UI Language. If not specified <c>"en-US"</c> will be used.
         /// </summary>

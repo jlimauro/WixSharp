@@ -2269,6 +2269,36 @@
             <param name="filePermission"></param>
             <param name="permissionElement"></param>
         </member>
+        <member name="T:WixSharp.User">
+            <summary>
+            Represents a WixUtilExtension User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.WixIncludeInComponent">
+            <summary>
+            Requests that the User element is included inside a Component element - allowing the User to be installed.
+            If any of the following properties are assigned (non-null), this property is ignored during compilation and assumed
+            to be true:
+            <list type="bullet">
+            <item>CanNotChangePassword</item>
+            <item>CreateUser</item>
+            <item>Disabled</item>
+            <item>FailIfExists</item>
+            <item>LogOnAsBatchJob</item>
+            <item>LogOnAsService</item>
+            <item>PasswordExpired</item>
+            <item>PasswordNeverExpires</item>
+            <item>RemoveOnUninstall</item>
+            <item>UpdateIfExists</item>
+            <item>Vital</item>
+            </list>
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.MustDescendFromComponent">
+            <summary>
+            Gets a value indicated if this User must be generated under a Component element or not.
+            </summary>
+        </member>
         <member name="T:WixSharp.Control">
             <summary>
             Defines generic WiX Control.  
@@ -5328,6 +5358,17 @@
             Collection of the <see cref="T:WixSharp.LaunchCondition"/>s associated with the setup.
             </summary>
         </member>
+        <member name="F:WixSharp.Project.Users">
+            <summary>
+            Collection of Wix:UtilExtension User objects representings users 'for all kinds of things'
+            </summary>
+        </member>
+        <member name="F:WixSharp.Project.SqlDatabases">
+            <summary>
+            Collection of WiX:SqlExtension SqlDatabase objects representing databases to be created,
+            modifed, or interacted with during MSI execution.
+            </summary>
+        </member>
         <member name="F:WixSharp.Project.Language">
             <summary>
             Installation UI Language. If not specified <c>"en-US"</c> will be used.
@@ -6603,6 +6644,11 @@
         <member name="F:WixSharp.WixExtension.IIs">
             <summary>
             Well-known Wix Extension IIs
+            </summary>
+        </member>
+        <member name="F:WixSharp.WixExtension.Sql">
+            <summary>
+            Well-known Wix Extension Sql
             </summary>
         </member>
         <member name="T:WixSharp.Feature">
