@@ -83,9 +83,9 @@ namespace WixSharp
             //"Empty Directories" sample demonstrates the need for CreateFolder
             if (!DisableAutoCreateFolder)
             {
-                //prevent adding more than 1 CreateFolder elements - elements that do no specify @Directory
+                //prevent adding more than 1 CreateFolder elements - elements that don't specify @Directory
                 if (xComponent.Elements("CreateFolder")
-                        .All(element => element.HasAttribute("Directory")))
+                              .All(element => element.HasAttribute("Directory")))
                     xComponent.Add(new XElement("CreateFolder"));
             }
         }
@@ -431,6 +431,9 @@ namespace WixSharp
             normalize(doc.Root.FindAll("Merge"), "SourceFile");
             normalize(doc.Root.FindAll("Binary"), "SourceFile");
             normalize(doc.Root.FindAll("EmbeddedUI"), "SourceFile");
+            normalize(doc.Root.FindAll("Payload"), "SourceFile");
+            normalize(doc.Root.FindAll("MsiPackage"), "SourceFile");
+            normalize(doc.Root.FindAll("ExePackage"), "SourceFile");
         }
     }
 }

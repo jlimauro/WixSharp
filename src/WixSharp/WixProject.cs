@@ -19,6 +19,24 @@ namespace WixSharp
         string outFileName = "setup";
 
         /// <summary>
+        /// The location of the config file for Managed Custom Action.
+        /// <para>The config file (CustomAction.config) is the file to be passed to the MakeSfxCA.exe when packing the Custom Action assembly.</para>
+        /// </summary>
+        public string CAConfigFile = "";
+
+        internal string CustomActionConfig
+        {
+            get
+            {
+                var configFile = this.CAConfigFile;
+                if (configFile.IsNotEmpty() && !System.IO.Path.IsPathRooted(configFile))
+                    return Utils.PathCombine(this.SourceBaseDir, this.CAConfigFile);
+
+                return configFile;
+            }
+        }
+
+        /// <summary>
         /// Name of the MSI/MSM file (without extension) to be build.
         /// </summary>
         public string OutFileName { get { return outFileName; } set { outFileName = value; } }
@@ -108,6 +126,34 @@ namespace WixSharp
         {
             if (WixSourceFormated != null)
                 WixSourceFormated(ref content);
+        }
+
+        /// <summary>
+        /// Adds the specified extension to <paramref name="project"/>
+        /// </summary>
+        /// <param name="project"></param>
+        /// <param name="extension"></param>
+        public void IncludeWixExtension(WixExtension extension)
+        {
+            IncludeWixExtension(extension.Assembly, extension.XmlNamespacePrefix, extension.XmlNamespace);
+        }
+
+        /// <summary>
+        /// Adds the specified extension to <paramref name="project"/>
+        /// </summary>
+        /// <param name="project"></param>
+        /// <param name="extensionAssembly"></param>
+        /// <param name="namespacePrefix"></param>
+        /// <param name="namespace"></param>
+        public void IncludeWixExtension(string extensionAssembly, string namespacePrefix, string @namespace)
+        {
+            if (!this.WixExtensions.Contains(extensionAssembly))
+                this.WixExtensions.Add(extensionAssembly);
+
+            var namespaceDeclaration = WixExtension.GetNamespaceDeclaration(namespacePrefix, @namespace);
+            //could use detection of duplicate prefixes
+            if (!this.WixNamespaces.Contains(namespaceDeclaration))
+                this.WixNamespaces.Add(namespaceDeclaration);
         }
     }
 }

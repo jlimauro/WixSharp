@@ -471,6 +471,22 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
+        /// Sets the Project version from the file version of the file specified by it's ID.
+        /// <para>This method sets project WixSourceGenerated event handler and injects 
+        /// "!(bind.FileVersion.&lt;file ID&gt;" into the XML Product's Version attribute.</para>
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="fileId">The file identifier.</param>
+        /// <returns></returns>
+        static public Project SetVersionFrom(this Project project, string fileId)
+        {
+            project.WixSourceGenerated += document =>
+                document.FindSingle("Product")
+                        .AddAttributes("Version=!(bind.FileVersion." + fileId + ")");
+            return project;
+        }
+
+        /// <summary>
         /// Injects CLR dialog between MSI dialogs 'prevDialog' and 'nextDialog'.
         /// Passes custom action CLR method name (showDialogMethod) for instantiating and popping up the CLR dialog.
         /// </summary>

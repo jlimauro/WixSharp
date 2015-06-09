@@ -160,6 +160,25 @@ namespace WixSharp
                 obj.SetAttributeValue(name, value);
             return obj;
         }
+
+        /// <summary>
+        /// Sets the value of the attribute. This is a fluent version of XElement.SetAttributeValue that takes the Name/Value 
+        /// string definition as a single input parameter.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="nameValuePair">The attribute name/value pair of the "[name]=[value]" format (e.g. ""Version=!(bind.FileVersion.Utils.dll)").</param>
+        /// <returns></returns>
+        public static XElement SetAttribute(this XElement obj, string nameValuePair)
+        {
+            var pair = nameValuePair.ToDictionary().FirstOrDefault();
+
+            if (pair.Value is string && pair.Value.IsEmpty())
+                obj.SetAttributeValue(pair.Key, null);
+            else
+                obj.SetAttributeValue(pair.Key, pair.Value);
+            return obj;
+        }
+
         /// <summary>
         /// Adds the attributes to the to a given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
         /// </summary>
@@ -584,15 +603,7 @@ namespace WixSharp
         {
             return s.Length - s.TrimStart('\n', '\r', '\t', ' ').Length;
         }
-        /// <summary>
-        /// Converts the given string path into the full path.
-        /// </summary>
-        /// <param name="s">The string path.</param>
-        /// <returns>The full string path.</returns>
-        public static string ToFullPath(this string s)
-        {
-            return IO.Path.GetFullPath(s);
-        }
+
 
         /// <summary>
         /// Concats the specified strings. In the result string all items are separated with the specified delimiter.
@@ -619,6 +630,8 @@ namespace WixSharp
         public static XElement Select(this XContainer element, string path)
         {
             string[] parts = path.Split('/');
+
+            var ttt = element.Elements().ToArray();
 
             var e = (from el in element.Elements()
                      where el.Name.LocalName == parts[0]
@@ -1221,35 +1234,7 @@ namespace WixSharp
             else
                 return encoding.GetBytes(obj);
         }
-
-        /// <summary>
-        /// Adds the specified extension to <paramref name="project"/>
-        /// </summary>
-        /// <param name="project"></param>
-        /// <param name="extension"></param>
-        public static void IncludeWixExtension(this Project project, WixExtension extension)
-        {
-            IncludeWixExtension(project, extension.Assembly, extension.XmlNamespacePrefix, extension.XmlNamespace);
         }
-
-        /// <summary>
-        /// Adds the specified extension to <paramref name="project"/>
-        /// </summary>
-        /// <param name="project"></param>
-        /// <param name="extensionAssembly"></param>
-        /// <param name="namespacePrefix"></param>
-        /// <param name="namespace"></param>
-        public static void IncludeWixExtension(this Project project, string extensionAssembly, string namespacePrefix, string @namespace)
-        {
-            if (!project.WixExtensions.Contains(extensionAssembly))
-                project.WixExtensions.Add(extensionAssembly);
-
-            var namespaceDeclaration = WixExtension.GetNamespaceDeclaration(namespacePrefix, @namespace);
-            //could use detection of duplicate prefixes
-            if (!project.WixNamespaces.Contains(namespaceDeclaration))
-                project.WixNamespaces.Add(namespaceDeclaration);
-        }
-    }
 
     class WixItems : WixObject
     {
@@ -1309,89 +1294,5 @@ namespace WixSharp
     internal class XmlAttribute : Attribute
     {
         public string Name { get; set; }
-    }
-
-    /// <summary>
-    /// Represents a Wix Extension
-    /// </summary>
-    public class WixExtension
-    {
-
-        /// <summary>
-        /// File name of the represented Wix Extension assembly
-        /// </summary>
-        /// <remarks>The represented value must include the file name and extension. See example</remarks>
-        /// <example>WixIIsExtension.dll</example>
-        public readonly string Assembly;
-        /// <summary>
-        /// Xml namespace declaration prefix for the represented Wix Extension
-        /// </summary>
-        public readonly string XmlNamespacePrefix;
-        /// <summary>
-        /// Xml namespace value for the represented Wix Extension
-        /// </summary>
-        public readonly string XmlNamespace;
-
-        /// <summary>
-        /// Creates a WixExtension instance representing the corresponding XML namespace declaration
-        /// </summary>
-        /// <param name="assembly"></param>
-        /// <param name="prefix"></param>
-        /// <param name="namespace"></param>
-        public WixExtension(string assembly, string prefix, string @namespace)
-        {
-            if (assembly.IsNullOrEmpty()) throw new ArgumentNullException("assembly", "assembly is a null reference or empty");
-            if (prefix.IsNullOrEmpty()) throw new ArgumentNullException("prefix", "prefix is a null reference or empty");
-            if (@namespace.IsNullOrEmpty()) throw new ArgumentNullException("@namespace", "@namespace is a null reference or empty");
-
-            Assembly = assembly;
-            XmlNamespacePrefix = prefix;
-            XmlNamespace = @namespace;
-        }
-
-        /// <summary>
-        /// Returns XmlNamespacePrefix as an instance of XNamespace
-        /// </summary>
-        /// <returns></returns>
-        public XNamespace ToXNamespace()
-        {
-            return XmlNamespace;
-        }
-
-        /// <summary>
-        /// Gets the xml namespace attribute for this WixExtension
-        /// </summary>
-        /// <returns></returns>
-        public string ToNamespaceDeclaration()
-        {
-            return GetNamespaceDeclaration(XmlNamespacePrefix, XmlNamespace);
-        }
-
-        /// <summary>
-        /// Gets the xml namespace attribute for the provided <paramref name="prefix"/> and <paramref name="namespace"/>
-        /// </summary>
-        /// <param name="prefix"></param>
-        /// <param name="namespace"></param>
-        /// <returns></returns>
-        public static string GetNamespaceDeclaration(string prefix, string @namespace)
-        {
-            return string.Format("xmlns:{0}=\"{1}\"", prefix, @namespace);
-        }
-
-        /// <summary>
-        /// Well-known Wix Extension: Util
-        /// </summary>
-        public static WixExtension Util = new WixExtension("WixUtilExtension.dll", "util", "http://schemas.microsoft.com/wix/UtilExtension");
-
-        /// <summary>
-        /// Well-known Wix Extension IIs
-        /// </summary>
-        public static WixExtension IIs = new WixExtension("WixIIsExtension.dll", "iis", "http://schemas.microsoft.com/wix/IIsExtension");
-
-        /// <summary>
-        /// Well-known Wix Extension Sql
-        /// </summary>
-        public static WixExtension Sql = new WixExtension("WixSqlExtension.dll", "sql", "http://schemas.microsoft.com/wix/SqlExtension");
-
     }
 }
