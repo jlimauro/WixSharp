@@ -30,6 +30,7 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using IO = System.IO;
 
 namespace WixSharp
@@ -239,6 +240,11 @@ namespace WixSharp
         public ExeFileShortcut[] Shortcuts = new ExeFileShortcut[0];
 
         /// <summary>
+        /// Collection of directory permissions to be applied to this directory.
+        /// </summary>
+        public DirPermission[] Permissions = new DirPermission[0];
+
+        /// <summary>
         /// <see cref="Feature"></see> the directory is included in.
         /// </summary>
         public Feature Feature;
@@ -307,6 +313,7 @@ namespace WixSharp
             var dirItemsCollections = new List<Files>();
             var shortcuts = new List<ExeFileShortcut>();
             var mergeModules = new List<Merge>();
+            var dirPermissions = new List<DirPermission>();
 
             foreach (WixEntity item in items)
                 if (item is Dir)
@@ -321,6 +328,8 @@ namespace WixSharp
                     shortcuts.Add(item as ExeFileShortcut);
                 else if (item is Merge)
                     mergeModules.Add(item as Merge);
+                else if (item is DirPermission)
+                    dirPermissions.Add(item as DirPermission);
                 else
                     throw new Exception(item.GetType().Name + " is not expected to be a child of WixSharp.Dir");
 
@@ -330,6 +339,9 @@ namespace WixSharp
             FileCollections = dirItemsCollections.ToArray();
             Shortcuts = shortcuts.ToArray();
             MergeModules = mergeModules.ToArray();
+            Permissions = dirPermissions.ToArray();
         }
     }
+
+
 }

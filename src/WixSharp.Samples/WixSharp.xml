@@ -359,6 +359,11 @@
             determine if the file should be installed on the target system.
             </summary>
         </member>
+        <member name="F:WixSharp.File.Permissions">
+            <summary>
+            COllection of <see cref="!:FilePermsission"/> to be applied to the file. 
+            </summary>
+        </member>
         <member name="P:WixSharp.File.NeverOverwrite">
             <summary>
             Gets or sets the NeverOverwrite attribute of the associated WiX component.
@@ -540,6 +545,22 @@
             <para>Note: if <see cref="T:WixSharp.Compiler"/> fails to build MSI the <c>PreserveTempFiles</c>
             value is ignored and all temporary files are preserved.</para>
             </summary>
+        </member>
+        <member name="M:WixSharp.WixProject.IncludeWixExtension(WixSharp.WixExtension)">
+            <summary>
+            Adds the specified extension to <paramref name="project"/>
+            </summary>
+            <param name="project"></param>
+            <param name="extension"></param>
+        </member>
+        <member name="M:WixSharp.WixProject.IncludeWixExtension(System.String,System.String,System.String)">
+            <summary>
+            Adds the specified extension to <paramref name="project"/>
+            </summary>
+            <param name="project"></param>
+            <param name="extensionAssembly"></param>
+            <param name="namespacePrefix"></param>
+            <param name="namespace"></param>
         </member>
         <member name="P:WixSharp.WixProject.SourceBaseDir">
             <summary>
@@ -1844,6 +1865,437 @@
             </summary>
             <param name="pattern">The wildcard pattern to convert.</param>
             <returns>A regex equivalent of the given wildcard.</returns>
+        </member>
+        <member name="T:WixSharp.GenericPermission">
+            <summary>
+            Enumeration representing Generic* attributes of PermissionEx element
+            </summary>
+        </member>
+        <member name="F:WixSharp.GenericPermission.None">
+            <summary>
+            None does not map to a valid WiX representation
+            </summary>
+        </member>
+        <member name="F:WixSharp.GenericPermission.Execute">
+            <summary>
+            Maps to GenericExecute='yes' of PermissionEx
+            </summary>
+        </member>
+        <member name="F:WixSharp.GenericPermission.Write">
+            <summary>
+            Maps to GenericWrite='yes' of PermissionEx
+            </summary>
+        </member>
+        <member name="F:WixSharp.GenericPermission.Read">
+            <summary>
+            Maps to GenericRead='yes' of PermissionEx
+            </summary>
+        </member>
+        <member name="F:WixSharp.GenericPermission.All">
+            <summary>
+            Maps to GenericAll='yes' of PermissionEx
+            </summary>
+        </member>
+        <member name="T:WixSharp.DirPermission">
+            <summary>
+            Represents applying permission(s) to the containing File entity
+            </summary>
+            <remarks>
+            DirPermission is a coded representation of Wix Util:PermissionEx
+            </remarks>
+        </member>
+        <member name="M:WixSharp.DirPermission.#ctor(System.String)">
+            <summary>
+            Creates a FilePermission instance for <paramref name="user"/>
+            </summary>
+            <param name="user"></param>
+        </member>
+        <member name="M:WixSharp.DirPermission.#ctor(System.String,System.String)">
+            <summary>
+            Creates a FilePermission instance for <paramref name="user"/>@<paramref name="domain"/>
+            </summary>
+            <param name="user"></param>
+            <param name="domain"></param>
+        </member>
+        <member name="M:WixSharp.DirPermission.#ctor(System.String,WixSharp.GenericPermission)">
+            <summary>
+            Creates a FilePermission instance for <paramref name="user"/> with generic permissions described by <paramref name="permission"/>
+            </summary>
+            <param name="user"></param>
+            <param name="permission"></param>
+        </member>
+        <member name="M:WixSharp.DirPermission.#ctor(System.String,System.String,WixSharp.GenericPermission)">
+            <summary>
+            Creates a FilePermission instance for <paramref name="user"/>@<paramref name="domain"/> with generic permissions described by <paramref name="permission"/>
+            </summary>
+            <param name="user"></param>
+            <param name="domain"></param>
+            <param name="permission"></param>
+        </member>
+        <member name="F:WixSharp.DirPermission.Feature">
+            <summary>
+            <see cref="F:WixSharp.DirPermission.Feature"></see> the Permission is included in.
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.User">
+            <summary>
+            Maps to the User property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.Domain">
+            <summary>
+            Maps to the Domain property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.Append">
+            <summary>
+            Maps to the Append property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.ChangePermission">
+            <summary>
+            Maps to the ChangePermission property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.CreateChild">
+            <summary>
+            Maps to the CreateChild property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.CreateFile">
+            <summary>
+            Maps to the CreateFile property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.CreateLink">
+            <summary>
+            Maps to the CreateLink property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.CreateSubkeys">
+            <summary>
+            Maps to the CreateSubkeys property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.Delete">
+            <summary>
+            Maps to the Delete property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.DeleteChild">
+            <summary>
+            Maps to the DeleteChild property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.EnumerateSubkeys">
+            <summary>
+            Maps to the EnumerateSubkeys property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.Execute">
+            <summary>
+            Maps to the Execute property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.GenericAll">
+            <summary>
+            Maps to the GenericAll property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.GenericExecute">
+            <summary>
+            Maps to the GenericExecute property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.GenericRead">
+            <summary>
+            Maps to the GenericRead property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.GenericWrite">
+            <summary>
+            Maps to the GenericWrite property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.Notify">
+            <summary>
+            Maps to the Notify property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.Read">
+            <summary>
+            Maps to the Read property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.Readattributes">
+            <summary>
+            Maps to the Readattributes property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.ReadExtendedAttributes">
+            <summary>
+            Maps to the ReadExtendedAttributes property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.ReadPermission">
+            <summary>
+            Maps to the ReadPermission property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.Synchronize">
+            <summary>
+            Maps to the Synchronize property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.TakeOwnership">
+            <summary>
+            Maps to the TakeOwnership property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.Traverse">
+            <summary>
+            Maps to the Traverse property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.Write">
+            <summary>
+            Maps to the Write property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.WriteAttributes">
+            <summary>
+            Maps to the WriteAttributes property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.DirPermission.WriteExtendedAttributes">
+            <summary>
+            Maps to the WriteExtendedAttributes property of PermissionEx
+            </summary>
+        </member>
+        <member name="T:WixSharp.FilePermission">
+            <summary>
+            Represents applying permission(s) to the containing File entity
+            </summary>
+            <remarks>
+            FilePermission is a coded representation of Wix Util:PermissionEx
+            </remarks>
+        </member>
+        <member name="M:WixSharp.FilePermission.#ctor(System.String)">
+            <summary>
+            Creates a FilePermission instance for <paramref name="user"/>
+            </summary>
+            <param name="user"></param>
+        </member>
+        <member name="M:WixSharp.FilePermission.#ctor(System.String,System.String)">
+            <summary>
+            Creates a FilePermission instance for <paramref name="user"/>@<paramref name="domain"/>
+            </summary>
+            <param name="user"></param>
+            <param name="domain"></param>
+        </member>
+        <member name="M:WixSharp.FilePermission.#ctor(System.String,WixSharp.GenericPermission)">
+            <summary>
+            Creates a FilePermission instance for <paramref name="user"/> with generic permissions described by <paramref name="permission"/>
+            </summary>
+            <param name="user"></param>
+            <param name="permission"></param>
+        </member>
+        <member name="M:WixSharp.FilePermission.#ctor(System.String,System.String,WixSharp.GenericPermission)">
+            <summary>
+            Creates a FilePermission instance for <paramref name="user"/>@<paramref name="domain"/> with generic permissions described by <paramref name="permission"/>
+            </summary>
+            <param name="user"></param>
+            <param name="domain"></param>
+            <param name="permission"></param>
+        </member>
+        <member name="P:WixSharp.FilePermission.User">
+            <summary>
+            Maps to the User property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.Domain">
+            <summary>
+            Maps to the Domain property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.Append">
+            <summary>
+            Maps to the Append property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.ChangePermission">
+            <summary>
+            Maps to the ChangePermission property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.CreateLink">
+            <summary>
+            Maps to the CreateLink property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.CreateSubkeys">
+            <summary>
+            Maps to the CreateSubkeys property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.Delete">
+            <summary>
+            Maps to the Delete property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.EnumerateSubkeys">
+            <summary>
+            Maps to the EnumerateSubkeys property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.Execute">
+            <summary>
+            Maps to the Execute property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.GenericAll">
+            <summary>
+            Maps to the GenericAll property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.GenericExecute">
+            <summary>
+            Maps to the GenericExecute property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.GenericRead">
+            <summary>
+            Maps to the GenericRead property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.GenericWrite">
+            <summary>
+            Maps to the GenericWrite property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.Notify">
+            <summary>
+            Maps to the Notify property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.Read">
+            <summary>
+            Maps to the Read property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.Readattributes">
+            <summary>
+            Maps to the Readattributes property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.ReadExtendedAttributes">
+            <summary>
+            Maps to the ReadExtendedAttributes property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.ReadPermission">
+            <summary>
+            Maps to the ReadPermission property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.Synchronize">
+            <summary>
+            Maps to the Synchronize property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.TakeOwnership">
+            <summary>
+            Maps to the TakeOwnership property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.Write">
+            <summary>
+            Maps to the Write property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.WriteAttributes">
+            <summary>
+            Maps to the WriteAttributes property of PermissionEx
+            </summary>
+        </member>
+        <member name="P:WixSharp.FilePermission.WriteExtendedAttributes">
+            <summary>
+            Maps to the WriteExtendedAttributes property of PermissionEx
+            </summary>
+        </member>
+        <member name="M:WixSharp.PermissionExt.EmitAttributes(WixSharp.DirPermission,System.Xml.Linq.XElement)">
+            <summary>
+            Adds attributes to <paramref name="permissionElement"/> representing the state of <paramref name="dirPermission"/>
+            </summary>
+            <param name="dirPermission"></param>
+            <param name="permissionElement"></param>
+        </member>
+        <member name="M:WixSharp.PermissionExt.EmitAttributes(WixSharp.FilePermission,System.Xml.Linq.XElement)">
+            <summary>
+            Adds attributes to <paramref name="permissionElement"/> representing the state of <paramref name="filePermission"/>
+            </summary>
+            <param name="filePermission"></param>
+            <param name="permissionElement"></param>
+        </member>
+        <member name="T:WixSharp.WixExtension">
+            <summary>
+            Represents a Wix Extension
+            </summary>
+        </member>
+        <member name="F:WixSharp.WixExtension.Assembly">
+            <summary>
+            File name of the represented Wix Extension assembly
+            </summary>
+            <remarks>The represented value must include the file name and extension. See example</remarks>
+            <example>WixIIsExtension.dll</example>
+        </member>
+        <member name="F:WixSharp.WixExtension.XmlNamespacePrefix">
+            <summary>
+            Xml namespace declaration prefix for the represented Wix Extension
+            </summary>
+        </member>
+        <member name="F:WixSharp.WixExtension.XmlNamespace">
+            <summary>
+            Xml namespace value for the represented Wix Extension
+            </summary>
+        </member>
+        <member name="M:WixSharp.WixExtension.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Creates a WixExtension instance representing the corresponding XML namespace declaration
+            </summary>
+            <param name="assembly"></param>
+            <param name="prefix"></param>
+            <param name="namespace"></param>
+        </member>
+        <member name="M:WixSharp.WixExtension.ToXNamespace">
+            <summary>
+            Returns XmlNamespacePrefix as an instance of XNamespace
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.WixExtension.ToNamespaceDeclaration">
+            <summary>
+            Gets the xml namespace attribute for this WixExtension
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.WixExtension.GetNamespaceDeclaration(System.String,System.String)">
+            <summary>
+            Gets the xml namespace attribute for the provided <paramref name="prefix"/> and <paramref name="namespace"/>
+            </summary>
+            <param name="prefix"></param>
+            <param name="namespace"></param>
+            <returns></returns>
+        </member>
+        <member name="F:WixSharp.WixExtension.Util">
+            <summary>
+            Well-known Wix Extension: Util
+            </summary>
+        </member>
+        <member name="F:WixSharp.WixExtension.IIs">
+            <summary>
+            Well-known Wix Extension IIs
+            </summary>
         </member>
         <member name="T:WixSharp.Control">
             <summary>
@@ -5932,6 +6384,11 @@
         <member name="F:WixSharp.Dir.Shortcuts">
             <summary>
             Collection of the contained <see cref="T:WixSharp.ExeFileShortcut"/>s.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Dir.Permissions">
+            <summary>
+            Collection of directory permissions to be applied to this directory.
             </summary>
         </member>
         <member name="F:WixSharp.Dir.Feature">

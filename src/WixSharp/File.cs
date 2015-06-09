@@ -29,6 +29,7 @@ using IO = System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using System.Xml.Linq;
 
 namespace WixSharp
 {
@@ -131,18 +132,21 @@ namespace WixSharp
             Associations = items.OfType<FileAssociation>().ToArray();
             IISVirtualDirs = items.OfType<IISVirtualDir>().ToArray();
             ServiceInstaller = items.OfType<ServiceInstaller>().FirstOrDefault();
+            Permissions = items.OfType<FilePermission>().ToArray();
 
             var firstUnExpectedItem = items.Except(Shortcuts)
                                            .Except(Associations)
                                            .Except(IISVirtualDirs)
+                                           .Except(Permissions)
                                            .Where(x => x != ServiceInstaller)
                                            .ToArray();
 
             if (firstUnExpectedItem.Any())
-                throw new ApplicationException("{4} is unexpected. Only {0}, {1} and {2} items can be added to {3}".FormatInline(
+                throw new ApplicationException("{4} is unexpected. Only {0}, {1}, {2}, and {3} items can be added to {4}".FormatInline(
                                                                                                        typeof(FileShortcut),
                                                                                                        typeof(FileAssociation),
                                                                                                        typeof(ServiceInstaller),
+                                                                                                       typeof(FilePermission),
                                                                                                        this.GetType(),
                                                                                                        firstUnExpectedItem.First().GetType()));
         }
@@ -176,7 +180,10 @@ namespace WixSharp
         /// determine if the file should be installed on the target system.
         /// </summary>
         public Condition Condition;
-
+        /// <summary>
+        /// COllection of <see cref="FilePermsission"/> to be applied to the file. 
+        /// </summary>
+        public FilePermission[] Permissions = new FilePermission[0];
         /// <summary>
         /// Gets or sets the NeverOverwrite attribute of the associated WiX component.
         /// <para>If this attribute is set to 'true', the installer does not install or reinstall the component

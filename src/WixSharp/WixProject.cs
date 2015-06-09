@@ -127,5 +127,33 @@ namespace WixSharp
             if (WixSourceFormated != null)
                 WixSourceFormated(ref content);
         }
+
+        /// <summary>
+        /// Adds the specified extension to <paramref name="project"/>
+        /// </summary>
+        /// <param name="project"></param>
+        /// <param name="extension"></param>
+        public void IncludeWixExtension(WixExtension extension)
+        {
+            IncludeWixExtension(extension.Assembly, extension.XmlNamespacePrefix, extension.XmlNamespace);
+        }
+
+        /// <summary>
+        /// Adds the specified extension to <paramref name="project"/>
+        /// </summary>
+        /// <param name="project"></param>
+        /// <param name="extensionAssembly"></param>
+        /// <param name="namespacePrefix"></param>
+        /// <param name="namespace"></param>
+        public void IncludeWixExtension(string extensionAssembly, string namespacePrefix, string @namespace)
+        {
+            if (!this.WixExtensions.Contains(extensionAssembly))
+                this.WixExtensions.Add(extensionAssembly);
+
+            var namespaceDeclaration = WixExtension.GetNamespaceDeclaration(namespacePrefix, @namespace);
+            //could use detection of duplicate prefixes
+            if (!this.WixNamespaces.Contains(namespaceDeclaration))
+                this.WixNamespaces.Add(namespaceDeclaration);
+        }
     }
 }

@@ -82,7 +82,12 @@ namespace WixSharp
         {
             //"Empty Directories" sample demonstrates the need for CreateFolder
             if (!DisableAutoCreateFolder)
-                xComponent.Add(new XElement("CreateFolder"));
+            {
+                //prevent adding more than 1 CreateFolder elements - elements that don't specify @Directory
+                if (xComponent.Elements("CreateFolder")
+                              .All(element => element.HasAttribute("Directory")))
+                    xComponent.Add(new XElement("CreateFolder"));
+            }
         }
 
         static void InsertDummyUserProfileRegistry(XElement xComponent)
