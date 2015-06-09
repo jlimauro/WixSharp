@@ -349,15 +349,14 @@ namespace WixSharp
 
                 if (dirComponents.Any())
                 {
-                    bool thereAreFiles = dirComponents.Where(x => x.ContainsFiles()).Any();
+                    var compoonentsWithNoFiles = dirComponents.Where(x => !x.ContainsFiles()).ToArray();
 
-                    if (!thereAreFiles)
+                    foreach (XElement item in compoonentsWithNoFiles)
                     {
-                        var firstComp = dirComponents.First();
                         if (xDir.Attribute("Name").Value != "DummyDir")
-                            InsertCreateFolder(firstComp);
+                            InsertCreateFolder(item);
                         else if (!xDir.ContainsAnyRemoveFolder())
-                            InsertRemoveFolder(xDir, firstComp, "both"); //to keep WiX/compiler happy and allow removal of the dummy directory
+                            InsertRemoveFolder(xDir, item, "both"); //to keep WiX/compiler happy and allow removal of the dummy directory
                     }
                 }
 
