@@ -13,12 +13,6 @@ class Script
 {
     static public void Main(string[] args)
     {
-        ///////////////
-        //Needed only for demo purposes. To allow CS-Script and Visual Studio execution without changing the build script
-        if (Environment.CurrentDirectory.EndsWith("debug", StringComparison.OrdinalIgnoreCase))
-            Environment.CurrentDirectory = Path.Combine(Environment.CurrentDirectory, "..\\..\\..\\..\\WixSharp.Samples\\Wix# Samples\\EnvVariables");
-        ///////////////
-
         Environment.SetEnvironmentVariable("bin", @"Files\Bin");
         Environment.SetEnvironmentVariable("docs", @"Files\Docs");
         Environment.SetEnvironmentVariable("LATEST_RELEASE", Environment.CurrentDirectory);
@@ -40,8 +34,7 @@ class Script
 
         project.OutDir = @"%LATEST_RELEASE%\MSI";
         project.SourceBaseDir = "%LATEST_RELEASE%";
-
-        Compiler.BuildMsi(project);
+        project.BuildMsi();
     }
 }
 
