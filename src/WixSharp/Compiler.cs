@@ -1781,8 +1781,7 @@ namespace WixSharp
                         topLevelDir.AddElement(
                             new XElement("Component",
                                 new XAttribute("Id", compId),
-                                new XAttribute("Guid", WixGuid.NewGuid(compId)),
-                                new XAttribute("KeyPath", "yes")));
+                                new XAttribute("Guid", WixGuid.NewGuid(compId))));
                     
                     var userElement = new XElement(WixExtension.Util.ToXNamespace() + "User");
                     user.EmitAttributes(userElement);
@@ -1828,8 +1827,7 @@ namespace WixSharp
                         topLevelDir.AddElement(
                             new XElement("Component",
                                 new XAttribute("Id", compId),
-                                new XAttribute("Guid", WixGuid.NewGuid(compId)),
-                                new XAttribute("KeyPath", "yes")));
+                                new XAttribute("Guid", WixGuid.NewGuid(compId))));
 
                     var sqlDbElement = new XElement(WixExtension.Sql.ToXNamespace() + "SqlDatabase");
                     sqlDb.EmitAttributes(sqlDbElement);
@@ -1856,7 +1854,6 @@ namespace WixSharp
                     sqlDb.EmitAttributes(sqlDbElement);
 
                     ProcessSqlStrings(featureComponents, defaultFeatureComponents, product, sqlDb);
-
                     ProcessSqlScripts(featureComponents, defaultFeatureComponents, product, sqlDb);
 
                     product.Add(sqlDbElement);
@@ -1889,8 +1886,7 @@ namespace WixSharp
                     topLevelDir.AddElement(
                         new XElement("Component",
                             new XAttribute("Id", compId),
-                            new XAttribute("Guid", WixGuid.NewGuid(compId)),
-                            new XAttribute("KeyPath", "yes")));
+                            new XAttribute("Guid", WixGuid.NewGuid(compId))));
 
                 var sqlScriptElement = new XElement(WixExtension.Sql.ToXNamespace() + "SqlScript");
                 sqlScript.EmitAttributes(sqlScriptElement);
@@ -1924,8 +1920,7 @@ namespace WixSharp
                     topLevelDir.AddElement(
                         new XElement("Component",
                             new XAttribute("Id", compId),
-                            new XAttribute("Guid", WixGuid.NewGuid(compId)),
-                            new XAttribute("KeyPath", "yes")));
+                            new XAttribute("Guid", WixGuid.NewGuid(compId))));
 
                 var sqlStringElement = new XElement(WixExtension.Sql.ToXNamespace() + "SqlString");
                 sqlString.EmitAttributes(sqlStringElement);

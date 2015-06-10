@@ -6,13 +6,46 @@ using System.Xml.Linq;
 namespace WixSharp
 {
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
+    /// Attributes represented by this enum will be rendered as having the value 'yes'. 
+    /// If a value of 'no' is required, set the property directly after construction.
+    /// </remarks>
+    [Flags]
+    public enum SqlDbOption
+    {
+        None = 0,
+        CreateOnInstall = 1,
+        CreateOnReinstall = 2,
+        CreateOnUninstall = 4,
+        DropOnInstall = 8,
+        DropOnReinstall = 16,
+        DropOnUninstall = 32
+    }
+
+    /// <summary>
+    /// Represents WixSqlExtension SqlDatabase element. The resulting XML representation may be rendered
+    /// inside of a componet element or under the product element. The parent element depends on the 
+    /// presence of a value for at least 1 property represented by values of SqlDbOption enumeration.
+    /// </summary>
     public class SqlDatabase : WixEntity
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Creates an instance of SqlDatabase
+        /// </summary>
         public SqlDatabase() { }
 
+        /// <summary>
+        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// </summary>
+        /// <param name="database"></param>
+        /// <param name="server"></param>
+        /// <param name="items"></param>
         public SqlDatabase(string database, string server, params WixEntity[] items)
         {
             if (string.IsNullOrEmpty(database)) throw new ArgumentNullException("database", "database is a null reference or empty");
@@ -25,23 +58,112 @@ namespace WixSharp
             AddItems(items);
         }
 
+        /// <summary>
+        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="database"></param>
+        /// <param name="server"></param>
+        /// <param name="items"></param>
         public SqlDatabase(Id id, string database, string server, params WixEntity[] items)
             : this(database, server, items)
         {
             Id = id;
         }
 
+        /// <summary>
+        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <param name="database"></param>
+        /// <param name="server"></param>
+        /// <param name="items"></param>
         public SqlDatabase(Feature feature, string database, string server, params WixEntity[] items)
             : this(database, server, items)
         {
             Feature = feature;
         }
 
+        /// <summary>
+        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="feature"></param>
+        /// <param name="database"></param>
+        /// <param name="server"></param>
+        /// <param name="items"></param>
         public SqlDatabase(Id id, Feature feature, string database, string server, params WixEntity[] items)
             : this(database, server, items)
         {
             Id = id;
             Feature = feature;
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// </summary>
+        /// <param name="database"></param>
+        /// <param name="server"></param>
+        /// <param name="dbOptions"></param>
+        /// <param name="items"></param>
+        public SqlDatabase(string database, string server, SqlDbOption dbOptions, params WixEntity[] items)
+            : this(database, server, items)
+        {
+           SetSqlDbOptions(dbOptions);
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="database"></param>
+        /// <param name="server"></param>
+        /// <param name="dbOptions"></param>
+        /// <param name="items"></param>
+        public SqlDatabase(Id id, string database, string server, SqlDbOption dbOptions, params WixEntity[] items)
+            : this(database, server, dbOptions, items)
+        {
+            Id = id;
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <param name="database"></param>
+        /// <param name="server"></param>
+        /// <param name="dbOptions"></param>
+        /// <param name="items"></param>
+        public SqlDatabase(Feature feature, string database, string server, SqlDbOption dbOptions, params WixEntity[] items)
+            : this(database, server, dbOptions, items)
+        {
+            Feature = feature;
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="feature"></param>
+        /// <param name="database"></param>
+        /// <param name="server"></param>
+        /// <param name="dbOptions"></param>
+        /// <param name="items"></param>
+        public SqlDatabase(Id id, Feature feature, string database, string server, SqlDbOption dbOptions, params WixEntity[] items)
+            : this(database, server, dbOptions, items)
+        {
+            Id = id;
+            Feature = feature;
+        }
+
+        private void SetSqlDbOptions(SqlDbOption options)
+        {
+            if ((options | SqlDbOption.CreateOnInstall) == SqlDbOption.CreateOnInstall) CreateOnInstall = true;
+            if ((options | SqlDbOption.CreateOnReinstall) == SqlDbOption.CreateOnReinstall) CreateOnReinstall = true;
+            if ((options | SqlDbOption.CreateOnUninstall) == SqlDbOption.CreateOnUninstall) CreateOnUninstall = true;
+            if ((options | SqlDbOption.DropOnInstall) == SqlDbOption.DropOnInstall) DropOnInstall = true;
+            if ((options | SqlDbOption.DropOnReinstall) == SqlDbOption.DropOnReinstall) DropOnReinstall = true;
+            if ((options | SqlDbOption.DropOnUninstall) == SqlDbOption.DropOnUninstall) DropOnUninstall = true;
         }
 
         #endregion
@@ -53,17 +175,64 @@ namespace WixSharp
 
         #region Wix SqlDatabase attributes
 
+        /// <summary>
+        /// Maps to the ConfirmOverwrite property of SqlDatabase
+        /// </summary>
         public bool? ConfirmOverwrite { get; set; }
+
+        /// <summary>
+        /// Maps to the ContinueOnError property of SqlDatabase
+        /// </summary>
         public bool? ContinueOnError { get; set; }
+
+        /// <summary>
+        /// Maps to the CreateOnInstall property of SqlDatabase
+        /// </summary>
         public bool? CreateOnInstall { get; set; }
+
+        /// <summary>
+        /// Maps to the CreateOnReinstall property of SqlDatabase
+        /// </summary>
         public bool? CreateOnReinstall { get; set; }
+
+        /// <summary>
+        /// Maps to the CreateOnUninstall property of SqlDatabase
+        /// </summary>
         public bool? CreateOnUninstall { get; set; }
+
+        /// <summary>
+        /// Maps to the Database property of SqlDatabase
+        /// </summary>
         public string Database { get; set; } //required
+
+        /// <summary>
+        /// Maps to the DropOnInstall property of SqlDatabase
+        /// </summary>
         public bool? DropOnInstall { get; set; }
+
+        /// <summary>
+        /// Maps to the DropOnReinstall property of SqlDatabase
+        /// </summary>
         public bool? DropOnReinstall { get; set; }
+
+        /// <summary>
+        /// Maps to the DropOnUninstall property of SqlDatabase
+        /// </summary>
         public bool? DropOnUninstall { get; set; }
+
+        /// <summary>
+        /// Maps to the Instance property of SqlDatabase
+        /// </summary>
         public string Instance { get; set; }
+
+        /// <summary>
+        /// Maps to the Server property of SqlDatabase
+        /// </summary>
         public string Server { get; set; } //required
+
+        /// <summary>
+        /// Maps to the User property of SqlDatabase
+        /// </summary>
         public string User { get; set; }
 
         #endregion
@@ -101,14 +270,52 @@ namespace WixSharp
         }
     }
 
+    /// <summary>
+    /// Represents Execution options for SqlScript and SqlString elements
+    /// </summary>
+    /// <remarks>
+    /// Attributes represented by this enum will be rendered as having the value 'yes'. 
+    /// If a value of 'no' is required, set the property directly after construction.
+    /// </remarks>
+    [Flags]
+    public enum ExecuteSql
+    {
+        None = 0,
+        OnInstall = 1,
+        OnReinstall = 2,
+        OnUninstall = 4
+    }
+
+    /// <summary>
+    /// Represents Rollback options for SqlScript and SqlString elements
+    /// </summary>
+    /// <remarks>
+    /// Attributes represented by this enum will be rendered as having the value 'yes'. 
+    /// If a value of 'no' is required, set the property directly after construction.
+    /// </remarks>
+    [Flags]
+    public enum RollbackSql
+    {
+        None = 0,
+        OnInstall = 1,
+        OnReinstall = 2,
+        OnUninstall = 4
+    }
+
+    /// <summary>
+    /// Represents WixSqlExtension element SqlString
+    /// </summary>
     public class SqlString : WixEntity
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Creates an instance of SqlString
+        /// </summary>
         public SqlString() { }
 
-        public SqlString(string sql)
+        private SqlString(string sql)
         {
             if (string.IsNullOrEmpty(sql)) throw new ArgumentNullException("sql", "sql is a null reference or empty");
 
@@ -116,23 +323,105 @@ namespace WixSharp
             Sql = sql;
         }
 
-        public SqlString(Id id, string sql)
+        /// <summary>
+        /// Creates an instance of SqlString from <paramref name="sql"/> to be execute according to <paramref name="executeOptions"/>
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="executeOptions"></param>
+        public SqlString(string sql, ExecuteSql executeOptions)
             : this(sql)
         {
-            Id = id;
+            SetExecutionOptions(executeOptions);
         }
 
-        public SqlString(Feature feature, string sql)
-            : this(sql)
+        /// <summary>
+        /// Creates an instance of SqlString from <paramref name="sql"/> to be execute according to <paramref name="executeOptions"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="sql"></param>
+        /// <param name="executeOptions"></param>
+        public SqlString(Id id, string sql, ExecuteSql executeOptions)
+            : this(sql, executeOptions)
+        {
+            Id = id;         
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlString from <paramref name="sql"/> to be execute according to <paramref name="executeOptions"/>
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <param name="sql"></param>
+        /// <param name="executeOptions"></param>
+        public SqlString(Feature feature, string sql, ExecuteSql executeOptions)
+            : this(sql, executeOptions)
         {
             Feature = feature;
         }
 
-        public SqlString(Id id, Feature feature, string sql)
+        /// <summary>
+        /// Creates an instance of SqlString from <paramref name="sql"/> to be execute according to <paramref name="executeOptions"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="feature"></param>
+        /// <param name="sql"></param>
+        /// <param name="executeOptions"></param>
+        public SqlString(Id id, Feature feature, string sql, ExecuteSql executeOptions)
+            : this(sql, executeOptions)
+        {
+            Id = id;
+            Feature = feature;
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlString from <paramref name="sql"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="rollbackOptions"></param>
+        public SqlString(string sql, RollbackSql rollbackOptions)
+            : this(sql)
+        {
+            SetRollbackOptions(rollbackOptions);
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlString from <paramref name="sql"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="sql"></param>
+        /// <param name="rollbackOptions"></param>
+        public SqlString(Id id, string sql, RollbackSql rollbackOptions)
+            : this(sql)
+        {
+            Id = id;
+            SetRollbackOptions(rollbackOptions);
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlString from <paramref name="sql"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <param name="sql"></param>
+        /// <param name="rollbackOptions"></param>
+        public SqlString(Feature feature, string sql, RollbackSql rollbackOptions)
+            : this(sql)
+        {
+            Feature = feature;
+            SetRollbackOptions(rollbackOptions);
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlString from <paramref name="sql"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="feature"></param>
+        /// <param name="sql"></param>
+        /// <param name="rollbackOptions"></param>
+        public SqlString(Id id, Feature feature, string sql, RollbackSql rollbackOptions)
             : this(sql)
         {
             Id = id;
             Feature = feature;
+            SetRollbackOptions(rollbackOptions);
         }
 
         #endregion 
@@ -141,30 +430,96 @@ namespace WixSharp
 
         #region Wix SqlString attributes
 
+        /// <summary>
+        /// Maps to the ContinueOnError property of SqlString
+        /// </summary>
         public bool? ContinueOnError { get; set; }
+
+        /// <summary>
+        /// Maps to the ExecuteOnInstall property of SqlString
+        /// </summary>
         public bool? ExecuteOnInstall { get; set; } //partially required
+
+        /// <summary>
+        /// Maps to the ExecuteOnReinstall property of SqlString
+        /// </summary>
         public bool? ExecuteOnReinstall { get; set; } //partially required
+
+        /// <summary>
+        /// Maps to the ExecuteOnUninstall property of SqlString
+        /// </summary>
         public bool? ExecuteOnUninstall { get; set; } //partially required
+
+        /// <summary>
+        /// Maps to the RollbackOnInstall property of SqlString
+        /// </summary>
         public bool? RollbackOnInstall { get; set; } //partially required
+
+        /// <summary>
+        /// Maps to the RollbackOnReinstall property of SqlString
+        /// </summary>
         public bool? RollbackOnReinstall { get; set; } //partially required
+
+        /// <summary>
+        /// Maps to the RollbackOnUninstall property of SqlString
+        /// </summary>
         public bool? RollbackOnUninstall { get; set; } //partially required
+
+        /// <summary>
+        /// Maps to the Sequence property of SqlString
+        /// </summary>
         public int? Sequence { get; set; }
+
+        /// <summary>
+        /// Maps to the Sql property of SqlString
+        /// </summary>
         public string Sql { get; set; } //required
+
+        /// <summary>
+        /// Maps to the SqlDb property of SqlString. This property is to be inferred from the containing SqlDatabase element.
+        /// </summary>
         internal string SqlDb { get; set; } //required when not under a SqlDatabase element
+
+        /// <summary>
+        /// Maps to the User property of SqlString
+        /// </summary>
         public string User { get; set; }
 
         #endregion
 
+        private void SetExecutionOptions(ExecuteSql executeOptions)
+        {
+            if (executeOptions == ExecuteSql.None) throw new ArgumentException("None is invalid. It has no legal representation in Wix", "executeOptions");
+
+            if ((executeOptions | ExecuteSql.OnInstall) == ExecuteSql.OnInstall) ExecuteOnInstall = true;
+            if ((executeOptions | ExecuteSql.OnReinstall) == ExecuteSql.OnReinstall) ExecuteOnReinstall = true;
+            if ((executeOptions | ExecuteSql.OnUninstall) == ExecuteSql.OnUninstall) ExecuteOnUninstall = true;
+        }
+
+        private void SetRollbackOptions(RollbackSql rollbackOption)
+        {
+            if (rollbackOption == RollbackSql.None) throw new ArgumentException("None is invalid. It has no legal representation in Wix", "rollbackOption");
+
+            if ((rollbackOption | RollbackSql.OnInstall) == RollbackSql.OnInstall) RollbackOnInstall = true;
+            if ((rollbackOption | RollbackSql.OnReinstall) == RollbackSql.OnReinstall) RollbackOnReinstall = true;
+            if ((rollbackOption | RollbackSql.OnUninstall) == RollbackSql.OnUninstall) RollbackOnUninstall = true;
+        }
     }
 
+    /// <summary>
+    /// Represents WixSqlExtension element SqlScript
+    /// </summary>
     public class SqlScript : WixEntity
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Creates an instance of SqlScript
+        /// </summary>
         public SqlScript() { }
 
-        public SqlScript(string binaryKey)
+        private SqlScript(string binaryKey)
         {
             if (string.IsNullOrEmpty(binaryKey)) throw new ArgumentNullException("binaryKey", "binaryKey is a null reference or empty");
 
@@ -172,21 +527,101 @@ namespace WixSharp
             Name = binaryKey;
         }
 
-        public SqlScript(Id id, string binaryKey)
+        /// <summary>
+        /// Creates an instance of SqlScript for <paramref name="binaryKey"/> to be execute according to <paramref name="executeOptions"/>
+        /// </summary>
+        /// <param name="binaryKey"></param>
+        /// <param name="executeOptions"></param>
+        public SqlScript(string binaryKey, ExecuteSql executeOptions)
             : this(binaryKey)
+        {
+            SetExecutionOptions(executeOptions);
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlScript for <paramref name="binaryKey"/> to be execute according to <paramref name="executeOptions"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="binaryKey"></param>
+        /// <param name="executeOptions"></param>
+        public SqlScript(Id id, string binaryKey, ExecuteSql executeOptions)
+            : this(binaryKey, executeOptions)
         {
             Id = id;       
         }
 
-        public SqlScript(Feature feature, string binaryKey)
-            : this(binaryKey)
+        /// <summary>
+        /// Creates an instance of SqlScript for <paramref name="binaryKey"/> to be execute according to <paramref name="executeOptions"/>
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <param name="binaryKey"></param>
+        /// <param name="executeOptions"></param>
+        public SqlScript(Feature feature, string binaryKey, ExecuteSql executeOptions)
+            : this(binaryKey, executeOptions)
         {
             Feature = feature;
         }
 
-        public SqlScript(Id id, Feature feature, string binaryKey)
-            : this(id, binaryKey)
+        /// <summary>
+        /// Creates an instance of SqlScript for <paramref name="binaryKey"/> to be execute according to <paramref name="executeOptions"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="feature"></param>
+        /// <param name="binaryKey"></param>
+        /// <param name="executeOptions"></param>
+        public SqlScript(Id id, Feature feature, string binaryKey, ExecuteSql executeOptions)
+            : this(binaryKey, executeOptions)
         {
+            Id = id;
+            Feature = feature;
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlScript for <paramref name="binaryKey"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+        /// </summary>
+        /// <param name="binaryKey"></param>
+        /// <param name="rollbackOptions"></param>
+        public SqlScript(string binaryKey, RollbackSql rollbackOptions)
+            : this(binaryKey)
+        {
+            SetRollbackOptions(rollbackOptions);
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlScript for <paramref name="binaryKey"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="binaryKey"></param>
+        /// <param name="rollbackOptions"></param>
+        public SqlScript(Id id, string binaryKey, RollbackSql rollbackOptions)
+            : this(binaryKey, rollbackOptions)
+        {
+            Id = id;
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlScript for <paramref name="binaryKey"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <param name="binaryKey"></param>
+        /// <param name="rollbackOptions"></param>
+        public SqlScript(Feature feature, string binaryKey, RollbackSql rollbackOptions)
+            : this(binaryKey, rollbackOptions)
+        {
+            Feature = feature;
+        }
+
+        /// <summary>
+        /// Creates an instance of SqlScript for <paramref name="binaryKey"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="feature"></param>
+        /// <param name="binaryKey"></param>
+        /// <param name="rollbackOptions"></param>
+        public SqlScript(Id id, Feature feature, string binaryKey, RollbackSql rollbackOptions)
+            : this(binaryKey, rollbackOptions)
+        {
+            Id = id;
             Feature = feature;
         }
 
@@ -196,19 +631,80 @@ namespace WixSharp
 
         #region Wix SqlScript attributes
 
+        /// <summary>
+        /// Maps to the BinaryKey property of SqlScript
+        /// </summary>
         public string BinaryKey { get; set; } //required
+
+        /// <summary>
+        /// Maps to the ContinueOnError property of SqlScript
+        /// </summary>
         public bool? ContinueOnError { get; set; }
+
+        /// <summary>
+        /// Maps to the ExecuteOnInstall property of SqlScript
+        /// </summary>
         public bool? ExecuteOnInstall { get; set; } //partially required
+
+        /// <summary>
+        /// Maps to the ExecuteOnReinstall property of SqlScript
+        /// </summary>
         public bool? ExecuteOnReinstall { get; set; } //partially required
+
+        /// <summary>
+        /// Maps to the ExecuteOnUninstall property of SqlScript
+        /// </summary>
         public bool? ExecuteOnUninstall { get; set; } //partially required
+
+        /// <summary>
+        /// Maps to the RollbackOnInstall property of SqlScript
+        /// </summary>
         public bool? RollbackOnInstall { get; set; } //partially required
+
+        /// <summary>
+        /// Maps to the RollbackOnReinstall property of SqlScript
+        /// </summary>
         public bool? RollbackOnReinstall { get; set; } //partially required
+
+        /// <summary>
+        /// Maps to the RollbackOnUninstall property of SqlScript
+        /// </summary>
         public bool? RollbackOnUninstall { get; set; } //partially required
+
+        /// <summary>
+        /// Maps to the Sequence property of SqlScript
+        /// </summary>
         public int? Sequence { get; set; }
-        internal string SqlDb { get; set; } //required if and only if not under a SqlDatabase
+
+        /// <summary>
+        /// Maps to the SqlDb property of SqlScript. This property is to be inferred from the containing SqlDatabase element.
+        /// </summary>
+        internal string SqlDb { get; set; } //required if and only if not under a SqlDatabase. 
+
+        /// <summary>
+        /// Maps to the User property of SqlScript
+        /// </summary>
         public string User { get; set; }
 
         #endregion
+
+        private void SetExecutionOptions(ExecuteSql executeOptions)
+        {
+            if (executeOptions == ExecuteSql.None) throw new ArgumentException("None is invalid. It has no legal representation in Wix", "executeOptions");
+
+            if ((executeOptions | ExecuteSql.OnInstall) == ExecuteSql.OnInstall) ExecuteOnInstall = true;
+            if ((executeOptions | ExecuteSql.OnReinstall) == ExecuteSql.OnReinstall) ExecuteOnReinstall = true;
+            if ((executeOptions | ExecuteSql.OnUninstall) == ExecuteSql.OnUninstall) ExecuteOnUninstall = true;
+        }
+
+        private void SetRollbackOptions(RollbackSql rollbackOption)
+        {
+            if (rollbackOption == RollbackSql.None) throw new ArgumentException("None is invalid. It has no legal representation in Wix", "rollbackOption");
+
+            if ((rollbackOption | RollbackSql.OnInstall) == RollbackSql.OnInstall) RollbackOnInstall = true;
+            if ((rollbackOption | RollbackSql.OnReinstall) == RollbackSql.OnReinstall) RollbackOnReinstall = true;
+            if ((rollbackOption | RollbackSql.OnUninstall) == RollbackSql.OnUninstall) RollbackOnUninstall = true;
+        }
 
     }
 

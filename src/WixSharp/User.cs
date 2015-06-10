@@ -12,8 +12,16 @@ namespace WixSharp
 
         #region Constructors
 
+        /// <summary>
+        /// Creates an instance of User
+        /// </summary>
         public User() { }
 
+        /// <summary>
+        /// Creates an instance of User representing <paramref name="name"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
         public User(Id id, string name)
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name", "name is a null reference or empty");
@@ -22,6 +30,12 @@ namespace WixSharp
             Id = id;
         }
 
+        /// <summary>
+        /// Creates an instance of User representing <paramref name="name"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="feature"></param>
+        /// <param name="name"></param>
         public User(Id id, Feature feature, string name)
             : this(id, name)
         {
@@ -29,12 +43,25 @@ namespace WixSharp
             Feature = feature;
         }
 
+        /// <summary>
+        /// Creates an instance of User representing <paramref name="name"/>@<paramref name="domain"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="domain"></param>
         public User(Id id, string name, string domain)
             : this(id, name)
         {
             Domain = domain;
         }
 
+        /// <summary>
+        /// Creates an instance of User representing <paramref name="name"/>@<paramref name="domain"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="feature"></param>
+        /// <param name="name"></param>
+        /// <param name="domain"></param>
         public User(Id id, Feature feature, string name, string domain)
             : this(id, feature, name)
         {
@@ -67,19 +94,74 @@ namespace WixSharp
 
         #region Wix User attributes
 
+        /// <summary>
+        /// Maps to the CanNotChangePassword property of User
+        /// </summary>
         public bool? CanNotChangePassword { get; set; } //only allowed under a component
+
+        /// <summary>
+        /// Maps to the CreateUser property of User
+        /// </summary>
         public bool? CreateUser { get; set; } //only allowed under a component
+
+        /// <summary>
+        /// Maps to the Disabled property of User
+        /// </summary>
         public bool? Disabled { get; set; } //only allowed under a component
+
+        /// <summary>
+        /// Maps to the Domain property of User
+        /// </summary>
         public string Domain { get; set; }
+
+        /// <summary>
+        /// Maps to the FailIfExists property of User
+        /// </summary>
         public bool? FailIfExists { get; set; } //only allowed under a component
+
+        /// <summary>
+        /// Maps to the LogOnAsBatchJob property of User
+        /// </summary>
         public bool? LogOnAsBatchJob { get; set; } //only allowed under a component
+
+        /// <summary>
+        /// Maps to the LogOnAsService property of User
+        /// </summary>
         public bool? LogOnAsService { get; set; } //only allowed under a component
+
+        /// <summary>
+        /// Maps to the Name property of User
+        /// </summary>
         public string Name { get; set; } //required
+
+        /// <summary>
+        /// Maps to the Password property of User
+        /// </summary>
         public string Password { get; set; }
+
+        /// <summary>
+        /// Maps to the PasswordExpired property of User
+        /// </summary>
         public bool? PasswordExpired { get; set; } //only allowed under a component
+
+        /// <summary>
+        /// Maps to the PasswordNeverExpires property of User
+        /// </summary>
         public bool? PasswordNeverExpires { get; set; } //only allowed under a component
+
+        /// <summary>
+        /// Maps to the RemoveOnUninstall property of User
+        /// </summary>
         public bool? RemoveOnUninstall { get; set; } //only allowed under a component
+
+        /// <summary>
+        /// Maps to the UpdateIfExists property of User
+        /// </summary>
         public bool? UpdateIfExists { get; set; } //only allowed under a component
+
+        /// <summary>
+        /// Maps to the Vital property of User
+        /// </summary>
         public bool? Vital { get; set; } //only allowed under a component
 
         #endregion

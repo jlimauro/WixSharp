@@ -119,6 +119,7 @@ namespace WixSharp
         /// Maps to the User property of PermissionEx
         /// </summary>
         public string User { get; set; }
+        
         /// <summary>
         /// Maps to the Domain property of PermissionEx
         /// </summary>
