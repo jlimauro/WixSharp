@@ -3,8 +3,6 @@
 //css_ref System.Core.dll;
 //css_ref System.Xml.dll;
 using System;
-using System.Linq;
-using System.Xml.Linq;
 using WixSharp;
 
 class Script
@@ -15,18 +13,12 @@ class Script
             new Project("MyProduct",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
                     new File(@"Files\Bin\MyApp.exe")),
-                new User(new Id("MyUser"), "James"),
-                new User(new Id("MyOtherUser"), "James2") { WixIncludeInComponent = true },
-                new SqlDatabase("MyDatabase", "localhost", 
-                    new SqlString("alter login james with password = 'hi'", ExecuteSql.OnInstall)),
-                new SqlDatabase("MyDatabase", "localhost",
-                    new SqlString("alter login james with password = 'hey'", ExecuteSql.OnInstall)
-                        { User = "MyOtherUser" })
-                    {
-                        CreateOnInstall = true,
-                        User = "MyUser"
-                    });
-
+                //define users
+                new User(new Id("MyOtherUser"), "James") { CreateUser = true, Password = "Password1"},
+                //define sql
+                new SqlDatabase("MyDatabase0", ".\\SqlExpress", SqlDbOption.CreateOnInstall));
+                    //new SqlString("alter login Bryce with password = 'Password1'", ExecuteSql.OnInstall)));
+                
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
         Compiler.BuildMsi(project);
