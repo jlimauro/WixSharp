@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="BootstrapperTest.cs" />
     <Compile Include="GenericTest.cs" />
+    <Compile Include="IssueFixesTest.cs" />
     <Compile Include="ManagedActionsTest.cs" />
     <Compile Include="ManagedProjectTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

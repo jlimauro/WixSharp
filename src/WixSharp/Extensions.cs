@@ -700,6 +700,21 @@ namespace WixSharp
             return matchingElementList.ToArray();
         }
 
+
+        public static bool HasLocalName(this XElement element, string elementName, bool ignoreCase = false)
+        {
+            return element.Name.LocalName.SameAs(elementName, ignoreCase);
+        }
+
+        internal static void Map(this Dictionary<Feature, List<string>> featureComponents, Feature feature, string componentId)
+        {
+            if (!featureComponents.ContainsKey(feature))
+                featureComponents[feature] = new List<string>();
+
+            featureComponents[feature].Add(componentId);
+        }
+
+
         /// <summary>
         /// Selects single descendant element with a given name (LocalName). Throws if no or more then one match found
         /// </summary>
