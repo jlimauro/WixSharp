@@ -115,9 +115,9 @@
     <Compile Include="CommonTasks.cs" />
     <Compile Include="Compiler.Bootstrapper.cs" />
     <Compile Include="Permissions.cs" />
-    <Compile Include="WixExtension.cs" />
     <Compile Include="Sql.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="WixExtension.cs" />
     <Compile Include="WixProject.cs" />
     <Compile Include="Controls\Control.cs" />
     <Compile Include="Controls\ControlType.cs" />

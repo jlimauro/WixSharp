@@ -603,7 +603,7 @@ namespace WixSharp
         {
             return s.Length - s.TrimStart('\n', '\r', '\t', ' ').Length;
         }
-        
+
 
         /// <summary>
         /// Concats the specified strings. In the result string all items are separated with the specified delimiter.
@@ -1234,7 +1234,7 @@ namespace WixSharp
             else
                 return encoding.GetBytes(obj);
         }
-    }
+        }
 
     class WixItems : WixObject
     {
