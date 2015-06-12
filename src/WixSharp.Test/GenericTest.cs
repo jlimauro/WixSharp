@@ -65,49 +65,6 @@ namespace WixSharp.Test
             Assert.Equal("InstallUISequence|InstallExecuteSequence", result2.ToString());
         }
 
-        [Fact]
-        [Description("Issue #37")]
-        public void Should_Preserve_ConstantsInAttrDefs()
-        {
-            var project =
-                new Project("My Product",
-                    new Dir(@"%ProgramFiles%\MyCompany",
-                        new Dir("MyWebApp",
-                            new File(@"MyWebApp\Default.aspx",
-                            new IISVirtualDir
-                            {
-                                Name = "MyWebApp",
-                                AppName = "Test",
-                                WebSite = new WebSite("DefaultWebSite", "[IIS_SITE_ADDRESS]:[IIS_SITE_PORT]", "[IIS_SITE_NAME]"),
-                                WebAppPool = new WebAppPool("MyWebApp", "Identity=applicationPoolIdentity")
-                            }))));
-
-
-            string wxs = project.BuildWxs();
-
-            var address = XDocument.Load(wxs)
-                                   .FindSingle("WebAddress");
-
-            Assert.Equal("[IIS_SITE_ADDRESS]", address.ReadAttribute("Id"));
-            Assert.Equal("[IIS_SITE_PORT]", address.ReadAttribute("Port"));
-        }
-        
-        [Fact]
-        [Description("Post 576142#post1428674")]
-        public void Should_Handle_NonstandardProductVersions()
-        {
-            Project project = new Project("MyProduct",
-                new Dir(@"%ProgramFiles%\My Company\My Product",
-                    new File(this.GetType().Assembly.Location)
-                )
-            );
-
-            project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
-            project.Version = new Version("2014.1.26.0");
-
-            Compiler.BuildMsi(project); 
-        }
-
         void CodeFormattingTestPad()
         {
         }
