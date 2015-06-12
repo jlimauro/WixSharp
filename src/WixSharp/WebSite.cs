@@ -28,6 +28,7 @@ using IO = System.IO;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace WixSharp
 {
@@ -207,32 +208,209 @@ namespace WixSharp
     /// </summary>
     public class Certificate : WixEntity
     {
+
+        #region constructors
+
+        /// <summary>
+        /// Creates an instance of Certificate
+        /// </summary>
+        public Certificate() { }
+
+        /// <summary>
+        /// Creates an instance of Certificate where the certificate is a binary resource
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="storeLocation"></param>
+        /// <param name="storeName"></param>
+        /// <param name="binaryKey"></param>
+        public Certificate(string name, StoreLocation storeLocation, StoreName storeName, string binaryKey)
+        {
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name", "name is a null reference or empty");
+            if (string.IsNullOrEmpty(binaryKey)) throw new ArgumentNullException("binaryKey", "binaryKey is a null reference or empty");
+            
+            base.Name = name;
+   
+            Name = name;
+            BinaryKey = binaryKey;
+            StoreLocation = storeLocation;
+            StoreName = storeName;
+        }
+
+        /// <summary>
+        /// Creates an instance of Certificate where the certificate is a binary resource
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="storeLocation"></param>
+        /// <param name="storeName"></param>
+        /// <param name="binaryKey"></param>
+        public Certificate(Id id, string name, StoreLocation storeLocation, StoreName storeName, string binaryKey)
+            : this(name, storeLocation, storeName, binaryKey)
+        {
+            Id = id;
+        }
+
+        /// <summary>
+        /// Creates an instance of Certificate where the certificate is a binary resource
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <param name="name"></param>
+        /// <param name="storeLocation"></param>
+        /// <param name="storeName"></param>
+        /// <param name="binaryKey"></param>
+        public Certificate(Feature feature, string name, StoreLocation storeLocation, StoreName storeName, string binaryKey)
+            : this(name, storeLocation, storeName, binaryKey)
+        {
+            Feature = feature;
+        }
+
+        /// <summary>
+        /// Creates an instance of Certificate where the certificate is a binary resource
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="feature"></param>
+        /// <param name="name"></param>
+        /// <param name="storeLocation"></param>
+        /// <param name="storeName"></param>
+        /// <param name="binaryKey"></param>
+        public Certificate(Id id, Feature feature, string name, StoreLocation storeLocation, StoreName storeName, string binaryKey)
+            : this(name, storeLocation, storeName, binaryKey)
+        {
+            Id = id;
+            Feature = feature;
+        }
+
+        /// <summary>
+        /// Creates an instance of Certificate where the certificate is requested or exists at the specified path
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="storeLocation"></param>
+        /// <param name="storeName"></param>
+        /// <param name="certificatePath"></param>
+        /// <param name="request"></param>
+        public Certificate(string name, StoreLocation storeLocation, StoreName storeName, string certificatePath, bool request)
+        {
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name", "name is a null reference or empty");
+            if (string.IsNullOrEmpty(certificatePath)) throw new ArgumentNullException("certificatePath", "certificatePath is a null reference or empty");
+            
+            base.Name = name;
+            
+            Name = name;
+            CertificatePath = certificatePath;
+            Request = request;
+            StoreLocation = storeLocation;
+            StoreName = storeName;
+        }
+
+        /// <summary>
+        /// Creates an instance of Certificate where the certificate is requested or exists at the specified path
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="storeLocation"></param>
+        /// <param name="storeName"></param>
+        /// <param name="certificatePath"></param>
+        /// <param name="request"></param>
+        public Certificate(Id id, string name, StoreLocation storeLocation, StoreName storeName, string certificatePath, bool request)
+            : this(name, storeLocation, storeName, certificatePath, request)
+        {
+            Id = id;
+        }
+
+        /// <summary>
+        /// Creates an instance of Certificate where the certificate is requested or exists at the specified path
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <param name="name"></param>
+        /// <param name="storeLocation"></param>
+        /// <param name="storeName"></param>
+        /// <param name="certificatePath"></param>
+        /// <param name="request"></param>
+        public Certificate(Feature feature, string name, StoreLocation storeLocation, StoreName storeName, string certificatePath, bool request)
+            : this(name, storeLocation, storeName, certificatePath, request)
+        {
+            Feature = feature;
+        }
+
+        /// <summary>
+        /// Creates an instance of Certificate where the certificate is requested or exists at the specified path
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="feature"></param>
+        /// <param name="name"></param>
+        /// <param name="storeLocation"></param>
+        /// <param name="storeName"></param>
+        /// <param name="certificatePath"></param>
+        /// <param name="request"></param>
+        public Certificate(Id id, Feature feature, string name, StoreLocation storeLocation, StoreName storeName, string certificatePath, bool request)
+            : this(name, storeLocation, storeName, certificatePath, request)
+        {
+            Id = id;
+            Feature = feature;
+        }
+
+        #endregion
+
+        public Feature Feature { get; set; }
+
+        #region attributes
+
+        /// <summary>
+        /// The Id of a Binary instance that is the certificate to be installed
+        /// </summary>
+        public string BinaryKey { get; set; }
+        
         /// <summary>
         /// If the Request attribute is <c>false</c> then this attribute is the path to the certificate file outside of the package. 
         /// If the Request attribute is <c>true</c> then this attribute is the certificate authority to request the certificate from. 
         /// </summary>
-        public string CertificatePath = "";
+        public string CertificatePath { get; set; }
+
+        /// <summary>
+        /// The name of the certificate being installed
+        /// </summary>
+        public string Name { get; set; }
+
         /// <summary>
         /// Flag to indicate if the certificate should be overwritten.
         /// </summary>
-        public bool Overwrite = false;
+        public bool? Overwrite { get; set; }
+        
         /// <summary>
         /// This attribute controls whether the CertificatePath attribute is a path to a certificate file (Request=<c>false</c>) or 
         /// the certificate authority to request the certificate from (Request=<c>true</c>). 
         /// </summary>
-        public bool Request = false;
+        public bool? Request {get; set; }
+        
         /// <summary>
         /// If the Binary stream or path to the file outside of the package is a password protected PFX file, the password for that PFX must be specified here. 
         /// </summary>
-        public string PFXPassword;
+        public string PFXPassword { get; set; }
+        
         /// <summary>
         /// Sets the certificate StoreLocation.
         /// </summary>
         public StoreLocation StoreLocation;
+        
         /// <summary>
         /// Sets the certificate StoreName.
         /// </summary>
         public StoreName StoreName;
+
+        #endregion
+
+        public void EmitAttributes(XElement element)
+        {
+            element.SetAttributeValue("Id", Id);
+            if (!string.IsNullOrEmpty(BinaryKey)) element.SetAttributeValue("BinaryKey", BinaryKey);
+            if (!string.IsNullOrEmpty(CertificatePath)) element.SetAttributeValue("CertificatePath", CertificatePath);
+            element.SetAttributeValue("Name", Name);
+            if (Overwrite.HasValue) element.SetAttributeValue("Overwrite", Overwrite.Value.ToYesNo());
+            if (!string.IsNullOrEmpty(PFXPassword)) element.SetAttributeValue("PFXPassword", PFXPassword);
+            if (Request.HasValue) element.SetAttributeValue("Request", Request.Value.ToYesNo());
+            element.SetAttributeValue("StoreLocation", Enum.GetName(typeof(StoreLocation), StoreLocation));
+            element.SetAttributeValue("StoreName", Enum.GetName(typeof(StoreName), StoreName));
+        }
     }
 
     /// <summary>

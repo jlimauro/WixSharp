@@ -77,7 +77,7 @@ namespace WixSharp
         /// <summary>
         /// Well-known Wix Extension IIs
         /// </summary>
-        public static WixExtension IIs = new WixExtension("WixIIsExtension.dll", "iisx", "http://schemas.microsoft.com/wix/IIsExtension");
+        public static WixExtension IIs = new WixExtension("WixIIsExtension.dll", "iis", "http://schemas.microsoft.com/wix/IIsExtension");
 
     }
 }
