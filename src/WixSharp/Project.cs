@@ -83,6 +83,7 @@ namespace WixSharp
             var envvars = new List<EnvironmentVariable>();
             var props = new List<Property>();
             var bins = new List<Binary>();
+            var certs = new List<Certificate>();
 
             //var collections = items.Where(x=>x is WixItems).Sel
 
@@ -120,6 +121,8 @@ namespace WixSharp
                         bins.Add(item as Binary);
                     else if (item is WixGuid)
                         GUID = (item as WixGuid).Value;
+                    else if (item is Certificate)
+                        certs.Add(item as Certificate);
                     else
                         throw new Exception("Unexpected object type is among Project constructor arguments: " + item.GetType().Name);
                 }
@@ -131,6 +134,7 @@ namespace WixSharp
             Properties = props.ToArray();
             Binaries = bins.ToArray();
             EnvironmentVariables = envvars.ToArray();
+            Certificates = certs.ToArray();
         }
 
         /// <summary>
@@ -446,6 +450,10 @@ namespace WixSharp
         /// Collection of <see cref="EnvironmentVariable"/>s to be set during the installation.
         /// </summary>
         public EnvironmentVariable[] EnvironmentVariables = new EnvironmentVariable[0];
+        /// <summary>
+        /// Collection of <see cref="Certificate"/> to be installed.
+        /// </summary>
+        public Certificate[] Certificates = new Certificate[0];
         /// <summary>
         /// Collection of WiX/MSI <see cref="Property"/> objects to be created during the installed.
         /// </summary>
