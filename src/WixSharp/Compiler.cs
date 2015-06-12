@@ -2115,6 +2115,8 @@ namespace WixSharp
                         new XElement("CustomAction",
                             new XAttribute("Id", wAction.Name.Expand()),
                             new XAttribute("ExeCommand", binaryAction.Args.ExpandCommandPath()),
+                            new XAttribute("Impersonate", wAction.Impersonate.ToYesNo()),
+                            new XAttribute("Execute", wAction.Execute),
                             new XAttribute("Return", wAction.Return))
                             .AddAttributes(wAction.Attributes));
 
