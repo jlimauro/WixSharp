@@ -108,12 +108,15 @@
     <Compile Include="Action.cs" />
     <Compile Include="Assembly.cs" />
     <Compile Include="AutoElements.cs" />
+    <Compile Include="BinaryFileAction.cs" />
     <Compile Include="Bootstrapper\Bundle.cs" />
     <Compile Include="Bootstrapper\BootstrapperApplication.cs" />
     <Compile Include="Bootstrapper\Packages.cs" />
     <Compile Include="CommonTasks.cs" />
     <Compile Include="Compiler.Bootstrapper.cs" />
     <Compile Include="Permissions.cs" />
+    <Compile Include="Sql.cs" />
+    <Compile Include="User.cs" />
     <Compile Include="WixExtension.cs" />
     <Compile Include="WixProject.cs" />
     <Compile Include="Controls\Control.cs" />

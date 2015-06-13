@@ -500,6 +500,115 @@
             <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
             </summary>
         </member>
+        <member name="T:WixSharp.BinaryFileAction">
+            <summary>
+            Defines WiX BinaryFileAction for executing binary (not installed) file. 
+            </summary>
+            
+            <example>The following is an example of using <c>BinaryFileAction</c> to run
+            executable <c>Echo.exe</c> with different arguments depending 
+            in installation type (install/uninstall):
+            <code>
+            var project = 
+                new Project("My Product",
+                    new Binary(new Id("EchoBin"), @"Files\Echo.exe"), 
+                    new Dir(@"%ProgramFiles%\My Company\My Product",
+                    
+                        new File(binaries, @"AppFiles\MyApp.exe",
+                            new WixSharp.Shortcut("MyApp", @"%ProgramMenu%\My Company\My Product"),
+                            new WixSharp.Shortcut("MyApp", @"%Desktop%")),
+                            
+                        
+                    new BinaryFileAction("EchoBin", "/i", 
+                                            Return.check, 
+                                            When.After, 
+                                            Step.InstallFinalize, 
+                                            Condition.NOT_Installed),
+                                            
+                    BinaryFileAction("EchoBin", "/u", 
+                                            Return.check, 
+                                            When.Before, 
+                                            Step.InstallFinalize, 
+                                            Condition.Installed), 
+                    ...
+                    
+            Compiler.BuildMsi(project);
+            </code>
+            </example>
+        </member>
+        <member name="M:WixSharp.BinaryFileAction.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.BinaryFileAction"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="key">The key (file name) of the installed file to be executed.</param>
+            <param name="args">The arguments to be passed to the file during the execution.</param>
+        </member>
+        <member name="M:WixSharp.BinaryFileAction.#ctor(WixSharp.Id,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.BinaryFileAction"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.BinaryFileAction"/> instance.</param>
+            <param name="key">The key (file name) of the installed file to be executed.</param>
+            <param name="args">The arguments to be passed to the file during the execution.</param>
+        </member>
+        <member name="M:WixSharp.BinaryFileAction.#ctor(System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.BinaryFileAction"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="key">The key (file name) of the installed file to be executed.</param>
+            <param name="args">The arguments to be passed to the file during the execution.</param>
+            <param name="returnType">The return type of the action.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
+            <param name="condition">The launch condition for the <see cref="T:WixSharp.BinaryFileAction"/>.</param>
+        </member>
+        <member name="M:WixSharp.BinaryFileAction.#ctor(WixSharp.Id,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.BinaryFileAction"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.BinaryFileAction"/> instance.</param>
+            <param name="key">The key (file name) of the installed file to be executed.</param>
+            <param name="args">The arguments to be passed to the file during the execution.</param>
+            <param name="returnType">The return type of the action.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
+            <param name="condition">The launch condition for the <see cref="T:WixSharp.BinaryFileAction"/>.</param>
+        </member>
+        <member name="M:WixSharp.BinaryFileAction.#ctor(System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.BinaryFileAction"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="key">The key (file name) of the installed file to be executed.</param>
+            <param name="args">The arguments to be passed to the file during the execution.</param>
+            <param name="returnType">The return type of the action.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
+            <param name="condition">The launch condition for the <see cref="T:WixSharp.BinaryFileAction"/>.</param>
+            <param name="sequence">The MSI sequence the action belongs to.</param>
+        </member>
+        <member name="M:WixSharp.BinaryFileAction.#ctor(WixSharp.Id,System.String,System.String,WixSharp.Return,WixSharp.When,WixSharp.Step,WixSharp.Condition,WixSharp.Sequence)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.BinaryFileAction"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="id">The explicit <see cref="T:WixSharp.Id"></see> to be associated with <see cref="T:WixSharp.BinaryFileAction"/> instance.</param>
+            <param name="key">The key (file name) of the installed file to be executed.</param>
+            <param name="args">The arguments to be passed to the file during the execution.</param>
+            <param name="returnType">The return type of the action.</param>
+            <param name="when"><see cref="T:WixSharp.When"/> the action should be executed with respect to the <paramref name="step"/> parameter.</param>
+            <param name="step"><see cref="T:WixSharp.Step"/> the action should be executed before/after during the installation.</param>
+            <param name="condition">The launch condition for the <see cref="T:WixSharp.BinaryFileAction"/>.</param>
+            <param name="sequence">The MSI sequence the action belongs to.</param>
+        </member>
+        <member name="F:WixSharp.BinaryFileAction.Key">
+            <summary>
+            The key (file name) of the installed file to be executed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.BinaryFileAction.Args">
+            <summary>
+            The arguments to be passed to the file during the execution.
+            </summary>
+        </member>
         <member name="T:WixSharp.Bootstrapper.Bundle">
             <summary>
             Class for defining a WiX standard Burn-based bootstrapper.
@@ -2237,6 +2346,576 @@
             <param name="filePermission"></param>
             <param name="permissionElement"></param>
         </member>
+        <member name="T:WixSharp.SqlDbOption">
+            <summary>
+            
+            </summary>
+            <remarks>
+            Attributes represented by this enum will be rendered as having the value 'yes'. 
+            If a value of 'no' is required, set the property directly after construction.
+            </remarks>
+        </member>
+        <member name="T:WixSharp.SqlDatabase">
+            <summary>
+            Represents WixSqlExtension SqlDatabase element. The resulting XML representation may be rendered
+            inside of a componet element or under the product element. The parent element depends on the 
+            presence of a value for at least 1 property represented by values of SqlDbOption enumeration.
+            </summary>
+        </member>
+        <member name="M:WixSharp.SqlDatabase.#ctor">
+            <summary>
+            Creates an instance of SqlDatabase
+            </summary>
+        </member>
+        <member name="M:WixSharp.SqlDatabase.#ctor(System.String,System.String,WixSharp.WixEntity[])">
+            <summary>
+            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            </summary>
+            <param name="database"></param>
+            <param name="server"></param>
+            <param name="items"></param>
+        </member>
+        <member name="M:WixSharp.SqlDatabase.#ctor(WixSharp.Id,System.String,System.String,WixSharp.WixEntity[])">
+            <summary>
+            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            </summary>
+            <param name="id"></param>
+            <param name="database"></param>
+            <param name="server"></param>
+            <param name="items"></param>
+        </member>
+        <member name="M:WixSharp.SqlDatabase.#ctor(WixSharp.Feature,System.String,System.String,WixSharp.WixEntity[])">
+            <summary>
+            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            </summary>
+            <param name="feature"></param>
+            <param name="database"></param>
+            <param name="server"></param>
+            <param name="items"></param>
+        </member>
+        <member name="M:WixSharp.SqlDatabase.#ctor(WixSharp.Id,WixSharp.Feature,System.String,System.String,WixSharp.WixEntity[])">
+            <summary>
+            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            </summary>
+            <param name="id"></param>
+            <param name="feature"></param>
+            <param name="database"></param>
+            <param name="server"></param>
+            <param name="items"></param>
+        </member>
+        <member name="M:WixSharp.SqlDatabase.#ctor(System.String,System.String,WixSharp.SqlDbOption,WixSharp.WixEntity[])">
+            <summary>
+            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            </summary>
+            <param name="database"></param>
+            <param name="server"></param>
+            <param name="dbOptions"></param>
+            <param name="items"></param>
+        </member>
+        <member name="M:WixSharp.SqlDatabase.#ctor(WixSharp.Id,System.String,System.String,WixSharp.SqlDbOption,WixSharp.WixEntity[])">
+            <summary>
+            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            </summary>
+            <param name="id"></param>
+            <param name="database"></param>
+            <param name="server"></param>
+            <param name="dbOptions"></param>
+            <param name="items"></param>
+        </member>
+        <member name="M:WixSharp.SqlDatabase.#ctor(WixSharp.Feature,System.String,System.String,WixSharp.SqlDbOption,WixSharp.WixEntity[])">
+            <summary>
+            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            </summary>
+            <param name="feature"></param>
+            <param name="database"></param>
+            <param name="server"></param>
+            <param name="dbOptions"></param>
+            <param name="items"></param>
+        </member>
+        <member name="M:WixSharp.SqlDatabase.#ctor(WixSharp.Id,WixSharp.Feature,System.String,System.String,WixSharp.SqlDbOption,WixSharp.WixEntity[])">
+            <summary>
+            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            </summary>
+            <param name="id"></param>
+            <param name="feature"></param>
+            <param name="database"></param>
+            <param name="server"></param>
+            <param name="dbOptions"></param>
+            <param name="items"></param>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.ConfirmOverwrite">
+            <summary>
+            Maps to the ConfirmOverwrite property of SqlDatabase
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.ContinueOnError">
+            <summary>
+            Maps to the ContinueOnError property of SqlDatabase
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.CreateOnInstall">
+            <summary>
+            Maps to the CreateOnInstall property of SqlDatabase
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.CreateOnReinstall">
+            <summary>
+            Maps to the CreateOnReinstall property of SqlDatabase
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.CreateOnUninstall">
+            <summary>
+            Maps to the CreateOnUninstall property of SqlDatabase
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.Database">
+            <summary>
+            Maps to the Database property of SqlDatabase
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.DropOnInstall">
+            <summary>
+            Maps to the DropOnInstall property of SqlDatabase
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.DropOnReinstall">
+            <summary>
+            Maps to the DropOnReinstall property of SqlDatabase
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.DropOnUninstall">
+            <summary>
+            Maps to the DropOnUninstall property of SqlDatabase
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.Instance">
+            <summary>
+            Maps to the Instance property of SqlDatabase
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.Server">
+            <summary>
+            Maps to the Server property of SqlDatabase
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.User">
+            <summary>
+            Maps to the User property of SqlDatabase
+            </summary>
+        </member>
+        <member name="T:WixSharp.ExecuteSql">
+            <summary>
+            Represents Execution options for SqlScript and SqlString elements
+            </summary>
+            <remarks>
+            Attributes represented by this enum will be rendered as having the value 'yes'. 
+            If a value of 'no' is required, set the property directly after construction.
+            </remarks>
+        </member>
+        <member name="T:WixSharp.RollbackSql">
+            <summary>
+            Represents Rollback options for SqlScript and SqlString elements
+            </summary>
+            <remarks>
+            Attributes represented by this enum will be rendered as having the value 'yes'. 
+            If a value of 'no' is required, set the property directly after construction.
+            </remarks>
+        </member>
+        <member name="T:WixSharp.SqlString">
+            <summary>
+            Represents WixSqlExtension element SqlString
+            </summary>
+        </member>
+        <member name="M:WixSharp.SqlString.#ctor">
+            <summary>
+            Creates an instance of SqlString
+            </summary>
+        </member>
+        <member name="M:WixSharp.SqlString.#ctor(System.String,WixSharp.ExecuteSql)">
+            <summary>
+            Creates an instance of SqlString from <paramref name="sql"/> to be execute according to <paramref name="executeOptions"/>
+            </summary>
+            <param name="sql"></param>
+            <param name="executeOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlString.#ctor(WixSharp.Id,System.String,WixSharp.ExecuteSql)">
+            <summary>
+            Creates an instance of SqlString from <paramref name="sql"/> to be execute according to <paramref name="executeOptions"/>
+            </summary>
+            <param name="id"></param>
+            <param name="sql"></param>
+            <param name="executeOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlString.#ctor(WixSharp.Feature,System.String,WixSharp.ExecuteSql)">
+            <summary>
+            Creates an instance of SqlString from <paramref name="sql"/> to be execute according to <paramref name="executeOptions"/>
+            </summary>
+            <param name="feature"></param>
+            <param name="sql"></param>
+            <param name="executeOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlString.#ctor(WixSharp.Id,WixSharp.Feature,System.String,WixSharp.ExecuteSql)">
+            <summary>
+            Creates an instance of SqlString from <paramref name="sql"/> to be execute according to <paramref name="executeOptions"/>
+            </summary>
+            <param name="id"></param>
+            <param name="feature"></param>
+            <param name="sql"></param>
+            <param name="executeOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlString.#ctor(System.String,WixSharp.RollbackSql)">
+            <summary>
+            Creates an instance of SqlString from <paramref name="sql"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+            </summary>
+            <param name="sql"></param>
+            <param name="rollbackOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlString.#ctor(WixSharp.Id,System.String,WixSharp.RollbackSql)">
+            <summary>
+            Creates an instance of SqlString from <paramref name="sql"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+            </summary>
+            <param name="id"></param>
+            <param name="sql"></param>
+            <param name="rollbackOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlString.#ctor(WixSharp.Feature,System.String,WixSharp.RollbackSql)">
+            <summary>
+            Creates an instance of SqlString from <paramref name="sql"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+            </summary>
+            <param name="feature"></param>
+            <param name="sql"></param>
+            <param name="rollbackOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlString.#ctor(WixSharp.Id,WixSharp.Feature,System.String,WixSharp.RollbackSql)">
+            <summary>
+            Creates an instance of SqlString from <paramref name="sql"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+            </summary>
+            <param name="id"></param>
+            <param name="feature"></param>
+            <param name="sql"></param>
+            <param name="rollbackOptions"></param>
+        </member>
+        <member name="P:WixSharp.SqlString.ContinueOnError">
+            <summary>
+            Maps to the ContinueOnError property of SqlString
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlString.ExecuteOnInstall">
+            <summary>
+            Maps to the ExecuteOnInstall property of SqlString
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlString.ExecuteOnReinstall">
+            <summary>
+            Maps to the ExecuteOnReinstall property of SqlString
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlString.ExecuteOnUninstall">
+            <summary>
+            Maps to the ExecuteOnUninstall property of SqlString
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlString.RollbackOnInstall">
+            <summary>
+            Maps to the RollbackOnInstall property of SqlString
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlString.RollbackOnReinstall">
+            <summary>
+            Maps to the RollbackOnReinstall property of SqlString
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlString.RollbackOnUninstall">
+            <summary>
+            Maps to the RollbackOnUninstall property of SqlString
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlString.Sequence">
+            <summary>
+            Maps to the Sequence property of SqlString
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlString.Sql">
+            <summary>
+            Maps to the Sql property of SqlString
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlString.SqlDb">
+            <summary>
+            Maps to the SqlDb property of SqlString. This property is to be inferred from the containing SqlDatabase element.
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlString.User">
+            <summary>
+            Maps to the User property of SqlString
+            </summary>
+        </member>
+        <member name="T:WixSharp.SqlScript">
+            <summary>
+            Represents WixSqlExtension element SqlScript
+            </summary>
+        </member>
+        <member name="M:WixSharp.SqlScript.#ctor">
+            <summary>
+            Creates an instance of SqlScript
+            </summary>
+        </member>
+        <member name="M:WixSharp.SqlScript.#ctor(System.String,WixSharp.ExecuteSql)">
+            <summary>
+            Creates an instance of SqlScript for <paramref name="binaryKey"/> to be execute according to <paramref name="executeOptions"/>
+            </summary>
+            <param name="binaryKey"></param>
+            <param name="executeOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlScript.#ctor(WixSharp.Id,System.String,WixSharp.ExecuteSql)">
+            <summary>
+            Creates an instance of SqlScript for <paramref name="binaryKey"/> to be execute according to <paramref name="executeOptions"/>
+            </summary>
+            <param name="id"></param>
+            <param name="binaryKey"></param>
+            <param name="executeOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlScript.#ctor(WixSharp.Feature,System.String,WixSharp.ExecuteSql)">
+            <summary>
+            Creates an instance of SqlScript for <paramref name="binaryKey"/> to be execute according to <paramref name="executeOptions"/>
+            </summary>
+            <param name="feature"></param>
+            <param name="binaryKey"></param>
+            <param name="executeOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlScript.#ctor(WixSharp.Id,WixSharp.Feature,System.String,WixSharp.ExecuteSql)">
+            <summary>
+            Creates an instance of SqlScript for <paramref name="binaryKey"/> to be execute according to <paramref name="executeOptions"/>
+            </summary>
+            <param name="id"></param>
+            <param name="feature"></param>
+            <param name="binaryKey"></param>
+            <param name="executeOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlScript.#ctor(System.String,WixSharp.RollbackSql)">
+            <summary>
+            Creates an instance of SqlScript for <paramref name="binaryKey"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+            </summary>
+            <param name="binaryKey"></param>
+            <param name="rollbackOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlScript.#ctor(WixSharp.Id,System.String,WixSharp.RollbackSql)">
+            <summary>
+            Creates an instance of SqlScript for <paramref name="binaryKey"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+            </summary>
+            <param name="id"></param>
+            <param name="binaryKey"></param>
+            <param name="rollbackOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlScript.#ctor(WixSharp.Feature,System.String,WixSharp.RollbackSql)">
+            <summary>
+            Creates an instance of SqlScript for <paramref name="binaryKey"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+            </summary>
+            <param name="feature"></param>
+            <param name="binaryKey"></param>
+            <param name="rollbackOptions"></param>
+        </member>
+        <member name="M:WixSharp.SqlScript.#ctor(WixSharp.Id,WixSharp.Feature,System.String,WixSharp.RollbackSql)">
+            <summary>
+            Creates an instance of SqlScript for <paramref name="binaryKey"/> to be rolled-back according to <paramref name="rollbackOptions"/>
+            </summary>
+            <param name="id"></param>
+            <param name="feature"></param>
+            <param name="binaryKey"></param>
+            <param name="rollbackOptions"></param>
+        </member>
+        <member name="P:WixSharp.SqlScript.BinaryKey">
+            <summary>
+            Maps to the BinaryKey property of SqlScript
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlScript.ContinueOnError">
+            <summary>
+            Maps to the ContinueOnError property of SqlScript
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlScript.ExecuteOnInstall">
+            <summary>
+            Maps to the ExecuteOnInstall property of SqlScript
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlScript.ExecuteOnReinstall">
+            <summary>
+            Maps to the ExecuteOnReinstall property of SqlScript
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlScript.ExecuteOnUninstall">
+            <summary>
+            Maps to the ExecuteOnUninstall property of SqlScript
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlScript.RollbackOnInstall">
+            <summary>
+            Maps to the RollbackOnInstall property of SqlScript
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlScript.RollbackOnReinstall">
+            <summary>
+            Maps to the RollbackOnReinstall property of SqlScript
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlScript.RollbackOnUninstall">
+            <summary>
+            Maps to the RollbackOnUninstall property of SqlScript
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlScript.Sequence">
+            <summary>
+            Maps to the Sequence property of SqlScript
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlScript.SqlDb">
+            <summary>
+            Maps to the SqlDb property of SqlScript. This property is to be inferred from the containing SqlDatabase element.
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlScript.User">
+            <summary>
+            Maps to the User property of SqlScript
+            </summary>
+        </member>
+        <member name="T:WixSharp.User">
+            <summary>
+            Represents a WixUtilExtension User
+            </summary>
+        </member>
+        <member name="M:WixSharp.User.#ctor">
+            <summary>
+            Creates an instance of User
+            </summary>
+        </member>
+        <member name="M:WixSharp.User.#ctor(WixSharp.Id,System.String)">
+            <summary>
+            Creates an instance of User representing <paramref name="name"/>
+            </summary>
+            <param name="id"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:WixSharp.User.#ctor(WixSharp.Id,WixSharp.Feature,System.String)">
+            <summary>
+            Creates an instance of User representing <paramref name="name"/>
+            </summary>
+            <param name="id"></param>
+            <param name="feature"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:WixSharp.User.#ctor(WixSharp.Id,System.String,System.String)">
+            <summary>
+            Creates an instance of User representing <paramref name="name"/>@<paramref name="domain"/>
+            </summary>
+            <param name="id"></param>
+            <param name="name"></param>
+            <param name="domain"></param>
+        </member>
+        <member name="M:WixSharp.User.#ctor(WixSharp.Id,WixSharp.Feature,System.String,System.String)">
+            <summary>
+            Creates an instance of User representing <paramref name="name"/>@<paramref name="domain"/>
+            </summary>
+            <param name="id"></param>
+            <param name="feature"></param>
+            <param name="name"></param>
+            <param name="domain"></param>
+        </member>
+        <member name="P:WixSharp.User.WixIncludeInComponent">
+            <summary>
+            Requests that the User element is included inside a Component element - allowing the User to be installed.
+            If any of the following properties are assigned (non-null), this property is ignored during compilation and assumed
+            to be true:
+            <list type="bullet">
+            <item>CanNotChangePassword</item>
+            <item>CreateUser</item>
+            <item>Disabled</item>
+            <item>FailIfExists</item>
+            <item>LogOnAsBatchJob</item>
+            <item>LogOnAsService</item>
+            <item>PasswordExpired</item>
+            <item>PasswordNeverExpires</item>
+            <item>RemoveOnUninstall</item>
+            <item>UpdateIfExists</item>
+            <item>Vital</item>
+            </list>
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.CanNotChangePassword">
+            <summary>
+            Maps to the CanNotChangePassword property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.CreateUser">
+            <summary>
+            Maps to the CreateUser property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.Disabled">
+            <summary>
+            Maps to the Disabled property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.Domain">
+            <summary>
+            Maps to the Domain property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.FailIfExists">
+            <summary>
+            Maps to the FailIfExists property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.LogOnAsBatchJob">
+            <summary>
+            Maps to the LogOnAsBatchJob property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.LogOnAsService">
+            <summary>
+            Maps to the LogOnAsService property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.Name">
+            <summary>
+            Maps to the Name property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.Password">
+            <summary>
+            Maps to the Password property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.PasswordExpired">
+            <summary>
+            Maps to the PasswordExpired property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.PasswordNeverExpires">
+            <summary>
+            Maps to the PasswordNeverExpires property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.RemoveOnUninstall">
+            <summary>
+            Maps to the RemoveOnUninstall property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.UpdateIfExists">
+            <summary>
+            Maps to the UpdateIfExists property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.Vital">
+            <summary>
+            Maps to the Vital property of User
+            </summary>
+        </member>
+        <member name="P:WixSharp.User.MustDescendFromComponent">
+            <summary>
+            Gets a value indicated if this User must be generated under a Component element or not.
+            </summary>
+        </member>
         <member name="T:WixSharp.WixExtension">
             <summary>
             Represents a Wix Extension
@@ -2295,6 +2974,11 @@
         <member name="F:WixSharp.WixExtension.IIs">
             <summary>
             Well-known Wix Extension IIs
+            </summary>
+        </member>
+        <member name="F:WixSharp.WixExtension.Sql">
+            <summary>
+            Well-known Wix Extension Sql
             </summary>
         </member>
         <member name="T:WixSharp.Control">
@@ -5356,6 +6040,17 @@
         <member name="F:WixSharp.Project.LaunchConditions">
             <summary>
             Collection of the <see cref="T:WixSharp.LaunchCondition"/>s associated with the setup.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Project.Users">
+            <summary>
+            Collection of Wix:UtilExtension User objects representings users 'for all kinds of things'
+            </summary>
+        </member>
+        <member name="F:WixSharp.Project.SqlDatabases">
+            <summary>
+            Collection of WiX:SqlExtension SqlDatabase objects representing databases to be created,
+            modifed, or interacted with during MSI execution.
             </summary>
         </member>
         <member name="F:WixSharp.Project.Language">
