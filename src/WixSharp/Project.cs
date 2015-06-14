@@ -85,6 +85,7 @@ namespace WixSharp
             var bins = new List<Binary>();
             var users = new List<User>();
             var sqls = new List<SqlDatabase>();
+            var certs = new List<Certificate>();
 
             //var collections = items.Where(x=>x is WixItems).Sel
 
@@ -126,6 +127,8 @@ namespace WixSharp
                         users.Add(item as User);
                     else if (item is SqlDatabase)
                         sqls.Add(item as SqlDatabase);
+                    else if (item is Certificate)
+                        certs.Add(item as Certificate);
                     else
                         throw new Exception("Unexpected object type is among Project constructor arguments: " + item.GetType().Name);
                 }
@@ -139,6 +142,7 @@ namespace WixSharp
             EnvironmentVariables = envvars.ToArray();
             Users = users.ToArray();
             SqlDatabases = sqls.ToArray();
+            Certificates = certs.ToArray();
         }
 
         /// <summary>
@@ -452,6 +456,10 @@ namespace WixSharp
         /// Collection of <see cref="EnvironmentVariable"/>s to be set during the installation.
         /// </summary>
         public EnvironmentVariable[] EnvironmentVariables = new EnvironmentVariable[0];
+        /// <summary>
+        /// Collection of <see cref="Certificate"/> to be installed.
+        /// </summary>
+        public Certificate[] Certificates = new Certificate[0];
         /// <summary>
         /// Collection of WiX/MSI <see cref="Property"/> objects to be created during the installed.
         /// </summary>

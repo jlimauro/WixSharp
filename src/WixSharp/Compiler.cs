@@ -976,6 +976,7 @@ namespace WixSharp
             ProcessEnvVars(project, featureComponents, defaultFeatureComponents, product);
             ProcessUsers(project, featureComponents, defaultFeatureComponents, product);
             ProcessSql(project, featureComponents, defaultFeatureComponents, product);
+            ProcessCertificates(project, featureComponents, defaultFeatureComponents, product);
             ProcessProperties(project, product);
             ProcessCustomActions(project, product);
             ProcessBinaries(project, product); //it is important to call ProcessBinaries after all other ProcessX as they may insert some implicit "binaries"
@@ -1928,6 +1929,43 @@ namespace WixSharp
                 sqlString.EmitAttributes(sqlStringElement);
 
                 sqlStringComponent.Add(sqlStringElement);
+            }
+        }
+
+        private static void ProcessCertificates(Project project, Dictionary<Feature, List<string>> featureComponents, List<string> defaultFeatureComponents, XElement product)
+        {
+            if (!project.Certificates.Any()) return;
+
+            project.IncludeWixExtension(WixExtension.IIs);
+
+            int componentCount = 0;
+            foreach (var certificate in project.Certificates)
+            {
+                componentCount++;
+
+                var compId = "Certificate" + componentCount;
+
+                if (certificate.Feature != null)
+                {
+                    if (!featureComponents.ContainsKey(certificate.Feature))
+                        featureComponents[certificate.Feature] = new List<string>();
+
+                    featureComponents[certificate.Feature].Add(compId);
+                }
+                else
+                {
+                    defaultFeatureComponents.Add(compId);
+                }
+
+                var topLevelDir = GetTopLevelDir(product);
+                var comp = topLevelDir.AddElement(
+                               new XElement("Component",
+                                   new XAttribute("Id", compId),
+                                   new XAttribute("Guid", WixGuid.NewGuid(compId))));
+
+                var certificateElement = new XElement(WixExtension.IIs.ToXNamespace() + "Certificate");
+                certificate.EmitAttributes(certificateElement);
+                comp.Add(certificateElement);
             }
         }
 
