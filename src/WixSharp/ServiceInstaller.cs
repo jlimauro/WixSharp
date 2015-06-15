@@ -310,10 +310,10 @@ namespace WixSharp
         /// <summary>
         /// Not a valid value for ServiceConfig.On(Install, Reinstall, Uninstall)
         /// </summary>
-        None,
-        Install,
-        Reinstall,
-        Uninstall
+        None = 0,
+        Install = 1,
+        Reinstall = 2,
+        Uninstall = 4
     }
 
     /// <summary>
