@@ -107,6 +107,43 @@ namespace WixSharp
         public string DependsOn = "";
 
         /// <summary>
+        /// Fully qualified names must be used even for local accounts, 
+        /// e.g.: ".\LOCAL_ACCOUNT". Valid only when ServiceType is ownProcess.
+        /// </summary>
+        public string Account { get; set; }
+
+        /// <summary>
+        /// Contains any command line arguments or properties required to run the service.
+        /// </summary>
+        public string Arguments { get;set; }
+
+        /// <summary>
+        /// Determines whether the existing service description will be ignored. If 'yes', the service description will be null, 
+        /// even if the Description attribute is set.
+        /// </summary>
+        public bool? EraseDescription { get; set; }
+        
+        /// <summary>
+        /// Whether or not the service interacts with the desktop.
+        /// </summary>
+        public bool? Interactive { get; set; }
+
+        /// <summary>
+        /// The load ordering group that this service should be a part of.
+        /// </summary>
+        public string LoadOrderGroup { get; set; }
+
+        /// <summary>
+        /// The password for the account. Valid only when the account has a password.
+        /// </summary>
+        public string Password { get; set; }
+        
+        /// <summary>
+        /// The overall install should fail if this service fails to install.
+        /// </summary>
+        public bool? Vital { get; set; }
+        
+        /// <summary>
         /// Renders ServiceInstaller properties to appropriate WiX elements
         /// </summary>
         /// <param name="project">
@@ -134,7 +171,6 @@ namespace WixSharp
             return result.ToArray();
         }
 
-
         XElement ServiceInstallToXml(Project project)
         {
             var serviceInstallElement =
@@ -145,8 +181,24 @@ namespace WixSharp
                     new XAttribute("Description", Description ?? DisplayName ?? Name),
                     new XAttribute("Type", Type),
                     new XAttribute("Start", StartType),
-                    new XAttribute("ErrorControl", ErrorControl))
-                    .AddAttributes(Attributes);
+                    new XAttribute("ErrorControl", ErrorControl));
+
+            if (Account.IsNotEmpty())
+                serviceInstallElement.SetAttributeValue("Account", Account);
+            if (Arguments.IsNotEmpty())
+                serviceInstallElement.SetAttributeValue("Arguments", Arguments);
+            if (EraseDescription.HasValue)
+                serviceInstallElement.SetAttributeValue("EraseDescription", EraseDescription.Value);
+            if (Interactive.HasValue)
+                serviceInstallElement.SetAttributeValue("Interactive", Interactive.Value);
+            if (LoadOrderGroup.IsNotEmpty())
+                serviceInstallElement.SetAttributeValue("LoadOrderGroup", LoadOrderGroup);
+            if (Password.IsNotEmpty())
+                serviceInstallElement.SetAttributeValue("Password", Password);
+            if (Vital.HasValue)
+                serviceInstallElement.SetAttributeValue("Vital", Vital.Value);
+                    
+            serviceInstallElement.AddAttributes(Attributes);
 
             foreach (var item in DependsOn.Split(';'))
             {
@@ -190,9 +242,9 @@ namespace WixSharp
                 serviceConfigElement.SetAttributeValue("FirstFailureActionType", FirstFailureActionType.ToString());
                 serviceConfigElement.SetAttributeValue("SecondFailureActionType", SecondFailureActionType.ToString());
                 serviceConfigElement.SetAttributeValue("ThirdFailureActionType", ThirdFailureActionType.ToString());
-                if (!string.IsNullOrEmpty(ProgramCommandLine))
+                if (ProgramCommandLine.IsNotEmpty())
                     serviceConfigElement.SetAttributeValue("ProgramCommandLine", ProgramCommandLine);
-                if (!string.IsNullOrEmpty(RebootMessage))
+                if (RebootMessage.IsNotEmpty())
                     serviceConfigElement.SetAttributeValue("RebootMessage", RebootMessage);
                 if (ResetPeriodInDays.HasValue)
                     serviceConfigElement.SetAttributeValue("ResetPeriodInDays", ResetPeriodInDays.ToString());
