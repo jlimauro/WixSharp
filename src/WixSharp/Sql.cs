@@ -158,12 +158,12 @@ namespace WixSharp
 
         private void SetSqlDbOptions(SqlDbOption options)
         {
-            if ((options | SqlDbOption.CreateOnInstall) == SqlDbOption.CreateOnInstall) CreateOnInstall = true;
-            if ((options | SqlDbOption.CreateOnReinstall) == SqlDbOption.CreateOnReinstall) CreateOnReinstall = true;
-            if ((options | SqlDbOption.CreateOnUninstall) == SqlDbOption.CreateOnUninstall) CreateOnUninstall = true;
-            if ((options | SqlDbOption.DropOnInstall) == SqlDbOption.DropOnInstall) DropOnInstall = true;
-            if ((options | SqlDbOption.DropOnReinstall) == SqlDbOption.DropOnReinstall) DropOnReinstall = true;
-            if ((options | SqlDbOption.DropOnUninstall) == SqlDbOption.DropOnUninstall) DropOnUninstall = true;
+            if ((options & SqlDbOption.CreateOnInstall) == SqlDbOption.CreateOnInstall) CreateOnInstall = true;
+            if ((options & SqlDbOption.CreateOnReinstall) == SqlDbOption.CreateOnReinstall) CreateOnReinstall = true;
+            if ((options & SqlDbOption.CreateOnUninstall) == SqlDbOption.CreateOnUninstall) CreateOnUninstall = true;
+            if ((options & SqlDbOption.DropOnInstall) == SqlDbOption.DropOnInstall) DropOnInstall = true;
+            if ((options & SqlDbOption.DropOnReinstall) == SqlDbOption.DropOnReinstall) DropOnReinstall = true;
+            if ((options & SqlDbOption.DropOnUninstall) == SqlDbOption.DropOnUninstall) DropOnUninstall = true;
         }
 
         #endregion
@@ -491,18 +491,18 @@ namespace WixSharp
         {
             if (executeOptions == ExecuteSql.None) throw new ArgumentException("None is invalid. It has no legal representation in Wix", "executeOptions");
 
-            if ((executeOptions | ExecuteSql.OnInstall) == ExecuteSql.OnInstall) ExecuteOnInstall = true;
-            if ((executeOptions | ExecuteSql.OnReinstall) == ExecuteSql.OnReinstall) ExecuteOnReinstall = true;
-            if ((executeOptions | ExecuteSql.OnUninstall) == ExecuteSql.OnUninstall) ExecuteOnUninstall = true;
+            if ((executeOptions & ExecuteSql.OnInstall) == ExecuteSql.OnInstall) ExecuteOnInstall = true;
+            if ((executeOptions & ExecuteSql.OnReinstall) == ExecuteSql.OnReinstall) ExecuteOnReinstall = true;
+            if ((executeOptions & ExecuteSql.OnUninstall) == ExecuteSql.OnUninstall) ExecuteOnUninstall = true;
         }
 
         private void SetRollbackOptions(RollbackSql rollbackOption)
         {
             if (rollbackOption == RollbackSql.None) throw new ArgumentException("None is invalid. It has no legal representation in Wix", "rollbackOption");
 
-            if ((rollbackOption | RollbackSql.OnInstall) == RollbackSql.OnInstall) RollbackOnInstall = true;
-            if ((rollbackOption | RollbackSql.OnReinstall) == RollbackSql.OnReinstall) RollbackOnReinstall = true;
-            if ((rollbackOption | RollbackSql.OnUninstall) == RollbackSql.OnUninstall) RollbackOnUninstall = true;
+            if ((rollbackOption & RollbackSql.OnInstall) == RollbackSql.OnInstall) RollbackOnInstall = true;
+            if ((rollbackOption & RollbackSql.OnReinstall) == RollbackSql.OnReinstall) RollbackOnReinstall = true;
+            if ((rollbackOption & RollbackSql.OnUninstall) == RollbackSql.OnUninstall) RollbackOnUninstall = true;
         }
     }
 
@@ -692,18 +692,18 @@ namespace WixSharp
         {
             if (executeOptions == ExecuteSql.None) throw new ArgumentException("None is invalid. It has no legal representation in Wix", "executeOptions");
 
-            if ((executeOptions | ExecuteSql.OnInstall) == ExecuteSql.OnInstall) ExecuteOnInstall = true;
-            if ((executeOptions | ExecuteSql.OnReinstall) == ExecuteSql.OnReinstall) ExecuteOnReinstall = true;
-            if ((executeOptions | ExecuteSql.OnUninstall) == ExecuteSql.OnUninstall) ExecuteOnUninstall = true;
+            if ((executeOptions & ExecuteSql.OnInstall) == ExecuteSql.OnInstall) ExecuteOnInstall = true;
+            if ((executeOptions & ExecuteSql.OnReinstall) == ExecuteSql.OnReinstall) ExecuteOnReinstall = true;
+            if ((executeOptions & ExecuteSql.OnUninstall) == ExecuteSql.OnUninstall) ExecuteOnUninstall = true;
         }
 
         private void SetRollbackOptions(RollbackSql rollbackOption)
         {
             if (rollbackOption == RollbackSql.None) throw new ArgumentException("None is invalid. It has no legal representation in Wix", "rollbackOption");
 
-            if ((rollbackOption | RollbackSql.OnInstall) == RollbackSql.OnInstall) RollbackOnInstall = true;
-            if ((rollbackOption | RollbackSql.OnReinstall) == RollbackSql.OnReinstall) RollbackOnReinstall = true;
-            if ((rollbackOption | RollbackSql.OnUninstall) == RollbackSql.OnUninstall) RollbackOnUninstall = true;
+            if ((rollbackOption & RollbackSql.OnInstall) == RollbackSql.OnInstall) RollbackOnInstall = true;
+            if ((rollbackOption & RollbackSql.OnReinstall) == RollbackSql.OnReinstall) RollbackOnReinstall = true;
+            if ((rollbackOption & RollbackSql.OnUninstall) == RollbackSql.OnUninstall) RollbackOnUninstall = true;
         }
 
     }
