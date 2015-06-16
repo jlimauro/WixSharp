@@ -1293,7 +1293,7 @@ namespace WixSharp
                         .AddAttributes(wFile.Attributes));
 
                 if (wFile.ServiceInstaller != null)
-                    comp.Add(wFile.ServiceInstaller.ToXml());
+                    comp.Add(wFile.ServiceInstaller.ToXml(wProject));
 
                 if (wFile is Assembly && (wFile as Assembly).RegisterInGAC)
                 {
