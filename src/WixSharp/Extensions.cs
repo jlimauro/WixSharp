@@ -578,15 +578,7 @@ namespace WixSharp
             else
                 return null;
         }
-
-        internal static string ToAttrValue<T>(this Nullable<T> obj) where T : struct
-        {
-            if (obj.HasValue)
-                return obj.Value.ToString();
-            else
-                return null;
-        }
-
+        
         /// <summary>
         /// Determines whether the given string is empty.
         /// </summary>

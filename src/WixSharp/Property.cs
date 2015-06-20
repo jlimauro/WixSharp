@@ -100,7 +100,7 @@ namespace WixSharp
     /// </summary>
     ///<example>The following is an example of installing <c>MyApp.exe</c> file.
     ///<code>
-    /// string installDirId = @"%ProgramFiles%\CustomActionTest".ToPublishedDirID();
+    /// string installDirId = @"%ProgramFiles%\CustomActionTest".ToDirID();
     ///
     /// var project = new Project()
     /// {

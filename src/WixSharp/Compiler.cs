@@ -237,6 +237,11 @@ namespace WixSharp
                                                     .OrderBy(x => x)
                                                     .LastOrDefault();
 
+                        if (wixDir.IsEmpty())
+                            wixDir = IO.Directory.GetDirectories(Utils.ProgramFilesDirectory, "WiX Toolset v3*")
+                                                 .OrderBy(x => x)
+                                                 .LastOrDefault();
+
                         if (!wixDir.IsEmpty())
                             dir = Utils.PathCombine(wixDir, "bin");
                     }
