@@ -8569,6 +8569,31 @@
             The description of the service as it is listed in the Control Panel.
             </summary>
         </member>
+        <member name="F:WixSharp.ServiceInstaller.Account">
+            <summary>
+            Fully qualified names must be used even for local accounts, e.g.: ".\LOCAL_ACCOUNT". Valid only when ServiceType is ownProcess.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.Password">
+            <summary>
+            The password for the account. Valid only when the account has a password.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.Arguments">
+            <summary>
+            Contains any command line arguments or properties required to run the service.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.LoadOrderGroup">
+            <summary>
+            The load ordering group that this service should be a part of.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.Vital">
+            <summary>
+            The overall install should fail if this service fails to install.
+            </summary>
+        </member>
         <member name="F:WixSharp.ServiceInstaller.Type">
             <summary>
             The type of the service (e.g. kernel/system driver, process). The default value is <c>SvcType.ownProcess</c>.

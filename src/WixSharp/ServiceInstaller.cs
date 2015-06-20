@@ -68,6 +68,31 @@ namespace WixSharp
         public string Description = null;
 
         /// <summary>
+        /// Fully qualified names must be used even for local accounts, e.g.: ".\LOCAL_ACCOUNT". Valid only when ServiceType is ownProcess.
+        /// </summary>
+        public string Account = null;
+
+        /// <summary>
+        /// The password for the account. Valid only when the account has a password.
+        /// </summary>
+        public string Password = null;
+
+        /// <summary>
+        /// Contains any command line arguments or properties required to run the service.
+        /// </summary>
+        public string Arguments = null;
+
+        /// <summary>
+        /// The load ordering group that this service should be a part of.
+        /// </summary>
+        public string LoadOrderGroup = null;
+
+        /// <summary>
+        /// The overall install should fail if this service fails to install.
+        /// </summary>
+        public bool? Vital = null;
+
+        /// <summary>
         /// The type of the service (e.g. kernel/system driver, process). The default value is <c>SvcType.ownProcess</c>.
         /// </summary>
         public SvcType Type = SvcType.ownProcess;
@@ -105,24 +130,33 @@ namespace WixSharp
         /// </summary>
         public string DependsOn = "";
 
-        internal object[] ToXml()
+        internal XContainer[] ToXml()
         {
             var result = new List<XElement>();
 
-            result.Add(new XElement("ServiceInstall",
-                           new XAttribute("Id", Id),
-                           new XAttribute("Name", Name),
-                           new XAttribute("DisplayName", DisplayName ?? Name),
-                           new XAttribute("Description", Description ?? DisplayName ?? Name),
-                           new XAttribute("Type", Type),
-                           new XAttribute("Start", StartType),
-                           new XAttribute("ErrorControl", ErrorControl))
-                           .AddAttributes(Attributes));
+            XElement root;
+            result.Add(root = new XElement("ServiceInstall",
+                                  new XAttribute("Id", Id),
+                                  new XAttribute("Name", Name),
+                                  new XAttribute("DisplayName", DisplayName ?? Name),
+                                  new XAttribute("Type", Type),
+                                  new XAttribute("Start", StartType),
+                                  new XAttribute("ErrorControl", ErrorControl))
+                                  .AddAttributes(Attributes));
+
+            root.SetAttributeValue("Account", Account);
+            root.SetAttributeValue("Arguments", Arguments);
+            root.SetAttributeValue("Password", Password);
+            root.SetAttributeValue("Description", Description);
+            root.SetAttributeValue("LoadOrderGroup", LoadOrderGroup);
+
+            if (Vital.HasValue)
+                root.SetAttributeValue("Vital", Vital.Value.ToYesNo());
 
             foreach (var item in DependsOn.Split(';'))
             {
-                if(item.IsNotEmpty())
-                    result.First().AddElement("ServiceDependency", "Id="+item);
+                if (item.IsNotEmpty())
+                    result.First().AddElement("ServiceDependency", "Id=" + item);
             }
 
             if (StartOn != null)
