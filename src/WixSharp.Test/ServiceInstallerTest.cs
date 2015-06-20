@@ -6,6 +6,7 @@ namespace WixSharp.Test
 {
     public class ServiceInstallerTest
     {
+        Project projectMock = new Project();
         [Fact]
         public void Should_Emit_FullSetOfMembers()
         {
@@ -18,15 +19,15 @@ namespace WixSharp.Test
                 Account = "NT AUTHORITY\\LocalService",
                 Arguments = "a b c",
                 Password = "Password",
-                LoadOrderGroup ="LoadOrderGroup",
+                LoadOrderGroup = "LoadOrderGroup",
                 Vital = true,
                 StartOn = SvcEvent.Install,
                 StopOn = SvcEvent.InstallUninstall_Wait,
                 RemoveOn = SvcEvent.Uninstall_Wait
             };
 
-            var all = service.ToXml().Cast<XElement>().ToArray();
-            
+            var all = service.ToXml(projectMock).Cast<XElement>().ToArray();
+
             var install = all[0];
             Assert.Equal("ServiceInstall", install.Name.LocalName);
             Assert.Equal("WixSharp.TestSvc", install.Attribute("Name").Value);
@@ -44,21 +45,21 @@ namespace WixSharp.Test
             var dependencies = install.Elements("ServiceDependency").ToArray();
             Assert.Equal("Dnscache", dependencies[0].Attribute("Id").Value);
             Assert.Equal("Dhcp", dependencies[1].Attribute("Id").Value);
-            
+
             var controll1 = all[1];
             Assert.Equal("ServiceControl", controll1.Name.LocalName);
             Assert.Equal("StartWixSharp.TestSvc", controll1.Attribute("Id").Value);
             Assert.Equal("WixSharp.TestSvc", controll1.Attribute("Name").Value);
             Assert.Equal("install", controll1.Attribute("Start").Value);
             Assert.Equal("no", controll1.Attribute("Wait").Value);
-            
+
             var controll2 = all[2];
             Assert.Equal("ServiceControl", controll2.Name.LocalName);
             Assert.Equal("StopWixSharp.TestSvc", controll2.Attribute("Id").Value);
             Assert.Equal("WixSharp.TestSvc", controll2.Attribute("Name").Value);
             Assert.Equal("both", controll2.Attribute("Stop").Value);
             Assert.Equal("yes", controll2.Attribute("Wait").Value);
-            
+
             var controll3 = all[3];
             Assert.Equal("ServiceControl", controll3.Name.LocalName);
             Assert.Equal("RemoveWixSharp.TestSvc", controll3.Attribute("Id").Value);
@@ -75,7 +76,7 @@ namespace WixSharp.Test
                 Name = "WixSharp.TestSvc"
             };
 
-            var root = service.ToXml().Cast<XElement>().First();
+            var root = service.ToXml(projectMock).Cast<XElement>().First();
 
             Assert.Equal("WixSharp.TestSvc", root.Attribute("Name").Value);
             Assert.Equal("WixSharp.TestSvc", root.Attribute("DisplayName").Value);
@@ -92,7 +93,7 @@ namespace WixSharp.Test
                 Name = "WixSharp.TestSvc"
             };
 
-            var root = service.ToXml().Cast<XElement>().First();
+            var root = service.ToXml(projectMock).Cast<XElement>().First();
 
             Assert.False(root.HasAttribute("Description"));
             Assert.False(root.HasAttribute("Account"));
@@ -100,6 +101,36 @@ namespace WixSharp.Test
             Assert.False(root.HasAttribute("Password"));
             Assert.False(root.HasAttribute("LoadOrderGroup"));
             Assert.False(root.HasAttribute("Vital"));
+        }
+
+        [Fact]
+        public void Should_Handle_NotInitializedAttributes()
+        {
+            var element = new XElement("ServiceConfig");
+
+
+            int? delay = null;
+
+            element.SetAttributeValue("PreShutdownDelay", delay);
+            Assert.False(element.HasAttribute("PreShutdownDelay"));
+
+            delay = 1000;
+            element.SetAttributeValue("PreShutdownDelay", delay);
+            Assert.True(element.HasAttribute("PreShutdownDelay"));
+
+
+            ServiceSid serviceSid = null;
+
+            element.SetAttributeValue("ServiceSid", serviceSid);
+            Assert.False(element.HasAttribute("ServiceSid"));
+
+            serviceSid = new ServiceSid(ServiceSidValue.none);
+            element.SetAttributeValue("ServiceSid", serviceSid);
+            Assert.True(element.HasAttribute("ServiceSid", value => value == "none"));
+
+            serviceSid = new ServiceSid("test");
+            element.SetAttributeValue("ServiceSid", serviceSid);
+            Assert.True(element.HasAttribute("ServiceSid", value => value == "test"));
         }
     }
 }
