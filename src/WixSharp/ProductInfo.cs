@@ -83,7 +83,7 @@ namespace WixSharp
         /// Identifies the icon displayed in Add/Remove Programs. If this property is not defined, Add/Remove Programs specifies the display icon.
         /// </summary>
         [ArpPropertyAttribute("ARPPRODUCTICON")]
-        public string ProductIcon { get; set; }  //zos AddRemoveProgramsIcon check compiler
+        public string ProductIcon { get; set; }  
         /// <summary>
         /// Provides the ReadMe for Add/Remove Programs in Control Panel. 
         /// </summary>
