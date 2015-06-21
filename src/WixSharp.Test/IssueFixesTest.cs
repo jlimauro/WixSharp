@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 using Xunit;
@@ -109,6 +110,51 @@ namespace WixSharp.Test
                                                            && e.HasAttribute("Title", value => value == "Documentation 03"));
             Assert.NotNull(doc3Feature);
 
+
+        }
+
+        [Fact]
+        [Description("Issue #49")]
+        public void Should_Fix_Issue_49()
+        {
+            {
+                var project = new Project("MyProduct");
+
+                var rootDir = new Dir(@"%ProgramFiles%",
+                                  new Dir(@"AAA\BBB",
+                                      new File(this.GetType().Assembly.Location)));
+
+                project.Dirs = new[] { rootDir };
+                project.UI = WUI.WixUI_InstallDir;
+
+                var msi = project.BuildMsi();
+            }
+         
+            {
+                var project = new Project("MyProduct");
+
+                var rootDir = new Dir(@"C:\",
+                                  new Dir(@"Program Files (x86)\AAA\BBB",
+                                      new File(this.GetType().Assembly.Location)));
+
+                project.Dirs = new[] { rootDir };
+                project.UI = WUI.WixUI_InstallDir;
+
+                var msi = project.BuildMsi();
+
+                //var msi = project.BuildWxs();
+            }
+            {
+                var project = new Project("MyProduct");
+
+                var rootDir = new Dir(@"C:\Program Files (x86)",
+                                  new Dir(@"AAA\BBB",
+                                      new File(this.GetType().Assembly.Location)));
+
+                project.Dirs = new[] { rootDir };
+
+                project.BuildMsi();
+            }
 
         }
     }

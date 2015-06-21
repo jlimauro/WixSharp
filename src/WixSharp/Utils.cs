@@ -97,7 +97,23 @@ namespace WixSharp
         internal static string OriginalAssemblyFile(string file)
         {
             string dir = IO.Path.GetDirectoryName(IO.Path.GetFullPath(file));
-            return IO.Path.Combine(dir, System.Reflection.Assembly.ReflectionOnlyLoadFrom(file).ManifestModule.ScopeName);
+
+            System.Reflection.Assembly asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a =>
+                {
+                    try
+                    {
+                        return a.Location.SamePathAs(file); //some domain assemblies may throw when accessing .Locatioon
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                });
+
+            if (asm == null)
+                asm = System.Reflection.Assembly.ReflectionOnlyLoadFrom(file);
+
+            return IO.Path.Combine(dir, asm.ManifestModule.ScopeName);
         }
 
         internal static string GetTempDirectory()
@@ -105,7 +121,7 @@ namespace WixSharp
             string tempDir = IO.Path.GetTempFileName();
             if (IO.File.Exists(tempDir))
                 IO.File.Exists(tempDir);
-            
+
             if (!IO.Directory.Exists(tempDir))
                 IO.Directory.CreateDirectory(tempDir);
 

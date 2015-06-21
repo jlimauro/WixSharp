@@ -7,6 +7,19 @@ using System.Diagnostics;
 
 namespace Bootstrapper
 {
+
+    //////////////////////////////////////
+    //                                  //
+    //                                  //
+    //                                  //
+    //                                  //
+    //        WORK IN PROGRESS          //
+    //                                  //
+    //                                  //
+    //                                  //
+    //                                  //
+    //////////////////////////////////////
+
     public class ManagedBA : BootstrapperApplication
     {
         AutoResetEvent done = new AutoResetEvent(false);
@@ -14,11 +27,13 @@ namespace Bootstrapper
         // entry point for our custom UI
         protected override void Run()
         {
-            ApplyComplete += ManagedBA_ApplyComplete;
-            DetectPackageComplete += ManagedBA_DetectPackageComplete;
-            PlanComplete += ManagedBA_PlanComplete;
-            Engine.Detect();
-            done.WaitOne();
+            Debug.Assert(false);
+            MessageBox.Show("Ta-da!");
+            //ApplyComplete += ManagedBA_ApplyComplete;
+            //DetectPackageComplete += ManagedBA_DetectPackageComplete;
+            //PlanComplete += ManagedBA_PlanComplete;
+            //Engine.Detect();
+            //done.WaitOne();
             Engine.Quit(0);
         }
 
