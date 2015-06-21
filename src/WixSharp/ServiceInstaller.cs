@@ -239,6 +239,15 @@ namespace WixSharp
                 serviceInstallElement.Add(serviceConfigElement);
             }
 
+            /*
+             <util:ServiceConfig xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
+                    FirstFailureActionType="restart"
+                    SecondFailureActionType="restart"
+                    ThirdFailureActionType="restart"
+                    ResetPeriodInDays="1"
+                    RestartServiceDelayInSeconds="20" />
+             */
+
             return serviceInstallElement;
         }
 

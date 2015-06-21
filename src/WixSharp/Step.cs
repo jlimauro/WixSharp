@@ -428,12 +428,21 @@ namespace WixSharp
         public static Step PreviousActionOrInstallInitialize = new Step("PreviousActionOrInstallInitialize"); //if first usage of a CA, same as "InstallInitialize"; otherwise same as "PreviousAction"
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Sequence"/> class.
+        /// Initializes a new instance of the <see cref="Step"/> class.
         /// </summary>
         /// <param name="value">The value.</param>
         public Step(string value)
         {
             Value = value;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Step"/> class.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public Step(Step value)
+        {
+            Value = value.ToString();
         }
 
         /// <summary>
@@ -450,6 +459,91 @@ namespace WixSharp
         public override string ToString()
         {
             return Value;
+        }
+    }
+
+    public class StringEnum<T>
+    {
+        protected StringEnum(T value)
+        {
+            Value = value.ToString();
+        }
+
+        protected StringEnum(string value)
+        {
+            Value = value;
+        }
+
+        protected string Value = "";
+
+        public override string ToString()
+        {
+            return Value;
+        }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="obj1">The obj1.</param>
+        /// <param name="obj2">The obj2.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(StringEnum<T> obj1, StringEnum<T> obj2)
+        {
+            return string.Compare(obj1.Value, obj2.Value) == 0;
+        }
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="obj1">The obj1.</param>
+        /// <param name="obj2">The obj2.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(StringEnum<T> obj1, StringEnum<T> obj2)
+        {
+            return string.Compare(obj1.Value, obj2.Value) != 0;
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="Id"/> to <see cref="System.String"/>.
+        /// </summary>
+        /// <param name="obj">The identifier.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
+        public static implicit operator System.String(StringEnum<T> obj)
+        {
+            return obj.Value;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns>
+        /// 	<c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
+        public override bool Equals(object obj)
+        {
+
+            if (!(obj is StringEnum<T>))
+            {
+                if (obj is string)
+                    return (obj as string) == this;
+                else
+                    return false;
+            }
+            return this == (StringEnum<T>)obj;
+
+        }
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
         }
     }
 }
