@@ -2,11 +2,10 @@ using System;
 using WixSharp;
 using WixSharp.Bootstrapper;
 using io = System.IO;
-using sys = System.Reflection;
 
 public class Script
 {
-    //The UI implementation is based on work of BRYANPJOHNSTON
+    //The UI implementation is based on the work of BRYANPJOHNSTON
     //http://bryanpjohnston.com/2012/09/28/custom-wix-managed-bootstrapper-application/
 
     static public void Main(string[] args)
@@ -28,7 +27,7 @@ public class Script
 
         bootstrapper.Version = new Version("1.0.0.0");
         bootstrapper.UpgradeCode = new Guid("6f330b47-2577-43ad-9095-1861bb25889b");
-        bootstrapper.Application = new ManagedBootstrapperApplication(sys.Assembly.GetExecutingAssembly().Location);
+        bootstrapper.Application = new ManagedBootstrapperApplication("%this%"); // you can also use System.Reflection.Assembly.GetExecutingAssembly().Location
 
         bootstrapper.Build();
 

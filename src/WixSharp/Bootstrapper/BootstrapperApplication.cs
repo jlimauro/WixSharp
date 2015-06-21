@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Deployment.WindowsInstaller;
-using System.IO;
-using sys=System.IO;
+using sys = System.IO;
 
 namespace WixSharp.Bootstrapper
 {
@@ -27,7 +27,12 @@ namespace WixSharp.Bootstrapper
             //The call must be triggered by Compiler.Build* calls. 
             rawAppAssembly = AppAssembly;
             if (rawAppAssembly.EndsWith("%this%"))
+            {
                 rawAppAssembly = Compiler.ResolveClientAsm(rawAppAssembly, outDir); //not if a new file is generated then the Compiler takes care for cleaning any temps
+                if (Payloads.Contains("%this%"))
+                    Payloads = Payloads.Except(new[] { "%this%" }).Concat(new[] { rawAppAssembly }).ToArray();
+
+            }
 
             string asmName = Path.GetFileNameWithoutExtension(Utils.OriginalAssemblyFile(rawAppAssembly));
 
@@ -73,7 +78,8 @@ namespace WixSharp.Bootstrapper
             root.SetAttribute("Id", "ManagedBootstrapperApplicationHost");
 
             List<string> files = new List<string> { rawAppAssembly, bootstrapperCoreConfig };
-            files.AddRange(Payloads.Distinct());
+            files.AddRange(Payloads.Distinct()); //note %this% it already resolved at this stage into an absolutepath 
+
             if(!Payloads.Where(x=>Path.GetFileName(x).SameAs(Path.GetFileName(winInstaller))).Any())
                 files.Add(winInstaller);
 
