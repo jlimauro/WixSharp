@@ -183,14 +183,14 @@ namespace WixSharp
                     new XAttribute("Start", StartType),
                     new XAttribute("ErrorControl", ErrorControl));
 
-            serviceInstallElement.SetAttributeValue("Account", Account);
-            serviceInstallElement.SetAttributeValue("Arguments", Arguments);
-            serviceInstallElement.SetAttributeValue("Interactive", Interactive.ToNullOrYesNo());
-            serviceInstallElement.SetAttributeValue("LoadOrderGroup", LoadOrderGroup);
-            serviceInstallElement.SetAttributeValue("Password", Password);
-            serviceInstallElement.SetAttributeValue("EraseDescription", EraseDescription.ToNullOrYesNo());
-            serviceInstallElement.SetAttributeValue("Vital", Vital.ToNullOrYesNo());
-            serviceInstallElement.AddAttributes(Attributes);
+            serviceInstallElement.SetAttribute("Account", Account)
+                                 .SetAttribute("Arguments", Arguments)
+                                 .SetAttribute("Interactive", Interactive)
+                                 .SetAttribute("LoadOrderGroup", LoadOrderGroup)
+                                 .SetAttribute("Password", Password)
+                                 .SetAttribute("EraseDescription", EraseDescription)
+                                 .SetAttribute("Vital", Vital)
+                                 .AddAttributes(Attributes);
 
             foreach (var item in DependsOn.Split(';'))
             {
@@ -228,13 +228,13 @@ namespace WixSharp
 
                 var serviceConfigElement = new XElement(WixExtension.Util.ToXNamespace() + "ServiceConfig");
 
-                serviceConfigElement.SetAttributeValue("FirstFailureActionType", FirstFailureActionType.ToString());
-                serviceConfigElement.SetAttributeValue("SecondFailureActionType", SecondFailureActionType.ToString());
-                serviceConfigElement.SetAttributeValue("ThirdFailureActionType", ThirdFailureActionType.ToString());
-                serviceConfigElement.SetAttributeValue("ProgramCommandLine", ProgramCommandLine);
-                serviceConfigElement.SetAttributeValue("RebootMessage", RebootMessage);
-                serviceConfigElement.SetAttributeValue("ResetPeriodInDays", ResetPeriodInDays.ToString());
-                serviceConfigElement.SetAttributeValue("RestartServiceDelayInSeconds", RestartServiceDelayInSeconds);
+                serviceConfigElement.SetAttribute("FirstFailureActionType", FirstFailureActionType)
+                                    .SetAttribute("SecondFailureActionType", SecondFailureActionType)
+                                    .SetAttribute("ThirdFailureActionType", ThirdFailureActionType)
+                                    .SetAttribute("ProgramCommandLine", ProgramCommandLine)
+                                    .SetAttribute("RebootMessage", RebootMessage)
+                                    .SetAttribute("ResetPeriodInDays", ResetPeriodInDays)
+                                    .SetAttribute("RestartServiceDelayInSeconds", RestartServiceDelayInSeconds);
 
                 serviceInstallElement.Add(serviceConfigElement);
             }

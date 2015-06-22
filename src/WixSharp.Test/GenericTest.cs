@@ -65,41 +65,41 @@ namespace WixSharp.Test
             Assert.Equal("InstallUISequence|InstallExecuteSequence", result2.ToString());
         }
 
-        [Fact]
-        void StringEnum_Test()
-        {
-            Assert.Equal("newVal", new MyVals("newVal"));
-            Assert.Equal("firstVal", MyVals.First);
-            Assert.Equal("secondVal", MyVals.Second);
-            Assert.Equal("thirdVal", MyVals.Third);
+[Fact]
+void StringEnum_Test()
+{
+    Assert.Equal("newVal", new MyVals("newVal"));
+    Assert.Equal("firstVal", MyVals.First);
+    Assert.Equal("secondVal", MyVals.Second);
+    Assert.Equal("thirdVal", MyVals.Third);
 
 
-            Assert.True(MyVals.Third == "thirdVal");
-            Assert.True("thirdVal" == MyVals.Third);
+    Assert.True(MyVals.Third == "thirdVal");
+    Assert.True("thirdVal" == MyVals.Third);
 
-            Assert.False(MyVals.Third == "");
-            Assert.True(MyVals.Third != "");
+    Assert.False(MyVals.Third == "");
+    Assert.True(MyVals.Third != "");
             
-            Assert.False("" == MyVals.Third);
-            Assert.True("" != MyVals.Third);
+    Assert.False("" == MyVals.Third);
+    Assert.True("" != MyVals.Third);
 
-            Assert.Equal("thirdVal", MyVals.Third);
-            Assert.Equal("thirdVal", (string)MyVals.Third);
+    Assert.Equal("thirdVal", MyVals.Third);
+    Assert.Equal("thirdVal", (string)MyVals.Third);
 
-            Assert.True(MyVals.Third.Equals("thirdVal"));
-            Assert.False(MyVals.Third.Equals(null));
-            Assert.True(MyVals.Third.Equals(new MyVals("thirdVal")));
-            Assert.True(MyVals.Third.Equals(MyVals.Third));
+    Assert.True(MyVals.Third.Equals("thirdVal"));
+    Assert.False(MyVals.Third.Equals(null));
+    Assert.True(MyVals.Third.Equals(new MyVals("thirdVal")));
+    Assert.True(MyVals.Third.Equals(MyVals.Third));
 
-        }
+}
 
-        class MyVals : StringEnum<MyVals>
-        {
-            public MyVals(string value) : base(value) { }
+class MyVals : StringEnum<MyVals>
+{
+    public MyVals(string value) : base(value) { }
 
-            public static MyVals First = new MyVals("firstVal");
-            public static MyVals Second = new MyVals("secondVal");
-            public static MyVals Third = new MyVals("thirdVal");
-        }
+    public static MyVals First = new MyVals("firstVal");
+    public static MyVals Second = new MyVals("secondVal");
+    public static MyVals Third = new MyVals("thirdVal");
+}
     }
 }

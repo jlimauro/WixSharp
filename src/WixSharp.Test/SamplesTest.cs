@@ -18,7 +18,7 @@ namespace WixSharp.Test
         public void CanBuildAllSamples()
         {
             var failedSamples = new List<string>();
-            int startStep = 22;
+            int startStep = 0;
             int currentStep = startStep;
 
             var files = Directory.GetFiles(@"..\..\..\WixSharp.Samples\Wix# Samples", "build*.cmd", SearchOption.AllDirectories);
