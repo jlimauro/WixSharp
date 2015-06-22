@@ -2,19 +2,26 @@
 //css_ref Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 //css_ref System.Core.dll;
 
-using System;
 using File = WixSharp.File;
 using WixSharp;
-using System.Collections.Generic;
 
 class Script
 {
 
     /// <summary>
-    /// The following project has 2 Features. FeatureA is a normal Feature and will always be installed (for installations with default values).
-    /// FeatureB is a Feature defined with a Condition. The Condition below will install FeatureB if and only if an install property 'Prop1' has a value
+    /// The following project has 5 Features. 
+    /// 1) The default Feature from Project.DefaultFeature.
+    /// 2) FeatureA - a normal Feature and will always be installed.
+    /// 3) FeatureB - a conditional Feature. 
+    ///               The Condition below will install FeatureB if and only if an install property 'Prop1' has a value equal to 1.
     /// equal to 1. If Prop1 has any other value, then FeatureB will not be installed alongside FeatureA. 
+    /// 4) FeatureC - a normal Feature, nested under the default Feature.
+    /// 5) FeatureD - a conditional Feature, nested under the default Feature. 
+    ///               The Condition below will install FeatureD if and only if an install property 'Prop1' has a value not equal to 1.
     /// </summary>
+    /// <remarks>
+    /// The summary assumes a default INSTALLLEVEL equal to 1, where Features with Level = 2 will be disabled.
+    /// </remarks>
     /// <param name="args"></param>
     static public void Main(string[] args)
     {
@@ -24,6 +31,12 @@ class Script
         //featureB - a conditional feature
         var featureB = new Feature("Feature B");
 
+        //featureC - a nested feature
+        var featureC = new Feature("Feature C");
+
+        //featureD - a nested, conditional feature;
+        var featureD = new Feature("Feature D");
+
         //Note - Level can be set explicitly via Attributes or indirectly via IsEnabled
         //featureB.Attributes =
         //    new Dictionary<string, string>
@@ -31,19 +44,31 @@ class Script
         //            { "Level", "2" }
         //        };
         featureB.IsEnabled = false;
+        featureD.IsEnabled = true;
 
         //if the condition evaluates to true - the level of the parent feature is updated to the level of the FeatureCondition
-        featureB.Condition = new FeatureCondition("PROP1 = 1", level: 1);
+        featureB.Condition = new FeatureCondition("PROP1 = 1", level: 1); //disabled to enabled
+        featureD.Condition = new FeatureCondition("PROP1 = 1", level: 2); //enabled to disabled; to disable, set level equal to a value higher than INSTALLLEVEL property.
 
         var project =
             new Project("FeatureCondition",
                 new Dir(@"%ProgramFiles%\My Company\Features",
-                    new File(featureA, @"Files\MainFile.txt"),
-                    new File(featureB, @"Files\SecondaryFile.txt")));
+                    new File(@"Files\default.txt"),
+                    new File(featureA, @"Files\a.txt"),
+                    new File(featureB, @"Files\b.txt"),
+                    new File(featureC, @"Files\c.txt"),
+                    new File(featureD, @"Files\d.txt")));
+
+        //Note - to set your own default Feature
+        //var featureDefault = new Feature("Default");
+        //project.DefaultFeature = featureDefault;
+
+        project.DefaultFeature.Children.Add(featureC);
+        project.DefaultFeature.Children.Add(featureD);
 
         project.UI = WUI.WixUI_FeatureTree;
 
-        project.LaunchConditions.Add(new LaunchCondition("PROP1", "PROP1 is required"));
+        project.LaunchConditions.Add(new LaunchCondition("PROP1 or Installed", "PROP1 is required"));
         project.PreserveTempFiles = true;
 
         Compiler.BuildMsi(project);

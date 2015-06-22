@@ -525,6 +525,21 @@ namespace WixSharp
         /// </summary>
         public string BackgroundImage = "";
 
+        private Feature _defaultFeature = new Feature("Complete");
+        /// <summary>
+        /// Gets or Sets the default Feature for the project. 
+        /// All elements without an explicitly assigned Feature will be placed under the DefaultFeature.
+        /// If DefaultFeature is not set, then DefaultFeature will default to a Feature with name 'Complete'.
+        /// </summary>
+        public Feature DefaultFeature
+        {
+            get { return _defaultFeature; }
+            set
+            {
+                if (value == null) throw new ArgumentNullException("value", "DefaultFeature cannot be null");
+                _defaultFeature = value;
+            }
+        }
 
         /// <summary>
         /// Resolves all wild card specifications if any.
