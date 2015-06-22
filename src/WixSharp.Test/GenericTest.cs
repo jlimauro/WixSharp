@@ -96,7 +96,6 @@ namespace WixSharp.Test
         class MyVals : StringEnum<MyVals>
         {
             public MyVals(string value) : base(value) { }
-            public MyVals(MyVals value) : base(value) { }
 
             public static MyVals First = new MyVals("firstVal");
             public static MyVals Second = new MyVals("secondVal");
