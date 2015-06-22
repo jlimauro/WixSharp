@@ -95,7 +95,6 @@ namespace WixSharp.Test
 
             var root = service.ToXml(projectMock).Cast<XElement>().First();
 
-            Assert.False(root.HasAttribute("Description"));
             Assert.False(root.HasAttribute("Account"));
             Assert.False(root.HasAttribute("Arguments"));
             Assert.False(root.HasAttribute("Password"));
