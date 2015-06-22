@@ -1109,6 +1109,13 @@ namespace WixSharp
                 if (!wFeature.ConfigurableDir.IsEmpty())
                     xFeature.SetAttributeValue("ConfigurableDirectory", wFeature.ConfigurableDir);
 
+                if (wFeature.Condition != null)               
+                    //intentionally leaving out AddAttributes(...) as Level is the only valid attribute on */Feature/Condition
+                    xFeature.Add(
+                        new XElement("Condition",
+                            new XAttribute("Level", wFeature.Condition.Level),
+                            new XCData(wFeature.Condition.ToCData())));
+
                 foreach (string componentId in featureComponents[wFeature])
                     xFeature.Add(new XElement("ComponentRef",
                                     new XAttribute("Id", componentId)));
