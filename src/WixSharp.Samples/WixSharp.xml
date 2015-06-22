@@ -2779,6 +2779,73 @@
             Maps to the User property of SqlScript
             </summary>
         </member>
+        <member name="T:WixSharp.StringEnum`1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WixSharp.StringEnum`1.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.StringEnum`1"/> class.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="F:WixSharp.StringEnum`1.Value">
+            <summary>
+            The value
+            </summary>
+        </member>
+        <member name="M:WixSharp.StringEnum`1.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:WixSharp.StringEnum`1.op_Equality(WixSharp.StringEnum{`0},WixSharp.StringEnum{`0})">
+            <summary>
+            Implements the operator ==.
+            </summary>
+            <param name="obj1">The obj1.</param>
+            <param name="obj2">The obj2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:WixSharp.StringEnum`1.op_Inequality(WixSharp.StringEnum{`0},WixSharp.StringEnum{`0})">
+            <summary>
+            Implements the operator !=.
+            </summary>
+            <param name="obj1">The obj1.</param>
+            <param name="obj2">The obj2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:WixSharp.StringEnum`1.op_Implicit(WixSharp.StringEnum{`0})~System.String">
+            <summary>
+            Performs an implicit conversion from <see cref="T:WixSharp.Id"/> to <see cref="T:System.String"/>.
+            </summary>
+            <param name="obj">The identifier.</param>
+            <returns>
+            The result of the conversion.
+            </returns>
+        </member>
+        <member name="M:WixSharp.StringEnum`1.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            	<c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
+        </member>
+        <member name="M:WixSharp.StringEnum`1.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
         <member name="T:WixSharp.User">
             <summary>
             Represents a WixUtilExtension User
@@ -9409,49 +9476,6 @@
             </summary>
             <returns>
             A <see cref="T:System.String"/> that represents this instance.
-            </returns>
-        </member>
-        <member name="M:WixSharp.StringEnum`1.op_Equality(WixSharp.StringEnum{`0},WixSharp.StringEnum{`0})">
-            <summary>
-            Implements the operator ==.
-            </summary>
-            <param name="obj1">The obj1.</param>
-            <param name="obj2">The obj2.</param>
-            <returns>The result of the operator.</returns>
-        </member>
-        <member name="M:WixSharp.StringEnum`1.op_Inequality(WixSharp.StringEnum{`0},WixSharp.StringEnum{`0})">
-            <summary>
-            Implements the operator !=.
-            </summary>
-            <param name="obj1">The obj1.</param>
-            <param name="obj2">The obj2.</param>
-            <returns>The result of the operator.</returns>
-        </member>
-        <member name="M:WixSharp.StringEnum`1.op_Implicit(WixSharp.StringEnum{`0})~System.String">
-            <summary>
-            Performs an implicit conversion from <see cref="T:WixSharp.Id"/> to <see cref="T:System.String"/>.
-            </summary>
-            <param name="obj">The identifier.</param>
-            <returns>
-            The result of the conversion.
-            </returns>
-        </member>
-        <member name="M:WixSharp.StringEnum`1.Equals(System.Object)">
-            <summary>
-            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
-            </summary>
-            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
-            <returns>
-            	<c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
-            </returns>
-            <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
-        </member>
-        <member name="M:WixSharp.StringEnum`1.GetHashCode">
-            <summary>
-            Returns a hash code for this instance.
-            </summary>
-            <returns>
-            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
             </returns>
         </member>
         <member name="T:WixSharp.MajorUpgradeStrategy">
