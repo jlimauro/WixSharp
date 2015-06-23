@@ -20,6 +20,15 @@ namespace WixSharp.Test
             var result = Utils.MakeRelative(path, baseDir);
             Assert.Equal(@"..\Content\readme.txt", result);
         }
+        
+        [Fact]
+        public void EnumExtensions()
+        {
+            var test = ConfigureServiceTrigger.Install | ConfigureServiceTrigger.Reinstall;
+
+            Assert.True(ConfigureServiceTrigger.Install.PresentIn(test));
+            Assert.False(ConfigureServiceTrigger.Uninstall.PresentIn(test));
+        }
 
         [Fact]
         public void ArrayExtensions()

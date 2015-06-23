@@ -156,7 +156,11 @@
             </summary>
             <param name="outDir">The output directory.</param>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:WixSharp.Bootstrapper.SilentManagedBA" -->
+        <member name="T:WixSharp.Bootstrapper.SilentManagedBA">
+            <summary>
+            Implements canonical WiX managed bootstrapper application without any UI.
+            </summary>
+        </member>
         <member name="M:WixSharp.Bootstrapper.SilentManagedBA.Run">
             <summary>
             Entry point that is called when the Bootstrapper application is ready to run.

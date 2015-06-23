@@ -208,12 +208,9 @@ namespace WixSharp
                 serviceConfigElement.SetAttributeValue("PreShutdownDelay", PreShutdownDelay);
                 serviceConfigElement.SetAttributeValue("ServiceSid", ServiceSid);
 
-                if ((ConfigureServiceTrigger & ConfigureServiceTrigger.Install) == ConfigureServiceTrigger.Install)
-                    serviceConfigElement.SetAttribute("OnInstall", true.ToYesNo());
-                if ((ConfigureServiceTrigger & ConfigureServiceTrigger.Reinstall) == ConfigureServiceTrigger.Reinstall)
-                    serviceConfigElement.SetAttributeValue("OnReinstall", true.ToYesNo());
-                if ((ConfigureServiceTrigger & ConfigureServiceTrigger.Uninstall) == ConfigureServiceTrigger.Uninstall)
-                    serviceConfigElement.SetAttributeValue("OnUninstall", true.ToYesNo());
+                serviceConfigElement.SetAttribute("OnInstall", ConfigureServiceTrigger.Install.PresentIn(ConfigureServiceTrigger));
+                serviceConfigElement.SetAttribute("OnReinstall", ConfigureServiceTrigger.Reinstall.PresentIn(ConfigureServiceTrigger));
+                serviceConfigElement.SetAttribute("OnUninstall", ConfigureServiceTrigger.Uninstall.PresentIn(ConfigureServiceTrigger));
 
                 serviceInstallElement.Add(serviceConfigElement);
             }
@@ -335,6 +332,10 @@ namespace WixSharp
 
     }
 
+    /// <summary>
+    /// 
+    /// Flags for indicating when the service should be configured.
+    /// </summary>
     [Flags]
     public enum ConfigureServiceTrigger
     {
@@ -347,6 +348,7 @@ namespace WixSharp
         Reinstall = 2,
         Uninstall = 4
 #pragma warning restore 1591
+
     }
 
     /// <summary>

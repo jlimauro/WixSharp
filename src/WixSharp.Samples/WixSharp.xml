@@ -4043,6 +4043,11 @@
             <param name="path">The path.</param>
             <returns></returns>
         </member>
+        <member name="M:WixSharp.Extensions.PresentIn``1(``0,``0)">
+            <summary>
+            Reverse equivalent of Enum.HasFlag of .NET v4.5
+            </summary>
+        </member>
         <member name="M:WixSharp.Extensions.IsEmpty(System.String)">
             <summary>
             Determines whether the given string is empty.
@@ -8915,6 +8920,12 @@
             <summary>
             If any of the three *ActionType attributes is "restart", 
             this specifies the number of seconds to wait before doing so.
+            </summary>
+        </member>
+        <member name="T:WixSharp.ConfigureServiceTrigger">
+            <summary>
+            
+            Flags for indicating when the service should be configured.
             </summary>
         </member>
         <member name="F:WixSharp.ConfigureServiceTrigger.None">

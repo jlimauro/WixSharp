@@ -149,7 +149,7 @@ namespace WixSharp
         /// <summary>
         /// Product manufacturer name
         /// </summary>
-        [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).")]
+        [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).", true)]
         public string Manufacturer = Environment.UserName;
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace WixSharp
         /// <summary>
         /// Optional comments for browsing.
         /// </summary>
-        [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).")]
+        [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).", true)]
         public string Comments = "";
 
         internal virtual void Preprocess()
@@ -266,7 +266,7 @@ namespace WixSharp
         /// <summary>
         /// Path to the file containing the icon for AddRemovePrograms Control panel applet.
         /// </summary>
-        [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).")]
+        [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).", true)]
         public string AddRemoveProgramsIcon = "";
         /// <summary>
         /// The Encoding to be used for MSI UI dialogs. If not specified the 
@@ -329,7 +329,7 @@ namespace WixSharp
         /// <summary>
         /// Path to the product icon file.
         /// </summary>
-        [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).")]
+        [Obsolete("Please use WixProject.ControlPanel instead (see ProductInfo sample for details).", true)]
         public string ProductIcon = null;
 
         /// <summary>

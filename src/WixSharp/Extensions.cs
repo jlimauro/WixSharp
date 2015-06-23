@@ -493,7 +493,7 @@ namespace WixSharp
         /// <returns></returns>
         public static bool ContainsWixConstants(this string data)
         {
-            return data.Contains("[") || data.Contains("]"); 
+            return data.Contains("[") || data.Contains("]");
         }
 
         /// <summary>
@@ -579,6 +579,20 @@ namespace WixSharp
             return false;
         }
 
+        /// <summary>
+        /// Reverse equivalent of Enum.HasFlag of .NET v4.5
+        /// </summary>
+        static public bool PresentIn<T>(this T enumValue, T obj) where T : struct, IConvertible
+        {
+            if (!typeof(T).IsEnum)
+                throw new ArgumentException("T must be an enumerated type");
+
+            int iObj = ((IConvertible)obj).ToInt32(null);
+            int iEnumValue = ((IConvertible)enumValue).ToInt32(null);
+
+            return (iObj & iEnumValue) == iEnumValue;
+        }
+
         internal static string ToYesNo(this bool obj)
         {
             return obj ? "yes" : "no";
@@ -591,7 +605,7 @@ namespace WixSharp
             else
                 return null;
         }
-        
+
         /// <summary>
         /// Determines whether the given string is empty.
         /// </summary>
@@ -625,7 +639,7 @@ namespace WixSharp
         {
             return s.Length - s.TrimStart('\n', '\r', '\t', ' ').Length;
         }
-        
+
 
         /// <summary>
         /// Concats the specified strings. In the result string all items are separated with the specified delimiter.
@@ -778,7 +792,7 @@ namespace WixSharp
             newParent.Add(element);
             return element;
         }
-       
+
         /// <summary>
         /// Selects, from the given element, the child element matching the specified path.
         /// <para>If the child element is not found, a new element is created matching the path.</para>
@@ -868,7 +882,7 @@ namespace WixSharp
         /// </summary>
         /// <param name="obj">The instance of the <see cref="T:System.Object"/>.</param>
         /// <returns>The WiX compatible type name.</returns>
-        [Obsolete("It is no longer used by compiler")]
+        [Obsolete("It is no longer used by compiler", true)]
         public static string GetWType(this object obj)
         {
             if (obj is String)

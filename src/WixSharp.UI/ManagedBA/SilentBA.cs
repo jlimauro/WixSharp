@@ -73,7 +73,7 @@ namespace WixSharp.Bootstrapper
 
     /// <summary>
     /// Implements canonical WiX managed bootstrapper application without any UI.
-    /// </example>
+    /// </summary>
     public class SilentManagedBA : BootstrapperApplication
     {
         AutoResetEvent done = new AutoResetEvent(false);

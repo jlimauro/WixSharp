@@ -621,7 +621,7 @@ namespace WixSharp
         /// <param name="showAction">The show CLR dialog action id.</param>
         /// <param name="clrDialogGoNextCondition">The CLR dialog go next condition.</param>
         /// <returns></returns>
-        [Obsolete("This method was originally introduced for demo purposes only. Use WixSharp.CommonTasks.Tasks.InjectClrDialog(this Project project,...) extension method for more practical scenarios.")]
+        [Obsolete("This method was originally introduced for demo purposes only. Use WixSharp.CommonTasks.Tasks.InjectClrDialog(this Project project,...) extension method for more practical scenarios.", true)]
         public static CustomUI InjectPostLicenseClrDialog(string showAction, string clrDialogGoNextCondition = null)
         {
             var customUI = new CommomDialogsUI();
