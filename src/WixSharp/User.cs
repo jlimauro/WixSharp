@@ -70,6 +70,9 @@ namespace WixSharp
 
         #endregion
 
+        /// <summary>
+        /// <see cref="Feature"></see> the User belongs to.
+        /// </summary>
         public Feature Feature { get; set; }
 
         /// <summary>
@@ -132,7 +135,7 @@ namespace WixSharp
         /// <summary>
         /// Maps to the Name property of User
         /// </summary>
-        public string Name { get; set; } //required
+        public new string Name { get; set; } //required
 
         /// <summary>
         /// Maps to the Password property of User

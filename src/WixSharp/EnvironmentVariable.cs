@@ -118,7 +118,7 @@ namespace WixSharp
         /// </summary>
         public string Value = null;
         /// <summary>
-        /// <see cref="Feature"></see> the environment variable is included in.
+        /// <see cref="Feature"></see> the environment variable belongs to.
         /// </summary>
         public Feature Feature;
         /// <summary>

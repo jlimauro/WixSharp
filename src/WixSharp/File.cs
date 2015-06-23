@@ -172,7 +172,7 @@ namespace WixSharp
         /// </summary>
         public FileShortcut[] Shortcuts = new FileShortcut[0];
         /// <summary>
-        /// <see cref="Feature"></see> the file is included in.
+        /// <see cref="Feature"></see> the file belongs to.
         /// </summary>
         public Feature Feature;
         /// <summary>
@@ -181,7 +181,7 @@ namespace WixSharp
         /// </summary>
         public Condition Condition;
         /// <summary>
-        /// COllection of <see cref="FilePermsission"/> to be applied to the file. 
+        /// COllection of <see cref="T:WixSharp.FilePermission" /> to be applied to the file.
         /// </summary>
         public FilePermission[] Permissions = new FilePermission[0];
         /// <summary>

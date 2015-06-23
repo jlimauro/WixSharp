@@ -245,7 +245,7 @@ namespace WixSharp
         public DirPermission[] Permissions = new DirPermission[0];
 
         /// <summary>
-        /// <see cref="Feature"></see> the directory is included in.
+        /// <see cref="Feature"></see> the directory belongs to.
         /// </summary>
         public Feature Feature;
 
@@ -255,23 +255,6 @@ namespace WixSharp
         ///// </summary>
         //public Condition Condition;
 
-        //bool published;
-
-        ///// <summary>
-        ///// Defines if the <see cref="Dir"/> should be public. Public directories (e.g. INSTALL_DIR) can be set from
-        ///// <c>msiexec.exe</c> command line or <c>setup.ini</c> file. In MSI syntax, public nature of the directory
-        ///// is encoded through using only capital characters for directory name.
-        ///// </summary>
-        //public bool Published
-        //{
-        //    get { return published; }
-        //    set
-        //    {
-        //        published = value;
-        //        if (id.IsEmpty() && published)
-        //            Id = Id.ToUpper();
-        //    }
-        //}
 
         /// <summary>
         ///  Returns the WiX <c>Directory</c> as a string.

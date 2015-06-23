@@ -8,12 +8,25 @@ using sys = System.IO;
 
 namespace WixSharp.Bootstrapper
 {
+    /// <summary>
+    /// Class for defining a Wix# application for WiX standard Burn-based bootstrapper.
+    /// <para>It is nothing else but a light container for the WiX metadata associated with the 
+    /// .NET assembly implementing WiX ManagedBootstrapper application.</para>
+    /// </summary>
     public class ManagedBootstrapperApplication : WixStandardBootstrapperApplication
     {
+        /// <summary>
+        /// The assembly implementing Bootstrapper UI application
+        /// </summary>
         public string AppAssembly = "";
         string rawAppAssembly = "";
         string bootstrapperCoreConfig = "";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ManagedBootstrapperApplication"/> class.
+        /// </summary>
+        /// <param name="appAssembly">The application assembly.</param>
+        /// <param name="dependencies">The dependencies.</param>
         public ManagedBootstrapperApplication(string appAssembly, params string[] dependencies)
         {
             AppAssembly = appAssembly;
@@ -21,6 +34,12 @@ namespace WixSharp.Bootstrapper
                                .AddRange(dependencies);
         }
 
+        /// <summary>
+        /// Automatically generates required sources files for building the Bootstrapper. It is
+        /// used to automatically generate the files which, can be generated automatically without
+        /// user involvement (e.g. BootstrapperCore.config).
+        /// </summary>
+        /// <param name="outDir">The output directory.</param>
         public override void AutoGenerateSources(string outDir)
         {
             //NOTE: while it is tempting, AutoGenerateSources cannot be called during initialization as it is too early. 
@@ -28,7 +47,7 @@ namespace WixSharp.Bootstrapper
             rawAppAssembly = AppAssembly;
             if (rawAppAssembly.EndsWith("%this%"))
             {
-                rawAppAssembly = Compiler.ResolveClientAsm(rawAppAssembly, outDir); //not if a new file is generated then the Compiler takes care for cleaning any temps
+                rawAppAssembly = Compiler.ResolveClientAsm(rawAppAssembly, outDir); //NOTE: if a new file is generated then the Compiler takes care for cleaning any temps
                 if (Payloads.Contains("%this%"))
                     Payloads = Payloads.Except(new[] { "%this%" }).Concat(new[] { rawAppAssembly }).ToArray();
 
@@ -89,6 +108,8 @@ namespace WixSharp.Bootstrapper
             return new[] { root };
         }
 
+        string primaryPackageId;
+        
         /// <summary>
         /// Gets or sets the IDd of the primary package from the bundle.
         /// <para>This ID is used by the application to detect the presence of the package on the target system 
@@ -98,8 +119,6 @@ namespace WixSharp.Bootstrapper
         /// <value>
         /// The primary package identifier.
         /// </value>
-        string primaryPackageId;
-        
         public string PrimaryPackageId
         {
             get { return primaryPackageId; }
@@ -137,6 +156,12 @@ namespace WixSharp.Bootstrapper
         /// <returns></returns>
         public abstract XContainer[] ToXml();
 
+        /// <summary>
+        /// Automatically generates required sources files for building the Bootstrapper. It is
+        /// used to automatically generate the files which, can be generated automatically without 
+        /// user involvement (e.g. BootstrapperCore.config).
+        /// </summary>
+        /// <param name="outDir">The output directory.</param>
         public virtual void AutoGenerateSources(string outDir)
         {
         }

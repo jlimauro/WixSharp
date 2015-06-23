@@ -81,12 +81,12 @@ namespace WixSharp
         /// into MSI (e.g. <c>new DirFiles(@"Release\Bin\*.*")</c>).</param>
         /// <param name="excludeMasks">Wildcard pattern(s) for files to be excluded from MSI
         /// (e.g. <c>new DirFiles(typical, @"Release\Bin\*.dll", "*.Test.dll", "*.UnitTest.dll")</c>).</param>
-        [Obsolete("Use more versatile constructor, which takes Predicate<string> filter.", false)]
+        [Obsolete("Use more versatile constructor, which takes Predicate<string> filter.", true)]
         public DirFiles(string sourcePath, params string[] excludeMasks)
         {
             IncludeMask = IO.Path.GetFileName(sourcePath);
             Directory = IO.Path.GetDirectoryName(sourcePath);
-            ExcludeMasks = excludeMasks;
+            //ExcludeMasks = excludeMasks;
         }
 
         /// <summary>
@@ -124,12 +124,12 @@ namespace WixSharp
         /// into MSI (e.g. <c>new DirFiles(@"Release\Bin\*.*")</c>).</param>
         /// <param name="excludeMasks">Wildcard pattern(s) for files to be excluded from MSI
         /// (e.g. <c>new DirFiles(typical, @"Release\Bin\*.dll", "*.Test.dll", "*.UnitTest.dll")</c>).</param>
-        [Obsolete("Use more versatile constructor, which takes Predicate<string> filter.", false)]
+        [Obsolete("Use more versatile constructor, which takes Predicate<string> filter.", true)]
         public DirFiles(Feature feature, string sourcePath, params string[] excludeMasks)
         {
             IncludeMask = IO.Path.GetFileName(sourcePath);
             Directory = IO.Path.GetDirectoryName(sourcePath);
-            ExcludeMasks = excludeMasks;
+            //ExcludeMasks = excludeMasks;
             Feature = feature;
         }
         /// <summary>
@@ -149,7 +149,7 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// <see cref="Feature"></see> the directory files are included in.
+        /// <see cref="Feature"></see> the directory files belong to.
         /// </summary>
         public Feature Feature;
 
@@ -172,7 +172,7 @@ namespace WixSharp
         /// <summary>
         /// Wildcard patterns for files to be excluded from MSI. Note, the mask is applied for the whole path not file name only.
         /// </summary>
-        [Obsolete("Use more versatile constructor, which takes Predicate<string> filter.", false)]
+        [Obsolete("Use more versatile constructor, which takes Predicate<string> filter.", true)]
         public string[] ExcludeMasks = new string[0];
 
         /// <summary>
@@ -200,15 +200,15 @@ namespace WixSharp
 
             var files = new List<File>();
             var excludeWildcards = new List<Compiler.Wildcard>();
-            foreach (var mask in ExcludeMasks)
-                excludeWildcards.Add(new Compiler.Wildcard(mask, RegexOptions.IgnoreCase));
+            //foreach (var mask in ExcludeMasks)
+            //    excludeWildcards.Add(new Compiler.Wildcard(mask, RegexOptions.IgnoreCase));
 
             foreach (string file in IO.Directory.GetFiles(rootDirPath, IncludeMask))
             {
                 bool ignore = false;
-                foreach (Compiler.Wildcard wildcard in excludeWildcards)
-                    if ((ignore = wildcard.IsMatch(file)) == true)
-                        break;
+                //foreach (Compiler.Wildcard wildcard in excludeWildcards)
+                //    if ((ignore = wildcard.IsMatch(file)) == true)
+                //        break;
 
                 if (!ignore && Filter(file))
                 {

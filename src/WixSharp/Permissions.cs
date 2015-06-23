@@ -251,7 +251,7 @@ namespace WixSharp
         public bool? WriteExtendedAttributes { get; set; }
 
         /// <summary>
-        /// <see cref="Feature"></see> the Permission is included in.
+        /// <see cref="Feature"></see> the Permission belongs to.
         /// </summary>
         public Feature Feature;
 

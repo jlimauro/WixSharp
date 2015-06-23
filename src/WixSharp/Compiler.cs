@@ -1974,9 +1974,7 @@ namespace WixSharp
                                    new XAttribute("Id", compId),
                                    new XAttribute("Guid", WixGuid.NewGuid(compId))));
 
-                var certificateElement = new XElement(WixExtension.IIs.ToXNamespace() + "Certificate");
-                certificate.EmitAttributes(certificateElement);
-                comp.Add(certificateElement);
+                comp.Add(certificate.ToXml());
             }
         }
 

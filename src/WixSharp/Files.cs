@@ -92,7 +92,7 @@ namespace WixSharp
         {
             IncludeMask = IO.Path.GetFileName(sourcePath);
             Directory = IO.Path.GetDirectoryName(sourcePath);
-            ExcludeMasks = excludeFileMasks;
+            //ExcludeMasks = excludeFileMasks;
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace WixSharp
         {
             IncludeMask = IO.Path.GetFileName(sourcePath);
             Directory = IO.Path.GetDirectoryName(sourcePath);
-            ExcludeMasks = excludeFileMasks;
+            //ExcludeMasks = excludeFileMasks;
             Feature = feature;
         }
 
@@ -156,7 +156,7 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// <see cref="Feature"></see> the directory files are included in.
+        /// <see cref="Feature"></see> the files belongs to.
         /// </summary>
         public Feature Feature;
 
@@ -179,7 +179,7 @@ namespace WixSharp
         /// <summary>
         /// Wildcard patterns for files to be excluded from MSI. Note, the mask is applied for the whole path not file name only.
         /// </summary>
-        [Obsolete("Use more versatile constructor, which takes Predicate<string> filter.")]
+        [Obsolete("Use more versatile constructor, which takes Predicate<string> filter.", true)]
         public string[] ExcludeMasks = new string[0];
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace WixSharp
                                         var subDir = new Dir(this.Feature, dirName, new DirFiles(IO.Path.Combine(subDirPath, this.IncludeMask))
                                                                       {
                                                                           Feature = this.Feature,
-                                                                          ExcludeMasks = this.ExcludeMasks,
+                                                                          //ExcludeMasks = this.ExcludeMasks,
                                                                           Filter = this.Filter
                                                                       });
                                         AgregateSubDirs(subDir, subDirPath);
@@ -228,7 +228,7 @@ namespace WixSharp
                 new DirFiles(IO.Path.Combine(rootDirPath, this.IncludeMask)) 
                 {
                     Feature=this.Feature, 
-                    ExcludeMasks = this.ExcludeMasks, 
+                    //ExcludeMasks = this.ExcludeMasks, 
                     Filter = this.Filter 
                 }
             };
@@ -244,7 +244,7 @@ namespace WixSharp
                 var subDir = new Dir(this.Feature, dirName, new DirFiles(IO.Path.Combine(subDirPath, this.IncludeMask))
                                               {
                                                   Feature = this.Feature,
-                                                  ExcludeMasks = this.ExcludeMasks,
+                                                  //ExcludeMasks = this.ExcludeMasks,
                                                   Filter = this.Filter
                                               });
                 AgregateSubDirs(subDir, subDirPath);

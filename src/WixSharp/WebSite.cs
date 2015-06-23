@@ -1,10 +1,11 @@
 #region Licence...
+
 /*
 The MIT License (MIT)
 
 Copyright (c) 2014 Oleg Shilo
 
-Permission is hereby granted, 
+Permission is hereby granted,
 free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -23,11 +24,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#endregion
-using IO = System.IO;
-using System.Collections.Generic;
+
+#endregion Licence...
+
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace WixSharp
@@ -39,21 +40,23 @@ namespace WixSharp
     {
         /// <summary>
         /// This is the name of the web site that will show up in the IIS management console.
-        /// </summary> 
+        /// </summary>
         public string Description = "";
+
         /// <summary>
         /// Indicates if the WebSite is to be installed (created on IIS) or existing WebSite should be used to install the corresponding
         /// WebApplication. The default <see cref="InstallWebSite"/> value is <c>false</c>
         /// <para>Developers should be aware of the WebSite installation model imposed by WiX/MSI and use <see cref="InstallWebSite"/> carefully.</para>
         /// <para>If <see cref="InstallWebSite"/> value is set to <c>false</c> the parent WebApplication (<see cref="T:WixSharp.IISVirtualDir"/>)
-        /// will be installed in the brand new (freshly created) WebSite or in the existing one if a site with the same address/port combination already exists 
-        /// on IIS). The undesirable side affect of this deployment scenario is that if the existing WebSite was used to install the WebApplication it will be 
+        /// will be installed in the brand new (freshly created) WebSite or in the existing one if a site with the same address/port combination already exists
+        /// on IIS). The undesirable side affect of this deployment scenario is that if the existing WebSite was used to install the WebApplication it will be
         /// deleted on IIS during uninstallation even if this WebSite has other WebApplications installed.</para>
-        /// <para>The "safer" option is to set <see cref="InstallWebSite"/> value to <c>true</c> (default value). In this case the WebApplication will 
-        /// be installed in an existing WebSite with matching address/port. If the match is not found the installation will fail. During the uninstallation 
+        /// <para>The "safer" option is to set <see cref="InstallWebSite"/> value to <c>true</c> (default value). In this case the WebApplication will
+        /// be installed in an existing WebSite with matching address/port. If the match is not found the installation will fail. During the uninstallation
         /// only installed WebApplication will be removed from IIS.</para>
         /// </summary>
         public bool InstallWebSite = false;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSite"/> class.
         /// </summary>
@@ -62,10 +65,10 @@ namespace WixSharp
         {
             this.Name = name;
         }
-        
-        //// <summary>
-        //// Collection of <see cref="T:WebSite.Certificate"/> associated with website.
-        //// </summary>
+
+        ///// <summary>
+        ///// Collection of <see cref="T:WebSite.Certificate"/> associated with website.
+        ///// </summary>
         //public Certificate[] Certificates = new Certificate[0];
 
         /// <summary>
@@ -77,7 +80,9 @@ namespace WixSharp
         {
             this.Name = name;
             this.AddressesDefinition = addressDefinition;
-        }        /// <summary>
+        }        
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="WebSite"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
@@ -105,7 +110,7 @@ namespace WixSharp
                         string port = tokens[1];
                         if (tokens[1].ContainsWixConstants())
                         {
-                            addressesToAdd.Add(new WebAddress { Address = address, AttributesDefinition = "Port="+port });
+                            addressesToAdd.Add(new WebAddress { Address = address, AttributesDefinition = "Port=" + port });
                         }
                         else
                         {
@@ -128,17 +133,19 @@ namespace WixSharp
         public partial class WebAddress : WixEntity
         {
             /// <summary>
-            ///  The IP address for the web address. To specify the "All Unassigned" IP address, do not specify 
-            ///  this attribute or specify its value as "*". The IP address is also used to determine if the WebSite is already installed. 
-            ///  The IP address must match exactly (empty value matches "All Unassigned") unless "*" is used which will match any existing IP (including "All Unassigned"). 
+            ///  The IP address for the web address. To specify the "All Unassigned" IP address, do not specify
+            ///  this attribute or specify its value as "*". The IP address is also used to determine if the WebSite is already installed.
+            ///  The IP address must match exactly (empty value matches "All Unassigned") unless "*" is used which will match any existing IP (including "All Unassigned").
             /// </summary>
             public string Address = "*";
+
             /// <summary>
             /// Sets the port number.
             /// </summary>
             public int Port = 0;
+
             /// <summary>
-            /// Optional attributes of the <c>WebAddress Element</c> (e.g. Secure:YesNoPath). 
+            /// Optional attributes of the <c>WebAddress Element</c> (e.g. Secure:YesNoPath).
             /// </summary>
             /// <example>
             /// <code>
@@ -153,16 +160,16 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Specification for auto-generating the <see cref="T:WebSite.WebAddresses"/> collection. 
-        /// <para>If <see cref="AddressesDefinition"/> is specified, the existing content of <see cref="Addresses"/> will be ignored 
+        /// Specification for auto-generating the <see cref="T:WebSite.WebAddresses"/> collection.
+        /// <para>If <see cref="AddressesDefinition"/> is specified, the existing content of <see cref="Addresses"/> will be ignored
         /// and replaced with the auto-generated one at compile time.</para>
         /// </summary>
         /// <example>
-        /// <c>webSite.AddressesDefinition = "*:80;*90";</c> will be parsed and converted to an array of <see cref="T:WixSharp.WebSite.WebAddress"/> as follows: 
+        /// <c>webSite.AddressesDefinition = "*:80;*90";</c> will be parsed and converted to an array of <see cref="T:WixSharp.WebSite.WebAddress"/> as follows:
         /// <code>
         /// ...
         /// webSite.Addresses = new []
-        ///     {   
+        ///     {
         ///         new WebSite.WebAddress
         ///         {
         ///             Address = "*",
@@ -177,10 +184,11 @@ namespace WixSharp
         /// </code>
         /// </example>
         public string AddressesDefinition = "";
+
         /// <summary>
         /// Collection of <see cref="T:WebSite.WebAddresses"/> associated with website.
         /// <para>
-        /// The user specified values of <see cref="Addresses"/> will be ignored and replaced with the 
+        /// The user specified values of <see cref="Addresses"/> will be ignored and replaced with the
         /// auto-generated addresses if <see cref="AddressesDefinition"/> is specified either directly or via appropriate <see cref="WebSite"/> constructor.
         /// </para>
         /// </summary>
@@ -200,7 +208,6 @@ namespace WixSharp
         WebAddress[] addresses = new WebAddress[0];
     }
 
-
     //http://www.davidwhitney.co.uk/content/blog/index.php/2009/02/11/installing-certificates-using-wix-windows-installer-xml-voltive/
     //http://stackoverflow.com/questions/860996/wix-and-certificates-in-iis
     /// <summary>
@@ -208,28 +215,34 @@ namespace WixSharp
     /// </summary>
     public class Certificate : WixEntity
     {
-
         #region constructors
 
         /// <summary>
         /// Creates an instance of Certificate
         /// </summary>
-        public Certificate() { }
+        public Certificate()
+        {
+        }
 
         /// <summary>
         /// Creates an instance of Certificate where the certificate is a binary resource
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="storeLocation"></param>
-        /// <param name="storeName"></param>
-        /// <param name="binaryKey"></param>
+        /// <param name="name">The name.</param>
+        /// <param name="storeLocation">The store location.</param>
+        /// <param name="storeName">Name of the store.</param>
+        /// <param name="binaryKey">The binary key.</param>
+        /// <exception cref="ArgumentNullException">
+        /// name;name is a null reference or empty
+        /// or
+        /// binaryKey;binaryKey is a null reference or empty
+        /// </exception>
         public Certificate(string name, StoreLocation storeLocation, StoreName storeName, string binaryKey)
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name", "name is a null reference or empty");
             if (string.IsNullOrEmpty(binaryKey)) throw new ArgumentNullException("binaryKey", "binaryKey is a null reference or empty");
-            
+
             base.Name = name;
-   
+
             Name = name;
             BinaryKey = binaryKey;
             StoreLocation = storeLocation;
@@ -239,11 +252,11 @@ namespace WixSharp
         /// <summary>
         /// Creates an instance of Certificate where the certificate is a binary resource
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="storeLocation"></param>
-        /// <param name="storeName"></param>
-        /// <param name="binaryKey"></param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="storeLocation">The store location.</param>
+        /// <param name="storeName">Name of the store.</param>
+        /// <param name="binaryKey">The binary key.</param>
         public Certificate(Id id, string name, StoreLocation storeLocation, StoreName storeName, string binaryKey)
             : this(name, storeLocation, storeName, binaryKey)
         {
@@ -253,11 +266,11 @@ namespace WixSharp
         /// <summary>
         /// Creates an instance of Certificate where the certificate is a binary resource
         /// </summary>
-        /// <param name="feature"></param>
-        /// <param name="name"></param>
-        /// <param name="storeLocation"></param>
-        /// <param name="storeName"></param>
-        /// <param name="binaryKey"></param>
+        /// <param name="feature">The feature.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="storeLocation">The store location.</param>
+        /// <param name="storeName">Name of the store.</param>
+        /// <param name="binaryKey">The binary key.</param>
         public Certificate(Feature feature, string name, StoreLocation storeLocation, StoreName storeName, string binaryKey)
             : this(name, storeLocation, storeName, binaryKey)
         {
@@ -267,12 +280,12 @@ namespace WixSharp
         /// <summary>
         /// Creates an instance of Certificate where the certificate is a binary resource
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="feature"></param>
-        /// <param name="name"></param>
-        /// <param name="storeLocation"></param>
-        /// <param name="storeName"></param>
-        /// <param name="binaryKey"></param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="feature">The feature.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="storeLocation">The store location.</param>
+        /// <param name="storeName">Name of the store.</param>
+        /// <param name="binaryKey">The binary key.</param>
         public Certificate(Id id, Feature feature, string name, StoreLocation storeLocation, StoreName storeName, string binaryKey)
             : this(name, storeLocation, storeName, binaryKey)
         {
@@ -283,18 +296,23 @@ namespace WixSharp
         /// <summary>
         /// Creates an instance of Certificate where the certificate is requested or exists at the specified path
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="storeLocation"></param>
-        /// <param name="storeName"></param>
-        /// <param name="certificatePath"></param>
-        /// <param name="request"></param>
+        /// <param name="name">The name.</param>
+        /// <param name="storeLocation">The store location.</param>
+        /// <param name="storeName">Name of the store.</param>
+        /// <param name="certificatePath">The certificate path.</param>
+        /// <param name="request">if set to <c>true</c> [request].</param>
+        /// <exception cref="ArgumentNullException">
+        /// name;name is a null reference or empty
+        /// or
+        /// certificatePath;certificatePath is a null reference or empty
+        /// </exception>
         public Certificate(string name, StoreLocation storeLocation, StoreName storeName, string certificatePath, bool request)
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name", "name is a null reference or empty");
             if (string.IsNullOrEmpty(certificatePath)) throw new ArgumentNullException("certificatePath", "certificatePath is a null reference or empty");
-            
+
             base.Name = name;
-            
+
             Name = name;
             CertificatePath = certificatePath;
             Request = request;
@@ -305,12 +323,12 @@ namespace WixSharp
         /// <summary>
         /// Creates an instance of Certificate where the certificate is requested or exists at the specified path
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="storeLocation"></param>
-        /// <param name="storeName"></param>
-        /// <param name="certificatePath"></param>
-        /// <param name="request"></param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="storeLocation">The store location.</param>
+        /// <param name="storeName">Name of the store.</param>
+        /// <param name="certificatePath">The certificate path.</param>
+        /// <param name="request">if set to <c>true</c> [request].</param>
         public Certificate(Id id, string name, StoreLocation storeLocation, StoreName storeName, string certificatePath, bool request)
             : this(name, storeLocation, storeName, certificatePath, request)
         {
@@ -320,12 +338,12 @@ namespace WixSharp
         /// <summary>
         /// Creates an instance of Certificate where the certificate is requested or exists at the specified path
         /// </summary>
-        /// <param name="feature"></param>
-        /// <param name="name"></param>
-        /// <param name="storeLocation"></param>
-        /// <param name="storeName"></param>
-        /// <param name="certificatePath"></param>
-        /// <param name="request"></param>
+        /// <param name="feature">The feature.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="storeLocation">The store location.</param>
+        /// <param name="storeName">Name of the store.</param>
+        /// <param name="certificatePath">The certificate path.</param>
+        /// <param name="request">if set to <c>true</c> [request].</param>
         public Certificate(Feature feature, string name, StoreLocation storeLocation, StoreName storeName, string certificatePath, bool request)
             : this(name, storeLocation, storeName, certificatePath, request)
         {
@@ -335,13 +353,13 @@ namespace WixSharp
         /// <summary>
         /// Creates an instance of Certificate where the certificate is requested or exists at the specified path
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="feature"></param>
-        /// <param name="name"></param>
-        /// <param name="storeLocation"></param>
-        /// <param name="storeName"></param>
-        /// <param name="certificatePath"></param>
-        /// <param name="request"></param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="feature">The feature.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="storeLocation">The store location.</param>
+        /// <param name="storeName">Name of the store.</param>
+        /// <param name="certificatePath">The certificate path.</param>
+        /// <param name="request">if set to <c>true</c> [request].</param>
         public Certificate(Id id, Feature feature, string name, StoreLocation storeLocation, StoreName storeName, string certificatePath, bool request)
             : this(name, storeLocation, storeName, certificatePath, request)
         {
@@ -349,67 +367,78 @@ namespace WixSharp
             Feature = feature;
         }
 
-        #endregion
+        #endregion constructors
 
-        public Feature Feature { get; set; }
+        /// <summary>
+        /// <see cref="Feature"></see> the WebSite belongs to.
+        /// </summary>
+        public Feature Feature;
 
         #region attributes
 
         /// <summary>
         /// The Id of a Binary instance that is the certificate to be installed
         /// </summary>
-        public string BinaryKey { get; set; }
-        
+        public string BinaryKey;
+
         /// <summary>
-        /// If the Request attribute is <c>false</c> then this attribute is the path to the certificate file outside of the package. 
-        /// If the Request attribute is <c>true</c> then this attribute is the certificate authority to request the certificate from. 
+        /// If the Request attribute is <c>false</c> then this attribute is the path to the certificate file outside of the package.
+        /// If the Request attribute is <c>true</c> then this attribute is the certificate authority to request the certificate from.
         /// </summary>
-        public string CertificatePath { get; set; }
+        public string CertificatePath;
 
         /// <summary>
         /// The name of the certificate being installed
         /// </summary>
-        public string Name { get; set; }
+        public new string Name;
 
         /// <summary>
         /// Flag to indicate if the certificate should be overwritten.
         /// </summary>
-        public bool? Overwrite { get; set; }
-        
+        public bool? Overwrite;
+
         /// <summary>
-        /// This attribute controls whether the CertificatePath attribute is a path to a certificate file (Request=<c>false</c>) or 
-        /// the certificate authority to request the certificate from (Request=<c>true</c>). 
+        /// This attribute controls whether the CertificatePath attribute is a path to a certificate file (Request=<c>false</c>) or
+        /// the certificate authority to request the certificate from (Request=<c>true</c>).
         /// </summary>
-        public bool? Request {get; set; }
-        
+        public bool? Request;
+
         /// <summary>
-        /// If the Binary stream or path to the file outside of the package is a password protected PFX file, the password for that PFX must be specified here. 
+        /// If the Binary stream or path to the file outside of the package is a password protected PFX file, the password for that PFX must be specified here.
         /// </summary>
-        public string PFXPassword { get; set; }
-        
+        public string PFXPassword;
+
         /// <summary>
         /// Sets the certificate StoreLocation.
         /// </summary>
         public StoreLocation StoreLocation;
-        
+
         /// <summary>
         /// Sets the certificate StoreName.
         /// </summary>
         public StoreName StoreName;
 
-        #endregion
+        #endregion attributes
 
-        public void EmitAttributes(XElement element)
+        /// <summary>
+        /// Emits WiX XML.
+        /// </summary>
+        /// <returns></returns>
+        public XContainer[] ToXml()
         {
-            element.SetAttributeValue("Id", Id);
-            if (!string.IsNullOrEmpty(BinaryKey)) element.SetAttributeValue("BinaryKey", BinaryKey);
-            if (!string.IsNullOrEmpty(CertificatePath)) element.SetAttributeValue("CertificatePath", CertificatePath);
-            element.SetAttributeValue("Name", Name);
-            if (Overwrite.HasValue) element.SetAttributeValue("Overwrite", Overwrite.Value.ToYesNo());
-            if (!string.IsNullOrEmpty(PFXPassword)) element.SetAttributeValue("PFXPassword", PFXPassword);
-            if (Request.HasValue) element.SetAttributeValue("Request", Request.Value.ToYesNo());
-            element.SetAttributeValue("StoreLocation", Enum.GetName(typeof(StoreLocation), StoreLocation));
-            element.SetAttributeValue("StoreName", Enum.GetName(typeof(StoreName), StoreName));
+            var element = new XElement(WixExtension.IIs.ToXNamespace() + "Certificate");
+
+            element.SetAttribute("Id", Id)
+                   .SetAttribute("BinaryKey", BinaryKey)
+                   .SetAttribute("CertificatePath", CertificatePath)
+                   .SetAttribute("Name", Name)
+                   .SetAttribute("Overwrite", Overwrite)
+                   .SetAttribute("PFXPassword", PFXPassword)
+                   .SetAttribute("Request", Request)
+                   .SetAttribute("StoreLocation", Enum.GetName(typeof(StoreLocation), StoreLocation))
+                   .SetAttribute("StoreName", Enum.GetName(typeof(StoreName), StoreName));
+
+            return new[] { element };
         }
     }
 
@@ -428,6 +457,7 @@ namespace WixSharp
             base.Name = name;
             base.AttributesDefinition = attributesDefinition;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebAppPool"/> class.
         /// </summary>
@@ -436,6 +466,7 @@ namespace WixSharp
         {
             base.Name = name;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebAppPool"/> class.
         /// </summary>
@@ -445,7 +476,7 @@ namespace WixSharp
     }
 
     /// <summary>
-    /// This class defines WebDirProperites WiX element. The class itself has no distinctive behaviour nor schema. It is fully relying on 
+    /// This class defines WebDirProperites WiX element. The class itself has no distinctive behaviour nor schema. It is fully relying on
     /// encapsulated <see cref="T:WixSharp.WixEntity.AttributesDefinition"/>.
     /// </summary>
     public partial class WebDirProperties : WixEntity
@@ -483,64 +514,78 @@ namespace WixSharp
         public WebSite WebSite = null;
 
         #region WebVirtualDir Element Attributes
+
         /// <summary>
         /// Sets the application name, which is the URL relative path used to access this virtual directory. If not set, the <see cref="AppName"/> will be used.
         /// </summary>
         public string Alias = "";
-        #endregion
+
+        #endregion WebVirtualDir Element Attributes
 
         //IISVirtualDir-to-WebAppliction is one-to-one relationship
+
         #region WebApplication Element attributes
+
         /// <summary>
         /// Sets the name of this Web application.
         /// </summary>
         public string AppName = "MyWebApp"; //WebApplication element attribute
+
         /// <summary>
-        /// Sets the Enable Session State option. When enabled, you can set the session timeout using the SessionTimeout attribute. 
+        /// Sets the Enable Session State option. When enabled, you can set the session timeout using the SessionTimeout attribute.
         /// </summary>
         public bool? AllowSessions;// YesNoDefaultType //WebApplication element attribute
+
         /// <summary>
         /// Sets the option that enables response buffering in the application, which allows ASP script to set response headers anywhere in the script.
         /// </summary>
         public bool? Buffer;// YesNoDefaultType //WebApplication element attribute
+
         /// <summary>
-        /// Enable ASP client-side script debugging. 	 
+        /// Enable ASP client-side script debugging.
         /// </summary>
         public bool? ClientDebugging;// YesNoDefaultType //WebApplication element attribute
+
         /// <summary>
-        /// Sets the default script language for the site. 
+        /// Sets the default script language for the site.
         /// </summary>
         public DefaultScript? DefaultScript; //WebApplication element attribute
+
         /// <summary>
         /// Sets the application isolation level for this application for pre-IIS 6 applications.
         /// </summary>
         public Isolation? Isolation;	//WebApplication element attribute
+
         /// <summary>
         /// Sets the parent paths option, which allows a client to use relative paths to reach parent directories from this application.
         /// </summary>
         public bool? ParentPaths;// YesNoDefaultType //WebApplication element attribute
+
         /// <summary>
         /// Sets the timeout value for executing ASP scripts.
         /// </summary>
         public int? ScriptTimeout;	//WebApplication element attribute
+
         /// <summary>
         /// Enable ASP server-side script debugging.
         /// </summary>
         public bool? ServerDebugging;// YesNoDefaultType //WebApplication element attribute
+
         /// <summary>
-        /// Sets the timeout value for sessions in minutes. 
+        /// Sets the timeout value for sessions in minutes.
         /// </summary>
         public int? SessionTimeout;	//WebApplication element attribute
+
         /// <summary>
-        /// References a WebAppPool instance to use as the application pool for this application in IIS 6 applications. 
+        /// References a WebAppPool instance to use as the application pool for this application in IIS 6 applications.
         /// </summary>
-        public WebAppPool WebAppPool; //WebApplication element attribute 
+        public WebAppPool WebAppPool; //WebApplication element attribute
+
         /// <summary>
-        /// WebDirProperites used by one or more WebSites. 
+        /// WebDirProperites used by one or more WebSites.
         /// </summary>
         public WebDirProperties WebDirProperties;
-        #endregion
+
+        #endregion WebApplication Element attributes
     }
 }
-
-

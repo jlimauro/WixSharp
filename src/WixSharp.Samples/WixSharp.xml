@@ -350,7 +350,7 @@
         </member>
         <member name="F:WixSharp.File.Feature">
             <summary>
-            <see cref="F:WixSharp.File.Feature"></see> the file is included in.
+            <see cref="F:WixSharp.File.Feature"></see> the file belongs to.
             </summary>
         </member>
         <member name="F:WixSharp.File.Condition">
@@ -361,7 +361,7 @@
         </member>
         <member name="F:WixSharp.File.Permissions">
             <summary>
-            COllection of <see cref="!:FilePermsission"/> to be applied to the file. 
+            COllection of <see cref="T:WixSharp.FilePermission" /> to be applied to the file.
             </summary>
         </member>
         <member name="P:WixSharp.File.NeverOverwrite">
@@ -611,13 +611,40 @@
         </member>
         <member name="T:WixSharp.Bootstrapper.Bundle">
             <summary>
-            Class for defining a WiX standard Burn-based bootstrapper.
+            Class for defining a WiX standard Burn-based bootstrapper. By default the bootstrapper is using WiX default WiX bootstrapper UI.
+            </summary>
+            <example>The following is an example of defining a bootstrapper for two msi files and .NET Web setup.
+            <code>
+             var bootstrapper =
+                 new Bundle("My Product",
+                     new PackageGroupRef("NetFx40Web"),
+                     new MsiPackage("productA.msi"),
+                     new MsiPackage("productB.msi"));
+                     
+            bootstrapper.AboutUrl = "https://wixsharp.codeplex.com/";
+            bootstrapper.IconFile = "app_icon.ico";
+            bootstrapper.Version = new Version("1.0.0.0");
+            bootstrapper.UpgradeCode = new Guid("6f330b47-2577-43ad-9095-1861bb25889b");
+            bootstrapper.Application.LogoFile = "logo.png";
+            
+            bootstrapper.Build();
+            </code>
+            </example>
+        </member>
+        <member name="T:WixSharp.WixProject">
+            <summary>
+            Base class for WiX projects (e.g. Project, Bundle).
             </summary>
         </member>
         <member name="F:WixSharp.WixProject.CAConfigFile">
             <summary>
             The location of the config file for Managed Custom Action.
             <para>The config file (CustomAction.config) is the file to be passed to the MakeSfxCA.exe when packing the Custom Action assembly.</para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.WixProject.OutFileName">
+            <summary>
+            Name of the MSI/MSM file (without extension) to be build.
             </summary>
         </member>
         <member name="F:WixSharp.WixProject.WixNamespaces">
@@ -657,28 +684,21 @@
         </member>
         <member name="M:WixSharp.WixProject.IncludeWixExtension(WixSharp.WixExtension)">
             <summary>
-            Adds the specified extension to <paramref name="project"/>
+            Adds the specified extension to  <see cref="T:WixSharp.WixProject"/>
             </summary>
-            <param name="project"></param>
-            <param name="extension"></param>
+            <param name="extension">The extension.</param>
         </member>
         <member name="M:WixSharp.WixProject.IncludeWixExtension(System.String,System.String,System.String)">
             <summary>
-            Adds the specified extension to <paramref name="project"/>
+            Adds the specified extension to  <see cref="T:WixSharp.WixProject"/>
             </summary>
-            <param name="project"></param>
-            <param name="extensionAssembly"></param>
-            <param name="namespacePrefix"></param>
-            <param name="namespace"></param>
+            <param name="extensionAssembly">The extension assembly.</param>
+            <param name="namespacePrefix">The namespace prefix.</param>
+            <param name="namespace">The namespace.</param>
         </member>
         <member name="P:WixSharp.WixProject.SourceBaseDir">
             <summary>
-            Base directory for the relative paths of the bootstrapper items (e.g. <see cref="!:MsiPackage"></see>).
-            </summary>
-        </member>
-        <member name="P:WixSharp.WixProject.OutFileName">
-            <summary>
-            Name of the MSI/MSM file (without extension) to be build.
+            Base directory for the relative paths of the bootstrapper items (e.g. <see cref="T:WixSharp.Bootstrapper.MsiPackage"></see>).
             </summary>
         </member>
         <member name="P:WixSharp.WixProject.OutDir">
@@ -864,6 +884,13 @@
             <param name="path">The path to the batch file to be created.</param>
             <returns></returns>
         </member>
+        <member name="T:WixSharp.Bootstrapper.ManagedBootstrapperApplication">
+            <summary>
+            Class for defining a Wix# application for WiX standard Burn-based bootstrapper.
+            <para>It is nothing else but a light container for the WiX metadata associated with the 
+            .NET assembly implementing WiX ManagedBootstrapper application.</para>
+            </summary>
+        </member>
         <member name="T:WixSharp.Bootstrapper.WixStandardBootstrapperApplication">
             <summary>
             Container class for common members of the Bootstrapper standard applications.
@@ -890,6 +917,14 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:WixSharp.Bootstrapper.WixStandardBootstrapperApplication.AutoGenerateSources(System.String)">
+            <summary>
+            Automatically generates required sources files for building the Bootstrapper. It is
+            used to automatically generate the files which, can be generated automatically without 
+            user involvement (e.g. BootstrapperCore.config).
+            </summary>
+            <param name="outDir">The output directory.</param>
+        </member>
         <member name="F:WixSharp.Bootstrapper.WixStandardBootstrapperApplication.Payloads">
             <summary>
             Collection of paths to the package dependencies.
@@ -909,13 +944,33 @@
             </code>
             </example>
         </member>
+        <member name="F:WixSharp.Bootstrapper.ManagedBootstrapperApplication.AppAssembly">
+            <summary>
+            The assembly implementing Bootstrapper UI application
+            </summary>
+        </member>
+        <member name="M:WixSharp.Bootstrapper.ManagedBootstrapperApplication.#ctor(System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.Bootstrapper.ManagedBootstrapperApplication"/> class.
+            </summary>
+            <param name="appAssembly">The application assembly.</param>
+            <param name="dependencies">The dependencies.</param>
+        </member>
+        <member name="M:WixSharp.Bootstrapper.ManagedBootstrapperApplication.AutoGenerateSources(System.String)">
+            <summary>
+            Automatically generates required sources files for building the Bootstrapper. It is
+            used to automatically generate the files which, can be generated automatically without
+            user involvement (e.g. BootstrapperCore.config).
+            </summary>
+            <param name="outDir">The output directory.</param>
+        </member>
         <member name="M:WixSharp.Bootstrapper.ManagedBootstrapperApplication.ToXml">
             <summary>
             Emits WiX XML.
             </summary>
             <returns></returns>
         </member>
-        <member name="F:WixSharp.Bootstrapper.ManagedBootstrapperApplication.primaryPackageId">
+        <member name="P:WixSharp.Bootstrapper.ManagedBootstrapperApplication.PrimaryPackageId">
             <summary>
             Gets or sets the IDd of the primary package from the bundle.
             <para>This ID is used by the application to detect the presence of the package on the target system 
@@ -2043,7 +2098,7 @@
         </member>
         <member name="F:WixSharp.DirPermission.Feature">
             <summary>
-            <see cref="F:WixSharp.DirPermission.Feature"></see> the Permission is included in.
+            <see cref="F:WixSharp.DirPermission.Feature"></see> the Permission belongs to.
             </summary>
         </member>
         <member name="P:WixSharp.DirPermission.User">
@@ -2348,100 +2403,117 @@
         </member>
         <member name="T:WixSharp.SqlDbOption">
             <summary>
-            
-            </summary>
-            <remarks>
-            Attributes represented by this enum will be rendered as having the value 'yes'. 
+            Attributes represented by this enum will be rendered as having the value 'yes'.
             If a value of 'no' is required, set the property directly after construction.
-            </remarks>
+            </summary>
         </member>
         <member name="T:WixSharp.SqlDatabase">
             <summary>
             Represents WixSqlExtension SqlDatabase element. The resulting XML representation may be rendered
-            inside of a componet element or under the product element. The parent element depends on the 
+            inside of a component element or under the product element. The parent element depends on the
             presence of a value for at least 1 property represented by values of SqlDbOption enumeration.
             </summary>
         </member>
         <member name="M:WixSharp.SqlDatabase.#ctor">
             <summary>
-            Creates an instance of SqlDatabase
+            Creates an instance of the <see cref="T:WixSharp.SqlDatabase"/> representing the database//&gt;
             </summary>
         </member>
         <member name="M:WixSharp.SqlDatabase.#ctor(System.String,System.String,WixSharp.WixEntity[])">
             <summary>
-            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            Creates an instance of the <see cref="T:WixSharp.SqlDatabase"/> representing the database <paramref name="database"/>@<paramref name="server"/>
             </summary>
-            <param name="database"></param>
-            <param name="server"></param>
-            <param name="items"></param>
+            <param name="database">The database.</param>
+            <param name="server">The server.</param>
+            <param name="items">The items.</param>
+            <exception cref="T:System.ArgumentNullException">
+            database;database is a null reference or empty
+            or
+            server;server is a null reference or empty
+            </exception>
         </member>
         <member name="M:WixSharp.SqlDatabase.#ctor(WixSharp.Id,System.String,System.String,WixSharp.WixEntity[])">
             <summary>
-            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            Creates an instance of the <see cref="T:WixSharp.SqlDatabase"/> representing the database <paramref name="database"/>@<paramref name="server"/>
             </summary>
-            <param name="id"></param>
-            <param name="database"></param>
-            <param name="server"></param>
-            <param name="items"></param>
+            <param name="id">The identifier.</param>
+            <param name="database">The database.</param>
+            <param name="server">The server.</param>
+            <param name="items">The items.</param>
         </member>
         <member name="M:WixSharp.SqlDatabase.#ctor(WixSharp.Feature,System.String,System.String,WixSharp.WixEntity[])">
             <summary>
-            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            Creates an instance of the <see cref="T:WixSharp.SqlDatabase"/> representing the database <paramref name="database"/>@<paramref name="server"/>
             </summary>
-            <param name="feature"></param>
-            <param name="database"></param>
-            <param name="server"></param>
-            <param name="items"></param>
+            <param name="feature">The feature.</param>
+            <param name="database">The database.</param>
+            <param name="server">The server.</param>
+            <param name="items">The items.</param>
         </member>
         <member name="M:WixSharp.SqlDatabase.#ctor(WixSharp.Id,WixSharp.Feature,System.String,System.String,WixSharp.WixEntity[])">
             <summary>
-            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            Creates an instance of the <see cref="T:WixSharp.SqlDatabase"/> representing the database <paramref name="database"/>@<paramref name="server"/>
             </summary>
-            <param name="id"></param>
-            <param name="feature"></param>
-            <param name="database"></param>
-            <param name="server"></param>
-            <param name="items"></param>
+            <param name="id">The identifier.</param>
+            <param name="feature">The feature.</param>
+            <param name="database">The database.</param>
+            <param name="server">The server.</param>
+            <param name="items">The items.</param>
         </member>
         <member name="M:WixSharp.SqlDatabase.#ctor(System.String,System.String,WixSharp.SqlDbOption,WixSharp.WixEntity[])">
             <summary>
-            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            Creates an instance of SqlDatbase representing the database <paramref name="database" />@<paramref name="server" />
             </summary>
-            <param name="database"></param>
-            <param name="server"></param>
-            <param name="dbOptions"></param>
-            <param name="items"></param>
+            <param name="database">The database.</param>
+            <param name="server">The server.</param>
+            <param name="dbOptions">The database options.</param>
+            <param name="items">The items.</param>
         </member>
         <member name="M:WixSharp.SqlDatabase.#ctor(WixSharp.Id,System.String,System.String,WixSharp.SqlDbOption,WixSharp.WixEntity[])">
             <summary>
-            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            Creates an instance of SqlDatbase representing the database <paramref name="database" />@<paramref name="server" />
             </summary>
-            <param name="id"></param>
-            <param name="database"></param>
-            <param name="server"></param>
-            <param name="dbOptions"></param>
-            <param name="items"></param>
+            <param name="id">The identifier.</param>
+            <param name="database">The database.</param>
+            <param name="server">The server.</param>
+            <param name="dbOptions">The database options.</param>
+            <param name="items">The items.</param>
         </member>
         <member name="M:WixSharp.SqlDatabase.#ctor(WixSharp.Feature,System.String,System.String,WixSharp.SqlDbOption,WixSharp.WixEntity[])">
             <summary>
-            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            Creates an instance of SqlDatbase representing the database <paramref name="database" />@<paramref name="server" />
             </summary>
-            <param name="feature"></param>
-            <param name="database"></param>
-            <param name="server"></param>
-            <param name="dbOptions"></param>
-            <param name="items"></param>
+            <param name="feature">The feature.</param>
+            <param name="database">The database.</param>
+            <param name="server">The server.</param>
+            <param name="dbOptions">The database options.</param>
+            <param name="items">The items.</param>
         </member>
         <member name="M:WixSharp.SqlDatabase.#ctor(WixSharp.Id,WixSharp.Feature,System.String,System.String,WixSharp.SqlDbOption,WixSharp.WixEntity[])">
             <summary>
-            Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+            Creates an instance of SqlDatbase representing the database <paramref name="database" />@<paramref name="server" />
             </summary>
-            <param name="id"></param>
-            <param name="feature"></param>
-            <param name="database"></param>
-            <param name="server"></param>
-            <param name="dbOptions"></param>
-            <param name="items"></param>
+            <param name="id">The identifier.</param>
+            <param name="feature">The feature.</param>
+            <param name="database">The database.</param>
+            <param name="server">The server.</param>
+            <param name="dbOptions">The database options.</param>
+            <param name="items">The items.</param>
+        </member>
+        <member name="F:WixSharp.SqlDatabase.SqlScripts">
+            <summary>
+            The SQL scripts
+            </summary>
+        </member>
+        <member name="F:WixSharp.SqlDatabase.SqlStrings">
+            <summary>
+            The SQL strings
+            </summary>
+        </member>
+        <member name="P:WixSharp.SqlDatabase.Feature">
+            <summary>
+            <see cref="P:WixSharp.SqlDatabase.Feature"></see> the SqlDatabase belongs to.
+            </summary>
         </member>
         <member name="P:WixSharp.SqlDatabase.ConfirmOverwrite">
             <summary>
@@ -2508,7 +2580,7 @@
             Represents Execution options for SqlScript and SqlString elements
             </summary>
             <remarks>
-            Attributes represented by this enum will be rendered as having the value 'yes'. 
+            Attributes represented by this enum will be rendered as having the value 'yes'.
             If a value of 'no' is required, set the property directly after construction.
             </remarks>
         </member>
@@ -2517,7 +2589,7 @@
             Represents Rollback options for SqlScript and SqlString elements
             </summary>
             <remarks>
-            Attributes represented by this enum will be rendered as having the value 'yes'. 
+            Attributes represented by this enum will be rendered as having the value 'yes'.
             If a value of 'no' is required, set the property directly after construction.
             </remarks>
         </member>
@@ -2594,6 +2666,14 @@
             <param name="feature"></param>
             <param name="sql"></param>
             <param name="rollbackOptions"></param>
+        </member>
+        <member name="P:WixSharp.SqlString.Feature">
+            <summary>
+            <see cref="P:WixSharp.SqlString.Feature"></see> the SqlString belongs to.
+            </summary>
+            <value>
+            The feature.
+            </value>
         </member>
         <member name="P:WixSharp.SqlString.ContinueOnError">
             <summary>
@@ -2723,6 +2803,11 @@
             <param name="feature"></param>
             <param name="binaryKey"></param>
             <param name="rollbackOptions"></param>
+        </member>
+        <member name="P:WixSharp.SqlScript.Feature">
+            <summary>
+            Gets or sets the feature the SqlScript belongs to.
+            </summary>
         </member>
         <member name="P:WixSharp.SqlScript.BinaryKey">
             <summary>
@@ -2887,6 +2972,11 @@
             <param name="feature"></param>
             <param name="name"></param>
             <param name="domain"></param>
+        </member>
+        <member name="P:WixSharp.User.Feature">
+            <summary>
+            <see cref="P:WixSharp.User.Feature"></see> the User belongs to.
+            </summary>
         </member>
         <member name="P:WixSharp.User.WixIncludeInComponent">
             <summary>
@@ -4011,6 +4101,15 @@
             <param name="element">The element to be searched.</param>
             <param name="elementName">The element name.</param>
             <returns>The elements matching the name.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.HasLocalName(System.Xml.Linq.XElement,System.String,System.Boolean)">
+            <summary>
+            Determines whether the XElement has the specified <c>LocalName</c>.
+            </summary>
+            <param name="element">The element.</param>
+            <param name="elementName">Name of the element.</param>
+            <param name="ignoreCase">if set to <c>true</c> [ignore case].</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.Extensions.FindSingle(System.Xml.Linq.XContainer,System.String)">
             <summary>
@@ -5357,7 +5456,7 @@
         </member>
         <member name="F:WixSharp.Shortcut.Feature">
             <summary>
-            <see cref="F:WixSharp.Shortcut.Feature"></see> the shortcut should be included in.
+            <see cref="F:WixSharp.Shortcut.Feature"></see> the shortcut belongs to.
             </summary>
         </member>
         <member name="F:WixSharp.Shortcut.WorkingDirectory">
@@ -5507,7 +5606,7 @@
         </member>
         <member name="F:WixSharp.EnvironmentVariable.Feature">
             <summary>
-            <see cref="F:WixSharp.EnvironmentVariable.Feature"></see> the environment variable is included in.
+            <see cref="F:WixSharp.EnvironmentVariable.Feature"></see> the environment variable belongs to.
             </summary>
         </member>
         <member name="F:WixSharp.EnvironmentVariable.Action">
@@ -5830,12 +5929,13 @@
             <example>
             	<code>
             var project = new Project("MyProduct",
-            new Dir(@"%ProgramFiles%\My Company\My Product",
-            new File(@"Files\Bin\MyApp.exe"),
-            new Dir(@"Docs\Manual",
-            new File(@"Files\Docs\Manual.txt"))));
+                                      new Dir(@"%ProgramFiles%\My Company\My Product",
+                                                new File(@"Files\Bin\MyApp.exe"),
+                                                new Dir(@"Docs\Manual",
+                                                new File(@"Files\Docs\Manual.txt"))));
+                                                
             project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
-            Compiler.BuildMsi(project);
+            project.BuildMsi();
             </code>
             </example>
         </member>
@@ -6125,11 +6225,6 @@
             modifed, or interacted with during MSI execution.
             </summary>
         </member>
-        <member name="F:WixSharp.Project.Language">
-            <summary>
-            Installation UI Language. If not specified <c>"en-US"</c> will be used.
-            </summary>
-        </member>
         <member name="F:WixSharp.Project.BannerImage">
             <summary>
             Path to the file containing the image (e.g. bmp) setup dialogs banner. If not specified default image will be used.
@@ -6147,7 +6242,7 @@
             This method is called by <see cref="T:WixSharp.Compiler"/> during the compilation. However it might be convenient
             to call it before the compilation if any files matching the wild card mask need to be handled in special
             way (e.g. shortcuts created). See <c>WildCard Files</c> example.
-            </para><remarks><see cref="M:WixSharp.Project.ResolveWildCards(System.Boolean)"/> should be called only after <see cref="!:SourceBaseDir"/> is set.
+            </para><remarks><see cref="M:WixSharp.Project.ResolveWildCards(System.Boolean)"/> should be called only after <see cref="T:WixSharp.WixProject.SourceBaseDir"/> is set.
             Otherwise wild card paths may not be resolved correctly.</remarks>
             </summary>
             <param name="ignoreEmptyDirectories">if set to <c>true</c> empty directories are ignored and not added to the project.</param>
@@ -6225,11 +6320,6 @@
             Name of the MSI file (without extension) to be build.
             </summary>
         </member>
-        <member name="P:WixSharp.Project.OutFileName">
-            <summary>
-            Name of the MSI/MSM file (without extension) to be build.
-            </summary>
-        </member>
         <member name="P:WixSharp.Project.GUID">
             <summary>
             This value uniquely identifies the software product being installed. 
@@ -6242,6 +6332,13 @@
             MSI uses <c>UpgradeCode</c> as a common identification of the product regardless of it's version. 
             <para>In a way <see cref="P:WixSharp.Project.GUID"/> is an alias for <see cref="F:WixSharp.Project.UpgradeCode"/>.</para>
             </remarks>
+            </summary>
+        </member>
+        <member name="P:WixSharp.Project.DefaultFeature">
+            <summary>
+            Gets or Sets the default Feature for the project. 
+            All elements without an explicitly assigned Feature will be placed under the DefaultFeature.
+            If DefaultFeature is not set, then DefaultFeature will default to a Feature with name 'Complete'.
             </summary>
         </member>
         <member name="P:WixSharp.Project.AllFiles">
@@ -6257,12 +6354,12 @@
         <member name="P:WixSharp.Project.Codepage">
             <summary>
             Installation UI Codepage. If not specified 
-            ANSICodePage of the <see cref="F:WixSharp.Project.Language"/> will be used.
+            ANSICodePage of the <see cref="T:WixSharp.WixProject.Language"/> will be used.
             </summary>
         </member>
         <member name="P:WixSharp.Project.Culture">
             <summary>
-            <see cref="T:System.Globalization.CultureInfo"/> object based on the specified <see cref="F:WixSharp.Project.Language"/>
+            <see cref="T:System.Globalization.CultureInfo"/> object based on the specified <see cref="T:WixSharp.WixProject.Language"/>
             </summary>
         </member>
         <member name="P:WixSharp.Project.LocalizationFile">
@@ -6565,7 +6662,7 @@
         </member>
         <member name="F:WixSharp.Merge.Feature">
             <summary>
-            <see cref="F:WixSharp.Merge.Feature"></see> the file is included in.
+            <see cref="F:WixSharp.Merge.Feature"></see> the merge module belongs to.
             </summary>
         </member>
         <member name="T:WixSharp.NativeBootstrapper">
@@ -7035,6 +7132,32 @@
             </code>
             </example>
         </member>
+        <member name="T:WixSharp.FeatureCondition">
+            <summary>
+            Specialized Condition for conditionally installing WiX Features.
+            </summary>
+            <remarks>
+            Setting Attributes on FeatureCondition is ignored.
+            </remarks>
+        </member>
+        <member name="M:WixSharp.FeatureCondition.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.FeatureCondition"/> class.
+            </summary>
+            <param name="value">The value of the WiX condition expression.</param>
+            <param name="level">The level value of the WiX condition.</param>
+        </member>
+        <member name="P:WixSharp.FeatureCondition.Level">
+            <summary>
+            Allows modifying the level of a Feature based on the result of this condition. 
+            </summary>
+        </member>
+        <member name="P:WixSharp.FeatureCondition.Attributes">
+            <summary>
+            Not Supported.
+            </summary>
+            <exception cref="T:System.NotImplementedException">Raised when getting or setting Attributes.</exception>
+        </member>
         <member name="T:WixSharp.Dir">
              <summary>
              Defines directory to be installed on target system.
@@ -7160,7 +7283,7 @@
         </member>
         <member name="F:WixSharp.Dir.Feature">
             <summary>
-            <see cref="F:WixSharp.Dir.Feature"></see> the directory is included in.
+            <see cref="F:WixSharp.Dir.Feature"></see> the directory belongs to.
             </summary>
         </member>
         <member name="M:WixSharp.Dir.ToString">
@@ -7258,7 +7381,7 @@
         </member>
         <member name="F:WixSharp.Files.Feature">
             <summary>
-            <see cref="F:WixSharp.Files.Feature"></see> the directory files are included in.
+            <see cref="F:WixSharp.Files.Feature"></see> the files belongs to.
             </summary>
         </member>
         <member name="F:WixSharp.Files.Directory">
@@ -7494,6 +7617,12 @@
             Child <see cref="T:WixSharp.Feature"/>. To be added in the nested Features scenarios.
             </summary>
         </member>
+        <member name="F:WixSharp.Feature.Condition">
+            <summary>
+            Defines the installation <see cref="F:WixSharp.Feature.Condition"/>, which is to be checked during the installation to 
+            determine if the feature should be installed on the target system.
+            </summary>
+        </member>
         <member name="M:WixSharp.Feature.ToString">
             <summary>
             Returns a <see cref="T:System.String"/> that represents this instance.
@@ -7589,7 +7718,7 @@
         </member>
         <member name="F:WixSharp.DirFiles.Feature">
             <summary>
-            <see cref="F:WixSharp.DirFiles.Feature"></see> the directory files are included in.
+            <see cref="F:WixSharp.DirFiles.Feature"></see> the directory files belong to.
             </summary>
         </member>
         <member name="F:WixSharp.DirFiles.Directory">
@@ -8253,7 +8382,7 @@
         </member>
         <member name="F:WixSharp.RegFile.Feature">
             <summary>
-            <see cref="F:WixSharp.RegFile.Feature"></see> the registry value is included in.
+            <see cref="F:WixSharp.RegFile.Feature"></see> the registry value belongs to.
             </summary>
         </member>
         <member name="T:WixSharp.RegValue">
@@ -8359,7 +8488,7 @@
         </member>
         <member name="F:WixSharp.RegValue.Feature">
             <summary>
-            <see cref="F:WixSharp.RegValue.Feature"></see> the registry value is included in.
+            <see cref="F:WixSharp.RegValue.Feature"></see> the registry value belongs to.
             </summary>
         </member>
         <member name="F:WixSharp.RegValue.Condition">
@@ -9630,7 +9759,7 @@
         <member name="F:WixSharp.WebSite.Description">
             <summary>
             This is the name of the web site that will show up in the IIS management console.
-            </summary> 
+            </summary>
         </member>
         <member name="F:WixSharp.WebSite.InstallWebSite">
             <summary>
@@ -9638,11 +9767,11 @@
             WebApplication. The default <see cref="F:WixSharp.WebSite.InstallWebSite"/> value is <c>false</c>
             <para>Developers should be aware of the WebSite installation model imposed by WiX/MSI and use <see cref="F:WixSharp.WebSite.InstallWebSite"/> carefully.</para>
             <para>If <see cref="F:WixSharp.WebSite.InstallWebSite"/> value is set to <c>false</c> the parent WebApplication (<see cref="T:WixSharp.IISVirtualDir"/>)
-            will be installed in the brand new (freshly created) WebSite or in the existing one if a site with the same address/port combination already exists 
-            on IIS). The undesirable side affect of this deployment scenario is that if the existing WebSite was used to install the WebApplication it will be 
+            will be installed in the brand new (freshly created) WebSite or in the existing one if a site with the same address/port combination already exists
+            on IIS). The undesirable side affect of this deployment scenario is that if the existing WebSite was used to install the WebApplication it will be
             deleted on IIS during uninstallation even if this WebSite has other WebApplications installed.</para>
-            <para>The "safer" option is to set <see cref="F:WixSharp.WebSite.InstallWebSite"/> value to <c>true</c> (default value). In this case the WebApplication will 
-            be installed in an existing WebSite with matching address/port. If the match is not found the installation will fail. During the uninstallation 
+            <para>The "safer" option is to set <see cref="F:WixSharp.WebSite.InstallWebSite"/> value to <c>true</c> (default value). In this case the WebApplication will
+            be installed in an existing WebSite with matching address/port. If the match is not found the installation will fail. During the uninstallation
             only installed WebApplication will be removed from IIS.</para>
             </summary>
         </member>
@@ -9669,16 +9798,16 @@
         </member>
         <member name="F:WixSharp.WebSite.AddressesDefinition">
             <summary>
-            Specification for auto-generating the <see cref="T:WebSite.WebAddresses"/> collection. 
-            <para>If <see cref="F:WixSharp.WebSite.AddressesDefinition"/> is specified, the existing content of <see cref="P:WixSharp.WebSite.Addresses"/> will be ignored 
+            Specification for auto-generating the <see cref="T:WebSite.WebAddresses"/> collection.
+            <para>If <see cref="F:WixSharp.WebSite.AddressesDefinition"/> is specified, the existing content of <see cref="P:WixSharp.WebSite.Addresses"/> will be ignored
             and replaced with the auto-generated one at compile time.</para>
             </summary>
             <example>
-            <c>webSite.AddressesDefinition = "*:80;*90";</c> will be parsed and converted to an array of <see cref="T:WixSharp.WebSite.WebAddress"/> as follows: 
+            <c>webSite.AddressesDefinition = "*:80;*90";</c> will be parsed and converted to an array of <see cref="T:WixSharp.WebSite.WebAddress"/> as follows:
             <code>
             ...
             webSite.Addresses = new []
-                {   
+                {
                     new WebSite.WebAddress
                     {
                         Address = "*",
@@ -9697,7 +9826,7 @@
             <summary>
             Collection of <see cref="T:WebSite.WebAddresses"/> associated with website.
             <para>
-            The user specified values of <see cref="P:WixSharp.WebSite.Addresses"/> will be ignored and replaced with the 
+            The user specified values of <see cref="P:WixSharp.WebSite.Addresses"/> will be ignored and replaced with the
             auto-generated addresses if <see cref="F:WixSharp.WebSite.AddressesDefinition"/> is specified either directly or via appropriate <see cref="T:WixSharp.WebSite"/> constructor.
             </para>
             </summary>
@@ -9709,9 +9838,9 @@
         </member>
         <member name="F:WixSharp.WebSite.WebAddress.Address">
             <summary>
-             The IP address for the web address. To specify the "All Unassigned" IP address, do not specify 
-             this attribute or specify its value as "*". The IP address is also used to determine if the WebSite is already installed. 
-             The IP address must match exactly (empty value matches "All Unassigned") unless "*" is used which will match any existing IP (including "All Unassigned"). 
+             The IP address for the web address. To specify the "All Unassigned" IP address, do not specify
+             this attribute or specify its value as "*". The IP address is also used to determine if the WebSite is already installed.
+             The IP address must match exactly (empty value matches "All Unassigned") unless "*" is used which will match any existing IP (including "All Unassigned").
             </summary>
         </member>
         <member name="F:WixSharp.WebSite.WebAddress.Port">
@@ -9721,7 +9850,7 @@
         </member>
         <member name="P:WixSharp.WebSite.WebAddress.Attributes">
             <summary>
-            Optional attributes of the <c>WebAddress Element</c> (e.g. Secure:YesNoPath). 
+            Optional attributes of the <c>WebAddress Element</c> (e.g. Secure:YesNoPath).
             </summary>
             <example>
             <code>
@@ -9747,85 +9876,132 @@
             <summary>
             Creates an instance of Certificate where the certificate is a binary resource
             </summary>
-            <param name="name"></param>
-            <param name="storeLocation"></param>
-            <param name="storeName"></param>
-            <param name="binaryKey"></param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="binaryKey">The binary key.</param>
+            <exception cref="T:System.ArgumentNullException">
+            name;name is a null reference or empty
+            or
+            binaryKey;binaryKey is a null reference or empty
+            </exception>
         </member>
         <member name="M:WixSharp.Certificate.#ctor(WixSharp.Id,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String)">
             <summary>
             Creates an instance of Certificate where the certificate is a binary resource
             </summary>
-            <param name="id"></param>
-            <param name="name"></param>
-            <param name="storeLocation"></param>
-            <param name="storeName"></param>
-            <param name="binaryKey"></param>
+            <param name="id">The identifier.</param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="binaryKey">The binary key.</param>
         </member>
         <member name="M:WixSharp.Certificate.#ctor(WixSharp.Feature,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String)">
             <summary>
             Creates an instance of Certificate where the certificate is a binary resource
             </summary>
-            <param name="feature"></param>
-            <param name="name"></param>
-            <param name="storeLocation"></param>
-            <param name="storeName"></param>
-            <param name="binaryKey"></param>
+            <param name="feature">The feature.</param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="binaryKey">The binary key.</param>
         </member>
         <member name="M:WixSharp.Certificate.#ctor(WixSharp.Id,WixSharp.Feature,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String)">
             <summary>
             Creates an instance of Certificate where the certificate is a binary resource
             </summary>
-            <param name="id"></param>
-            <param name="feature"></param>
-            <param name="name"></param>
-            <param name="storeLocation"></param>
-            <param name="storeName"></param>
-            <param name="binaryKey"></param>
+            <param name="id">The identifier.</param>
+            <param name="feature">The feature.</param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="binaryKey">The binary key.</param>
         </member>
         <member name="M:WixSharp.Certificate.#ctor(System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String,System.Boolean)">
             <summary>
             Creates an instance of Certificate where the certificate is requested or exists at the specified path
             </summary>
-            <param name="name"></param>
-            <param name="storeLocation"></param>
-            <param name="storeName"></param>
-            <param name="certificatePath"></param>
-            <param name="request"></param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="certificatePath">The certificate path.</param>
+            <param name="request">if set to <c>true</c> [request].</param>
+            <exception cref="T:System.ArgumentNullException">
+            name;name is a null reference or empty
+            or
+            certificatePath;certificatePath is a null reference or empty
+            </exception>
         </member>
         <member name="M:WixSharp.Certificate.#ctor(WixSharp.Id,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String,System.Boolean)">
             <summary>
             Creates an instance of Certificate where the certificate is requested or exists at the specified path
             </summary>
-            <param name="id"></param>
-            <param name="name"></param>
-            <param name="storeLocation"></param>
-            <param name="storeName"></param>
-            <param name="certificatePath"></param>
-            <param name="request"></param>
+            <param name="id">The identifier.</param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="certificatePath">The certificate path.</param>
+            <param name="request">if set to <c>true</c> [request].</param>
         </member>
         <member name="M:WixSharp.Certificate.#ctor(WixSharp.Feature,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String,System.Boolean)">
             <summary>
             Creates an instance of Certificate where the certificate is requested or exists at the specified path
             </summary>
-            <param name="feature"></param>
-            <param name="name"></param>
-            <param name="storeLocation"></param>
-            <param name="storeName"></param>
-            <param name="certificatePath"></param>
-            <param name="request"></param>
+            <param name="feature">The feature.</param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="certificatePath">The certificate path.</param>
+            <param name="request">if set to <c>true</c> [request].</param>
         </member>
         <member name="M:WixSharp.Certificate.#ctor(WixSharp.Id,WixSharp.Feature,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String,System.Boolean)">
             <summary>
             Creates an instance of Certificate where the certificate is requested or exists at the specified path
             </summary>
-            <param name="id"></param>
-            <param name="feature"></param>
-            <param name="name"></param>
-            <param name="storeLocation"></param>
-            <param name="storeName"></param>
-            <param name="certificatePath"></param>
-            <param name="request"></param>
+            <param name="id">The identifier.</param>
+            <param name="feature">The feature.</param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="certificatePath">The certificate path.</param>
+            <param name="request">if set to <c>true</c> [request].</param>
+        </member>
+        <member name="F:WixSharp.Certificate.Feature">
+            <summary>
+            <see cref="F:WixSharp.Certificate.Feature"></see> the WebSite belongs to.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.BinaryKey">
+            <summary>
+            The Id of a Binary instance that is the certificate to be installed
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.CertificatePath">
+            <summary>
+            If the Request attribute is <c>false</c> then this attribute is the path to the certificate file outside of the package.
+            If the Request attribute is <c>true</c> then this attribute is the certificate authority to request the certificate from.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.Name">
+            <summary>
+            The name of the certificate being installed
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.Overwrite">
+            <summary>
+            Flag to indicate if the certificate should be overwritten.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.Request">
+            <summary>
+            This attribute controls whether the CertificatePath attribute is a path to a certificate file (Request=<c>false</c>) or
+            the certificate authority to request the certificate from (Request=<c>true</c>).
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.PFXPassword">
+            <summary>
+            If the Binary stream or path to the file outside of the package is a password protected PFX file, the password for that PFX must be specified here.
+            </summary>
         </member>
         <member name="F:WixSharp.Certificate.StoreLocation">
             <summary>
@@ -9837,37 +10013,11 @@
             Sets the certificate StoreName.
             </summary>
         </member>
-        <member name="P:WixSharp.Certificate.BinaryKey">
+        <member name="M:WixSharp.Certificate.ToXml">
             <summary>
-            The Id of a Binary instance that is the certificate to be installed
+            Emits WiX XML.
             </summary>
-        </member>
-        <member name="P:WixSharp.Certificate.CertificatePath">
-            <summary>
-            If the Request attribute is <c>false</c> then this attribute is the path to the certificate file outside of the package. 
-            If the Request attribute is <c>true</c> then this attribute is the certificate authority to request the certificate from. 
-            </summary>
-        </member>
-        <member name="P:WixSharp.Certificate.Name">
-            <summary>
-            The name of the certificate being installed
-            </summary>
-        </member>
-        <member name="P:WixSharp.Certificate.Overwrite">
-            <summary>
-            Flag to indicate if the certificate should be overwritten.
-            </summary>
-        </member>
-        <member name="P:WixSharp.Certificate.Request">
-            <summary>
-            This attribute controls whether the CertificatePath attribute is a path to a certificate file (Request=<c>false</c>) or 
-            the certificate authority to request the certificate from (Request=<c>true</c>). 
-            </summary>
-        </member>
-        <member name="P:WixSharp.Certificate.PFXPassword">
-            <summary>
-            If the Binary stream or path to the file outside of the package is a password protected PFX file, the password for that PFX must be specified here. 
-            </summary>
+            <returns></returns>
         </member>
         <member name="T:WixSharp.WebAppPool">
             <summary>
@@ -9894,7 +10044,7 @@
         </member>
         <member name="T:WixSharp.WebDirProperties">
             <summary>
-            This class defines WebDirProperites WiX element. The class itself has no distinctive behaviour nor schema. It is fully relying on 
+            This class defines WebDirProperites WiX element. The class itself has no distinctive behaviour nor schema. It is fully relying on
             encapsulated <see cref="T:WixSharp.WixEntity.AttributesDefinition"/>.
             </summary>
         </member>
@@ -9935,7 +10085,7 @@
         </member>
         <member name="F:WixSharp.IISVirtualDir.AllowSessions">
             <summary>
-            Sets the Enable Session State option. When enabled, you can set the session timeout using the SessionTimeout attribute. 
+            Sets the Enable Session State option. When enabled, you can set the session timeout using the SessionTimeout attribute.
             </summary>
         </member>
         <member name="F:WixSharp.IISVirtualDir.Buffer">
@@ -9945,12 +10095,12 @@
         </member>
         <member name="F:WixSharp.IISVirtualDir.ClientDebugging">
             <summary>
-            Enable ASP client-side script debugging. 	 
+            Enable ASP client-side script debugging.
             </summary>
         </member>
         <member name="F:WixSharp.IISVirtualDir.DefaultScript">
             <summary>
-            Sets the default script language for the site. 
+            Sets the default script language for the site.
             </summary>
         </member>
         <member name="F:WixSharp.IISVirtualDir.Isolation">
@@ -9975,17 +10125,17 @@
         </member>
         <member name="F:WixSharp.IISVirtualDir.SessionTimeout">
             <summary>
-            Sets the timeout value for sessions in minutes. 
+            Sets the timeout value for sessions in minutes.
             </summary>
         </member>
         <member name="F:WixSharp.IISVirtualDir.WebAppPool">
             <summary>
-            References a WebAppPool instance to use as the application pool for this application in IIS 6 applications. 
+            References a WebAppPool instance to use as the application pool for this application in IIS 6 applications.
             </summary>
         </member>
         <member name="F:WixSharp.IISVirtualDir.WebDirProperties">
             <summary>
-            WebDirProperites used by one or more WebSites. 
+            WebDirProperites used by one or more WebSites.
             </summary>
         </member>
         <member name="T:WixSharp.WixGuid">

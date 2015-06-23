@@ -56,7 +56,7 @@ namespace WixSharp
         /// </summary>
         public string Location = "";
         /// <summary>
-        /// <see cref="Feature"></see> the shortcut should be included in.
+        /// <see cref="Feature"></see> the shortcut belongs to.
         /// </summary>
         public Feature Feature;
         /// <summary>

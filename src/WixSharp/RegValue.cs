@@ -80,7 +80,7 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// <see cref="Feature"></see> the registry value is included in.
+        /// <see cref="Feature"></see> the registry value belongs to.
         /// </summary>
         public Feature Feature;
     }
@@ -217,7 +217,7 @@ namespace WixSharp
         /// </summary>
         public object Value = null;
         /// <summary>
-        /// <see cref="Feature"></see> the registry value is included in.
+        /// <see cref="Feature"></see> the registry value belongs to.
         /// </summary>
         public Feature Feature;
         /// <summary>

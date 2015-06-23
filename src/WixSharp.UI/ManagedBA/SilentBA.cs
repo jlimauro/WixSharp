@@ -9,20 +9,56 @@ using System.Diagnostics;
 
 namespace WixSharp.Bootstrapper
 {
+    /// <summary>
+    /// Defines Wix# bootstrapper managed application with no User Interface.
+    /// <para>It is a design time 'adapter' for the canonical WiX managed bootstrapper application <see cref="T:WixSharp.Bootstrapper.SilentManagedBA"/>.</para>
+    /// <para><see cref="T:WixSharp.Bootstrapper.SilentManagedBA"/> automatically handles <see cref="BootstrapperApplication"/> events and 
+    /// detects the current package/product state (present vs. absent). The package state detection is based on the <see cref="T:WixSharp.Bootstrapper.SilentBootstrapperApplication.PrimaryPackageId"/>. 
+    /// If this member is no t then the Id of the lats package in the Bundle will be used instead.</para>
+    /// </summary>
+    /// <example>
+    /// <code>
+    ///  var bootstrapper =
+    ///      new Bundle("My Product",
+    ///          new PackageGroupRef("NetFx40Web"),
+    ///          new MsiPackage("product.msi"));
+    ///          
+    /// bootstrapper.AboutUrl = "https://wixsharp.codeplex.com/";
+    /// bootstrapper.IconFile = "app_icon.ico";
+    /// bootstrapper.Version = new Version("1.0.0.0");
+    /// bootstrapper.UpgradeCode = new Guid("6f330b47-2577-43ad-9095-1861bb25889b");
+    /// bootstrapper.Application = new SilentBootstrapperApplication();
+    /// 
+    /// bootstrapper.Build();
+    /// </code>
+    /// </example>
     public class SilentBootstrapperApplication : ManagedBootstrapperApplication
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SilentBootstrapperApplication"/> class.
+        /// </summary>
+        /// <param name="primaryPackageId">The primary package identifier.</param>
         public SilentBootstrapperApplication(string primaryPackageId)
             : base(typeof(SilentManagedBA).Assembly.Location)
         {
             PrimaryPackageId = primaryPackageId;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SilentBootstrapperApplication"/> class.
+        /// </summary>
         public SilentBootstrapperApplication()
             : base(typeof(SilentManagedBA).Assembly.Location)
         {
 
         }
 
+        /// <summary>
+        /// Automatically generates required sources files for building the Bootstrapper. It is
+        /// used to automatically generate the files which, can be generated automatically without
+        /// user involvement (e.g. BootstrapperCore.config).
+        /// </summary>
+        /// <param name="outDir">The output directory.</param>
         public override void AutoGenerateSources(string outDir)
         {
             if (PrimaryPackageId != null)
@@ -35,11 +71,14 @@ namespace WixSharp.Bootstrapper
         }
     }
 
+    /// <summary>
+    /// Implements canonical WiX managed bootstrapper application without any UI.
+    /// </example>
     public class SilentManagedBA : BootstrapperApplication
     {
         AutoResetEvent done = new AutoResetEvent(false);
 
-        static public string PrimaryPackageIdVariableName = "_WixSharp.Bootstrapper.SilentManagedBA.PrimaryPackageId";
+        static internal string PrimaryPackageIdVariableName = "_WixSharp.Bootstrapper.SilentManagedBA.PrimaryPackageId";
         string PrimaryPackageId
         {
             get
@@ -56,7 +95,7 @@ namespace WixSharp.Bootstrapper
         }
 
         /// <summary>
-        /// Entry point that is called when the bootstrapper application is ready to run.
+        /// Entry point that is called when the Bootstrapper application is ready to run.
         /// </summary>
         protected override void Run()
         {

@@ -5,17 +5,14 @@ using System.Xml.Linq;
 
 namespace WixSharp
 {
-
     /// <summary>
-    /// 
-    /// </summary>
-    /// <remarks>
-    /// Attributes represented by this enum will be rendered as having the value 'yes'. 
+    /// Attributes represented by this enum will be rendered as having the value 'yes'.
     /// If a value of 'no' is required, set the property directly after construction.
-    /// </remarks>
+    /// </summary>
     [Flags]
     public enum SqlDbOption
     {
+#pragma warning disable 1591
         None = 0,
         CreateOnInstall = 1,
         CreateOnReinstall = 2,
@@ -23,29 +20,36 @@ namespace WixSharp
         DropOnInstall = 8,
         DropOnReinstall = 16,
         DropOnUninstall = 32
+#pragma warning restore 1591
     }
 
     /// <summary>
     /// Represents WixSqlExtension SqlDatabase element. The resulting XML representation may be rendered
-    /// inside of a componet element or under the product element. The parent element depends on the 
+    /// inside of a component element or under the product element. The parent element depends on the
     /// presence of a value for at least 1 property represented by values of SqlDbOption enumeration.
     /// </summary>
     public class SqlDatabase : WixEntity
     {
-
         #region Constructors
 
         /// <summary>
-        /// Creates an instance of SqlDatabase
+        /// Creates an instance of the <see cref="SqlDatabase"/> representing the database//>
         /// </summary>
-        public SqlDatabase() { }
+        public SqlDatabase()
+        {
+        }
 
         /// <summary>
-        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// Creates an instance of the <see cref="SqlDatabase" /> representing the database <paramref name="database" />@<paramref name="server" />
         /// </summary>
-        /// <param name="database"></param>
-        /// <param name="server"></param>
-        /// <param name="items"></param>
+        /// <param name="database">The database.</param>
+        /// <param name="server">The server.</param>
+        /// <param name="items">The items.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// database;database is a null reference or empty
+        /// or
+        /// server;server is a null reference or empty
+        /// </exception>
         public SqlDatabase(string database, string server, params WixEntity[] items)
         {
             if (string.IsNullOrEmpty(database)) throw new ArgumentNullException("database", "database is a null reference or empty");
@@ -59,12 +63,12 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// Creates an instance of the <see cref="SqlDatabase" /> representing the database <paramref name="database" />@<paramref name="server" />
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="database"></param>
-        /// <param name="server"></param>
-        /// <param name="items"></param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="database">The database.</param>
+        /// <param name="server">The server.</param>
+        /// <param name="items">The items.</param>
         public SqlDatabase(Id id, string database, string server, params WixEntity[] items)
             : this(database, server, items)
         {
@@ -72,26 +76,27 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// Creates an instance of the <see cref="SqlDatabase" /> representing the database <paramref name="database" />@<paramref name="server" />
         /// </summary>
-        /// <param name="feature"></param>
-        /// <param name="database"></param>
-        /// <param name="server"></param>
-        /// <param name="items"></param>
+        /// <param name="feature">The feature.</param>
+        /// <param name="database">The database.</param>
+        /// <param name="server">The server.</param>
+        /// <param name="items">The items.</param>
         public SqlDatabase(Feature feature, string database, string server, params WixEntity[] items)
             : this(database, server, items)
         {
             Feature = feature;
         }
 
+
         /// <summary>
-        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// Creates an instance of the <see cref="SqlDatabase"/> representing the database <paramref name="database"/>@<paramref name="server"/>
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="feature"></param>
-        /// <param name="database"></param>
-        /// <param name="server"></param>
-        /// <param name="items"></param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="feature">The feature.</param>
+        /// <param name="database">The database.</param>
+        /// <param name="server">The server.</param>
+        /// <param name="items">The items.</param>
         public SqlDatabase(Id id, Feature feature, string database, string server, params WixEntity[] items)
             : this(database, server, items)
         {
@@ -100,26 +105,26 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// Creates an instance of SqlDatbase representing the database <paramref name="database" />@<paramref name="server" />
         /// </summary>
-        /// <param name="database"></param>
-        /// <param name="server"></param>
-        /// <param name="dbOptions"></param>
-        /// <param name="items"></param>
+        /// <param name="database">The database.</param>
+        /// <param name="server">The server.</param>
+        /// <param name="dbOptions">The database options.</param>
+        /// <param name="items">The items.</param>
         public SqlDatabase(string database, string server, SqlDbOption dbOptions, params WixEntity[] items)
             : this(database, server, items)
         {
-           SetSqlDbOptions(dbOptions);
+            SetSqlDbOptions(dbOptions);
         }
 
         /// <summary>
-        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// Creates an instance of SqlDatbase representing the database <paramref name="database" />@<paramref name="server" />
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="database"></param>
-        /// <param name="server"></param>
-        /// <param name="dbOptions"></param>
-        /// <param name="items"></param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="database">The database.</param>
+        /// <param name="server">The server.</param>
+        /// <param name="dbOptions">The database options.</param>
+        /// <param name="items">The items.</param>
         public SqlDatabase(Id id, string database, string server, SqlDbOption dbOptions, params WixEntity[] items)
             : this(database, server, dbOptions, items)
         {
@@ -127,13 +132,13 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// Creates an instance of SqlDatbase representing the database <paramref name="database" />@<paramref name="server" />
         /// </summary>
-        /// <param name="feature"></param>
-        /// <param name="database"></param>
-        /// <param name="server"></param>
-        /// <param name="dbOptions"></param>
-        /// <param name="items"></param>
+        /// <param name="feature">The feature.</param>
+        /// <param name="database">The database.</param>
+        /// <param name="server">The server.</param>
+        /// <param name="dbOptions">The database options.</param>
+        /// <param name="items">The items.</param>
         public SqlDatabase(Feature feature, string database, string server, SqlDbOption dbOptions, params WixEntity[] items)
             : this(database, server, dbOptions, items)
         {
@@ -141,14 +146,14 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Creates an instance of SqlDatbase representing the database <paramref name="database"/>@<paramref name="server"/>
+        /// Creates an instance of SqlDatbase representing the database <paramref name="database" />@<paramref name="server" />
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="feature"></param>
-        /// <param name="database"></param>
-        /// <param name="server"></param>
-        /// <param name="dbOptions"></param>
-        /// <param name="items"></param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="feature">The feature.</param>
+        /// <param name="database">The database.</param>
+        /// <param name="server">The server.</param>
+        /// <param name="dbOptions">The database options.</param>
+        /// <param name="items">The items.</param>
         public SqlDatabase(Id id, Feature feature, string database, string server, SqlDbOption dbOptions, params WixEntity[] items)
             : this(database, server, dbOptions, items)
         {
@@ -166,11 +171,20 @@ namespace WixSharp
             if ((options & SqlDbOption.DropOnUninstall) == SqlDbOption.DropOnUninstall) DropOnUninstall = true;
         }
 
-        #endregion
+        #endregion Constructors
 
+        /// <summary>
+        /// <see cref="Feature"></see> the SqlDatabase belongs to.
+        /// </summary>
         public Feature Feature { get; set; }
 
+        /// <summary>
+        /// The SQL scripts
+        /// </summary>
         public SqlScript[] SqlScripts = new SqlScript[0];
+        /// <summary>
+        /// The SQL strings
+        /// </summary>
         public SqlString[] SqlStrings = new SqlString[0];
 
         #region Wix SqlDatabase attributes
@@ -235,7 +249,7 @@ namespace WixSharp
         /// </summary>
         public string User { get; set; }
 
-        #endregion
+        #endregion Wix SqlDatabase attributes
 
         private void AddItems(IEnumerable<WixEntity> items)
         {
@@ -274,32 +288,36 @@ namespace WixSharp
     /// Represents Execution options for SqlScript and SqlString elements
     /// </summary>
     /// <remarks>
-    /// Attributes represented by this enum will be rendered as having the value 'yes'. 
+    /// Attributes represented by this enum will be rendered as having the value 'yes'.
     /// If a value of 'no' is required, set the property directly after construction.
     /// </remarks>
     [Flags]
     public enum ExecuteSql
     {
+#pragma warning disable 1591
         None = 0,
         OnInstall = 1,
         OnReinstall = 2,
         OnUninstall = 4
+#pragma warning restore 1591
     }
 
     /// <summary>
     /// Represents Rollback options for SqlScript and SqlString elements
     /// </summary>
     /// <remarks>
-    /// Attributes represented by this enum will be rendered as having the value 'yes'. 
+    /// Attributes represented by this enum will be rendered as having the value 'yes'.
     /// If a value of 'no' is required, set the property directly after construction.
     /// </remarks>
     [Flags]
     public enum RollbackSql
     {
+#pragma warning disable 1591
         None = 0,
         OnInstall = 1,
         OnReinstall = 2,
         OnUninstall = 4
+#pragma warning restore 1591
     }
 
     /// <summary>
@@ -307,13 +325,14 @@ namespace WixSharp
     /// </summary>
     public class SqlString : WixEntity
     {
-
         #region Constructors
 
         /// <summary>
         /// Creates an instance of SqlString
         /// </summary>
-        public SqlString() { }
+        public SqlString()
+        {
+        }
 
         private SqlString(string sql)
         {
@@ -343,7 +362,7 @@ namespace WixSharp
         public SqlString(Id id, string sql, ExecuteSql executeOptions)
             : this(sql, executeOptions)
         {
-            Id = id;         
+            Id = id;
         }
 
         /// <summary>
@@ -424,8 +443,14 @@ namespace WixSharp
             SetRollbackOptions(rollbackOptions);
         }
 
-        #endregion 
+        #endregion Constructors
 
+        /// <summary>
+        /// <see cref="Feature"></see> the SqlString belongs to.
+        /// </summary>
+        /// <value>
+        /// The feature.
+        /// </value>
         public Feature Feature { get; set; }
 
         #region Wix SqlString attributes
@@ -485,7 +510,7 @@ namespace WixSharp
         /// </summary>
         public string User { get; set; }
 
-        #endregion
+        #endregion Wix SqlString attributes
 
         private void SetExecutionOptions(ExecuteSql executeOptions)
         {
@@ -511,13 +536,14 @@ namespace WixSharp
     /// </summary>
     public class SqlScript : WixEntity
     {
-
         #region Constructors
 
         /// <summary>
         /// Creates an instance of SqlScript
         /// </summary>
-        public SqlScript() { }
+        public SqlScript()
+        {
+        }
 
         private SqlScript(string binaryKey)
         {
@@ -547,7 +573,7 @@ namespace WixSharp
         public SqlScript(Id id, string binaryKey, ExecuteSql executeOptions)
             : this(binaryKey, executeOptions)
         {
-            Id = id;       
+            Id = id;
         }
 
         /// <summary>
@@ -625,8 +651,11 @@ namespace WixSharp
             Feature = feature;
         }
 
-        #endregion
+        #endregion Constructors
 
+        /// <summary>
+        /// Gets or sets the feature the SqlScript belongs to.
+        /// </summary>
         public Feature Feature { get; set; }
 
         #region Wix SqlScript attributes
@@ -679,14 +708,14 @@ namespace WixSharp
         /// <summary>
         /// Maps to the SqlDb property of SqlScript. This property is to be inferred from the containing SqlDatabase element.
         /// </summary>
-        internal string SqlDb { get; set; } //required if and only if not under a SqlDatabase. 
+        internal string SqlDb { get; set; } //required if and only if not under a SqlDatabase.
 
         /// <summary>
         /// Maps to the User property of SqlScript
         /// </summary>
         public string User { get; set; }
 
-        #endregion
+        #endregion Wix SqlScript attributes
 
         private void SetExecutionOptions(ExecuteSql executeOptions)
         {
@@ -705,12 +734,10 @@ namespace WixSharp
             if ((rollbackOption & RollbackSql.OnReinstall) == RollbackSql.OnReinstall) RollbackOnReinstall = true;
             if ((rollbackOption & RollbackSql.OnUninstall) == RollbackSql.OnUninstall) RollbackOnUninstall = true;
         }
-
     }
 
     internal static class SqlEx
     {
-
         static void Do<T>(this T? nullable, Action<T> action) where T : struct
         {
             if (!nullable.HasValue) return;
@@ -767,9 +794,6 @@ namespace WixSharp
             sqlScript.Sequence.Do(i => sqlScriptElement.SetAttributeValue("Sequence", i));
             if (!string.IsNullOrEmpty(sqlScript.SqlDb)) sqlScriptElement.SetAttributeValue("SqlDb", sqlScript.SqlDb);
             if (!string.IsNullOrEmpty(sqlScript.User)) sqlScriptElement.SetAttributeValue("User", sqlScript.User);
-
         }
-
     }
-
 }

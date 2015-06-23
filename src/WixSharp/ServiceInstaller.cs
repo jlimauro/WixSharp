@@ -209,7 +209,7 @@ namespace WixSharp
                 serviceConfigElement.SetAttributeValue("ServiceSid", ServiceSid);
 
                 if ((ConfigureServiceTrigger & ConfigureServiceTrigger.Install) == ConfigureServiceTrigger.Install)
-                    serviceConfigElement.SetAttributeValue("OnInstall", true.ToYesNo());
+                    serviceConfigElement.SetAttribute("OnInstall", true.ToYesNo());
                 if ((ConfigureServiceTrigger & ConfigureServiceTrigger.Reinstall) == ConfigureServiceTrigger.Reinstall)
                     serviceConfigElement.SetAttributeValue("OnReinstall", true.ToYesNo());
                 if ((ConfigureServiceTrigger & ConfigureServiceTrigger.Uninstall) == ConfigureServiceTrigger.Uninstall)
@@ -338,6 +338,7 @@ namespace WixSharp
     [Flags]
     public enum ConfigureServiceTrigger
     {
+#pragma warning disable 1591
         /// <summary>
         /// Not a valid value for ServiceConfig.On(Install, Reinstall, Uninstall)
         /// </summary>
@@ -345,6 +346,7 @@ namespace WixSharp
         Install = 1,
         Reinstall = 2,
         Uninstall = 4
+#pragma warning restore 1591
     }
 
     /// <summary>
@@ -405,7 +407,6 @@ namespace WixSharp
     /// </summary>
     public class DelayedAutoStart
     {
-
         private readonly bool? shouldDelay;
         private readonly string property;
 
@@ -427,8 +428,10 @@ namespace WixSharp
             this.property = property;
         }
 
-        public bool? ShouldDelay { get { return shouldDelay; } }
-        public string DelayProperty { get { return property; } }
+        //not needed since no need to access thees members from outside
+        //public bool? ShouldDelay { get { return shouldDelay; } }
+        //public string DelayProperty { get { return property; } }
+
 
         /// <summary>
         /// Gets the string representation of the configured value
@@ -438,7 +441,7 @@ namespace WixSharp
             get
             {
                 if (shouldDelay.HasValue)
-                    return ShouldDelay.Value.ToYesNo();
+                    return shouldDelay.Value.ToYesNo();
                 else return property;
             }
         }
@@ -460,9 +463,11 @@ namespace WixSharp
     /// </summary>
     public enum ServiceSidValue
     {
+#pragma warning disable 1591
         none,
         restricted,
         unrestricted
+#pragma warning restore 1591
     }
 
     /// <summary>
@@ -495,8 +500,9 @@ namespace WixSharp
             this.serviceSidProperty = property;
         }
 
-        public ServiceSidValue? ServiceSidValue { get { return serviceSidValue; } }
-        public string ServiceSidProperty { get { return serviceSidProperty; } }
+        //not needed since no external access to these members is required
+        //public ServiceSidValue? ServiceSidValue { get { return serviceSidValue; } }
+        //public string ServiceSidProperty { get { return serviceSidProperty; } }
 
         /// <summary>
         /// Gets the string representation of the configured value
@@ -528,10 +534,12 @@ namespace WixSharp
     /// </summary>
     public enum FailureActionType
     {
+#pragma warning disable 1591
         none,
         reboot,
         restart,
         runCommand
+#pragma warning restore 1591
     }
 
 }

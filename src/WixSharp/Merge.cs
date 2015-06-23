@@ -90,7 +90,7 @@ namespace WixSharp
         /// </summary>
         public string SourceFile;
         /// <summary>
-        /// <see cref="Feature"></see> the file is included in.
+        /// <see cref="Feature"></see> the merge module belongs to.
         /// </summary>
         public Feature Feature;
         ///// <summary>

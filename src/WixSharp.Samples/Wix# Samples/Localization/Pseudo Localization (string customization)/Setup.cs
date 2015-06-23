@@ -24,7 +24,7 @@ class Script
             project.Encoding = Encoding.UTF8;
             project.UI = WUI.WixUI_Mondo;
             project.SourceBaseDir = Environment.CurrentDirectory;
-            project.MSIFileName = "Setup";
+            project.OutFileName = "Setup";
 
             Compiler.BuildMsi(project);
 

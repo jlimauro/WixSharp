@@ -52,12 +52,13 @@ namespace WixSharp
     /// <example>
     /// 	<code>
     /// var project = new Project("MyProduct",
-    /// new Dir(@"%ProgramFiles%\My Company\My Product",
-    /// new File(@"Files\Bin\MyApp.exe"),
-    /// new Dir(@"Docs\Manual",
-    /// new File(@"Files\Docs\Manual.txt"))));
+    ///                           new Dir(@"%ProgramFiles%\My Company\My Product",
+    ///                                     new File(@"Files\Bin\MyApp.exe"),
+    ///                                     new Dir(@"Docs\Manual",
+    ///                                     new File(@"Files\Docs\Manual.txt"))));
+    ///                                     
     /// project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
-    /// Compiler.BuildMsi(project);
+    /// project.BuildMsi();
     /// </code>
     /// </example>
     public partial class Project : WixProject 
@@ -249,34 +250,19 @@ namespace WixSharp
         /// <summary>
         /// Name of the MSI file (without extension) to be build.
         /// </summary>
-        [Obsolete("MSIFileName is a deprecated. Use OutFileName instead.")]
+        [Obsolete("MSIFileName is a deprecated. Use OutFileName instead.", true)]
         public string MSIFileName
         {
             get
             {
-                return outFileName;
+                return OutFileName;
             }
             set
             {
-                outFileName = value;
+                OutFileName = value;
             }
         }
 
-        string outFileName = "setup";
-        /// <summary>
-        /// Name of the MSI/MSM file (without extension) to be build.
-        /// </summary>
-        public string OutFileName
-        {
-            get
-            {
-                return outFileName;
-            }
-            set
-            {
-                outFileName = value;
-            }
-        }
         /// <summary>
         /// Path to the file containing the icon for AddRemovePrograms Control panel applet.
         /// </summary>
@@ -511,11 +497,6 @@ namespace WixSharp
         public SqlDatabase[] SqlDatabases = new SqlDatabase[0];
 
         /// <summary>
-        /// Installation UI Language. If not specified <c>"en-US"</c> will be used.
-        /// </summary>
-        public string Language = "en-US";
-
-        /// <summary>
         /// Path to the file containing the image (e.g. bmp) setup dialogs banner. If not specified default image will be used.
         /// </summary>
         public string BannerImage = "";
@@ -547,7 +528,7 @@ namespace WixSharp
         /// This method is called by <see cref="Compiler" /> during the compilation. However it might be convenient
         /// to call it before the compilation if any files matching the wild card mask need to be handled in special
         /// way (e.g. shortcuts created). See <c>WildCard Files</c> example.
-        /// </para><remarks><see cref="ResolveWildCards" /> should be called only after <see cref="SourceBaseDir" /> is set.
+        /// </para><remarks><see cref="ResolveWildCards" /> should be called only after <see cref="T:WixSharp.WixProject.SourceBaseDir" /> is set.
         /// Otherwise wild card paths may not be resolved correctly.</remarks>
         /// </summary>
         /// <param name="ignoreEmptyDirectories">if set to <c>true</c> empty directories are ignored and not added to the project.</param>
@@ -702,7 +683,7 @@ namespace WixSharp
         string codepage = "";
         /// <summary>
         /// Installation UI Codepage. If not specified 
-        /// ANSICodePage of the <see cref="Language"/> will be used.
+        /// ANSICodePage of the <see cref="T:WixSharp.WixProject.Language"/> will be used.
         /// </summary>
         public string Codepage
         {
@@ -720,7 +701,7 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// <see cref="CultureInfo"/> object based on the specified <see cref="Language"/>
+        /// <see cref="CultureInfo"/> object based on the specified <see cref="T:WixSharp.WixProject.Language"/>
         /// </summary>
         public string Culture
         {

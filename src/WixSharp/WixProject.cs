@@ -4,11 +4,14 @@ using System.Xml.Linq;
 
 namespace WixSharp
 {
-    public abstract partial class WixProject : WixEntity 
+    /// <summary>
+    /// Base class for WiX projects (e.g. Project, Bundle).
+    /// </summary>
+    public abstract partial class WixProject : WixEntity
     {
         string sourceBaseDir = "";
         /// <summary>
-        /// Base directory for the relative paths of the bootstrapper items (e.g. <see cref="MsiPackage"></see>).
+        /// Base directory for the relative paths of the bootstrapper items (e.g. <see cref="T:WixSharp.Bootstrapper.MsiPackage"></see>).
         /// </summary>
         public string SourceBaseDir
         {
@@ -16,7 +19,6 @@ namespace WixSharp
             set { sourceBaseDir = value; }
         }
 
-        string outFileName = "setup";
 
         /// <summary>
         /// The location of the config file for Managed Custom Action.
@@ -39,7 +41,7 @@ namespace WixSharp
         /// <summary>
         /// Name of the MSI/MSM file (without extension) to be build.
         /// </summary>
-        public string OutFileName { get { return outFileName; } set { outFileName = value; } }
+        public string OutFileName = "setup";
 
         string outDir;
 
@@ -128,23 +130,22 @@ namespace WixSharp
                 WixSourceFormated(ref content);
         }
 
+
         /// <summary>
-        /// Adds the specified extension to <paramref name="project"/>
+        /// Adds the specified extension to  <see cref="WixProject"/>
         /// </summary>
-        /// <param name="project"></param>
-        /// <param name="extension"></param>
+        /// <param name="extension">The extension.</param>
         public void IncludeWixExtension(WixExtension extension)
         {
             IncludeWixExtension(extension.Assembly, extension.XmlNamespacePrefix, extension.XmlNamespace);
         }
 
         /// <summary>
-        /// Adds the specified extension to <paramref name="project"/>
+        /// Adds the specified extension to  <see cref="WixProject" />
         /// </summary>
-        /// <param name="project"></param>
-        /// <param name="extensionAssembly"></param>
-        /// <param name="namespacePrefix"></param>
-        /// <param name="namespace"></param>
+        /// <param name="extensionAssembly">The extension assembly.</param>
+        /// <param name="namespacePrefix">The namespace prefix.</param>
+        /// <param name="namespace">The namespace.</param>
         public void IncludeWixExtension(string extensionAssembly, string namespacePrefix, string @namespace)
         {
             if (!this.WixExtensions.Contains(extensionAssembly))

@@ -21,7 +21,6 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -162,6 +161,11 @@ namespace WixSharp
             {
                 var attrValue = (bool?)value;
                 obj.SetAttributeValue(name, attrValue.ToNullOrYesNo());
+            }
+            else if (value is bool)
+            {
+                var attrValue = (bool)value;
+                obj.SetAttributeValue(name, attrValue.ToYesNo());
             }
             else
             {
@@ -693,7 +697,7 @@ namespace WixSharp
         /// <param name="element">The element to be searched.</param>
         /// <param name="elementName">The element name.</param>
         /// <returns>The elements matching the name.</returns>
-        [Obsolete("AllElements is obsolete. Please use more efficient FindAll instead.")]
+        [Obsolete("AllElements is obsolete. Please use more efficient FindAll instead.", true)]
         public static XElement[] AllElements(this XElement element, string elementName)
         {
             int iterator = 0;
@@ -719,6 +723,13 @@ namespace WixSharp
         }
 
 
+        /// <summary>
+        /// Determines whether the XElement has the specified <c>LocalName</c>.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="elementName">Name of the element.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> [ignore case].</param>
+        /// <returns></returns>
         public static bool HasLocalName(this XElement element, string elementName, bool ignoreCase = false)
         {
             return element.Name.LocalName.SameAs(elementName, ignoreCase);
