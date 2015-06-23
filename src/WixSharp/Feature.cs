@@ -87,6 +87,7 @@ namespace WixSharp
         public Feature()
         {
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature"/> class  with properties/fields initialized with specified parameters.
         /// </summary>
@@ -95,16 +96,18 @@ namespace WixSharp
         {
             Name = name;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature"/> class  with properties/fields initialized with specified parameters.
         /// </summary>
         /// <param name="name">The feature name.</param>
         /// <param name="description">The feature description.</param>
         public Feature(string name, string description)
+            : this(name)
         {
-            Name = name;
             Description = description;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature"/> class  with properties/fields initialized with specified parameters.
         /// </summary>
@@ -113,10 +116,11 @@ namespace WixSharp
         /// Use this parameter if the feature should be disabled by default and only enabled after 
         /// processing the <c>Condition Table</c> or user input.</param>
         public Feature(string name, bool isEnabled)
+            : this(name)
         {
-            Name = name;
             IsEnabled = isEnabled;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature"/> class  with properties/fields initialized with specified parameters.
         /// </summary>
@@ -126,11 +130,12 @@ namespace WixSharp
         /// Use this parameter if the feature should be disabled by default and only enabled after 
         /// processing the <c>Condition Table</c> or user input.</param>
         public Feature(string name, string description, bool isEnabled)
+            : this(name)
         {
-            Name = name;
             Description = description;
             IsEnabled = isEnabled;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature"/> class  with properties/fields initialized with specified parameters.
         /// </summary>
@@ -141,12 +146,11 @@ namespace WixSharp
         /// processing the <c>Condition Table</c> or user input.</param>
         /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state to Absent.</param>
         public Feature(string name, string description, bool isEnabled, bool allowChange)
+            : this(name, description, isEnabled)
         {
-            Name = name;
-            Description = description;
-            IsEnabled = isEnabled;
             AllowChange = allowChange;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature"/> class  with properties/fields initialized with specified parameters.
         /// </summary>
@@ -156,11 +160,11 @@ namespace WixSharp
         /// processing the <c>Condition Table</c> or user input.</param>
         /// <param name="allowChange">Defines if setup allows the user interface to display an option to change the <see cref="Feature"/> state to Absent.</param>
         public Feature(string name, bool isEnabled, bool allowChange)
+            : this(name, isEnabled)
         {
-            Name = name;
-            IsEnabled = isEnabled;
             AllowChange = allowChange;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature"/> class  with properties/fields initialized with specified parameters.
         /// </summary>
@@ -169,11 +173,11 @@ namespace WixSharp
         /// <param name="configurableDir">The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string, MSI runtime will place 
         /// <c>Configure</c> button for the feature in the <c>Feature Selection</c> dialog.</param>
         public Feature(string name, string description, string configurableDir)
-        {
-            Name = name;
-            Description = description;
+            : this(name, description)
+        {          
             ConfigurableDir = configurableDir;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature"/> class  with properties/fields initialized with specified parameters.
         /// </summary>
@@ -186,10 +190,8 @@ namespace WixSharp
         /// <param name="configurableDir">The default path of the feature <c>ConfigurableDirectory</c>. If set to non-empty string, MSI runtime will place 
         /// <c>Configure</c> button for the feature in the <c>Feature Selection</c> dialog.</param>
         public Feature(string name, string description, bool isEnabled, bool allowChange, string configurableDir)
-        {
-            Name = name;
-            Description = description;
-            IsEnabled = isEnabled;
+            : this(name, description, isEnabled)
+        {         
             AllowChange = allowChange;
             ConfigurableDir = configurableDir;
         }
@@ -227,6 +229,12 @@ namespace WixSharp
         /// Child <see cref="Feature"/>. To be added in the nested Features scenarios.
         /// </summary>
         public List<Feature> Children = new List<Feature>();
+
+        /// <summary>
+        /// Defines the installation <see cref="Condition"/>, which is to be checked during the installation to 
+        /// determine if the feature should be installed on the target system.
+        /// </summary>
+        public FeatureCondition Condition = null;
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

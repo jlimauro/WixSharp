@@ -20,6 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -217,4 +220,42 @@ namespace WixSharp
         //    return Create("NOT (" + this.ToString() + ")");
         //}
     }
+
+    /// <summary>
+    /// Specialized Condition for conditionally installing WiX Features.
+    /// </summary>
+    /// <remarks>
+    /// Setting Attributes on FeatureCondition is ignored.
+    /// </remarks>
+    public class FeatureCondition : Condition
+    {
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeatureCondition"/> class.
+        /// </summary>
+        /// <param name="value">The value of the WiX condition expression.</param>
+        /// <param name="level">The level value of the WiX condition.</param>
+        public FeatureCondition(string value, int level) 
+            : base(value)
+        {
+            Level = level;
+        }
+
+        /// <summary>
+        /// Allows modifying the level of a Feature based on the result of this condition. 
+        /// </summary>
+        public int Level { get; set; }
+
+        /// <summary>
+        /// Not Supported.
+        /// </summary>
+        /// <exception cref="NotImplementedException">Raised when getting or setting Attributes.</exception>
+        public new Dictionary<string, string> Attributes
+        {
+            get { throw new NotImplementedException("Attributes is not a valid property for FeatureCondition"); }
+            set { throw new NotImplementedException("Attributes is not a valid property for FeatureCondition"); }
+        }
+
+    }
+
 }
