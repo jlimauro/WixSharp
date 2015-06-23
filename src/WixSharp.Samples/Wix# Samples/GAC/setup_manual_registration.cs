@@ -22,15 +22,15 @@ class Script
             Actions = new[] 
             { 	
                 new PathFileAction(@"%ProgramFiles%\Microsoft SDKs\Windows\v6.0A\bin\gacutil.exe", "/u CSScriptLibrary", 
-                                   @"%ProgramFiles%\My Company\My Product".ToPublishedDirID(), 
+                                   "INSTALLDIR", //or explicit ID of "new Dir(new Id("my_dir_id"), @"%ProgramFiles%\My..."
                                    Return.check, When.Before, Step.InstallFinalize, Condition.Installed),
 
                 new PathFileAction(@"%ProgramFiles%\Microsoft SDKs\Windows\v6.0A\bin\gacutil.exe", "/i CSScriptLibrary.dll", 
-                                   @"%ProgramFiles%\My Company\My Product".ToPublishedDirID(), 
+                                   "INSTALLDIR", //or explicit ID of "new Dir(new Id("my_dir_id"), @"%ProgramFiles%\My..."
                                    Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed),
             }
         };
-        Compiler.BuildMsi(project);
+        project.BuildMsi();
     }
 }
 
