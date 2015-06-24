@@ -481,9 +481,14 @@ namespace WixSharp
                 path = path.Replace(key, Compiler.EnvironmentConstantsMapping[key])
                            .Replace("[" + Compiler.EnvironmentConstantsMapping[key] + "]", Compiler.EnvironmentConstantsMapping[key]);
 
-            return path.ExpandWixEnvConsts()
-                       .Replace("\\", ".")
-                       .EscapeIllegalCharacters();
+            var result = path.ExpandWixEnvConsts()
+                   .Replace("\\", ".")
+                   .EscapeIllegalCharacters();
+
+            if (result.FirstOrDefault() == '.')
+                result = "_" + result.Substring(1);
+            
+            return result;
         }
 
         /// <summary>

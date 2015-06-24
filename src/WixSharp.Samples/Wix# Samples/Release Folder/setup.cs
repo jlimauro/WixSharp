@@ -15,7 +15,7 @@ class Script
                 new Dir(@"%ProgramFiles%\My Company\My Product",
 
                     //new Dir("Documentation", new Files(@"\\BUILDSERVER\My Product\Release\Documentation\*.*")), //uncomment if you have a real remote files to install 
-                    
+
                     new Files(@"..\Release Folder\Release\*.*",
                               f => !f.EndsWith(".obj") &&
                                    !f.EndsWith(".pdb")),
@@ -26,7 +26,7 @@ class Script
 
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1561ba25889b");
 
-        project.ResolveWildCards(ignoreEmptyDirectories:true)
+        project.ResolveWildCards(ignoreEmptyDirectories: true)
                .FindFile((f) => f.Name.EndsWith("MyApp.exe"))
                .First()
                .Shortcuts = new[] {
