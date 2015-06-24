@@ -38,11 +38,7 @@ class Script
         var featureD = new Feature("Feature D");
 
         //Note - Level can be set explicitly via Attributes or indirectly via IsEnabled
-        //featureB.Attributes =
-        //    new Dictionary<string, string>
-        //        {
-        //            { "Level", "2" }
-        //        };
+        //featureB.AttributesDefinition = "Level=2";
         featureB.IsEnabled = false;
         featureD.IsEnabled = true;
 

@@ -19,7 +19,7 @@ class Script
                         new File(@"Files\Docs\Manual.txt") { NeverOverwrite = true })),
                 new Binary(new Id("mycert"), @"Files\mycert.cer"),
                 new Certificate("NameOfCert", StoreLocation.localMachine, StoreName.personal, "mycert"),
-                new Certificate("NameOfCert2", StoreLocation.currentUser, StoreName.personal, "Path\\to\\cert\\directory", false));
+                new Certificate("NameOfCert2", StoreLocation.currentUser, StoreName.personal, @"Path\to\cert\file", authorityRequest:false));
 
         project.UI = WUI.WixUI_InstallDir;
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");

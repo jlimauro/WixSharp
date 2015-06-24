@@ -9,7 +9,6 @@ namespace WixSharp
     /// </summary>
     public class User : WixEntity
     {
-
         #region Constructors
 
         /// <summary>
@@ -18,10 +17,11 @@ namespace WixSharp
         public User() { }
 
         /// <summary>
-        /// Creates an instance of User representing <paramref name="name"/>
+        /// Creates an instance of User representing <paramref name="name" />
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="name">The name.</param>
+        /// <exception cref="ArgumentNullException">name;name is a null reference or empty</exception>
         public User(Id id, string name)
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name", "name is a null reference or empty");
@@ -31,11 +31,11 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Creates an instance of User representing <paramref name="name"/>
+        /// Creates an instance of User representing <paramref name="name" />
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="feature"></param>
-        /// <param name="name"></param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="feature">The feature.</param>
+        /// <param name="name">The name.</param>
         public User(Id id, Feature feature, string name)
             : this(id, name)
         {
@@ -44,11 +44,11 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Creates an instance of User representing <paramref name="name"/>@<paramref name="domain"/>
+        /// Creates an instance of User representing <paramref name="name" />@<paramref name="domain" />
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="domain"></param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="domain">The domain.</param>
         public User(Id id, string name, string domain)
             : this(id, name)
         {
@@ -56,12 +56,12 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Creates an instance of User representing <paramref name="name"/>@<paramref name="domain"/>
+        /// Creates an instance of User representing <paramref name="name" />@<paramref name="domain" />
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="feature"></param>
-        /// <param name="name"></param>
-        /// <param name="domain"></param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="feature">The feature.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="domain">The domain.</param>
         public User(Id id, Feature feature, string name, string domain)
             : this(id, feature, name)
         {

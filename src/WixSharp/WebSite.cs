@@ -300,13 +300,11 @@ namespace WixSharp
         /// <param name="storeLocation">The store location.</param>
         /// <param name="storeName">Name of the store.</param>
         /// <param name="certificatePath">The certificate path.</param>
-        /// <param name="request">if set to <c>true</c> [request].</param>
-        /// <exception cref="ArgumentNullException">
-        /// name;name is a null reference or empty
+        /// <param name="authorityRequest">if set to <c>true</c> [authority request].</param>
+        /// <exception cref="ArgumentNullException">name;name is a null reference or empty
         /// or
-        /// certificatePath;certificatePath is a null reference or empty
-        /// </exception>
-        public Certificate(string name, StoreLocation storeLocation, StoreName storeName, string certificatePath, bool request)
+        /// certificatePath;certificatePath is a null reference or empty</exception>
+        public Certificate(string name, StoreLocation storeLocation, StoreName storeName, string certificatePath, bool authorityRequest)
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name", "name is a null reference or empty");
             if (string.IsNullOrEmpty(certificatePath)) throw new ArgumentNullException("certificatePath", "certificatePath is a null reference or empty");
@@ -315,7 +313,7 @@ namespace WixSharp
 
             Name = name;
             CertificatePath = certificatePath;
-            Request = request;
+            Request = authorityRequest;
             StoreLocation = storeLocation;
             StoreName = storeName;
         }

@@ -33,6 +33,6 @@ public class InstallScript
         bootstrapper.Application = new SilentBootstrapperApplication();
 
         bootstrapper.PreserveTempFiles = true;
-        var setup = bootstrapper.Build();
+        bootstrapper.Build();
     }
 }
