@@ -159,11 +159,11 @@ namespace WixSharp
 
             result.Add(ServiceInstallToXml(project));
 
-            if (StartOn != null)
-                result.Add(SvcEventToXml("Start", StartOn));
-
             if (StopOn != null)
                 result.Add(SvcEventToXml("Stop", StopOn));
+
+            if (StartOn != null)
+                result.Add(SvcEventToXml("Start", StartOn));
 
             if (RemoveOn != null)
                 result.Add(SvcEventToXml("Remove", RemoveOn));

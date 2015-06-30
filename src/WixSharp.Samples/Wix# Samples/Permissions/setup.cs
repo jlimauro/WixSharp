@@ -30,6 +30,6 @@ class Script
         project.EmitConsistentPackageId = true;
         project.PreserveTempFiles = true;
 
-        Compiler.BuildMsi(project);
+        project.BuildMsi();
     }
 }
