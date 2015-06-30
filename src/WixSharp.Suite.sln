@@ -132,14 +132,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{109F5B7D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Signing", "WixSharp.Samples\VSProjects\Signing.csproj", "{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WixSharp.Test", "WixSharp.Test\WixSharp.Test.csproj", "{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeferredActions", "WixSharp.Samples\VSProjects\DeferredActions.csproj", "{CFE61E75-7BED-4AFD-9862-D64E7C162F29}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{868894D5-F3D5-470D-8139-9F54B3D003EE}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortcuts-Advertised", "WixSharp.Samples\VSProjects\Shortcuts-Advertised.csproj", "{D79A384F-82E8-474B-8DA5-7DBD85216FD3}"
 EndProject
@@ -190,6 +185,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureCondition", "WixSharp.Samples\VSProjects\FeatureCondition.csproj", "{56D7FD72-3BE8-4BA4-8E21-3E282D9E3891}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Features", "WixSharp.Samples\VSProjects\Features.csproj", "{1057EDC4-266A-4A09-BE3A-5E1B6EE6C03F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WixSharp.Test", "WixSharp.Test\WixSharp.Test.csproj", "{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -713,16 +710,6 @@ Global
 		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1E4B0E41-96B0-4B83-9BA6-B8FC2970812F}.Release|x86.ActiveCfg = Release|Any CPU
-		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|x86.ActiveCfg = Release|Any CPU
 		{CFE61E75-7BED-4AFD-9862-D64E7C162F29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CFE61E75-7BED-4AFD-9862-D64E7C162F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFE61E75-7BED-4AFD-9862-D64E7C162F29}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -973,6 +960,16 @@ Global
 		{1057EDC4-266A-4A09-BE3A-5E1B6EE6C03F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1057EDC4-266A-4A09-BE3A-5E1B6EE6C03F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1057EDC4-266A-4A09-BE3A-5E1B6EE6C03F}.Release|x86.ActiveCfg = Release|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4BDFA5A9-830A-4F5C-A468-69B5C91A42D2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

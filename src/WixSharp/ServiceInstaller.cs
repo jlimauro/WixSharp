@@ -151,7 +151,7 @@ namespace WixSharp
         /// if necessary.
         /// </param>
         /// <returns>
-        /// Collection of XML entites to be added to the project XML result
+        /// Collection of XML entities to be added to the project XML result
         /// </returns>
         internal object[] ToXml(Project project)
         {
