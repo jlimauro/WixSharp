@@ -22,7 +22,7 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Linq;
-using System.Security.Principal;
+using Microsoft.Deployment.WindowsInstaller;
 using IO = System.IO;
 
 namespace WixSharp
@@ -94,28 +94,6 @@ namespace WixSharp
             return fields;
         }
 
-        internal static string OriginalAssemblyFile(string file)
-        {
-            string dir = IO.Path.GetDirectoryName(IO.Path.GetFullPath(file));
-
-            System.Reflection.Assembly asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a =>
-                {
-                    try
-                    {
-                        return a.Location.SamePathAs(file); //some domain assemblies may throw when accessing .Locatioon
-                    }
-                    catch
-                    {
-                        return false;
-                    }
-                });
-
-            if (asm == null)
-                asm = System.Reflection.Assembly.ReflectionOnlyLoadFrom(file);
-
-            return IO.Path.Combine(dir, asm.ManifestModule.ScopeName);
-        }
-
         internal static string GetTempDirectory()
         {
             string tempDir = IO.Path.GetTempFileName();
@@ -127,6 +105,37 @@ namespace WixSharp
 
             return tempDir;
         }
+
+        internal static string OriginalAssemblyFile(string file)
+        {
+            //need to do it in a separate domain as we do not want to lock the assembly
+            return (string)ExecuteInTempDomain<AsmReflector>(asm=>
+            {
+                return asm.OriginalAssemblyFile(file);
+            });
+        }
+
+        public static void ExecuteInTempDomain<T>(Action<T> action) where T: MarshalByRefObject
+        {
+            ExecuteInTempDomain<T>(asm =>
+            {
+                action(asm);
+                return null;
+            });
+        }
+        public static object ExecuteInTempDomain<T>(Func<T, object> action) where T: MarshalByRefObject
+        {
+            var domain = AppDomain.CurrentDomain.Clone();
+            
+            var obj = domain.CreateInstanceFromAndUnwrap<T>();
+
+            var result = action(obj);
+
+            domain.Unload();
+
+            return result;
+        }
+
 
         internal static void Unload(this AppDomain domain)
         {
@@ -148,6 +157,7 @@ namespace WixSharp
 
             return AppDomain.CreateDomain(name ?? Guid.NewGuid().ToString(), null, setup);
         }
+
 
         internal static void EnsureFileDir(string file)
         {

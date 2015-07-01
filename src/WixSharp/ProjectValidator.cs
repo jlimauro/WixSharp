@@ -27,10 +27,13 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using Microsoft.Deployment.WindowsInstaller;
+using IO = System.IO;
+using Reflection = System.Reflection;
 
 namespace WixSharp
 {
@@ -133,6 +136,101 @@ namespace WixSharp
                 }
                 catch { }
 
+        }
+        
+        public static void ValidateCAAssembly(string file)
+        {
+            //need to do it in a separate domain as we do not want to lock the assembly
+            Utils.ExecuteInTempDomain<AsmReflector>(asmReflector =>
+                {
+                    asmReflector.ValidateCAAssembly(file, typeof(CustomActionAttribute).Assembly.Location);
+                });
+        }
+    }
+
+    class AsmReflector : MarshalByRefObject
+    {
+        public string OriginalAssemblyFile(string file)
+        {
+            string dir = IO.Path.GetDirectoryName(IO.Path.GetFullPath(file));
+
+            System.Reflection.Assembly asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a =>
+            {
+                try
+                {
+                    return a.Location.SamePathAs(file); //some domain assemblies may throw when accessing .Locatioon
+                }
+                catch
+                {
+                    return false;
+                }
+            });
+
+            if (asm == null)
+                asm = System.Reflection.Assembly.ReflectionOnlyLoadFrom(file);
+
+            return IO.Path.Combine(dir, asm.ManifestModule.ScopeName);
+        }
+
+        public void ValidateCAAssembly(string file, string dtfAsm)
+        {
+            ResolveEventHandler resolver = (sender, args) =>
+            {
+                return System.Reflection.Assembly.LoadFrom(dtfAsm);
+            };
+
+            AppDomain.CurrentDomain.AssemblyResolve += resolver;
+            ValidateCAAssemblyImpl(file, dtfAsm);
+            AppDomain.CurrentDomain.AssemblyResolve -= resolver;
+        }
+
+        void ValidateCAAssemblyImpl(string file, string refAsms)
+        {
+            //Debug.Assert(false);
+            try
+            {
+                var bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static;
+
+                //var assembly = System.Reflection.Assembly.ReflectionOnlyLoadFrom(file); //cannot prelaod all required assemblies
+                var assembly = System.Reflection.Assembly.LoadFrom(file);
+
+                var caMembers = assembly.GetTypes().SelectMany(t =>
+                                        t.GetMembers(bf)
+                                         .Where(mem =>
+                                                mem.GetCustomAttributes(false)
+                                                   .Where(x => x.ToString() == "Microsoft.Deployment.WindowsInstaller.CustomActionAttribute").Any())).ToArray();
+
+                var invalidMembers = new List<string>();
+                foreach (MemberInfo mi in caMembers)
+                {
+                    string fullName = mi.DeclaringType.FullName + "." + mi.Name;
+
+                    if (!mi.DeclaringType.IsPublic)
+                        if (!invalidMembers.Contains(fullName))
+                            invalidMembers.Add(fullName);
+
+                    if (mi.MemberType != MemberTypes.Method)
+                    {
+                        if (!invalidMembers.Contains(fullName))
+                            invalidMembers.Add(fullName);
+                    }
+                    else
+                    {
+                        var method = (mi as MethodInfo);
+                        if (!method.IsPublic || !method.IsStatic)
+                            if (!invalidMembers.Contains(fullName))
+                                invalidMembers.Add(fullName);
+                    }
+                }
+                if (invalidMembers.Any())
+                {
+                    Console.Write("Warning: some of the type members are marked with [CustomAction] attribute but they don't meet the MakeSfxCA criteria of being public static method of a public type:\n");
+                    foreach (var member in invalidMembers)
+                        Console.WriteLine("  " + member);
+                    Console.WriteLine();
+                }
+            }
+            catch { }
         }
     }
 }
