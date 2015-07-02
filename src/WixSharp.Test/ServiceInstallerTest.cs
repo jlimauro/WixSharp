@@ -107,7 +107,6 @@ namespace WixSharp.Test
         {
             var element = new XElement("ServiceConfig");
 
-
             int? delay = null;
 
             element.SetAttributeValue("PreShutdownDelay", delay);
@@ -117,19 +116,18 @@ namespace WixSharp.Test
             element.SetAttributeValue("PreShutdownDelay", delay);
             Assert.True(element.HasAttribute("PreShutdownDelay"));
 
-
             ServiceSid serviceSid = null;
 
             element.SetAttributeValue("ServiceSid", serviceSid);
             Assert.False(element.HasAttribute("ServiceSid"));
 
-            serviceSid = new ServiceSid(ServiceSidValue.none);
+            serviceSid = ServiceSid.none;
             element.SetAttributeValue("ServiceSid", serviceSid);
             Assert.True(element.HasAttribute("ServiceSid", value => value == "none"));
 
-            serviceSid = new ServiceSid("test");
+            serviceSid = new ServiceSid("0");
             element.SetAttributeValue("ServiceSid", serviceSid);
-            Assert.True(element.HasAttribute("ServiceSid", value => value == "test"));
+            Assert.True(element.HasAttribute("ServiceSid", value => value == "0"));
         }
     }
 }

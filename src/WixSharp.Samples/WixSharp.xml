@@ -8820,7 +8820,7 @@
             if necessary.
             </param>
             <returns>
-            Collection of XML entites to be added to the project XML result
+            Collection of XML entities to be added to the project XML result
             </returns>
         </member>
         <member name="F:WixSharp.ServiceInstaller.ConfigureServiceTrigger">
@@ -8886,7 +8886,8 @@
         </member>
         <member name="P:WixSharp.ServiceInstaller.DelayedAutoStart">
             <summary>
-            Specifies whether an auto-start service should delay its start until after all other auto-start services
+            Specifies whether an auto-start service should delay its start until after all other auto-start services.
+            This property only affects auto-start services. If this property is not initialized the setting is not configured.
             </summary>
         </member>
         <member name="P:WixSharp.ServiceInstaller.PreShutdownDelay">
@@ -8991,74 +8992,19 @@
             waiting for the completion.
             </summary>
         </member>
-        <member name="T:WixSharp.DelayedAutoStart">
-            <summary>
-            Represents legal values to provide ServiceInstaller.DelayedAutoStart property
-            </summary>
-        </member>
-        <member name="M:WixSharp.DelayedAutoStart.#ctor(System.Boolean)">
-            <summary>
-            Indicates that the associated service should delay its start until after all other auto-start services
-            </summary>
-            <param name="shouldDelay">boolean value indicating that the service should be delayed</param>
-        </member>
-        <member name="M:WixSharp.DelayedAutoStart.#ctor(System.String)">
-            <summary>
-            Indicates that the associated service should delay its start until after all other auto-start services
-            </summary>
-            <param name="property">A Formatted property that resolves to "1" (for "yes") or "0" (for "no")</param>
-        </member>
-        <member name="M:WixSharp.DelayedAutoStart.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"/> that represents this instance.
-            </summary>
-            <returns>
-            A <see cref="T:System.String"/> that represents this instance.
-            </returns>
-        </member>
-        <member name="P:WixSharp.DelayedAutoStart.Value">
-            <summary>
-            Gets the string representation of the configured value
-            </summary>
-        </member>
-        <member name="T:WixSharp.ServiceSidValue">
-            <summary>
-            Possible values for ServiceInstaller.ServiceSid property
-            </summary>
-        </member>
         <member name="T:WixSharp.ServiceSid">
             <summary>
-            Represents legal values to provide ServiceInstaller.ServiceSid property
+            Specifies the service SID to apply to the service. 
+            Valid values are "none", "restricted", "unrestricted" or a 
+            Formatted property that resolves to "0" (for "none"), 
+            "3" (for "restricted") or "1" (for "unrestricted"). 
             </summary>
-        </member>
-        <member name="M:WixSharp.ServiceSid.#ctor(WixSharp.ServiceSidValue)">
-            <summary>
-            Specifies the service SID to apply to the service
-            </summary>
-            <param name="serviceSidValue">
-            A ServiceSidValue value 
-            </param>
         </member>
         <member name="M:WixSharp.ServiceSid.#ctor(System.String)">
             <summary>
-            Specifies the service SID to apply to the service
+            Initializes a new instance of the <see cref="T:WixSharp.ServiceSid"/> class.
             </summary>
-            <param name="property">
-            A Formatted property that resolves to "0" (for "none"), "3" (for "restricted") or "1" (for "unrestricted")
-            </param>
-        </member>
-        <member name="M:WixSharp.ServiceSid.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"/> that represents this instance.
-            </summary>
-            <returns>
-            A <see cref="T:System.String"/> that represents this instance.
-            </returns>
-        </member>
-        <member name="P:WixSharp.ServiceSid.Value">
-            <summary>
-            Gets the string representation of the configured value
-            </summary>
+            <param name="value">The value.</param>
         </member>
         <member name="T:WixSharp.FailureActionType">
             <summary>

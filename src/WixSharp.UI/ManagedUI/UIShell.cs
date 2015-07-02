@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Deployment.Samples.EmbeddedUI;
@@ -27,8 +28,10 @@ namespace WixSharp
 
         public UIShell()
         {
+            Debugger.Launch();
             InitializeComponent();
             currentStep.Text = null;
+
         }
 
         void next_Click(object sender, EventArgs e)
@@ -59,6 +62,12 @@ namespace WixSharp
 
             this.ui = ui;
             this.msiRuntime = msiRuntime;
+            next.Text = msiRuntime.UIText["WixUINext"];
+
+            this.LocalizeFrom(msiRuntime);
+
+            var ttt = msiRuntime.Localize("ProductName");
+            ttt = msiRuntime.Localize("ProductNamedsfas");
 
             if (this.msiRuntime.Session.IsInstalling())
             {
@@ -105,7 +114,7 @@ namespace WixSharp
             return MessageResult.OK;
         }
 
-        private void LogMessage(string message, params object[] args)
+        void LogMessage(string message, params object[] args)
         {
             textBox1.AppendText(message.FormatInline(args) + Environment.NewLine);
         }
@@ -128,6 +137,12 @@ namespace WixSharp
         public void InUIThread(System.Action action)
         {
             this.Invoke(action);
+        }
+
+        void UIShell_Load(object sender, EventArgs e)
+        {
+            this.TopMost = false;
+
         }
     }
 }

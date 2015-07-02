@@ -260,9 +260,10 @@ namespace WixSharp
         #region ServiceConfig attributes
 
         /// <summary>
-        /// Specifies whether an auto-start service should delay its start until after all other auto-start services
+        /// Specifies whether an auto-start service should delay its start until after all other auto-start services.
+        /// This property only affects auto-start services. If this property is not initialized the setting is not configured.
         /// </summary>
-        public DelayedAutoStart DelayedAutoStart { get; set; }
+        public bool? DelayedAutoStart { get; set; }
 
         //public object FailureActionsWhen { get; set; } //note implementing util:serviceconfig instead
 
@@ -405,131 +406,25 @@ namespace WixSharp
     }
 
     /// <summary>
-    /// Represents legal values to provide ServiceInstaller.DelayedAutoStart property
+    /// Specifies the service SID to apply to the service. 
+    /// Valid values are "none", "restricted", "unrestricted" or a 
+    /// Formatted property that resolves to "0" (for "none"), 
+    /// "3" (for "restricted") or "1" (for "unrestricted"). 
     /// </summary>
-    public class DelayedAutoStart
+    public class ServiceSid : StringEnum<ServiceSid>
     {
-        private readonly bool? shouldDelay;
-        private readonly string property;
-
         /// <summary>
-        /// Indicates that the associated service should delay its start until after all other auto-start services
+        /// Initializes a new instance of the <see cref="ServiceSid"/> class.
         /// </summary>
-        /// <param name="shouldDelay">boolean value indicating that the service should be delayed</param>
-        public DelayedAutoStart(bool shouldDelay)
-        {
-            this.shouldDelay = shouldDelay;
-        }
-
-        /// <summary>
-        /// Indicates that the associated service should delay its start until after all other auto-start services
-        /// </summary>
-        /// <param name="property">A Formatted property that resolves to "1" (for "yes") or "0" (for "no")</param>
-        public DelayedAutoStart(string property)
-        {
-            this.property = property;
-        }
-
-        //not needed since no need to access thees members from outside
-        //public bool? ShouldDelay { get { return shouldDelay; } }
-        //public string DelayProperty { get { return property; } }
-
-
-        /// <summary>
-        /// Gets the string representation of the configured value
-        /// </summary>
-        public string Value
-        {
-            get
-            {
-                if (shouldDelay.HasValue)
-                    return shouldDelay.Value.ToYesNo();
-                else return property;
-            }
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return Value;
-        }
-    }
-
-    /// <summary>
-    /// Possible values for ServiceInstaller.ServiceSid property
-    /// </summary>
-    public enum ServiceSidValue
-    {
+        /// <param name="value">The value.</param>
+        public ServiceSid(string value) : base(value) { }
 #pragma warning disable 1591
-        none,
-        restricted,
-        unrestricted
+        public static ServiceSid none = new ServiceSid("none");
+        public static ServiceSid restricted = new ServiceSid("restricted");
+        public static ServiceSid unrestricted = new ServiceSid("unrestricted");
 #pragma warning restore 1591
     }
 
-    /// <summary>
-    /// Represents legal values to provide ServiceInstaller.ServiceSid property
-    /// </summary>
-    public class ServiceSid
-    {
-        private readonly ServiceSidValue? serviceSidValue;
-        private string serviceSidProperty;
-
-        /// <summary>
-        /// Specifies the service SID to apply to the service
-        /// </summary>
-        /// <param name="serviceSidValue">
-        /// A ServiceSidValue value 
-        /// </param>
-        public ServiceSid(ServiceSidValue serviceSidValue)
-        {
-            this.serviceSidValue = serviceSidValue;
-        }
-
-        /// <summary>
-        /// Specifies the service SID to apply to the service
-        /// </summary>
-        /// <param name="property">
-        /// A Formatted property that resolves to "0" (for "none"), "3" (for "restricted") or "1" (for "unrestricted")
-        /// </param>
-        public ServiceSid(string property)
-        {
-            this.serviceSidProperty = property;
-        }
-
-        //not needed since no external access to these members is required
-        //public ServiceSidValue? ServiceSidValue { get { return serviceSidValue; } }
-        //public string ServiceSidProperty { get { return serviceSidProperty; } }
-
-        /// <summary>
-        /// Gets the string representation of the configured value
-        /// </summary>
-        public string Value
-        {
-            get
-            {
-                if (serviceSidValue.HasValue)
-                    return serviceSidValue.Value.ToString();
-                else return serviceSidProperty;
-            }
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return Value;
-        }
-    }
 
     /// <summary>
     /// Possible values for ServiceInstall.(First|Second|Third)FailureActionType

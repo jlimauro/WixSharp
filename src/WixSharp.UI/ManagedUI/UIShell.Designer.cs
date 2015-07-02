@@ -41,6 +41,7 @@ namespace WixSharp
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.currentStep = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // sequenceView
@@ -60,7 +61,7 @@ namespace WixSharp
             // 
             // cancel
             // 
-            this.cancel.Location = new System.Drawing.Point(320, 308);
+            this.cancel.Location = new System.Drawing.Point(389, 308);
             this.cancel.Name = "cancel";
             this.cancel.Size = new System.Drawing.Size(75, 23);
             this.cancel.TabIndex = 1;
@@ -70,7 +71,7 @@ namespace WixSharp
             // 
             // next
             // 
-            this.next.Location = new System.Drawing.Point(144, 303);
+            this.next.Location = new System.Drawing.Point(148, 308);
             this.next.Name = "next";
             this.next.Size = new System.Drawing.Size(75, 23);
             this.next.TabIndex = 1;
@@ -80,7 +81,7 @@ namespace WixSharp
             // 
             // install
             // 
-            this.install.Location = new System.Drawing.Point(239, 308);
+            this.install.Location = new System.Drawing.Point(229, 308);
             this.install.Name = "install";
             this.install.Size = new System.Drawing.Size(75, 23);
             this.install.TabIndex = 1;
@@ -130,9 +131,19 @@ namespace WixSharp
             this.currentStep.AutoSize = true;
             this.currentStep.Location = new System.Drawing.Point(10, 8);
             this.currentStep.Name = "currentStep";
-            this.currentStep.Size = new System.Drawing.Size(35, 13);
+            this.currentStep.Size = new System.Drawing.Size(74, 13);
             this.currentStep.TabIndex = 2;
-            this.currentStep.Text = "label1";
+            this.currentStep.Text = "Current Action";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(310, 308);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Install";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Install_Click);
             // 
             // UIShell
             // 
@@ -145,6 +156,7 @@ namespace WixSharp
             this.Controls.Add(this.status);
             this.Controls.Add(this.next);
             this.Controls.Add(this.exit);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.install);
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.listBox1);
@@ -152,6 +164,8 @@ namespace WixSharp
             this.Name = "UIShell";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Managed UI Setup";
+            this.TopMost = true;
+            this.Load += new System.EventHandler(this.UIShell_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -168,6 +182,7 @@ namespace WixSharp
         private TextBox textBox1;
         private ProgressBar progressBar;
         private Label currentStep;
+        private Button button1;
 
     }
 }

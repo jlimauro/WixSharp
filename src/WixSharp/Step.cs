@@ -461,5 +461,4 @@ namespace WixSharp
             return Value;
         }
     }
-
 }
