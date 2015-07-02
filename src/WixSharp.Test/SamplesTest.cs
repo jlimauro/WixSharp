@@ -24,6 +24,8 @@ namespace WixSharp.Test
             var files = Directory.GetFiles(@"..\..\..\WixSharp.Samples\Wix# Samples", "build*.cmd", SearchOption.AllDirectories);
             foreach (string file in files.Skip(startStep))
             {
+                string name  = Path.GetFileName(file);
+
                 currentStep++;
                 var batchFile = IO.Path.GetFullPath(file);
                 BuildSample(batchFile, currentStep, failedSamples);

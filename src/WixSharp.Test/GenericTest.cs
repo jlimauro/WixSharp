@@ -82,6 +82,11 @@ void StringEnum_Test()
     Assert.Equal("secondVal", MyVals.Second);
     Assert.Equal("thirdVal", MyVals.Third);
 
+    MyVals empty = null;
+    Assert.Equal(null, empty);
+    Assert.True(empty == null);
+    Assert.True(empty != MyVals.First);
+
 
     Assert.True(MyVals.Third == "thirdVal");
     Assert.True("thirdVal" == MyVals.Third);
@@ -92,6 +97,9 @@ void StringEnum_Test()
     Assert.False("" == MyVals.Third);
     Assert.True("" != MyVals.Third);
 
+    Assert.False(new MyVals("test") != new MyVals("test"));
+    Assert.True(new MyVals("test") == new MyVals("test"));
+
     Assert.Equal("thirdVal", MyVals.Third);
     Assert.Equal("thirdVal", (string)MyVals.Third);
 
@@ -99,7 +107,6 @@ void StringEnum_Test()
     Assert.False(MyVals.Third.Equals(null));
     Assert.True(MyVals.Third.Equals(new MyVals("thirdVal")));
     Assert.True(MyVals.Third.Equals(MyVals.Third));
-
 }
 
 class MyVals : StringEnum<MyVals>

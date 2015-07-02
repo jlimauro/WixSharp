@@ -61,12 +61,12 @@ namespace WixSharp
         /// The display name of the service as it is listed in the Control Panel.
         /// If not specified the name of the service will be used instead.
         /// </summary>
-        public string DisplayName = null;
+        public string DisplayName;
 
         /// <summary>
         /// The description of the service as it is listed in the Control Panel.
         /// </summary>
-        public string Description = null;
+        public string Description;
 
         /// <summary>
         /// The type of the service (e.g. kernel/system driver, process). The default value is <c>SvcType.ownProcess</c>.
@@ -110,38 +110,38 @@ namespace WixSharp
         /// Fully qualified names must be used even for local accounts, 
         /// e.g.: ".\LOCAL_ACCOUNT". Valid only when ServiceType is ownProcess.
         /// </summary>
-        public string Account { get; set; }
+        public string Account;
 
         /// <summary>
         /// Contains any command line arguments or properties required to run the service.
         /// </summary>
-        public string Arguments { get; set; }
+        public string Arguments;
 
         /// <summary>
         /// Determines whether the existing service description will be ignored. If 'yes', the service description will be null, 
         /// even if the Description attribute is set.
         /// </summary>
-        public bool? EraseDescription { get; set; }
+        public bool? EraseDescription;
 
         /// <summary>
         /// Whether or not the service interacts with the desktop.
         /// </summary>
-        public bool? Interactive { get; set; }
+        public bool? Interactive;
 
         /// <summary>
         /// The load ordering group that this service should be a part of.
         /// </summary>
-        public string LoadOrderGroup { get; set; }
+        public string LoadOrderGroup;
 
         /// <summary>
         /// The password for the account. Valid only when the account has a password.
         /// </summary>
-        public string Password { get; set; }
+        public string Password;
 
         /// <summary>
         /// The overall install should fail if this service fails to install.
         /// </summary>
-        public bool? Vital { get; set; }
+        public bool? Vital;
 
         /// <summary>
         /// Renders ServiceInstaller properties to appropriate WiX elements
@@ -173,7 +173,7 @@ namespace WixSharp
 
         XElement ServiceInstallToXml(Project project)
         {
-            var serviceInstallElement =
+            var serviceInstall =
                 new XElement("ServiceInstall",
                     new XAttribute("Id", Id),
                     new XAttribute("Name", Name),
@@ -183,39 +183,39 @@ namespace WixSharp
                     new XAttribute("Start", StartType),
                     new XAttribute("ErrorControl", ErrorControl));
 
-            serviceInstallElement.SetAttribute("Account", Account)
-                                 .SetAttribute("Arguments", Arguments)
-                                 .SetAttribute("Interactive", Interactive)
-                                 .SetAttribute("LoadOrderGroup", LoadOrderGroup)
-                                 .SetAttribute("Password", Password)
-                                 .SetAttribute("EraseDescription", EraseDescription)
-                                 .SetAttribute("Vital", Vital)
-                                 .AddAttributes(Attributes);
+            serviceInstall.SetAttribute("Account", Account)
+                          .SetAttribute("Arguments", Arguments)
+                          .SetAttribute("Interactive", Interactive)
+                          .SetAttribute("LoadOrderGroup", LoadOrderGroup)
+                          .SetAttribute("Password", Password)
+                          .SetAttribute("EraseDescription", EraseDescription)
+                          .SetAttribute("Vital", Vital)
+                          .AddAttributes(Attributes);
 
             foreach (var item in DependsOn.Split(';'))
             {
                 if (item.IsNotEmpty())
-                    serviceInstallElement.AddElement("ServiceDependency", "Id=" + item);
+                    serviceInstall.AddElement("ServiceDependency", "Id=" + item);
             }
 
-            if (DelayedAutoStart != null
-                || PreShutdownDelay != null
+            if (DelayedAutoStart.HasValue
+                || PreShutdownDelay.HasValue
                 || ServiceSid != null)
             {
-                var serviceConfigElement = new XElement("ServiceConfig");
+                var serviceConfig = new XElement("ServiceConfig");
 
-                serviceConfigElement.SetAttributeValue("DelayedAutoStart", DelayedAutoStart);
-                serviceConfigElement.SetAttributeValue("PreShutdownDelay", PreShutdownDelay);
-                serviceConfigElement.SetAttributeValue("ServiceSid", ServiceSid);
+                serviceConfig.SetAttribute("DelayedAutoStart", DelayedAutoStart)
+                             .SetAttribute("PreShutdownDelay", PreShutdownDelay)
+                             .SetAttribute("ServiceSid", ServiceSid)
 
-                serviceConfigElement.SetAttribute("OnInstall", ConfigureServiceTrigger.Install.PresentIn(ConfigureServiceTrigger));
-                serviceConfigElement.SetAttribute("OnReinstall", ConfigureServiceTrigger.Reinstall.PresentIn(ConfigureServiceTrigger));
-                serviceConfigElement.SetAttribute("OnUninstall", ConfigureServiceTrigger.Uninstall.PresentIn(ConfigureServiceTrigger));
+                             .SetAttribute("OnInstall", ConfigureServiceTrigger.Install.PresentIn(ConfigureServiceTrigger))
+                             .SetAttribute("OnReinstall", ConfigureServiceTrigger.Reinstall.PresentIn(ConfigureServiceTrigger))
+                             .SetAttribute("OnUninstall", ConfigureServiceTrigger.Uninstall.PresentIn(ConfigureServiceTrigger));
 
-                serviceInstallElement.Add(serviceConfigElement);
+                serviceInstall.Add(serviceConfig);
             }
 
-            if (new[] { FirstFailureActionType, SecondFailureActionType, ThirdFailureActionType }.Any(type => type != FailureActionType.none)
+            if (IsFailureActionSet
                 || ProgramCommandLine != null
                 || RebootMessage != null
                 || ResetPeriodInDays.HasValue
@@ -223,29 +223,30 @@ namespace WixSharp
             {
                 project.IncludeWixExtension(WixExtension.Util);
 
-                var serviceConfigElement = new XElement(WixExtension.Util.ToXNamespace() + "ServiceConfig");
+                var serviceConfig = new XElement(WixExtension.Util.ToXNamespace() + "ServiceConfig");
 
-                serviceConfigElement.SetAttribute("FirstFailureActionType", FirstFailureActionType)
-                                    .SetAttribute("SecondFailureActionType", SecondFailureActionType)
-                                    .SetAttribute("ThirdFailureActionType", ThirdFailureActionType)
-                                    .SetAttribute("ProgramCommandLine", ProgramCommandLine)
-                                    .SetAttribute("RebootMessage", RebootMessage)
-                                    .SetAttribute("ResetPeriodInDays", ResetPeriodInDays)
-                                    .SetAttribute("RestartServiceDelayInSeconds", RestartServiceDelayInSeconds);
+                serviceConfig.SetAttribute("FirstFailureActionType", FirstFailureActionType)
+                             .SetAttribute("SecondFailureActionType", SecondFailureActionType)
+                             .SetAttribute("ThirdFailureActionType", ThirdFailureActionType)
+                             .SetAttribute("ProgramCommandLine", ProgramCommandLine)
+                             .SetAttribute("RebootMessage", RebootMessage)
+                             .SetAttribute("ResetPeriodInDays", ResetPeriodInDays)
+                             .SetAttribute("RestartServiceDelayInSeconds", RestartServiceDelayInSeconds);
 
-                serviceInstallElement.Add(serviceConfigElement);
+                serviceInstall.Add(serviceConfig);
             }
 
-            /*
-             <util:ServiceConfig xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
-                    FirstFailureActionType="restart"
-                    SecondFailureActionType="restart"
-                    ThirdFailureActionType="restart"
-                    ResetPeriodInDays="1"
-                    RestartServiceDelayInSeconds="20" />
-             */
+            return serviceInstall;
+        }
 
-            return serviceInstallElement;
+        bool IsFailureActionSet
+        {
+            get
+            {
+                return FirstFailureActionType != FailureActionType.none 
+                       || SecondFailureActionType != FailureActionType.none
+                       || ThirdFailureActionType!= FailureActionType.none;
+            }
         }
 
         XElement SvcEventToXml(string controlType, SvcEvent value)
@@ -263,7 +264,7 @@ namespace WixSharp
         /// Specifies whether an auto-start service should delay its start until after all other auto-start services.
         /// This property only affects auto-start services. If this property is not initialized the setting is not configured.
         /// </summary>
-        public bool? DelayedAutoStart { get; set; }
+        public bool? DelayedAutoStart;
 
         //public object FailureActionsWhen { get; set; } //note implementing util:serviceconfig instead
 
@@ -271,12 +272,12 @@ namespace WixSharp
         /// Specifies time in milliseconds that the Service Control Manager (SCM) waits after notifying 
         /// the service of a system shutdown. If this attribute is not present the default value, 3 minutes, is used.
         /// </summary>
-        public int? PreShutdownDelay { get; set; }
+        public int? PreShutdownDelay;
 
         /// <summary>
         /// Specifies the service SID to apply to the service
         /// </summary>
-        public ServiceSid ServiceSid { get; set; }
+        public ServiceSid ServiceSid;
 
         /// <summary>
         /// Specifies whether to configure the service when the parent Component is installed, reinstalled, or uninstalled
@@ -300,24 +301,24 @@ namespace WixSharp
         /// If any of the three *ActionType attributes is "runCommand", 
         /// this specifies the command to run when doing so.
         /// </summary>
-        public string ProgramCommandLine { get; set; }
+        public string ProgramCommandLine;
 
         /// <summary>
         /// If any of the three *ActionType attributes is "reboot", 
         /// this specifies the message to broadcast to server users before doing so.
         /// </summary>
-        public string RebootMessage { get; set; }
+        public string RebootMessage;
 
         /// <summary>
         /// Number of days after which to reset the failure count to zero if there are no failures.
         /// </summary>
-        public int? ResetPeriodInDays { get; set; }
+        public int? ResetPeriodInDays;
 
         /// <summary>
         /// If any of the three *ActionType attributes is "restart", 
         /// this specifies the number of seconds to wait before doing so.
         /// </summary>
-        public int? RestartServiceDelayInSeconds { get; set; }
+        public int? RestartServiceDelayInSeconds;
 
         /// <summary>
         /// Action to take on the second failure of the service.

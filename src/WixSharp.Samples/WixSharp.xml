@@ -8811,6 +8811,43 @@
             <para>For example: DependsOn = "Dnscache;Dhcp"</para>
             </summary>
         </member>
+        <member name="F:WixSharp.ServiceInstaller.Account">
+            <summary>
+            Fully qualified names must be used even for local accounts, 
+            e.g.: ".\LOCAL_ACCOUNT". Valid only when ServiceType is ownProcess.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.Arguments">
+            <summary>
+            Contains any command line arguments or properties required to run the service.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.EraseDescription">
+            <summary>
+            Determines whether the existing service description will be ignored. If 'yes', the service description will be null, 
+            even if the Description attribute is set.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.Interactive">
+            <summary>
+            Whether or not the service interacts with the desktop.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.LoadOrderGroup">
+            <summary>
+            The load ordering group that this service should be a part of.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.Password">
+            <summary>
+            The password for the account. Valid only when the account has a password.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.Vital">
+            <summary>
+            The overall install should fail if this service fails to install.
+            </summary>
+        </member>
         <member name="M:WixSharp.ServiceInstaller.ToXml(WixSharp.Project)">
             <summary>
             Renders ServiceInstaller properties to appropriate WiX elements
@@ -8822,6 +8859,23 @@
             <returns>
             Collection of XML entities to be added to the project XML result
             </returns>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.DelayedAutoStart">
+            <summary>
+            Specifies whether an auto-start service should delay its start until after all other auto-start services.
+            This property only affects auto-start services. If this property is not initialized the setting is not configured.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.PreShutdownDelay">
+            <summary>
+            Specifies time in milliseconds that the Service Control Manager (SCM) waits after notifying 
+            the service of a system shutdown. If this attribute is not present the default value, 3 minutes, is used.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.ServiceSid">
+            <summary>
+            Specifies the service SID to apply to the service
+            </summary>
         </member>
         <member name="F:WixSharp.ServiceInstaller.ConfigureServiceTrigger">
             <summary>
@@ -8837,6 +8891,29 @@
             Action to take on the first failure of the service
             </summary>
         </member>
+        <member name="F:WixSharp.ServiceInstaller.ProgramCommandLine">
+            <summary>
+            If any of the three *ActionType attributes is "runCommand", 
+            this specifies the command to run when doing so.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.RebootMessage">
+            <summary>
+            If any of the three *ActionType attributes is "reboot", 
+            this specifies the message to broadcast to server users before doing so.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.ResetPeriodInDays">
+            <summary>
+            Number of days after which to reset the failure count to zero if there are no failures.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ServiceInstaller.RestartServiceDelayInSeconds">
+            <summary>
+            If any of the three *ActionType attributes is "restart", 
+            this specifies the number of seconds to wait before doing so.
+            </summary>
+        </member>
         <member name="F:WixSharp.ServiceInstaller.SecondFailureActionType">
             <summary>
             Action to take on the second failure of the service.
@@ -8845,83 +8922,6 @@
         <member name="F:WixSharp.ServiceInstaller.ThirdFailureActionType">
             <summary>
             Action to take on the third failure of the service.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.Account">
-            <summary>
-            Fully qualified names must be used even for local accounts, 
-            e.g.: ".\LOCAL_ACCOUNT". Valid only when ServiceType is ownProcess.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.Arguments">
-            <summary>
-            Contains any command line arguments or properties required to run the service.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.EraseDescription">
-            <summary>
-            Determines whether the existing service description will be ignored. If 'yes', the service description will be null, 
-            even if the Description attribute is set.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.Interactive">
-            <summary>
-            Whether or not the service interacts with the desktop.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.LoadOrderGroup">
-            <summary>
-            The load ordering group that this service should be a part of.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.Password">
-            <summary>
-            The password for the account. Valid only when the account has a password.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.Vital">
-            <summary>
-            The overall install should fail if this service fails to install.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.DelayedAutoStart">
-            <summary>
-            Specifies whether an auto-start service should delay its start until after all other auto-start services.
-            This property only affects auto-start services. If this property is not initialized the setting is not configured.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.PreShutdownDelay">
-            <summary>
-            Specifies time in milliseconds that the Service Control Manager (SCM) waits after notifying 
-            the service of a system shutdown. If this attribute is not present the default value, 3 minutes, is used.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.ServiceSid">
-            <summary>
-            Specifies the service SID to apply to the service
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.ProgramCommandLine">
-            <summary>
-            If any of the three *ActionType attributes is "runCommand", 
-            this specifies the command to run when doing so.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.RebootMessage">
-            <summary>
-            If any of the three *ActionType attributes is "reboot", 
-            this specifies the message to broadcast to server users before doing so.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.ResetPeriodInDays">
-            <summary>
-            Number of days after which to reset the failure count to zero if there are no failures.
-            </summary>
-        </member>
-        <member name="P:WixSharp.ServiceInstaller.RestartServiceDelayInSeconds">
-            <summary>
-            If any of the three *ActionType attributes is "restart", 
-            this specifies the number of seconds to wait before doing so.
             </summary>
         </member>
         <member name="T:WixSharp.ConfigureServiceTrigger">

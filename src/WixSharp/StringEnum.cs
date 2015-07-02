@@ -39,7 +39,12 @@ namespace WixSharp
         /// <returns>The result of the operator.</returns>
         public static bool operator ==(StringEnum<T> obj1, StringEnum<T> obj2)
         {
-            return string.Compare(obj1.Value, obj2.Value) == 0;
+            if ((object)obj1 != null && (object)obj2 != null)
+                return string.Compare(obj1.Value, obj2.Value) == 0;
+            else if ((object)obj1 == null && (object)obj2 == null)
+                return true;
+            else
+                return false;
         }
         /// <summary>
         /// Implements the operator !=.
@@ -49,7 +54,12 @@ namespace WixSharp
         /// <returns>The result of the operator.</returns>
         public static bool operator !=(StringEnum<T> obj1, StringEnum<T> obj2)
         {
-            return string.Compare(obj1.Value, obj2.Value) != 0;
+            if ((object)obj1 != null && (object)obj2 != null)
+                return string.Compare(obj1.Value, obj2.Value) != 0;
+            else if ((object)obj1 == null && (object)obj2 == null)
+                return false;
+            else 
+                return true;
         }
 
         /// <summary>

@@ -33,7 +33,7 @@ class Script
             project.UI = WUI.WixUI_ProgressOnly;
             project.OutFileName = "setup";
 
-            Compiler.BuildMsiCmd(project);
+            Compiler.BuildMsi(project);
         }
         catch (System.Exception ex)
         {

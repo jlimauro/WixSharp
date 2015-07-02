@@ -7,6 +7,7 @@ namespace WixSharp.Test
     public class ServiceInstallerTest
     {
         Project projectMock = new Project();
+        
         [Fact]
         public void Should_Emit_FullSetOfMembers()
         {
@@ -48,21 +49,21 @@ namespace WixSharp.Test
 
             var controll1 = all[1];
             Assert.Equal("ServiceControl", controll1.Name.LocalName);
-            Assert.Equal("StartWixSharp.TestSvc", controll1.Attribute("Id").Value);
+            Assert.StartsWith("StopWixSharp.TestSvc", controll1.Attribute("Id").Value); //possible concurrency issues so handle "StopWixSharp.TestSvc.2" as well
             Assert.Equal("WixSharp.TestSvc", controll1.Attribute("Name").Value);
-            Assert.Equal("install", controll1.Attribute("Start").Value);
-            Assert.Equal("no", controll1.Attribute("Wait").Value);
+            Assert.Equal("both", controll1.Attribute("Stop").Value);
+            Assert.Equal("yes", controll1.Attribute("Wait").Value);
 
             var controll2 = all[2];
             Assert.Equal("ServiceControl", controll2.Name.LocalName);
-            Assert.Equal("StopWixSharp.TestSvc", controll2.Attribute("Id").Value);
+            Assert.StartsWith("StartWixSharp.TestSvc", controll2.Attribute("Id").Value);
             Assert.Equal("WixSharp.TestSvc", controll2.Attribute("Name").Value);
-            Assert.Equal("both", controll2.Attribute("Stop").Value);
-            Assert.Equal("yes", controll2.Attribute("Wait").Value);
+            Assert.Equal("install", controll2.Attribute("Start").Value);
+            Assert.Equal("no", controll2.Attribute("Wait").Value);
 
             var controll3 = all[3];
             Assert.Equal("ServiceControl", controll3.Name.LocalName);
-            Assert.Equal("RemoveWixSharp.TestSvc", controll3.Attribute("Id").Value);
+            Assert.StartsWith("RemoveWixSharp.TestSvc", controll3.Attribute("Id").Value);
             Assert.Equal("WixSharp.TestSvc", controll3.Attribute("Name").Value);
             Assert.Equal("uninstall", controll3.Attribute("Remove").Value);
             Assert.Equal("yes", controll3.Attribute("Wait").Value);
