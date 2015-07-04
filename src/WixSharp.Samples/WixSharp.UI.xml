@@ -4,6 +4,113 @@
         <name>WixSharp.UI</name>
     </assembly>
     <members>
+        <member name="F:WixSharp.UI.Forms.ExitDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.ExitDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:WixSharp.UI.Forms.ExitDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.FeaturesDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.FeaturesDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:WixSharp.UI.Forms.FeaturesDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:WixSharp.UI.ManagedUI.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:WixSharp.UI.ManagedUI.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:WixSharp.UI.ManagedUI.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:WixSharp.UI.ManagedUI.Resources.WixSharp_LicenceFile">
+             <summary>
+               Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\deflang3081{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+            {\*\generator Msftedit 5.41.21.2507;}\viewkind4\uc1\pard\f0\fs20 My Licence\par
+            }
+            .
+             </summary>
+        </member>
+        <member name="P:WixSharp.UI.ManagedUI.Resources.WixUI_Bmp_Banner">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WixSharp.UI.ManagedUI.Resources.WixUI_Bmp_Dialog">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WixSharp.UI.ManagedUI.Resources.WixUI_en_us">
+            <summary>
+              Looks up a localized resource of type System.Byte[].
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.WelcomeDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.WelcomeDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:WixSharp.UI.Forms.WelcomeDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.InstallDirDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.InstallDirDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:WixSharp.UI.Forms.InstallDirDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
         <member name="T:Microsoft.Deployment.Samples.EmbeddedUI.InstallProgressCounter">
             <summary>
             Tracks MSI progress messages and converts them to usable progress.
@@ -12,6 +119,23 @@
         <member name="F:Microsoft.Deployment.Samples.EmbeddedUI.InstallProgressCounter.Progress">
             <summary>
             Gets a number between 0 and 1 that indicates the overall installation progress.
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.LicenceDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.LicenceDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:WixSharp.UI.Forms.LicenceDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
             </summary>
         </member>
         <member name="T:WixSharp.ShowClrDialogAction">
@@ -112,6 +236,40 @@
             <param name="wxlData">The WXL file bytes.</param>
             <returns></returns>
         </member>
+        <member name="F:WixSharp.UI.Forms.RepairExitDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.RepairExitDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:WixSharp.UI.Forms.RepairExitDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.RepairStartDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.RepairStartDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:WixSharp.UI.Forms.RepairStartDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
         <member name="T:WixSharp.Bootstrapper.SilentBootstrapperApplication">
             <summary>
             Defines Wix# bootstrapper managed application with no User Interface.
@@ -187,18 +345,18 @@
             This is called after a bundle installation has completed. Make sure we updated the view.
             </summary>
         </member>
-        <member name="F:WixSharp.UIShell.components">
+        <member name="F:WixSharp.UI.Forms.ProgressDialog.components">
             <summary>
             Required designer variable.
             </summary>
         </member>
-        <member name="M:WixSharp.UIShell.Dispose(System.Boolean)">
+        <member name="M:WixSharp.UI.Forms.ProgressDialog.Dispose(System.Boolean)">
             <summary>
             Clean up any resources being used.
             </summary>
             <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
-        <member name="M:WixSharp.UIShell.InitializeComponent">
+        <member name="M:WixSharp.UI.Forms.ProgressDialog.InitializeComponent">
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.

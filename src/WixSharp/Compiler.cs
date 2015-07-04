@@ -331,7 +331,7 @@ namespace WixSharp
             set { WixGuid.Generator = value; }
         }
 
-        internal static List<string> TempFiles = new List<string>();
+        public static List<string> TempFiles = new List<string>();
 
         /// <summary>
         /// Builds the MSI file from the specified <see cref="Project"/> instance.

@@ -35,6 +35,7 @@ public class Script
         //project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Custom_UI\EmbeddedUI\bin\Debug\EmbeddedUI.exe");
         project.ManagedUI = ManagedUI.Default;
         //project.LocalizationFile = "wixui_cs-cz.wxl";
+        //project.LicenceFile = "License.rtf";
 
 
         project.ManagedUI.InstallDialogs.Clear()
@@ -44,7 +45,7 @@ public class Script
                                         .Add<InstallDirDialog>()
                                         .Add<ProgressDialog>()
                                         .Add<ExitDialog>();
- 
+
         project.ManagedUI.RepairDialogs.Clear()
                                        .Add<RepairStartDialog>()
                                        .Add<ProgressDialog>()
@@ -64,7 +65,7 @@ public class Script
         project.EmitConsistentPackageId = true;
         Compiler.CandleOptions += " -sw1091";
 
-        project.PreserveTempFiles = true;
+        //project.PreserveTempFiles = true;
         project.BuildMsi();
     }
 

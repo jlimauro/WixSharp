@@ -1,5 +1,10 @@
 using System;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
+
+using io = System.IO;
 
 #pragma warning disable 1591
 
@@ -10,7 +15,12 @@ namespace WixSharp.UI.Forms
         public LicenceDialog()
         {
             InitializeComponent();
-            banner.Image = ManagedUI.Resources.WixUI_Bmp_Banner;
+        }
+
+        void LicenceDialog_Load(object sender, EventArgs e)
+        {
+            banner.Image = MsiRuntime.Session.GetEmbeddedBitmap("WixUI_Bmp_Banner");
+            agreement.Rtf = MsiRuntime.Session.GetEmbeddedString("WixSharp_LicenceFile");
         }
 
         void back_Click(object sender, EventArgs e)
@@ -28,11 +38,42 @@ namespace WixSharp.UI.Forms
             Shell.Cancel();
         }
 
-        private void accepted_CheckedChanged(object sender, EventArgs e)
+        void accepted_CheckedChanged(object sender, EventArgs e)
         {
             next.Enabled = accepted.Checked;
         }
+
+        void print_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var file = Path.Combine(Path.GetTempPath(), MsiRuntime.Session.Property("ProductName") + ".licence.rtf");
+                io.File.WriteAllText(file, agreement.Rtf);
+                Process.Start(file);
+            }
+            catch { }
+        }
+
+        void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var data = new DataObject();
+
+                if (agreement.SelectedText.Length > 0)
+                {
+                    data.SetData(DataFormats.UnicodeText, agreement.SelectedText);
+                    data.SetData(DataFormats.Rtf, agreement.SelectedRtf);
+                }
+                else
+                {
+                    data.SetData(DataFormats.Rtf, agreement.Rtf);
+                    data.SetData(DataFormats.Text, agreement.Text);
+                }
+
+                Clipboard.SetDataObject(data);
+            }
+            catch { }
+        }
     }
-    
-   
 }

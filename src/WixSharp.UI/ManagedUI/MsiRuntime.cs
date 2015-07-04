@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using io = System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.Deployment.WindowsInstaller;
-using WixSharp.UI;
 using sys = System.Windows.Forms;
+using System.Drawing.Imaging;
 
 #pragma warning disable 1591
 
@@ -61,19 +61,19 @@ namespace WixSharp
         }
     }
 
-    public class ClrDialogs
-    {
-        static Type WelcomeDialog = typeof(WelcomeDialog);
-        static Type LicenceDialog = typeof(LicenceDialog);
-        static Type FeaturesDialog = typeof(FeaturesDialog);
-        static Type InstallDirDialog = typeof(InstallDirDialog);
-        static Type ExitDialog = typeof(ExitDialog);
+    //public class ClrDialogs
+    //{
+    //    static Type WelcomeDialog = typeof(WelcomeDialog);
+    //    static Type LicenceDialog = typeof(LicenceDialog);
+    //    static Type FeaturesDialog = typeof(FeaturesDialog);
+    //    static Type InstallDirDialog = typeof(InstallDirDialog);
+    //    static Type ExitDialog = typeof(ExitDialog);
 
-        static Type RepairStartDialog = typeof(RepairStartDialog);
-        static Type RepairExitDialog = typeof(RepairExitDialog);
+    //    static Type RepairStartDialog = typeof(RepairStartDialog);
+    //    static Type RepairExitDialog = typeof(RepairExitDialog);
 
-        static Type ProgressDialog = typeof(ProgressDialog);
-    }
+    //    static Type ProgressDialog = typeof(ProgressDialog);
+    //}
 
     internal static class UIExtensions
     {
@@ -95,7 +95,33 @@ namespace WixSharp
             return control;
         }
 
-        public static sys.Control LocalizeFrom(this sys.Control control, Func<string, string> localize) 
+        internal static string UserOrDefaultContentOf(string extenalFile, string outDir, string fileName, object defaultContent)
+        {
+            if (extenalFile.IsNotEmpty())
+            {
+                return extenalFile;
+            }
+            else
+            {
+                var file = Path.Combine(outDir, fileName);
+
+                if (defaultContent is byte[])
+                    io.File.WriteAllBytes(file, (byte[])defaultContent);
+                else if (defaultContent is Bitmap)
+                    ((Bitmap)defaultContent).Save(file, ImageFormat.Png);
+                else if (defaultContent is string)
+                    io.File.WriteAllBytes(file, ((string)defaultContent).GetBytes());
+                else if (defaultContent == null)
+                    return "<null>";
+                else
+                    throw new Exception("Unsupported ManagedUI resource type.");
+
+                Compiler.TempFiles.Add(file);
+                return file;
+            }
+        }
+
+        public static sys.Control LocalizeFrom(this sys.Control control, Func<string, string> localize)
         {
             var controls = new Queue<sys.Control>(new[] { control });
 

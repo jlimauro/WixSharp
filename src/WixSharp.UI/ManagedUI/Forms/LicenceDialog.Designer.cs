@@ -30,6 +30,7 @@ namespace WixSharp.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.agreement = new System.Windows.Forms.RichTextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
@@ -37,18 +38,25 @@ namespace WixSharp.UI.Forms
             this.banner = new System.Windows.Forms.PictureBox();
             this.accepted = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.print = new System.Windows.Forms.Button();
             this.back = new System.Windows.Forms.Button();
             this.next = new System.Windows.Forms.Button();
             this.cancel = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.banner)).BeginInit();
             this.panel1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // agreement
             // 
+            this.agreement.BackColor = System.Drawing.Color.White;
+            this.agreement.ContextMenuStrip = this.contextMenuStrip1;
             this.agreement.Location = new System.Drawing.Point(14, 83);
             this.agreement.Name = "agreement";
+            this.agreement.ReadOnly = true;
             this.agreement.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.agreement.Size = new System.Drawing.Size(462, 182);
             this.agreement.TabIndex = 5;
@@ -114,6 +122,7 @@ namespace WixSharp.UI.Forms
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.print);
             this.panel1.Controls.Add(this.back);
             this.panel1.Controls.Add(this.next);
             this.panel1.Controls.Add(this.cancel);
@@ -121,6 +130,17 @@ namespace WixSharp.UI.Forms
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(503, 57);
             this.panel1.TabIndex = 2;
+            // 
+            // print
+            // 
+            this.print.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.print.Location = new System.Drawing.Point(146, 12);
+            this.print.Name = "print";
+            this.print.Size = new System.Drawing.Size(75, 23);
+            this.print.TabIndex = 0;
+            this.print.Text = "[WixUIPrint]";
+            this.print.UseVisualStyleBackColor = true;
+            this.print.Click += new System.EventHandler(this.print_Click);
             // 
             // back
             // 
@@ -156,6 +176,20 @@ namespace WixSharp.UI.Forms
             this.cancel.UseVisualStyleBackColor = true;
             this.cancel.Click += new System.EventHandler(this.cancel_Click);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(103, 26);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
+            // 
             // LicenceDialog
             // 
             this.ClientSize = new System.Drawing.Size(494, 361);
@@ -166,12 +200,15 @@ namespace WixSharp.UI.Forms
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "LicenceDialog";
             this.Text = "[LicenseAgreementDlg_Title]";
+            this.Load += new System.EventHandler(this.LicenceDialog_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.banner)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         Panel panel1;
@@ -186,5 +223,8 @@ namespace WixSharp.UI.Forms
         Button cancel;
 
         #endregion
+        private Button print;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem copyToolStripMenuItem;
     }
 }

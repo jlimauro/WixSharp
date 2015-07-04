@@ -29,6 +29,7 @@ using System.Xml.Linq;
 using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
 using IO = System.IO;
+using System.Drawing;
 
 namespace WixSharp
 {
@@ -487,7 +488,7 @@ namespace WixSharp
 
             if (result.FirstOrDefault() == '.')
                 result = "_" + result.Substring(1);
-            
+
             return result;
         }
 
@@ -1194,6 +1195,59 @@ namespace WixSharp
                         ms.Write(buffer, 0, bytesRead);
                         bytesRead = stream.Read(buffer, 0, Length);
                     }
+                    return ms.ToArray();
+                }
+            }
+        }
+
+        public static Bitmap GetEmbeddedBitmap(this Session session, string binary)
+        {
+            using (var sql = session.Database.OpenView("select Data from Binary where Name = '" + binary + "'"))
+            {
+                sql.Execute();
+
+                System.IO.Stream stream = sql.Fetch().GetStream(1);
+
+                using (var ms = new System.IO.MemoryStream())
+                {
+                    int Length = 256;
+                    var buffer = new Byte[Length];
+                    int bytesRead = stream.Read(buffer, 0, Length);
+                    while (bytesRead > 0)
+                    {
+                        ms.Write(buffer, 0, bytesRead);
+                        bytesRead = stream.Read(buffer, 0, Length);
+                    }
+                    ms.Seek(0, IO.SeekOrigin.Begin);
+                    return (Bitmap)Bitmap.FromStream(ms);
+                }
+            }
+        }
+
+        public static string GetEmbeddedString(this Session session, string binary)
+        {
+            return GetEmbeddedData(session, binary).GetString();
+        }
+
+        public static byte[] GetEmbeddedData(this Session session, string binary)
+        {
+            using (var sql = session.Database.OpenView("select Data from Binary where Name = '" + binary + "'"))
+            {
+                sql.Execute();
+
+                System.IO.Stream stream = sql.Fetch().GetStream(1);
+
+                using (var ms = new System.IO.MemoryStream())
+                {
+                    int Length = 256;
+                    var buffer = new Byte[Length];
+                    int bytesRead = stream.Read(buffer, 0, Length);
+                    while (bytesRead > 0)
+                    {
+                        ms.Write(buffer, 0, bytesRead);
+                        bytesRead = stream.Read(buffer, 0, Length);
+                    }
+                    ms.Seek(0, IO.SeekOrigin.Begin);
                     return ms.ToArray();
                 }
             }

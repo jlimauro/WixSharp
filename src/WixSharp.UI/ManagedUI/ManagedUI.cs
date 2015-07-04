@@ -1,8 +1,9 @@
 using System;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
 using Microsoft.Deployment.WindowsInstaller;
+using WixSharp.CommonTasks;
+using WixSharp.UI.ManagedUI;
 
 #pragma warning disable 1591
 
@@ -19,6 +20,37 @@ namespace WixSharp
         {
             InstallDialogs = new ManagedDialogs();
             RepairDialogs = new ManagedDialogs();
+        }
+
+        public string DialogBitmap;
+        public string DialogBanner;
+
+        public void EmbeddResourcesInto(ManagedProject project)
+        {
+            project.AddBinary(new Binary(new Id("WixSharp_UIText"), LocalizationFileFor(project)));
+            project.AddBinary(new Binary(new Id("WixSharp_LicenceFile"), LicenceFileFor(project)));
+            project.AddBinary(new Binary(new Id("WixUI_Bmp_Dialog"), DialogBitmapFileFor(project)));
+            project.AddBinary(new Binary(new Id("WixUI_Bmp_Banner"), DialogBannerFileFor(project)));
+        }
+
+        string LocalizationFileFor(Project project)
+        {
+            return UIExtensions.UserOrDefaultContentOf(project.LocalizationFile, project.OutDir, project.Name + ".wxl", Resources.WixUI_en_us);
+        }
+
+        string LicenceFileFor(Project project)
+        {
+            return UIExtensions.UserOrDefaultContentOf(project.LicenceFile, project.OutDir, project.Name+".licence.rtf", Resources.WixSharp_LicenceFile);
+        }
+
+        string DialogBitmapFileFor(Project project)
+        {
+            return UIExtensions.UserOrDefaultContentOf(DialogBitmap, project.OutDir, project.Name + ".dialog_bmp.png", Resources.WixUI_Bmp_Dialog);
+        }
+
+        string DialogBannerFileFor(Project project)
+        {
+            return UIExtensions.UserOrDefaultContentOf(DialogBanner, project.OutDir, project.Name + ".dialog_banner.png", Resources.WixUI_Bmp_Banner);
         }
 
         public ManagedDialogs InstallDialogs { get; set; }
@@ -49,9 +81,9 @@ namespace WixSharp
 
             var uiThread = new Thread(() =>
             {
-                
+
                 shell = new UIShell(); //important to create the instance in the same thread that call ShowModal
-                shell.ShowModal(new MsiRuntime(session){ StartExecute = () => startEvent.Set() }, this);
+                shell.ShowModal(new MsiRuntime(session) { StartExecute = () => startEvent.Set() }, this);
                 uiExitEvent.Set();
             });
 

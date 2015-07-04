@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using WixSharp.UI.ManagedUI;
 using Xunit;
 
 namespace WixSharp.Test
@@ -13,7 +14,7 @@ namespace WixSharp.Test
             //WixUI_en_us is a WiX source file that is just added to Wix# codebase as resource.
             //This file can easily come with the wrong encoding. So we need to unsure it can be parsed 
             //during the installation.
-            var xml = Resources.Resources.WixUI_en_us.GetString(System.Text.Encoding.UTF8);
+            var xml = Resources.WixUI_en_us.GetString(System.Text.Encoding.UTF8);
             XDocument.Parse(xml);
         }
 

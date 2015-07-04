@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.Deployment.WindowsInstaller;
 using WixSharp.CommonTasks;
 using IO = System.IO;
+using System.IO;
 
 #pragma warning disable 1591
 
@@ -98,24 +99,6 @@ namespace WixSharp
         /// </summary>
         public string DefaultDeferredProperties = "INSTALLDIR";
 
-        string PrepareResourceFile()
-        {
-            if (this.LocalizationFile.IsNotEmpty())
-            {
-                return this.LocalizationFile;
-            }
-            else
-            {
-                var tempDir = IO.Path.Combine(IO.Path.GetTempPath(), "WixSharp");
-                if (!IO.Directory.Exists(tempDir))
-                    IO.Directory.CreateDirectory(tempDir);
-
-                var file = IO.Path.Combine(tempDir, "WixUI_en-us.wxl");
-                IO.File.WriteAllBytes(file, Resources.Resources.WixUI_en_us);
-                return file;
-            }
-        }
-
         override internal void Preprocess()
         {
             base.Preprocess();
@@ -133,7 +116,7 @@ namespace WixSharp
 
                 if (ManagedUI != null)
                 {
-                    this.AddBinary(new Binary(new Id("WixSharp_UIText"), PrepareResourceFile()));
+                    ManagedUI.EmbeddResourcesInto(this);
 
                     InjectDialogs("WixSharp_InstallDialogs", ManagedUI.InstallDialogs);
                     InjectDialogs("WixSharp_RepairDialogs", ManagedUI.RepairDialogs);

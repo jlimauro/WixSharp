@@ -21,8 +21,11 @@ namespace WixSharp
         object RuntimeContext { get; }
         string Log { get; }
 
+        ManagedDialogs Dialogs { get; }
+
         void GoNext();
         void GoPrev();
+        void GoTo(int index);
         void Cancel();
         void Exit();
         void StartExecute();
@@ -32,6 +35,7 @@ namespace WixSharp
     {
         ManagedDialogs InstallDialogs { get; }
         ManagedDialogs RepairDialogs { get; }
+        void EmbeddResourcesInto(ManagedProject project);
     }
 
     public class ManagedDialogs : List<Type>

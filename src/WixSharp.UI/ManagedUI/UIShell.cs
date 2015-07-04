@@ -36,7 +36,8 @@ namespace WixSharp
         bool started = false;
         bool canceled = false;
 
-        ManagedDialogs Dialogs;
+        public ManagedDialogs Dialogs { get; set; }
+
         IManagedDialog currentDialog;
         Form shellView;
 
@@ -107,6 +108,11 @@ namespace WixSharp
         public void GoPrev()
         {
             CurrentDialogIndex--;
+        }
+
+        public void GoTo(int index)
+        {
+            CurrentDialogIndex = index;
         }
 
         public void Exit()
