@@ -3,14 +3,11 @@
 //css_ref WixSharp.UI.dll;
 //css_ref System.Core.dll;
 //css_ref System.Xml.dll;
-using System.Windows.Forms;
-using System.Xml.Linq;
 using System;
 using System.Linq;
+using System.Windows.Forms;
 using WixSharp;
-using WixSharp.CommonTasks;
-using Microsoft.Deployment.WindowsInstaller;
-using WixSharp.UI;
+using WixSharp.UI.Forms;
 
 public class Script
 {
