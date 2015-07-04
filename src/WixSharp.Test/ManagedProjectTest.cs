@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using Xunit;
 
@@ -20,12 +20,21 @@ namespace WixSharp.Test
         [Fact]
         public void Can_Localize_UIString()
         {
-            var resources = new Dictionary<string, string> { { "aaa", "AAA" }, { "bbb", "BBB" } };
+            var resources = new Dictionary<string, string> { { "aaa", "AAA" }, { "bbb", "BBB [ccc] DDD" }, { "ccc", "CCC" } };
+            Func<string, string> localizer =
+                key =>
+                {
+                    if (resources.ContainsKey(key))
+                        return resources[key];
+                    else
+                        return key;
+                };
+
             var text = "123 [aaa] 321 [bbb]";
 
-            var locText = text.LocalizeFrom(resources);
+            var locText = text.LocalizeFrom(localizer);
 
-            Assert.Equal("123 AAA 321 BBB", locText);
+            Assert.Equal("123 AAA 321 BBB CCC DDD", locText);
         }
     }
 }

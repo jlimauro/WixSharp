@@ -64,36 +64,51 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ManagedUI\ExitDialog.cs">
+    <Compile Include="ManagedUI\Forms\ExitDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ManagedUI\FeaturesDialog.cs">
+    <Compile Include="ManagedUI\Forms\FeaturesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ManagedUI\InstallDirDialog.cs">
+    <Compile Include="ManagedUI\Forms\ManagedForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagedUI\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ManagedUI\Forms\WelcomeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagedUI\Forms\WelcomeDialog.Designer.cs">
+      <DependentUpon>WelcomeDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManagedUI\Forms\InstallDirDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ManagedUI\InstallProgressCounter.cs" />
-    <Compile Include="ManagedUI\LicenceDialog.cs">
+    <Compile Include="ManagedUI\Forms\LicenceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ManagedUI\ManagedUI.cs" />
     <Compile Include="ManagedAction.cs" />
     <Compile Include="ManagedUI\MsiRuntime.cs" />
-    <Compile Include="ManagedUI\RepairExitDialog.cs">
+    <Compile Include="ManagedUI\Forms\RepairExitDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ManagedUI\RepairStartDialog.cs">
+    <Compile Include="ManagedUI\Forms\RepairStartDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ManagedBA\SilentBA.cs" />
-    <Compile Include="ManagedUI\UIShell.cs">
+    <Compile Include="ManagedUI\Forms\ShellView.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ManagedUI\UIShell.cs" />
     <Compile Include="ManagedUI\UIShell.Designer.cs">
       <DependentUpon>UIShell.cs</DependentUpon>
     </Compile>
-    <Compile Include="ManagedUI\ProgressDialog.cs">
+    <Compile Include="ManagedUI\Forms\ProgressDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -112,12 +127,29 @@
     <None Include="WixSharpStrongName.snk" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ManagedUI\ExitDialog.resx">
+    <EmbeddedResource Include="ManagedUI\Forms\ExitDialog.resx">
       <DependentUpon>ExitDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManagedUI\Forms\FeaturesDialog.resx">
+      <DependentUpon>FeaturesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManagedUI\Forms\LicenceDialog.resx">
+      <DependentUpon>LicenceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManagedUI\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ManagedUI\UIShell.resx">
       <DependentUpon>UIShell.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ManagedUI\Forms\WelcomeDialog.resx">
+      <DependentUpon>WelcomeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ManagedUI\Images\WixUI_Bmp_Dialog.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

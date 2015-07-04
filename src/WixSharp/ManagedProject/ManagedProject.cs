@@ -111,7 +111,6 @@ namespace WixSharp
                     IO.Directory.CreateDirectory(tempDir);
 
                 var file = IO.Path.Combine(tempDir, "WixUI_en-us.wxl");
-
                 IO.File.WriteAllBytes(file, Resources.Resources.WixUI_en_us);
                 return file;
             }
@@ -127,7 +126,7 @@ namespace WixSharp
 
                 //It is too late to set prerequisites. Launch conditions are evaluated after UI is popped up.   
                 //this.SetNetFxPrerequisite(Condition.Net35_Installed, "Please install .NET v3.5 first.");
-                
+
                 string dllEntry = "WixSharp_InitRuntime_Action";
 
                 this.AddAction(new ManagedAction(new Id(dllEntry), dllEntry, thisAsm, Return.check, When.Before, Step.AppSearch, Condition.Always));

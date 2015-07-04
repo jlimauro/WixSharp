@@ -1,11 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Xml.Linq;
-using Microsoft.Deployment.WindowsInstaller;
-using System.Diagnostics;
 using System;
+using System.Linq;
+using System.Threading;
+using System.Windows.Forms;
+using Microsoft.Deployment.WindowsInstaller;
 
 #pragma warning disable 1591
 
@@ -52,6 +49,7 @@ namespace WixSharp
 
             var uiThread = new Thread(() =>
             {
+                
                 shell = new UIShell(); //important to create the instance in the same thread that call ShowModal
                 shell.ShowModal(new MsiRuntime(session){ StartExecute = () => startEvent.Set() }, this);
                 uiExitEvent.Set();

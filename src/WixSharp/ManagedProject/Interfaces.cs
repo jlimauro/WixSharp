@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Microsoft.Deployment.WindowsInstaller;
 
 #pragma warning disable 1591
 
@@ -9,9 +9,23 @@ namespace WixSharp
 {
     public interface IManagedDialog
     {
+        IManagedDialogContainer Shell { get; set; }
+        MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton);
+        void OnExecuteComplete();
+        void OnExecuteStarted();
+        void OnProgress(int progressPercentage);
     }
-    public interface IManagedProgressDialog:IManagedDialog
+
+    public interface IManagedDialogContainer
     {
+        object RuntimeContext { get; }
+        string Log { get; }
+
+        void GoNext();
+        void GoPrev();
+        void Cancel();
+        void Exit();
+        void StartExecute();
     }
 
     public interface IManagedUI
@@ -22,13 +36,6 @@ namespace WixSharp
 
     public class ManagedDialogs : List<Type>
     {
-        //public ManagedDialogs Add(Type dialog)
-        //{
-        //    if (dialog.FindInterfaces()
-        //    base.Add(dialog);
-        //    return this;
-        //}
-
         public ManagedDialogs Add<T>() where T : IManagedDialog
         {
             base.Add(typeof(T));

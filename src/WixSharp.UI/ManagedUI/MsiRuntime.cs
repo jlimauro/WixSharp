@@ -1,10 +1,14 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using System.Xml.Linq;
 using Microsoft.Deployment.WindowsInstaller;
+using WixSharp.UI;
 using sys = System.Windows.Forms;
 
 #pragma warning disable 1591
@@ -27,21 +31,22 @@ namespace WixSharp
             catch { }
         }
 
-        public string Localize(string text)
+        public Bitmap GetMsiBitmap(string name)
         {
-            return ResolveProperties(ResolveUIText(text));
+            try
+            {
+                byte[] data = Session.ReadBinary(name);
+                using (Stream s = new MemoryStream(data))
+                    return (Bitmap)Bitmap.FromStream(s);
+            }
+            catch { }
+            return null;
         }
-
-        string ResolveUIText(string text)
+        public string Localize(string text)
         {
             if (UIText.ContainsKey(text))
                 return UIText[text];
-            else
-                return text;
-        }
 
-        string ResolveProperties(string text)
-        {
             try
             {
                 string result = Session.Property(text);
@@ -51,51 +56,95 @@ namespace WixSharp
                     return result;
             }
             catch { }
+
             return text;
         }
     }
 
+    public class ClrDialogs
+    {
+        static Type WelcomeDialog = typeof(WelcomeDialog);
+        static Type LicenceDialog = typeof(LicenceDialog);
+        static Type FeaturesDialog = typeof(FeaturesDialog);
+        static Type InstallDirDialog = typeof(InstallDirDialog);
+        static Type ExitDialog = typeof(ExitDialog);
+
+        static Type RepairStartDialog = typeof(RepairStartDialog);
+        static Type RepairExitDialog = typeof(RepairExitDialog);
+
+        static Type ProgressDialog = typeof(ProgressDialog);
+    }
+
     internal static class UIExtensions
     {
-        public static T LocalizeFrom<T>(this T control, MsiRuntime runtime) where T : sys.Control
+        public static System.Drawing.Icon GetAssiciatedIcon(this string extension)
         {
-            var controls = new Queue<T>(new[] { control });
+            var dummy = Path.GetTempPath() + extension;
+            System.IO.File.WriteAllText(dummy, "");
+            var result = System.Drawing.Icon.ExtractAssociatedIcon(dummy);
+            System.IO.File.Delete(dummy);
+            return result;
+        }
+
+        public static sys.Control ClearChildren(this sys.Control control)
+        {
+            foreach (sys.Control item in control.Controls)
+                item.Dispose();
+
+            control.Controls.Clear();
+            return control;
+        }
+
+        public static sys.Control LocalizeFrom(this sys.Control control, Func<string, string> localize) 
+        {
+            var controls = new Queue<sys.Control>(new[] { control });
 
             while (controls.Any())
             {
                 var item = controls.Dequeue();
 
-                item.Text = item.Text.LocalizeFrom(runtime.UIText);
+                item.Text = item.Text.LocalizeFrom(localize);
 
                 item.Controls
-                    .OfType<T>()
+                    .OfType<sys.Control>()
                     .ForEach(x => controls.Enqueue(x));
             }
             return control;
         }
 
-        public static string LocalizeFrom(this string text, Dictionary<string, string> resources)
+
+        static Regex locRegex = new Regex(@"\[.+?\]");
+        static Regex cleanRegex = new Regex(@"{\\(.*?)}"); //removes font info "{\WixUI_Font_Bigger}Welcome to the [ProductName] Setup Wizard"
+
+        public static string LocalizeFrom(this string textToLocalize, Func<string, string> localize)
         {
-            if (text.IsEmpty()) return text;
+            if (textToLocalize.IsEmpty()) return textToLocalize;
 
-            var result = new StringBuilder(text.Length);
 
-            var regex = new Regex(@"\[.+?\]");
+            var result = new StringBuilder(textToLocalize);
 
-            int lastEnd = 0;
-            foreach (Match match in regex.Matches(text))
+            //first rum will replace all UI constants, which in turn may contain MSI properties to resolve.
+            //second run will resolve properties if any found.
+            for (int i = 0; i < 2; i++)
             {
-                result.Append(text.Substring(lastEnd, match.Index - lastEnd));
-                lastEnd = match.Index + match.Length;
+                string text = result.ToString();
+                result.Length = 0; //clear
 
-                string key = match.Value.Trim('[', ']');
+                int lastEnd = 0;
+                foreach (Match match in locRegex.Matches(text))
+                {
+                    result.Append(text.Substring(lastEnd, match.Index - lastEnd));
+                    lastEnd = match.Index + match.Length;
 
-                if (resources.ContainsKey(key))
-                    result.Append(resources[key]);
-                else
-                    result.Append(match.Value);
+                    string key = match.Value.Trim('[', ']');
+
+                    result.Append(localize(key));
+                }
+
+                if (lastEnd != text.Length)
+                    result.Append(text.Substring(lastEnd, text.Length - lastEnd));
             }
-            return result.ToString();
+            return cleanRegex.Replace(result.ToString(), "");
         }
 
     }

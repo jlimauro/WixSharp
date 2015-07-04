@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using Microsoft.Deployment.Samples.EmbeddedUI;
 using Microsoft.Deployment.WindowsInstaller;
+using forms = System.Windows.Forms;
 
 #pragma warning disable 1591
 
@@ -18,68 +21,104 @@ namespace WixSharp
         MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton);
     }
 
-    public partial class UIShell : Form, IUIShell
+    public partial class UIShell : IUIShell, IManagedDialogContainer
     {
-        public MsiRuntime msiRuntime;
-        public IManagedUI ui;
+        public object RuntimeContext { get { return MsiRuntime; } }
+        public MsiRuntime MsiRuntime { get; set; }
+        public IManagedUI UI { get; set; }
+        public void StartExecute()
+        {
+            //msiRuntime.Session["INSTALLDIR"] = @"C:\Program Files (x86)\AAA";
+            MsiRuntime.StartExecute();
+        }
+
         InstallProgressCounter progressCounter = new InstallProgressCounter(0.5);
         bool started = false;
         bool canceled = false;
 
-        public UIShell()
-        {
-            Debugger.Launch();
-            InitializeComponent();
-            currentStep.Text = null;
+        ManagedDialogs Dialogs;
+        IManagedDialog currentDialog;
+        Form shellView;
 
-        }
-
-        void next_Click(object sender, EventArgs e)
+        int currentViewIndex = -1;
+        public int CurrentDialogIndex
         {
-        }
+            get { return currentViewIndex; }
 
-        void cancel_Click(object sender, EventArgs e)
-        {
-            canceled = true;
-            if(!started)
-                Close();
-        }
+            set
+            {
+                currentViewIndex = value;
 
-        void Install_Click(object sender, EventArgs e)
-        {
-            //msiRuntime.Session["INSTALLDIR"] = @"C:\Program Files (x86)\AAA";
-            msiRuntime.StartExecute();
-        }
+                try
+                {
+                    shellView.ClearChildren();
 
-        void exit_Click(object sender, EventArgs e)
-        {
-            Close();
+                    if (currentViewIndex >= 0 && currentViewIndex < Dialogs.Count)
+                    {
+                        Type viewType = Dialogs[currentViewIndex];
+
+                        var view = (Form)Activator.CreateInstance(viewType);
+                        view.LocalizeFrom(MsiRuntime.Localize);
+                        view.FormBorderStyle = forms.FormBorderStyle.None;
+                        view.TopLevel = false;
+                        view.Dock = DockStyle.Fill;
+
+                        currentDialog = (IManagedDialog)view;
+                        currentDialog.Shell = this;
+
+                        view.Parent = shellView;
+                        view.Visible = true;
+                        shellView.Text = view.Text;
+                    }
+                }
+                catch { }
+            }
         }
 
         public void ShowModal(MsiRuntime msiRuntime, IManagedUI ui)
         {
-            listBox1.Items.Clear();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
-            this.ui = ui;
-            this.msiRuntime = msiRuntime;
-            next.Text = msiRuntime.UIText["WixUINext"];
+            shellView = new ShellView();
 
-            this.LocalizeFrom(msiRuntime);
+            UI = ui;
+            MsiRuntime = msiRuntime;
 
-            var ttt = msiRuntime.Localize("ProductName");
-            ttt = msiRuntime.Localize("ProductNamedsfas");
-
-            if (this.msiRuntime.Session.IsInstalling())
+            if (MsiRuntime.Session.IsInstalling())
             {
-                listBox1.Items.AddRange(ui.InstallDialogs.Select(x => x.ToString()).ToArray());
-                status.Text = "Installing";
+                Dialogs = ui.InstallDialogs;
             }
-            else if (this.msiRuntime.Session.IsRepairing())
+            else if (MsiRuntime.Session.IsRepairing())
             {
-                listBox1.Items.AddRange(ui.RepairDialogs.Select(x => x.ToString()).ToArray());
-                status.Text = "Repairing";
+                Dialogs = ui.RepairDialogs;
             }
-            this.ShowDialog();
+
+            GoNext();
+
+            shellView.ShowDialog();
+        }
+
+        public void GoNext()
+        {
+            CurrentDialogIndex++;
+        }
+
+        public void GoPrev()
+        {
+            CurrentDialogIndex--;
+        }
+
+        public void Exit()
+        {
+            shellView.Close();
+        }
+
+        public void Cancel()
+        {
+            canceled = true;
+            if (!started)
+                Exit();
         }
 
         public MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton)
@@ -88,8 +127,7 @@ namespace WixSharp
             {
                 this.progressCounter.ProcessMessage(messageType, messageRecord);
 
-                this.currentStep.Text = "" + (int)Math.Round(100 * this.progressCounter.Progress) + "%";
-                this.progressBar.Value = (int)(progressBar.Minimum + this.progressCounter.Progress * (this.progressBar.Maximum - this.progressBar.Minimum));
+                currentDialog.OnProgress((int)Math.Round(100 * this.progressCounter.Progress));
 
                 switch (messageType)
                 {
@@ -110,39 +148,33 @@ namespace WixSharp
                 this.LogMessage(ex.ToString());
                 this.LogMessage(ex.StackTrace);
             }
+
+            var result = currentDialog.ProcessMessage(messageType, messageRecord, buttons, icon, defaultButton);
             Application.DoEvents();
-            return MessageResult.OK;
+            return result;
         }
+
+        StringBuilder log = new StringBuilder();
+        public string Log { get { return log.ToString(); } }
 
         void LogMessage(string message, params object[] args)
         {
-            textBox1.AppendText(message.FormatInline(args) + Environment.NewLine);
-        }
-
-        public void OnExecuteComplete()
-        {
-            started = true;
-            cancel.Enabled = 
-            exit.Enabled = true;
+            log.AppendLine(message.FormatInline(args));
         }
 
         public void OnExecuteStarted()
         {
-            next.Enabled =
-            install.Enabled =
-            cancel.Enabled =
-            exit.Enabled = false;
+            currentDialog.OnExecuteStarted();
+        }
+
+        public void OnExecuteComplete()
+        {
+            currentDialog.OnExecuteComplete();
         }
 
         public void InUIThread(System.Action action)
         {
-            this.Invoke(action);
-        }
-
-        void UIShell_Load(object sender, EventArgs e)
-        {
-            this.TopMost = false;
-
+            shellView.Invoke(action);
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Linq;
 using WixSharp;
 using WixSharp.CommonTasks;
 using Microsoft.Deployment.WindowsInstaller;
+using WixSharp.UI;
 
 public class Script
 {
@@ -36,8 +37,11 @@ public class Script
         //project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Custom_UI\EmbeddedUI_WPF\bin\Debug\EmbeddedUI_WPF.dll");
         //project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Custom_UI\EmbeddedUI\bin\Debug\EmbeddedUI.exe");
         project.ManagedUI = ManagedUI.Default;
+        //project.LocalizationFile = "wixui_cs-cz.wxl";
+
 
         project.ManagedUI.InstallDialogs.Clear()
+                                        .Add<WelcomeDialog>()
                                         .Add<LicenceDialog>()
                                         .Add<FeaturesDialog>()
                                         .Add<InstallDirDialog>()
