@@ -4,6 +4,7 @@ using System.Threading;
 using Microsoft.Deployment.WindowsInstaller;
 using WixSharp.CommonTasks;
 using WixSharp.UI.ManagedUI;
+using System.Diagnostics;
 
 #pragma warning disable 1591
 
@@ -40,7 +41,7 @@ namespace WixSharp
 
         string LicenceFileFor(Project project)
         {
-            return UIExtensions.UserOrDefaultContentOf(project.LicenceFile, project.OutDir, project.Name+".licence.rtf", Resources.WixSharp_LicenceFile);
+            return UIExtensions.UserOrDefaultContentOf(project.LicenceFile, project.OutDir, project.Name + ".licence.rtf", Resources.WixSharp_LicenceFile);
         }
 
         string DialogBitmapFileFor(Project project)
@@ -108,6 +109,13 @@ namespace WixSharp
 
         public MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton)
         {
+            int i = 0;
+            try
+            {
+               // Debug.WriteLine(i.ToString() + ": " + _session["INSTALLDIR"] + " : " + messageRecord);
+            }
+            catch { }
+
             MessageResult result = MessageResult.OK;
             shell.InUIThread(() =>
                 {

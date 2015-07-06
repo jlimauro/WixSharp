@@ -122,6 +122,7 @@
     <Compile Include="ManagedUI\Forms\ShellView.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ManagedUI\UIExtensions.cs" />
     <Compile Include="ManagedUI\UIShell.cs" />
     <Compile Include="ManagedUI\UIShell.Designer.cs">
       <DependentUpon>UIShell.cs</DependentUpon>
@@ -153,6 +154,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ManagedUI\Forms\FeaturesDialog.resx">
       <DependentUpon>FeaturesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManagedUI\Forms\InstallDirDialog.resx">
+      <DependentUpon>InstallDirDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ManagedUI\Forms\LicenceDialog.resx">
       <DependentUpon>LicenceDialog.cs</DependentUpon>
