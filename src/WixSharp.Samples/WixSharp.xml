@@ -6387,7 +6387,7 @@
             Initializes a new instance of the <see cref="T:WixSharp.ManagedProject"/> class.
             </summary>
             <param name="name">The name of the project. Typically it is the name of the product to be installed.</param>
-            <param name="items">The project installable items (e.g. directories, files, registrty keys, Custom Actions).</param>
+            <param name="items">The project installable items (e.g. directories, files, registry keys, Custom Actions).</param>
         </member>
         <member name="F:WixSharp.ManagedProject.DefaultDeferredProperties">
             <summary>
@@ -6504,6 +6504,14 @@
             <c>true</c> if modifying; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:WixSharp.SetupEventArgs.IsRepairing">
+            <summary>
+            Gets a value indicating whether the installed product is being repaired.
+            </summary>
+            <value>
+            <c>true</c> if repairing; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="P:WixSharp.SetupEventArgs.IsUninstalling">
             <summary>
             Gets a value indicating whether the installed product is being uninstalled.
@@ -6562,6 +6570,11 @@
         <member name="F:WixSharp.SetupEventArgs.SetupMode.Uninstalling">
             <summary>
             The uninstalling mode
+            </summary>
+        </member>
+        <member name="F:WixSharp.SetupEventArgs.SetupMode.Reparing">
+            <summary>
+            The repairing mode
             </summary>
         </member>
         <member name="F:WixSharp.SetupEventArgs.SetupMode.Unknown">
@@ -7465,7 +7478,7 @@
              <code>
              Feature binaries = new Feature("My Product Binaries");
              Feature docs = new Feature("My Product Documentation");
-             Feature docViewers = new Feature("Documentation viewrs");
+             Feature docViewers = new Feature("Documentation viewers");
              docs.Children.Add(docViewers);
                 ...
              </code>

@@ -58,7 +58,7 @@ namespace WixSharp
     /// <code>
     /// Feature binaries = new Feature("My Product Binaries");
     /// Feature docs = new Feature("My Product Documentation");
-    /// Feature docViewers = new Feature("Documentation viewrs");
+    /// Feature docViewers = new Feature("Documentation viewers");
     /// docs.Children.Add(docViewers);
     ///    ...
     /// </code>

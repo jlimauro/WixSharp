@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
-using io = System.IO;
-using System.Xml.Linq;
-using WixSharp.Bootstrapper;
-using WixSharp.CommonTasks;
+using Microsoft.Deployment.WindowsInstaller;
 using Xunit;
+using io = System.IO;
 
 namespace WixSharp.Test
 {
@@ -48,6 +46,31 @@ namespace WixSharp.Test
             Compiler.GuidGenerator = GuidGenerators.Sequential;
             Compiler.GuidGenerator = (seed) => Guid.Parse("9e2974a1-9539-4c5c-bef7-80fc35b9d7b0");
             Compiler.GuidGenerator = (seed) => Guid.NewGuid();
+        }
+       
+        //[Fact]
+        public void FeaturesAPI()
+        {
+            //var installedPackage = new Microsoft.Deployment.WindowsInstaller.ProductInstallation("{A6801CC8-AC2A-4BF4-BEAA-6EE4DCF17056}");
+            var installedPackage = new Microsoft.Deployment.WindowsInstaller.ProductInstallation("A6801CC8-AC2A-4BF4-BEAA-6EE4DCF17056");
+            if (!installedPackage.IsInstalled)
+            {
+            }
+            else
+            {
+                foreach (var currentInstallFeature in installedPackage.Features)
+                {
+                    if (currentInstallFeature.State == InstallState.Local)
+                    {
+                        Debug.WriteLine(string.Format("Migrating feature {0} - marking as Present", currentInstallFeature.FeatureName));
+                        
+                    }
+                    else
+                    {
+                        Debug.WriteLine(string.Format("Migrating feature {0} - marking as Absent", currentInstallFeature.FeatureName));
+                    }
+                }
+            }
         }
 
         [Fact]

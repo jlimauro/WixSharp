@@ -5,6 +5,7 @@ using Microsoft.Deployment.WindowsInstaller;
 //css_ref System.Core.dll;
 //css_ref System.Xml.dll;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using WixSharp;
@@ -26,16 +27,18 @@ public class Script
     {
         //NOTE: IT IS STILL A WORK IN PROGRESS FEATURE PREVIEW
 
-        var binaries = new Feature("MyApp Binaries");
-        var docs = new Feature("MyApp Documentation");
-        binaries.Children.Add(docs);
+        var binaries = new Feature("Binaries", true, false);
+        var docs = new Feature("Documentation", true);
+        var tuts = new Feature("Tutorials", true);
+        //binaries.Children.Add(docs);
 
         var project =
             new ManagedProject("ManagedSetup",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
-                    new File(binaries, "readme.txt"),
-                    new Dir("Scripts",
-                        new File(docs, "setup.cs"))));
+                    new File(binaries, "myApp.exe"),
+                    new Dir("Docs",
+                        new File(docs, "readme.txt"),
+                        new File(tuts, "setup.cs")))); 
 
         project.UI = WUI.WixUI_Mondo;
 
@@ -57,15 +60,16 @@ public class Script
 
         project.ManagedUI.ModifyDialogs.Clear()
                                        //.Add<ModifyStartDialog>()
+                                        .Add<FeaturesDialog>()
                                        .Add<ProgressDialog>()
                                        .Add<ExitDialog>();
 
 
-        project.ManagedUI = null;
-        project.UI = WUI.WixUI_FeatureTree;
+        //project.ManagedUI = null;
+        //project.UI = WUI.WixUI_FeatureTree;
 
         //project.Load += project_Load;
-        project.BeforeInstall += project_BeforeExecute;
+        //project.BeforeInstall += project_BeforeExecute;
         //project.AfterInstall += project_AfterExecute;
 
 #if vs
@@ -75,6 +79,9 @@ public class Script
         Compiler.CandleOptions += " -sw1091";
 
         project.PreserveTempFiles = true;
+        
+        project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
+
         project.BuildMsi();
     }
 

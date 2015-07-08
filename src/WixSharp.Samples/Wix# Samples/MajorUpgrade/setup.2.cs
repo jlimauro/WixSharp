@@ -4,9 +4,11 @@
 using System;
 using System.Xml;
 using System.Xml.Linq;
+using System.Windows.Forms;
+using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
 
-class Script
+public class Script
 {
     static public void Main(string[] args)
     {
@@ -30,6 +32,5 @@ class Script
         Compiler.BuildMsi(project, "setup.2.msi");
     }
 }
-
 
 

@@ -20,13 +20,14 @@ namespace WixSharp
         MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton);
     }
 
+
     public partial class UIShell : IUIContainer, IManagedUIShell
     {
         public object RuntimeContext { get { return MsiRuntime; } }
         public MsiRuntime MsiRuntime { get; set; }
         public IManagedUI UI { get; set; }
 
-        public bool UserInterrupted { get;  private set;  }
+        public bool UserInterrupted { get; private set; }
         public bool ErrorDetected { get; private set; }
 
         public void StartExecute()
@@ -81,6 +82,7 @@ namespace WixSharp
 
         public void ShowModal(MsiRuntime msiRuntime, IManagedUI ui)
         {
+            //Debugger.Launch();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -146,6 +148,12 @@ namespace WixSharp
                     case InstallMessage.Info:
                     default:
                         {
+                            if (messageType == InstallMessage.Info)
+                            {
+                                if (messageRecord.ToString().Contains("User cancelled installation")) //there is no other way
+                                    UserInterrupted = true;
+                            }
+
                             if (messageType == InstallMessage.Error)
                                 ErrorDetected = true;
 

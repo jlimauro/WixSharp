@@ -21,6 +21,7 @@ namespace WixSharp.UI.Forms
         {
             banner.Image = MsiRuntime.Session.GetEmbeddedBitmap("WixUI_Bmp_Banner");
             agreement.Rtf = MsiRuntime.Session.GetEmbeddedString("WixSharp_LicenceFile");
+            accepted.Checked = MsiRuntime.Session["LastLicenceAcceptedChecked"] == "True";
         }
 
         void back_Click(object sender, EventArgs e)
@@ -41,6 +42,7 @@ namespace WixSharp.UI.Forms
         void accepted_CheckedChanged(object sender, EventArgs e)
         {
             next.Enabled = accepted.Checked;
+            MsiRuntime.Session["LastLicenceAcceptedChecked"] = accepted.Checked.ToString();
         }
 
         void print_Click(object sender, EventArgs e)

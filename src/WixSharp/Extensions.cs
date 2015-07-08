@@ -1055,6 +1055,18 @@ namespace WixSharp
         /// </summary>
         static public bool IsRepairing(this Session session)
         {
+            //return session.IsInstalled() && !session.IsUninstalling();
+
+            bool p_Installed = session.Property("Installed").IsNotEmpty();
+            bool p_REINSTALL = session.Property("REINSTALL").IsNotEmpty();
+            bool p_UPGRADINGPRODUCTCODE = session.Property("UPGRADINGPRODUCTCODE").IsNotEmpty();
+
+            return session.IsInstalled() && !session.IsUninstalling();
+        }
+
+
+        static public bool IsModifying(this Session session)
+        {
             return session.IsInstalled() && !session.IsUninstalling();
         }
 
@@ -1167,9 +1179,12 @@ namespace WixSharp
             return GetEmbeddedData(session, binary);
         }
 
-        public static List<Dictionary<string, object>> OpenView(this Session session, string sqlText, params string[] fields)
+        public static List<Dictionary<string, object>> OpenView(this Session session, string sqlText, params string[] fieldsToSelect)
         {
-            var table = new List<Dictionary<string, object>>(); //tempting just to put it to DataSet thoug MSI does not allow column names discovery 
+            //tempting just to put date into DataSet though MSI does not allow column names discovery and resorting to Reflection is just too risky  
+            var table = new List<Dictionary<string, object>>();
+
+            var fields = fieldsToSelect.SelectMany(x => x.Split(',')).Select(x => x.Trim()).ToArray();
 
             using (var sql = session.Database.OpenView(sqlText))
             {
@@ -1179,10 +1194,10 @@ namespace WixSharp
                 while ((record = sql.Fetch()) != null)
                     using (record)
                     {
-                        var row = new Dictionary<string,object>();
+                        var row = new Dictionary<string, object>();
                         if (fields.Length != 0)
                         {
-                            foreach(string item in fields)
+                            foreach (string item in fields)
                                 row[item] = record[item];
                         }
                         else

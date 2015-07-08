@@ -15,6 +15,24 @@ using System.Drawing.Imaging;
 
 namespace WixSharp
 {
+    /*http://www.codeproject.com/Articles/132918/Creating-Custom-Action-for-WIX-Written-in-Managed
+     * Expected to be like this:
+     *        Property Name                 Install     Uninstall   Repair      Modify      Upgrade
+     *        --------------------------------------------------------------------------------------
+     *        Installed                     False       True        False       True        True    
+     *        REINSTALL                     True        False       True        False       False     
+     *        UPGRADINGPRODUCTCODE          True        False       True        True        True      
+     * Though in reality it is like this:
+     *        Property Name                 Install     Uninstall   Repair      Modify      Upgrade
+     *        ---------------------------------------------------------------------------------------------------
+     *        Installed                     <null>      00:00:00    00:00:00    00:00:00    <not tested yet>    
+     *        REINSTALL                     <null>      <null>      All         <null>      <not tested yet>       
+     *        UPGRADINGPRODUCTCODE          <null>      <null>      <null>      <null>      <not tested yet>
+     *      
+     * */
+
+
+
     public class MsiRuntime
     {
         public System.Action StartExecute;

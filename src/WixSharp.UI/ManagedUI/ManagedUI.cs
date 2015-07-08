@@ -72,7 +72,6 @@ namespace WixSharp
 
         public bool Initialize(Session session, string resourcePath, ref InstallUIOptions uiLevel)
         {
-            Debugger.Launch();
             if (session != null && (session.IsUninstalling() || uiLevel.IsBasic()))
                 return false; //use built-in MSI basic UI
 

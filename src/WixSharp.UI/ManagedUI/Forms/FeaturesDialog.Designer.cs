@@ -31,15 +31,6 @@ namespace WixSharp.UI.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Node1");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node2");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Node3");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Node4");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3,
-            treeNode4});
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -50,7 +41,7 @@ namespace WixSharp.UI.Forms
             this.back = new System.Windows.Forms.Button();
             this.next = new System.Windows.Forms.Button();
             this.cancel = new System.Windows.Forms.Button();
-            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.featuresTree = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.banner)).BeginInit();
@@ -159,31 +150,20 @@ namespace WixSharp.UI.Forms
             this.cancel.UseVisualStyleBackColor = true;
             this.cancel.Click += new System.EventHandler(this.cancel_Click);
             // 
-            // treeView1
+            // featuresTree
             // 
-            this.treeView1.Location = new System.Drawing.Point(12, 71);
-            this.treeView1.Name = "treeView1";
-            treeNode1.Name = "Node1";
-            treeNode1.Text = "Node1";
-            treeNode2.Name = "Node2";
-            treeNode2.Text = "Node2";
-            treeNode3.Name = "Node3";
-            treeNode3.Text = "Node3";
-            treeNode4.Name = "Node4";
-            treeNode4.Text = "Node4";
-            treeNode5.Name = "Node0";
-            treeNode5.Text = "Node0";
-            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode5});
-            this.treeView1.Size = new System.Drawing.Size(465, 222);
-            this.treeView1.TabIndex = 0;
+            this.featuresTree.CheckBoxes = true;
+            this.featuresTree.Location = new System.Drawing.Point(12, 71);
+            this.featuresTree.Name = "featuresTree";
+            this.featuresTree.Size = new System.Drawing.Size(465, 222);
+            this.featuresTree.TabIndex = 0;
             // 
             // FeaturesDialog
             // 
             this.ClientSize = new System.Drawing.Size(494, 361);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.treeView1);
+            this.Controls.Add(this.featuresTree);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.KeyPreview = true;
             this.Name = "FeaturesDialog";
@@ -199,7 +179,7 @@ namespace WixSharp.UI.Forms
         }
 
         #endregion
-        private TreeView treeView1;
+        private TreeView featuresTree;
         private PictureBox banner;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem copyToolStripMenuItem;

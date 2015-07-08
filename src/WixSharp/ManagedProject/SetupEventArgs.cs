@@ -31,6 +31,11 @@ namespace WixSharp
             /// The uninstalling mode
             /// </summary>
             Uninstalling,
+            
+            /// <summary>
+            /// The repairing mode
+            /// </summary>
+            Reparing,
 
             /// <summary>
             /// The unknown mode
@@ -101,7 +106,15 @@ namespace WixSharp
         /// <value>
         /// <c>true</c> if modifying; otherwise, <c>false</c>.
         /// </value>
-        public bool IsModifying { get { return IsInstalled && Data["REMOVE"] != "ALL"; } }
+        public bool IsModifying { get { return IsInstalled && Data["REINSTALL"] != "ALL"; } }
+        
+        /// <summary>
+        /// Gets a value indicating whether the installed product is being repaired.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if repairing; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsRepairing { get { return IsInstalled && Data["REINSTALL"] == "ALL"; } }
 
         /// <summary>
         /// Gets a value indicating whether the installed product is being uninstalled.
@@ -132,6 +145,7 @@ namespace WixSharp
                 if (IsInstalling) return SetupMode.Installing;
                 if (IsModifying) return SetupMode.Modifying;
                 if (IsUninstalling) return SetupMode.Uninstalling;
+                if (IsRepairing) return SetupMode.Reparing;
                 return SetupMode.Unknown;
             }
         }
@@ -242,9 +256,16 @@ namespace WixSharp
                 "\nMode=" + Mode +
                 "\nIsElevated=" + IsElevated +
                 "\nIsInstalled=" + IsInstalled +
+                "\n" +
                 "\nIsInstalling=" + IsInstalling +
                 "\nIsUninstalling=" + IsUninstalling +
-                "\nIsModifying=" + IsModifying;
+                "\nIsReparing=" + IsRepairing +
+                "\nIsModifying=" + IsModifying +
+                "\n" +
+                "\np_Installed=" + Data["Installed"] +
+                "\np_REINSTALL=" + Data["REINSTALL"] +
+                "\np_UPGRADINGPRODUCTCODE=" + Data["UPGRADINGPRODUCTCODE"] 
+                ;
         }
     }
 }
