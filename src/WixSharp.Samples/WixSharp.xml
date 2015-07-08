@@ -6496,17 +6496,17 @@
             <c>true</c> if installing; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:WixSharp.SetupEventArgs.IsRepairing">
+        <member name="P:WixSharp.SetupEventArgs.IsModifying">
             <summary>
-            Gets a value indicating whether the product is being repaired.
+            Gets a value indicating whether the installed product is being modified.
             </summary>
             <value>
-            <c>true</c> if repairing; otherwise, <c>false</c>.
+            <c>true</c> if modifying; otherwise, <c>false</c>.
             </value>
         </member>
         <member name="P:WixSharp.SetupEventArgs.IsUninstalling">
             <summary>
-            Gets a value indicating whether the product is being uninstalled.
+            Gets a value indicating whether the installed product is being uninstalled.
             </summary>
             <value>
             <c>true</c> if uninstalling; otherwise, <c>false</c>.
@@ -6554,9 +6554,9 @@
             The installing mode
             </summary>
         </member>
-        <member name="F:WixSharp.SetupEventArgs.SetupMode.Repairing">
+        <member name="F:WixSharp.SetupEventArgs.SetupMode.Modifying">
             <summary>
-            The repairing mode
+            The modifying mode
             </summary>
         </member>
         <member name="F:WixSharp.SetupEventArgs.SetupMode.Uninstalling">

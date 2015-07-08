@@ -119,7 +119,7 @@ namespace WixSharp
                     ManagedUI.EmbeddResourcesInto(this);
 
                     InjectDialogs("WixSharp_InstallDialogs", ManagedUI.InstallDialogs);
-                    InjectDialogs("WixSharp_RepairDialogs", ManagedUI.RepairDialogs);
+                    InjectDialogs("WixSharp_ModifyDialogs", ManagedUI.ModifyDialogs);
 
                     this.EmbeddedUI = new EmbeddedAssembly(ManagedUI.GetType().Assembly.Location);
                 }

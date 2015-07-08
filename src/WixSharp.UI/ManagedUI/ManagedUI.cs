@@ -20,7 +20,7 @@ namespace WixSharp
         public ManagedUI()
         {
             InstallDialogs = new ManagedDialogs();
-            RepairDialogs = new ManagedDialogs();
+            ModifyDialogs = new ManagedDialogs();
         }
 
         public string DialogBitmap;
@@ -55,24 +55,24 @@ namespace WixSharp
         }
 
         public ManagedDialogs InstallDialogs { get; set; }
-        public ManagedDialogs RepairDialogs { get; set; }
+        public ManagedDialogs ModifyDialogs { get; set; }
 
         ManualResetEvent uiExitEvent = new ManualResetEvent(false);
-        IUIShell shell;
+        IUIContainer shell;
 
         void ReadDialogs(Session session)
         {
             InstallDialogs.Clear()
                           .AddRange(ManagedProject.ReadDialogs(session.Property("WixSharp_InstallDialogs")));
 
-            RepairDialogs.Clear()
-                          .AddRange(ManagedProject.ReadDialogs(session.Property("WixSharp_RepairDialogs")));
+            ModifyDialogs.Clear()
+                          .AddRange(ManagedProject.ReadDialogs(session.Property("WixSharp_ModifyDialogs")));
 
         }
 
         public bool Initialize(Session session, string resourcePath, ref InstallUIOptions uiLevel)
         {
-            //Debugger.Launch();
+            Debugger.Launch();
             if (session != null && (session.IsUninstalling() || uiLevel.IsBasic()))
                 return false; //use built-in MSI basic UI
 
@@ -102,26 +102,14 @@ namespace WixSharp
                 // Start the installation with a silenced internal UI.
                 // This "embedded external UI" will handle message types except for source resolution.
                 uiLevel = InstallUIOptions.NoChange | InstallUIOptions.SourceResolutionOnly;
-                shell.InUIThread(shell.OnExecuteStarted);
+                shell.OnExecuteStarted();
                 return true;
             }
         }
 
         public MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton)
         {
-            int i = 0;
-            try
-            {
-               // Debug.WriteLine(i.ToString() + ": " + _session["INSTALLDIR"] + " : " + messageRecord);
-            }
-            catch { }
-
-            MessageResult result = MessageResult.OK;
-            shell.InUIThread(() =>
-                {
-                    result = shell.ProcessMessage(messageType, messageRecord, buttons, icon, defaultButton);
-                });
-            return result;
+            return shell.ProcessMessage(messageType, messageRecord, buttons, icon, defaultButton);
         }
 
         public void Shutdown()

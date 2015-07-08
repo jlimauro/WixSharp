@@ -12,23 +12,26 @@ using forms = System.Windows.Forms;
 
 namespace WixSharp
 {
-    public interface IUIShell
+    interface IUIContainer
     {
         void ShowModal(MsiRuntime msiRuntime, IManagedUI ui);
         void OnExecuteComplete();
         void OnExecuteStarted();
-        void InUIThread(System.Action action);
         MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton);
     }
 
-    public partial class UIShell : IUIShell, IManagedDialogContainer
+    public partial class UIShell : IUIContainer, IManagedUIShell
     {
         public object RuntimeContext { get { return MsiRuntime; } }
         public MsiRuntime MsiRuntime { get; set; }
         public IManagedUI UI { get; set; }
+
+        public bool UserInterrupted { get;  private set;  }
+        public bool ErrorDetected { get; private set; }
+
         public void StartExecute()
         {
-            //msiRuntime.Session["INSTALLDIR"] = @"C:\Program Files (x86)\AAA";
+            started = true;
             MsiRuntime.StartExecute();
         }
 
@@ -92,7 +95,7 @@ namespace WixSharp
             }
             else if (MsiRuntime.Session.IsRepairing())
             {
-                Dialogs = ui.RepairDialogs;
+                Dialogs = ui.ModifyDialogs;
             }
 
             GoNext();
@@ -133,15 +136,33 @@ namespace WixSharp
             {
                 this.progressCounter.ProcessMessage(messageType, messageRecord);
 
-                currentDialog.OnProgress((int)Math.Round(100 * this.progressCounter.Progress));
+                InUIThread(() => currentDialog.OnProgress((int)Math.Round(100 * this.progressCounter.Progress)));
 
                 switch (messageType)
                 {
+                    case InstallMessage.Progress: break;
                     case InstallMessage.Error:
                     case InstallMessage.Warning:
                     case InstallMessage.Info:
-                        this.LogMessage("{0}: {1}", messageType, messageRecord);
-                        break;
+                    default:
+                        {
+                            if (messageType == InstallMessage.Error)
+                                ErrorDetected = true;
+
+                            if (messageType == InstallMessage.InstallEnd)
+                            {
+                                try
+                                {
+                                    string lastValue = messageRecord[messageRecord.FieldCount].ToString(); //MSI record is actually 1-based
+                                    ErrorDetected = (lastValue == "3");
+                                    UserInterrupted = (lastValue == "2");
+                                }
+                                catch { }//nothing we can do really
+                            }
+
+                            this.LogMessage("{0}: {1}", messageType, messageRecord);
+                            break;
+                        }
                 }
 
                 if (this.canceled)
@@ -155,9 +176,13 @@ namespace WixSharp
                 this.LogMessage(ex.StackTrace);
             }
 
-            var result = currentDialog.ProcessMessage(messageType, messageRecord, buttons, icon, defaultButton);
-            Application.DoEvents();
+            var result = MessageResult.OK;
+            InUIThread(() =>
+            {
+                result = currentDialog.ProcessMessage(messageType, messageRecord, buttons, icon, defaultButton);
+            });
             return result;
+
         }
 
         StringBuilder log = new StringBuilder();
@@ -170,12 +195,12 @@ namespace WixSharp
 
         public void OnExecuteStarted()
         {
-            currentDialog.OnExecuteStarted();
+            InUIThread(currentDialog.OnExecuteStarted);
         }
 
         public void OnExecuteComplete()
         {
-            currentDialog.OnExecuteComplete();
+            InUIThread(currentDialog.OnExecuteComplete);
         }
 
         public void InUIThread(System.Action action)

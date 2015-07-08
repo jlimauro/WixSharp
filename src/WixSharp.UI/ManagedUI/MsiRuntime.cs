@@ -27,6 +27,18 @@ namespace WixSharp
             {
                 var bytes = session.TryReadBinary("WixSharp_UIText");
                 UIText.InitFromWxl(bytes);
+                ProductName = session.Property("ProductName");
+                ProductCode = session.Property("ProductCode");
+                ProductVersion = session.Property("ProductVersion");
+
+                //it is important to preserve some product properties for localization as at the end of setup session will no longer be available
+                UIText["ProductName"] = ProductName;
+                UIText["ProductCode"] = ProductCode;
+                UIText["ProductVersion"] = ProductVersion;
+
+                //ensure Wix# strings are added if not already present
+                if (!UIText.ContainsKey("ViewLog"))
+                    UIText["ViewLog"] = "View Log";
             }
             catch { }
         }
@@ -42,6 +54,7 @@ namespace WixSharp
             catch { }
             return null;
         }
+
         public string Localize(string text)
         {
             if (UIText.ContainsKey(text))
@@ -59,6 +72,10 @@ namespace WixSharp
 
             return text;
         }
+
+        public string ProductName;
+        public string ProductCode;
+        public string ProductVersion;
     }
 
     public class ResourcesData : Dictionary<string, string>

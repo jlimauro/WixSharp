@@ -1,3 +1,4 @@
+using Microsoft.Deployment.WindowsInstaller;
 //css_dir ..\..\;
 //css_ref Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 //css_ref WixSharp.UI.dll;
@@ -24,20 +25,28 @@ public class Script
     void Test()
     {
         //NOTE: IT IS STILL A WORK IN PROGRESS FEATURE PREVIEW
+
+        var binaries = new Feature("MyApp Binaries");
+        var docs = new Feature("MyApp Documentation");
+        binaries.Children.Add(docs);
+
         var project =
             new ManagedProject("ManagedSetup",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
-                    new File("readme.txt")));
+                    new File(binaries, "readme.txt"),
+                    new Dir("Scripts",
+                        new File(docs, "setup.cs"))));
 
-        //project.UI = WUI.WixUI_Mondo;
+        project.UI = WUI.WixUI_Mondo;
 
         //project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Custom_UI\EmbeddedUI_WPF\bin\Debug\EmbeddedUI_WPF.dll");
         //project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Custom_UI\EmbeddedUI\bin\Debug\EmbeddedUI.exe");
-        project.ManagedUI = ManagedUI.Default;
         //project.LocalizationFile = "wixui_cs-cz.wxl";
         //project.LicenceFile = "License.rtf";
+        //project.Platform = Platform.x64;
 
 
+        project.ManagedUI = ManagedUI.Default;
         project.ManagedUI.InstallDialogs.Clear()
                                         .Add<WelcomeDialog>()
                                         .Add<LicenceDialog>()
@@ -46,17 +55,17 @@ public class Script
                                         .Add<ProgressDialog>()
                                         .Add<ExitDialog>();
 
-        project.ManagedUI.RepairDialogs.Clear()
-                                       .Add<RepairStartDialog>()
+        project.ManagedUI.ModifyDialogs.Clear()
+                                       //.Add<ModifyStartDialog>()
                                        .Add<ProgressDialog>()
-                                       .Add<RepairExitDialog>();
+                                       .Add<ExitDialog>();
 
 
-        //project.ManagedUI = null;
-        //project.UI = WUI.WixUI_Mondo;
+        project.ManagedUI = null;
+        project.UI = WUI.WixUI_FeatureTree;
 
         //project.Load += project_Load;
-        //project.BeforeInstall += project_BeforeExecute;
+        project.BeforeInstall += project_BeforeExecute;
         //project.AfterInstall += project_AfterExecute;
 
 #if vs
@@ -65,7 +74,7 @@ public class Script
         project.EmitConsistentPackageId = true;
         Compiler.CandleOptions += " -sw1091";
 
-        //project.PreserveTempFiles = true;
+        project.PreserveTempFiles = true;
         project.BuildMsi();
     }
 
@@ -79,6 +88,9 @@ public class Script
     static void project_BeforeExecute(SetupEventArgs e)
     {
         MessageBox.Show(e.ToString(), "BeforeInstall");
+        //e.Result = ActionResult.Failure;
+        //e.Result = ActionResult.UserExit;
+        //e.Result = Microsoft.Deployment.WindowsInstaller.ActionResult.UserExit;
     }
 
     static void project_AfterExecute(SetupEventArgs e)

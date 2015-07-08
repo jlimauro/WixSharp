@@ -23,9 +23,9 @@ namespace WixSharp
             Installing,
 
             /// <summary>
-            /// The repairing mode
+            /// The modifying mode
             /// </summary>
-            Repairing,
+            Modifying,
 
             /// <summary>
             /// The uninstalling mode
@@ -96,15 +96,15 @@ namespace WixSharp
         public bool IsInstalling { get { return !IsInstalled && Data["REMOVE"] != "ALL"; } }
 
         /// <summary>
-        /// Gets a value indicating whether the product is being repaired.
+        /// Gets a value indicating whether the installed product is being modified.
         /// </summary>
         /// <value>
-        /// <c>true</c> if repairing; otherwise, <c>false</c>.
+        /// <c>true</c> if modifying; otherwise, <c>false</c>.
         /// </value>
-        public bool IsRepairing { get { return IsInstalled && Data["REMOVE"] != "ALL"; } }
+        public bool IsModifying { get { return IsInstalled && Data["REMOVE"] != "ALL"; } }
 
         /// <summary>
-        /// Gets a value indicating whether the product is being uninstalled.
+        /// Gets a value indicating whether the installed product is being uninstalled.
         /// </summary>
         /// <value>
         /// <c>true</c> if uninstalling; otherwise, <c>false</c>.
@@ -130,7 +130,7 @@ namespace WixSharp
             get
             {
                 if (IsInstalling) return SetupMode.Installing;
-                if (IsRepairing) return SetupMode.Repairing;
+                if (IsModifying) return SetupMode.Modifying;
                 if (IsUninstalling) return SetupMode.Uninstalling;
                 return SetupMode.Unknown;
             }
@@ -244,7 +244,7 @@ namespace WixSharp
                 "\nIsInstalled=" + IsInstalled +
                 "\nIsInstalling=" + IsInstalling +
                 "\nIsUninstalling=" + IsUninstalling +
-                "\nIsReparing=" + IsRepairing;
+                "\nIsModifying=" + IsModifying;
         }
     }
 }

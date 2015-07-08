@@ -25,6 +25,7 @@ class Script
             UI = WUI.WixUI_InstallDir,
         };
 
+        Compiler.PreserveTempFiles = true;
         Compiler.BuildMsi(project);
     }
 }

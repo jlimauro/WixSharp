@@ -10,6 +10,8 @@ class Script
     {
         var binaries = new Feature("MyApp Binaries");
         var docs = new Feature("MyApp Documentation");
+        var tuts = new Feature("MyApp Tutorial");
+        docs.Children.Add(tuts);
         binaries.Children.Add(docs);
 
         var project =
@@ -17,10 +19,15 @@ class Script
                 new Dir(@"%ProgramFiles%\My Company\My Product",
                     new File(binaries, @"Files\Bin\MyApp.exe"),
                     new Dir(@"Docs\Manual",
-                        new File(docs, @"Files\Docs\Manual.txt"))));
+                        new File(docs, @"Files\Docs\Manual.txt"),
+                        new File(tuts, @"Files\Docs\Tutorial.txt"))));
 
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
         project.UI = WUI.WixUI_FeatureTree;
+        
+        project.DefaultFeature = binaries; //this line is optional 
+        
+        project.PreserveTempFiles = true;
 
         project.BuildMsi();
     }

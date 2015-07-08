@@ -9,17 +9,19 @@ namespace WixSharp
 {
     public interface IManagedDialog
     {
-        IManagedDialogContainer Shell { get; set; }
+        IManagedUIShell Shell { get; set; }
         MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton);
         void OnExecuteComplete();
         void OnExecuteStarted();
         void OnProgress(int progressPercentage);
     }
 
-    public interface IManagedDialogContainer
+    public interface IManagedUIShell
     {
         object RuntimeContext { get; }
         string Log { get; }
+        bool UserInterrupted { get; }
+        bool ErrorDetected { get;}
 
         ManagedDialogs Dialogs { get; }
 
@@ -34,7 +36,7 @@ namespace WixSharp
     public interface IManagedUI
     {
         ManagedDialogs InstallDialogs { get; }
-        ManagedDialogs RepairDialogs { get; }
+        ManagedDialogs ModifyDialogs { get; }
         void EmbeddResourcesInto(ManagedProject project);
     }
 

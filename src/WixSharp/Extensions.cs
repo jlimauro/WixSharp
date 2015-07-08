@@ -23,13 +23,14 @@ THE SOFTWARE.
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
 using IO = System.IO;
-using System.Drawing;
+using System.Data;
 
 namespace WixSharp
 {
@@ -1163,6 +1164,71 @@ namespace WixSharp
         /// <returns></returns>
         public static byte[] ReadBinary(this Session session, string binary)
         {
+            return GetEmbeddedData(session, binary);
+        }
+
+        public static List<Dictionary<string, object>> OpenView(this Session session, string sqlText, params string[] fields)
+        {
+            var table = new List<Dictionary<string, object>>(); //tempting just to put it to DataSet thoug MSI does not allow column names discovery 
+
+            using (var sql = session.Database.OpenView(sqlText))
+            {
+                sql.Execute();
+
+                Record record;
+                while ((record = sql.Fetch()) != null)
+                    using (record)
+                    {
+                        var row = new Dictionary<string,object>();
+                        if (fields.Length != 0)
+                        {
+                            foreach(string item in fields)
+                                row[item] = record[item];
+                        }
+                        else
+                        {
+                            for (int i = 0; i < record.FieldCount; i++)
+                                row[i.ToString()] = record[i];
+                        }
+
+                        table.Add(row);
+                    }
+            }
+            return table;
+        }
+
+        public static Bitmap GetEmbeddedBitmap(this Session session, string binary)
+        {
+            using (var sql = session.Database.OpenView("select Data from Binary where Name = '" + binary + "'"))
+            {
+                sql.Execute();
+
+                using (var record = sql.Fetch())
+                using (var stream = record.GetStream(1))
+                using (var ms = new IO.MemoryStream())
+                {
+                    int Length = 256;
+                    var buffer = new Byte[Length];
+                    int bytesRead = stream.Read(buffer, 0, Length);
+                    while (bytesRead > 0)
+                    {
+                        ms.Write(buffer, 0, bytesRead);
+                        bytesRead = stream.Read(buffer, 0, Length);
+                    }
+                    ms.Seek(0, IO.SeekOrigin.Begin);
+
+                    return (Bitmap)Bitmap.FromStream(ms);
+                }
+            }
+        }
+
+        public static string GetEmbeddedString(this Session session, string binary)
+        {
+            return GetEmbeddedData(session, binary).GetString();
+        }
+
+        public static byte[] GetEmbeddedData(this Session session, string binary)
+        {
             //If binary is accessed this way it will raise "stream handle is not valid" exception
             //object result = session.Database.ExecuteScalar("select Data from Binary where Name = 'Fake_CRT.msi'");
             //Stream s = (Stream)result;
@@ -1183,61 +1249,9 @@ namespace WixSharp
             {
                 sql.Execute();
 
-                System.IO.Stream stream = sql.Fetch().GetStream(1);
-
-                using (var ms = new System.IO.MemoryStream())
-                {
-                    int Length = 256;
-                    var buffer = new Byte[Length];
-                    int bytesRead = stream.Read(buffer, 0, Length);
-                    while (bytesRead > 0)
-                    {
-                        ms.Write(buffer, 0, bytesRead);
-                        bytesRead = stream.Read(buffer, 0, Length);
-                    }
-                    return ms.ToArray();
-                }
-            }
-        }
-
-        public static Bitmap GetEmbeddedBitmap(this Session session, string binary)
-        {
-            using (var sql = session.Database.OpenView("select Data from Binary where Name = '" + binary + "'"))
-            {
-                sql.Execute();
-
-                System.IO.Stream stream = sql.Fetch().GetStream(1);
-
-                using (var ms = new System.IO.MemoryStream())
-                {
-                    int Length = 256;
-                    var buffer = new Byte[Length];
-                    int bytesRead = stream.Read(buffer, 0, Length);
-                    while (bytesRead > 0)
-                    {
-                        ms.Write(buffer, 0, bytesRead);
-                        bytesRead = stream.Read(buffer, 0, Length);
-                    }
-                    ms.Seek(0, IO.SeekOrigin.Begin);
-                    return (Bitmap)Bitmap.FromStream(ms);
-                }
-            }
-        }
-
-        public static string GetEmbeddedString(this Session session, string binary)
-        {
-            return GetEmbeddedData(session, binary).GetString();
-        }
-
-        public static byte[] GetEmbeddedData(this Session session, string binary)
-        {
-            using (var sql = session.Database.OpenView("select Data from Binary where Name = '" + binary + "'"))
-            {
-                sql.Execute();
-
-                System.IO.Stream stream = sql.Fetch().GetStream(1);
-
-                using (var ms = new System.IO.MemoryStream())
+                using (var record = sql.Fetch())
+                using (var stream = record.GetStream(1))
+                using (var ms = new IO.MemoryStream())
                 {
                     int Length = 256;
                     var buffer = new Byte[Length];
