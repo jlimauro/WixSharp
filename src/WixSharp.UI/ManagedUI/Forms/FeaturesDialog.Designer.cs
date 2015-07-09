@@ -30,9 +30,6 @@ namespace WixSharp.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -42,24 +39,13 @@ namespace WixSharp.UI.Forms
             this.next = new System.Windows.Forms.Button();
             this.cancel = new System.Windows.Forms.Button();
             this.featuresTree = new System.Windows.Forms.TreeView();
-            this.contextMenuStrip1.SuspendLayout();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.description = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.banner)).BeginInit();
             this.panel1.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(103, 26);
-            // 
-            // copyToolStripMenuItem
-            // 
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
-            this.copyToolStripMenuItem.Text = "Copy";
             // 
             // panel2
             // 
@@ -153,14 +139,34 @@ namespace WixSharp.UI.Forms
             // featuresTree
             // 
             this.featuresTree.CheckBoxes = true;
-            this.featuresTree.Location = new System.Drawing.Point(12, 71);
+            this.featuresTree.Location = new System.Drawing.Point(15, 78);
             this.featuresTree.Name = "featuresTree";
-            this.featuresTree.Size = new System.Drawing.Size(465, 222);
+            this.featuresTree.Size = new System.Drawing.Size(288, 206);
             this.featuresTree.TabIndex = 0;
+            // 
+            // panel3
+            // 
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.description);
+            this.panel3.Location = new System.Drawing.Point(319, 78);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(158, 206);
+            this.panel3.TabIndex = 8;
+            // 
+            // description
+            // 
+            this.description.BackColor = System.Drawing.SystemColors.Control;
+            this.description.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.description.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.description.Location = new System.Drawing.Point(0, 0);
+            this.description.Name = "description";
+            this.description.Size = new System.Drawing.Size(156, 204);
+            this.description.TabIndex = 1;
             // 
             // FeaturesDialog
             // 
             this.ClientSize = new System.Drawing.Size(494, 361);
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.featuresTree);
@@ -169,11 +175,11 @@ namespace WixSharp.UI.Forms
             this.Name = "FeaturesDialog";
             this.Text = "    [CustomizeDlg_Title]";
             this.Load += new System.EventHandler(this.FeaturesDialog_Load);
-            this.contextMenuStrip1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.banner)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -181,8 +187,6 @@ namespace WixSharp.UI.Forms
         #endregion
         private TreeView featuresTree;
         private PictureBox banner;
-        private ContextMenuStrip contextMenuStrip1;
-        private ToolStripMenuItem copyToolStripMenuItem;
         private Panel panel2;
         private Label label2;
         private Label label1;
@@ -190,5 +194,7 @@ namespace WixSharp.UI.Forms
         private Button back;
         private Button next;
         private Button cancel;
+        private Panel panel3;
+        private Label description;
     }
 }

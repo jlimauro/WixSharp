@@ -21,6 +21,11 @@
             the contents of this method with the code editor.
             </summary>
         </member>
+        <member name="T:WixSharp.UI.Forms.FeatureItem">
+            <summary>
+            Equivalent of FeatureInfo which is read-only and doesn't work anyway (at least in WiX v3.9)
+            </summary>
+        </member>
         <member name="F:WixSharp.UI.Forms.FeaturesDialog.components">
             <summary>
             Required designer variable.
@@ -36,11 +41,6 @@
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
-            </summary>
-        </member>
-        <member name="T:WixSharp.UI.Forms.FeaturesDialog.FeatureItem">
-            <summary>
-            Equivalent of FeatureInfo which is read-only and doesn't work anyway (at least in WiX v3.9)
             </summary>
         </member>
         <member name="T:WixSharp.UI.ManagedUI.Resources">

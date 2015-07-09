@@ -32,6 +32,8 @@ namespace WixSharp.UI.Forms
         {
             this.components = new System.ComponentModel.Container();
             this.agreement = new System.Windows.Forms.RichTextBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -42,12 +44,10 @@ namespace WixSharp.UI.Forms
             this.back = new System.Windows.Forms.Button();
             this.next = new System.Windows.Forms.Button();
             this.cancel = new System.Windows.Forms.Button();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.banner)).BeginInit();
             this.panel1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // agreement
@@ -61,6 +61,20 @@ namespace WixSharp.UI.Forms
             this.agreement.Size = new System.Drawing.Size(462, 182);
             this.agreement.TabIndex = 5;
             this.agreement.Text = "";
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(103, 26);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
+            this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // panel2
             // 
@@ -108,11 +122,12 @@ namespace WixSharp.UI.Forms
             // 
             // accepted
             // 
-            this.accepted.AutoSize = true;
+            this.accepted.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.accepted.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.accepted.Location = new System.Drawing.Point(12, 280);
             this.accepted.Name = "accepted";
-            this.accepted.Size = new System.Drawing.Size(264, 17);
+            this.accepted.Size = new System.Drawing.Size(464, 26);
             this.accepted.TabIndex = 3;
             this.accepted.Text = "[LicenseAgreementDlgLicenseAcceptedCheckBox]";
             this.accepted.UseVisualStyleBackColor = true;
@@ -176,20 +191,6 @@ namespace WixSharp.UI.Forms
             this.cancel.UseVisualStyleBackColor = true;
             this.cancel.Click += new System.EventHandler(this.cancel_Click);
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(103, 26);
-            // 
-            // copyToolStripMenuItem
-            // 
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.copyToolStripMenuItem.Text = "Copy";
-            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
-            // 
             // LicenceDialog
             // 
             this.ClientSize = new System.Drawing.Size(494, 361);
@@ -201,13 +202,12 @@ namespace WixSharp.UI.Forms
             this.Name = "LicenceDialog";
             this.Text = "[LicenseAgreementDlg_Title]";
             this.Load += new System.EventHandler(this.LicenceDialog_Load);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.banner)).EndInit();
             this.panel1.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

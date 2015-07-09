@@ -8,7 +8,7 @@ class Script
 {
     static public void Main(string[] args)
     {
-        var binaries = new Feature("MyApp Binaries");
+        var binaries = new Feature("MyApp Binaries", "Application binaries");
         var docs = new Feature("MyApp Documentation");
         var tuts = new Feature("MyApp Tutorial");
         docs.Children.Add(tuts);
