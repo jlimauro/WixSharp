@@ -30,25 +30,55 @@ namespace WixSharp.UI.Forms
         {
             banner.Image = MsiRuntime.Session.GetEmbeddedBitmap("WixUI_Bmp_Banner");
 
+            BuildFeaturesHierarchy();
+        }
+
+        void BuildFeaturesHierarchy()
+        {
             //Cannot use MsiRuntime.Session.Features. 
             //This WiX feature is just not implemented yet. All members except Name throw InvalidHandeException 
             //Thus instead just collect the names and query database for the rest of the properties.
-            string[] names = MsiRuntime.Session.Features.Select(x => x.Name).ToArray(); 
-            
+            string[] names = MsiRuntime.Session.Features.Select(x => x.Name).ToArray();
+
             var features = names.Select(name => new FeatureItem(MsiRuntime.Session, name));
 
-            //var rootFeatures = 
+            //build the hierarchy tree
+            var rootItems = features.Where(x => x.ParentName == null);
 
-            foreach (var item in features)
+            var itemsToProcess = new Queue<FeatureItem>(rootItems); //features to find the children for
+
+            while (itemsToProcess.Any())
             {
-                featuresTree.Nodes.Add(new ReadOnlyTreeNode
-                                       {
-                                           Text = item.Title,
-                                           Tag = item,
-                                           IsReadOnly = item.DisallowAbsent,
-                                           Checked = item.RequestState != InstallState.Absent
-                                       });
+                var item = itemsToProcess.Dequeue();
+
+                //create the view of the feature
+                var view = new ReadOnlyTreeNode
+                        {
+                            Text = item.Title,
+                            Tag = item, //link view to model
+                            IsReadOnly = item.DisallowAbsent,
+                            Checked = item.RequestState != InstallState.Absent
+                        };
+
+                item.View = view;
+
+                if (item.Parent != null)
+                {
+                    (item.Parent.View as TreeNode).Nodes.Add(view); //link child view to parent view
+                }
+
+                //find all children
+                features.Where(x => x.ParentName == item.Name)
+                        .ForEach(c =>
+                                 {
+                                     c.Parent = item; //link child model to parent model
+                                     itemsToProcess.Enqueue(c); //schedule for further processing
+                                 });
             }
+            
+            rootItems.Select(x => x.View)
+                     .Cast<TreeNode>()
+                     .ForEach(node=>featuresTree.Nodes.Add(node));
         }
 
         void back_Click(object sender, System.EventArgs e)
