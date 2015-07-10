@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Deployment.WindowsInstaller;
@@ -18,10 +18,10 @@ namespace WixSharp.UI.Forms
          * ADDDEFAULT - list of features to set to their default state 
          * REINSTALL - list of features to repair*/
 
+        FeatureItem[] features;
 
         public FeaturesDialog()
         {
-            //Debugger.Launch();
             InitializeComponent();
             ReadOnlyTreeNode.Behavior.AttachTo(featuresTree);
         }
@@ -29,21 +29,20 @@ namespace WixSharp.UI.Forms
         void FeaturesDialog_Load(object sender, System.EventArgs e)
         {
             banner.Image = MsiRuntime.Session.GetEmbeddedBitmap("WixUI_Bmp_Banner");
-
             BuildFeaturesHierarchy();
         }
 
         void BuildFeaturesHierarchy()
         {
-            //Cannot use MsiRuntime.Session.Features. 
-            //This WiX feature is just not implemented yet. All members except Name throw InvalidHandeException 
-            //Thus instead just collect the names and query database for the rest of the properties.
+            //Cannot use MsiRuntime.Session.Features (FeatureInfo collection). 
+            //This WiX feature is just not implemented yet. All members except 'Name' throw InvalidHandeException 
+            //Thus instead of using FeatureInfo just collect the names and query database for the rest of the properties.
             string[] names = MsiRuntime.Session.Features.Select(x => x.Name).ToArray();
 
-            var features = names.Select(name => new FeatureItem(MsiRuntime.Session, name));
+            features = names.Select(name => new FeatureItem(MsiRuntime.Session, name)).ToArray();
 
             //build the hierarchy tree
-            var rootItems = features.Where(x => x.ParentName == null);
+            var rootItems = features.Where(x => x.ParentName.IsEmpty()).ToArray();
 
             var itemsToProcess = new Queue<FeatureItem>(rootItems); //features to find the children for
 
@@ -76,6 +75,7 @@ namespace WixSharp.UI.Forms
                                  });
             }
             
+            //add views to the treeView control
             rootItems.Select(x => x.View)
                      .Cast<TreeNode>()
                      .ForEach(node=>featuresTree.Nodes.Add(node));
@@ -88,20 +88,19 @@ namespace WixSharp.UI.Forms
 
         void next_Click(object sender, System.EventArgs e)
         {
-            var itemsToInstall = featuresTree.AllNodes()
-                                             .Where(x => x.Checked)
-                                             .Select(x => ((FeatureItem)x.Tag).Name)
-                                             .ToArray();
+            string itemsToInstall = features.Where(x => x.IsViewChecked())
+                                            .Select(x => x.Name)
+                                            .Join(",");
 
-            var itemsToRemove = featuresTree.AllNodes()
-                                            .Where(x => !x.Checked)
-                                            .Select(x => ((FeatureItem)x.Tag).Name)
-                                            .ToArray();
+            string itemsToRemove = features.Where(x => !x.IsViewChecked())
+                                           .Select(x => x.Name)
+                                           .Join(",");
+
             if (itemsToRemove.Any())
-                MsiRuntime.Session["REMOVE"] = string.Join(",", itemsToRemove);
+                MsiRuntime.Session["REMOVE"] = itemsToRemove;
 
             if (itemsToInstall.Any())
-                MsiRuntime.Session["ADDLOCAL"] = string.Join(",", itemsToInstall);
+                MsiRuntime.Session["ADDLOCAL"] = itemsToInstall;
 
             Shell.GoNext();
         }

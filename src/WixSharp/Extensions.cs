@@ -371,6 +371,11 @@ namespace WixSharp
             int.TryParse(value, out result);
             return result;
         }
+       
+        public static string Join(this IEnumerable<string> strings, string separator)
+        {
+            return string.Join(separator, strings.ToArray());
+        }
 
         /// <summary>
         /// Safely converts string to IntPtr.

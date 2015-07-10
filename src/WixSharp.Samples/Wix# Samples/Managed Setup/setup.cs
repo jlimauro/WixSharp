@@ -30,7 +30,7 @@ public class Script
         var binaries = new Feature("Binaries", true, false);
         var docs = new Feature("Documentation", true);
         var tuts = new Feature("Tutorials", true);
-        //binaries.Children.Add(docs);
+        binaries.Children.Add(docs);
 
         var project =
             new ManagedProject("ManagedSetup",

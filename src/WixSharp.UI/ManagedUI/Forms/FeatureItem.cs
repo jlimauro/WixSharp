@@ -7,7 +7,7 @@ namespace WixSharp.UI.Forms
     /// <summary>
     /// Equivalent of FeatureInfo which is read-only and doesn't work anyway (at least in WiX v3.9)
     /// </summary>
-    internal class FeatureItem
+    public class FeatureItem
     {
         public string Name;
         public string ParentName;

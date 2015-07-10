@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Deployment.WindowsInstaller;
 using Xunit;
+using WixSharp;
 using io = System.IO;
 
 namespace WixSharp.Test

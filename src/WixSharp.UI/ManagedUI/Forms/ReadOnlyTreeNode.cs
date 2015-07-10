@@ -1,3 +1,4 @@
+using Microsoft.Deployment.WindowsInstaller;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -9,6 +10,13 @@ namespace WixSharp.UI.Forms
 {
     public static class Extensions
     {
+        public static bool IsViewChecked(this FeatureItem feature)
+        {
+            if (feature.View is TreeNode)
+                return (feature.View as TreeNode).Checked;
+            return false;
+        }
+
         public static TreeNode[] AllNodes(this TreeView treeView)
         {
             var result = new List<TreeNode>();
