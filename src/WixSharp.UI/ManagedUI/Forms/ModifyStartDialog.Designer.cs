@@ -1,6 +1,6 @@
 ﻿namespace WixSharp.UI.Forms
 {
-    partial class ModifyStartDialog
+    partial class SetupTypeDialog
     {
         /// <summary>
         /// Required designer variable.

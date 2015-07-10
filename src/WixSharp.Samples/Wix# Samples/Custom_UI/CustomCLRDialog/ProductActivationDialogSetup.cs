@@ -35,8 +35,8 @@ public static class ProductActivationDialogSetup
 
         var customUI = new CommomDialogsUI();
 
-        var prevDialog = Dialogs.LicenseAgreementDlg;
-        var nextDialog = Dialogs.InstallDirDlg;
+        var prevDialog = NativeDialogs.LicenseAgreementDlg;
+        var nextDialog = NativeDialogs.InstallDirDlg;
 
         //disconnect prev and next dialogs
         customUI.UISequence.RemoveAll(x => (x.Dialog == prevDialog && x.Control == Buttons.Next) ||

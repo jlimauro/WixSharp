@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Deployment.Samples.EmbeddedUI;
 using Microsoft.Deployment.WindowsInstaller;
+using WixSharp.Forms;
 using forms = System.Windows.Forms;
 
 #pragma warning disable 1591

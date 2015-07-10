@@ -143,6 +143,7 @@ namespace WixSharp.UI.Forms
             this.featuresTree.Name = "featuresTree";
             this.featuresTree.Size = new System.Drawing.Size(288, 206);
             this.featuresTree.TabIndex = 0;
+            this.featuresTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.featuresTree_AfterSelect);
             // 
             // panel3
             // 

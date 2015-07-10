@@ -17,6 +17,11 @@ namespace WixSharp.UI.Forms
             return false;
         }
 
+        public static FeatureItem FeatureItem(this TreeNode node)
+        {
+            return node.Tag as FeatureItem;
+        }
+
         public static TreeNode[] AllNodes(this TreeView treeView)
         {
             var result = new List<TreeNode>();
@@ -144,7 +149,7 @@ namespace WixSharp.UI.Forms
                         el = e.Node.Checked ? VisualStyleElement.Button.CheckBox.CheckedDisabled : VisualStyleElement.Button.CheckBox.UncheckedDisabled;
 
                     new VisualStyleRenderer(el).DrawBackground(e.Graphics, checkBoxRect);
-                    checkBoxExtra = 12;
+                    checkBoxExtra = 14;
                 }
 
                 //Text

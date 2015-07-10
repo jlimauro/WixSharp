@@ -443,32 +443,32 @@ namespace WixSharp
         /// </summary>
         public CommomDialogsUI()
         {
-            On(Dialogs.WelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.LicenseAgreementDlg));
+            On(NativeDialogs.WelcomeDlg, Buttons.Next, new ShowDialog(NativeDialogs.LicenseAgreementDlg));
 
-            On(Dialogs.LicenseAgreementDlg, Buttons.Back, new ShowDialog(Dialogs.WelcomeDlg));
-            On(Dialogs.LicenseAgreementDlg, Buttons.Next, new ShowDialog(Dialogs.InstallDirDlg));
+            On(NativeDialogs.LicenseAgreementDlg, Buttons.Back, new ShowDialog(NativeDialogs.WelcomeDlg));
+            On(NativeDialogs.LicenseAgreementDlg, Buttons.Next, new ShowDialog(NativeDialogs.InstallDirDlg));
 
-            On(Dialogs.InstallDirDlg, Buttons.Back, new ShowDialog(Dialogs.LicenseAgreementDlg));
-            On(Dialogs.InstallDirDlg, Buttons.Next, new SetTargetPath(),
-                                                    new ShowDialog(Dialogs.CustomizeDlg));
+            On(NativeDialogs.InstallDirDlg, Buttons.Back, new ShowDialog(NativeDialogs.LicenseAgreementDlg));
+            On(NativeDialogs.InstallDirDlg, Buttons.Next, new SetTargetPath(),
+                                                    new ShowDialog(NativeDialogs.CustomizeDlg));
 
-            On(Dialogs.InstallDirDlg, Buttons.ChangeFolder,
+            On(NativeDialogs.InstallDirDlg, Buttons.ChangeFolder,
                                                     new SetProperty("_BrowseProperty", "[WIXUI_INSTALLDIR]"),
                                                     new SpawnDialog(CommonDialogs.BrowseDlg));
 
-            On(Dialogs.CustomizeDlg, Buttons.Back, new ShowDialog(Dialogs.InstallDirDlg));
-            On(Dialogs.CustomizeDlg, Buttons.Next, new ShowDialog(Dialogs.VerifyReadyDlg));
+            On(NativeDialogs.CustomizeDlg, Buttons.Back, new ShowDialog(NativeDialogs.InstallDirDlg));
+            On(NativeDialogs.CustomizeDlg, Buttons.Next, new ShowDialog(NativeDialogs.VerifyReadyDlg));
 
-            On(Dialogs.VerifyReadyDlg, Buttons.Back, new ShowDialog(Dialogs.InstallDirDlg, Condition.NOT_Installed),
-                                                     new ShowDialog(Dialogs.MaintenanceTypeDlg, Condition.Installed));
+            On(NativeDialogs.VerifyReadyDlg, Buttons.Back, new ShowDialog(NativeDialogs.InstallDirDlg, Condition.NOT_Installed),
+                                                     new ShowDialog(NativeDialogs.MaintenanceTypeDlg, Condition.Installed));
 
-            On(Dialogs.MaintenanceWelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.MaintenanceTypeDlg));
+            On(NativeDialogs.MaintenanceWelcomeDlg, Buttons.Next, new ShowDialog(NativeDialogs.MaintenanceTypeDlg));
 
-            On(Dialogs.MaintenanceTypeDlg, Buttons.Back, new ShowDialog(Dialogs.MaintenanceWelcomeDlg));
-            On(Dialogs.MaintenanceTypeDlg, Buttons.Repair, new ShowDialog(Dialogs.VerifyReadyDlg));
-            On(Dialogs.MaintenanceTypeDlg, Buttons.Remove, new ShowDialog(Dialogs.VerifyReadyDlg));
+            On(NativeDialogs.MaintenanceTypeDlg, Buttons.Back, new ShowDialog(NativeDialogs.MaintenanceWelcomeDlg));
+            On(NativeDialogs.MaintenanceTypeDlg, Buttons.Repair, new ShowDialog(NativeDialogs.VerifyReadyDlg));
+            On(NativeDialogs.MaintenanceTypeDlg, Buttons.Remove, new ShowDialog(NativeDialogs.VerifyReadyDlg));
 
-            On(Dialogs.ExitDialog, Buttons.Finish, new CloseDialog() { Order = 9999 });
+            On(NativeDialogs.ExitDialog, Buttons.Finish, new CloseDialog() { Order = 9999 });
         }
     }
 
@@ -502,7 +502,7 @@ namespace WixSharp
     /// <summary>
     /// Defines values (names) for the standard WiX dialogs. 
     /// </summary>
-    public class Dialogs
+    public class NativeDialogs
     {
 #pragma warning disable 1591
 
@@ -576,33 +576,33 @@ namespace WixSharp
 
             customUI.CustomDialogs.Add(customDialog);
 
-            customUI.On(Dialogs.ExitDialog, Buttons.Finish, new CloseDialog() { Order = 9999 });
+            customUI.On(NativeDialogs.ExitDialog, Buttons.Finish, new CloseDialog() { Order = 9999 });
 
-            customUI.On(Dialogs.WelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.LicenseAgreementDlg));
+            customUI.On(NativeDialogs.WelcomeDlg, Buttons.Next, new ShowDialog(NativeDialogs.LicenseAgreementDlg));
 
-            customUI.On(Dialogs.LicenseAgreementDlg, Buttons.Back, new ShowDialog(Dialogs.WelcomeDlg));
-            customUI.On(Dialogs.LicenseAgreementDlg, Buttons.Next, new ShowDialog(customDialog, "LicenseAccepted = \"1\""));
+            customUI.On(NativeDialogs.LicenseAgreementDlg, Buttons.Back, new ShowDialog(NativeDialogs.WelcomeDlg));
+            customUI.On(NativeDialogs.LicenseAgreementDlg, Buttons.Next, new ShowDialog(customDialog, "LicenseAccepted = \"1\""));
 
-            customUI.On(customDialog, Buttons.Back, onBackActions ?? new DialogAction[] { new ShowDialog(Dialogs.LicenseAgreementDlg) });
-            customUI.On(customDialog, Buttons.Next, onNextActions ?? new DialogAction[] { new ShowDialog(Dialogs.InstallDirDlg) });
+            customUI.On(customDialog, Buttons.Back, onBackActions ?? new DialogAction[] { new ShowDialog(NativeDialogs.LicenseAgreementDlg) });
+            customUI.On(customDialog, Buttons.Next, onNextActions ?? new DialogAction[] { new ShowDialog(NativeDialogs.InstallDirDlg) });
             customUI.On(customDialog, Buttons.Cancel, onCancelActions ?? new DialogAction[] { new CloseDialog("Exit") });
 
-            customUI.On(Dialogs.InstallDirDlg, Buttons.Back, new ShowDialog(customDialog));
-            customUI.On(Dialogs.InstallDirDlg, Buttons.Next, new SetTargetPath(),
-                                                             new ShowDialog(Dialogs.VerifyReadyDlg));
+            customUI.On(NativeDialogs.InstallDirDlg, Buttons.Back, new ShowDialog(customDialog));
+            customUI.On(NativeDialogs.InstallDirDlg, Buttons.Next, new SetTargetPath(),
+                                                             new ShowDialog(NativeDialogs.VerifyReadyDlg));
 
-            customUI.On(Dialogs.InstallDirDlg, Buttons.ChangeFolder,
+            customUI.On(NativeDialogs.InstallDirDlg, Buttons.ChangeFolder,
                                                              new SetProperty("_BrowseProperty", "[WIXUI_INSTALLDIR]"),
                                                              new ShowDialog(CommonDialogs.BrowseDlg));
 
-            customUI.On(Dialogs.VerifyReadyDlg, Buttons.Back, new ShowDialog(Dialogs.InstallDirDlg, Condition.NOT_Installed),
-                                                              new ShowDialog(Dialogs.MaintenanceTypeDlg, Condition.Installed));
+            customUI.On(NativeDialogs.VerifyReadyDlg, Buttons.Back, new ShowDialog(NativeDialogs.InstallDirDlg, Condition.NOT_Installed),
+                                                              new ShowDialog(NativeDialogs.MaintenanceTypeDlg, Condition.Installed));
 
-            customUI.On(Dialogs.MaintenanceWelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.MaintenanceTypeDlg));
+            customUI.On(NativeDialogs.MaintenanceWelcomeDlg, Buttons.Next, new ShowDialog(NativeDialogs.MaintenanceTypeDlg));
 
-            customUI.On(Dialogs.MaintenanceTypeDlg, Buttons.Back, new ShowDialog(Dialogs.MaintenanceWelcomeDlg));
-            customUI.On(Dialogs.MaintenanceTypeDlg, Buttons.Repair, new ShowDialog(Dialogs.VerifyReadyDlg));
-            customUI.On(Dialogs.MaintenanceTypeDlg, Buttons.Remove, new ShowDialog(Dialogs.VerifyReadyDlg));
+            customUI.On(NativeDialogs.MaintenanceTypeDlg, Buttons.Back, new ShowDialog(NativeDialogs.MaintenanceWelcomeDlg));
+            customUI.On(NativeDialogs.MaintenanceTypeDlg, Buttons.Repair, new ShowDialog(NativeDialogs.VerifyReadyDlg));
+            customUI.On(NativeDialogs.MaintenanceTypeDlg, Buttons.Remove, new ShowDialog(NativeDialogs.VerifyReadyDlg));
 
             return customUI;
         }
@@ -625,8 +625,8 @@ namespace WixSharp
         public static CustomUI InjectPostLicenseClrDialog(string showAction, string clrDialogGoNextCondition = null)
         {
             var customUI = new CommomDialogsUI();
-            var prevDialog = Dialogs.LicenseAgreementDlg;
-            var nextDialog = Dialogs.InstallDirDlg;
+            var prevDialog = NativeDialogs.LicenseAgreementDlg;
+            var nextDialog = NativeDialogs.InstallDirDlg;
 
             //disconnect prev and next dialogs
             customUI.UISequence.RemoveAll(x => (x.Dialog == prevDialog && x.Control == Buttons.Next) ||

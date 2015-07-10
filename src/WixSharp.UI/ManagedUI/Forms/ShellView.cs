@@ -1,12 +1,26 @@
+using System;
 using System.Windows.Forms;
+using WixSharp.UI.Forms;
 
-namespace WixSharp
+namespace WixSharp.Forms
 {
+    public class Dialogs
+    {
+        static public Type Welcome = typeof(WelcomeDialog);
+        static public Type Licence = typeof(LicenceDialog);
+        static public Type Features = typeof(FeaturesDialog);
+        static public Type InstallDir = typeof(InstallDirDialog);
+        static public Type Progress = typeof(ProgressDialog);
+        static public Type SetupType = typeof(SetupTypeDialog);
+        static public Type Exit = typeof(ExitDialog);
+    }
+
     class ShellView : Form
     {
         public ShellView()
         {
             InitializeComponent();
+            this.Load += (sender, e) => TopMost = false; //To ensure initial 'on top'
         }
 
         void InitializeComponent()
@@ -20,7 +34,6 @@ namespace WixSharp
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TopMost = true;
-            this.Load += (sender, e) => TopMost = false; //To ensure initial 'on top'
             this.Icon = ".msi".GetAssiciatedIcon();
             this.ResumeLayout(false);
         }

@@ -4,5 +4,5 @@ using System.Windows.Forms;
 
 namespace WixSharp.UI.Forms
 {
-    public partial class ModifyStartDialog : ManagedForm { }
+    public partial class SetupTypeDialog : ManagedForm { }
 }

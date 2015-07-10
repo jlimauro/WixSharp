@@ -14,8 +14,8 @@ public class EmptyDialogSetup
         //Injects CLR dialog EmptyDialog between MSI dialogs InsallDirDlg and VerifyReadyDlg.
         //Passes custom action ShowCustomDialog for instantiating and popping up the CLR dialog.
 
-        project.InjectClrDialog("ShowCustomDialog", Dialogs.InstallDirDlg, Dialogs.VerifyReadyDlg)
-               .RemoveDialogsBetween(Dialogs.WelcomeDlg, Dialogs.InstallDirDlg);
+        project.InjectClrDialog("ShowCustomDialog", NativeDialogs.InstallDirDlg, NativeDialogs.VerifyReadyDlg)
+               .RemoveDialogsBetween(NativeDialogs.WelcomeDlg, NativeDialogs.InstallDirDlg);
 
         project.Actions.OfType<ManagedAction>()
                        .Single()

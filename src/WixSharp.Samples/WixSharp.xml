@@ -3605,12 +3605,12 @@
             </summary>
             <returns>Array of dialog types.</returns>
         </member>
-        <member name="T:WixSharp.Dialogs">
+        <member name="T:WixSharp.NativeDialogs">
             <summary>
             Defines values (names) for the standard WiX dialogs. 
             </summary>
         </member>
-        <member name="F:WixSharp.Dialogs.CustomizeDlg">
+        <member name="F:WixSharp.NativeDialogs.CustomizeDlg">
             <summary>
             The customize features dialog
             </summary>

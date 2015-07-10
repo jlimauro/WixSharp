@@ -11,7 +11,6 @@ namespace WixSharp.UI.Forms
 {
     public partial class FeaturesDialog : ManagedForm
     {
-
         /*https://msdn.microsoft.com/en-us/library/aa367536(v=vs.85).aspx
          * ADDLOCAL - list of features to install 
          * REMOVE - list of features to uninstall 
@@ -108,6 +107,11 @@ namespace WixSharp.UI.Forms
         void cancel_Click(object sender, System.EventArgs e)
         {
             Shell.Cancel();
+        }
+
+        void featuresTree_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            description.Text = e.Node.FeatureItem().Description;
         }
     }
 

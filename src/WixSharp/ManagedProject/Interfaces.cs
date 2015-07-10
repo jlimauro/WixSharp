@@ -48,6 +48,12 @@ namespace WixSharp
             return this;
         }
 
+        public new ManagedDialogs Add(Type type)
+        {
+            base.Add(type);
+            return this;
+        }
+
         public new ManagedDialogs Clear()
         {
             base.Clear();

@@ -21,8 +21,8 @@ class Script
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
         project.CustomUI = new DialogSequence()
-                                   .On(Dialogs.WelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.InstallDirDlg))
-                                   .On(Dialogs.InstallDirDlg, Buttons.Back, new ShowDialog(Dialogs.WelcomeDlg));
+                                   .On(NativeDialogs.WelcomeDlg, Buttons.Next, new ShowDialog(NativeDialogs.InstallDirDlg))
+                                   .On(NativeDialogs.InstallDirDlg, Buttons.Back, new ShowDialog(NativeDialogs.WelcomeDlg));
 
         //or
         //Compiler.WixSourceGenerated += Compiler_WixSourceGenerated; 

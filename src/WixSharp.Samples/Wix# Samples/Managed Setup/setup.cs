@@ -9,28 +9,19 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using WixSharp;
+using WixSharp.Forms;
 using WixSharp.UI.Forms;
 
 public class Script
 {
     static public void Main()
     {
-        new Script().Test();
-    }
-
-    static string ToMap(string wxlFile)
-    {
-        return null;
-    }
-
-    void Test()
-    {
         //NOTE: IT IS STILL A WORK IN PROGRESS FEATURE PREVIEW
 
-        var binaries = new Feature("Binaries", true, false);
-        var docs = new Feature("Documentation", true);
-        var tuts = new Feature("Tutorials", true);
-        binaries.Children.Add(docs);
+        var binaries = new Feature("Binaries", "Product binaries", true, false);
+        var docs = new Feature("Documentation", "Product documentation (manuals and user guides)", true);
+        var tuts = new Feature("Tutorials", "Product tutorials", true);
+        docs.Children.Add(tuts);
 
         var project =
             new ManagedProject("ManagedSetup",
@@ -40,37 +31,27 @@ public class Script
                         new File(docs, "readme.txt"),
                         new File(tuts, "setup.cs")))); 
 
-        project.UI = WUI.WixUI_Mondo;
-
-        //project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Custom_UI\EmbeddedUI_WPF\bin\Debug\EmbeddedUI_WPF.dll");
-        //project.EmbeddedUI = new EmbeddedAssembly(@"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Custom_UI\EmbeddedUI\bin\Debug\EmbeddedUI.exe");
         //project.LocalizationFile = "wixui_cs-cz.wxl";
-        //project.LicenceFile = "License.rtf";
         //project.Platform = Platform.x64;
 
 
         project.ManagedUI = ManagedUI.Default;
-        project.ManagedUI.InstallDialogs.Clear()
-                                        .Add<WelcomeDialog>()
+        project.ManagedUI.InstallDialogs.Add<WelcomeDialog>()
                                         .Add<LicenceDialog>()
+                                        //.Add<SetupTypeDialog>()
                                         .Add<FeaturesDialog>()
                                         .Add<InstallDirDialog>()
                                         .Add<ProgressDialog>()
                                         .Add<ExitDialog>();
 
-        project.ManagedUI.ModifyDialogs.Clear()
-                                       //.Add<ModifyStartDialog>()
-                                        .Add<FeaturesDialog>()
+        project.ManagedUI.ModifyDialogs.Add(Dialogs.SetupType)
+                                       .Add<FeaturesDialog>()
                                        .Add<ProgressDialog>()
                                        .Add<ExitDialog>();
 
-
-        //project.ManagedUI = null;
-        //project.UI = WUI.WixUI_FeatureTree;
-
-        //project.Load += project_Load;
-        //project.BeforeInstall += project_BeforeExecute;
-        //project.AfterInstall += project_AfterExecute;
+        project.Load += project_Load;
+        project.BeforeInstall += project_BeforeExecute;
+        project.AfterInstall += project_AfterExecute;
 
 #if vs
         project.OutDir = @"..\..\Wix# Samples\Managed Setup".PathGetFullPath();
@@ -87,22 +68,16 @@ public class Script
 
     static void project_Load(SetupEventArgs e)
     {
-        //Debugger.Launch();
-        //e.Result = ActionResult.UserExit;
         MessageBox.Show(e.ToString(), "Load");
     }
 
     static void project_BeforeExecute(SetupEventArgs e)
     {
         MessageBox.Show(e.ToString(), "BeforeInstall");
-        //e.Result = ActionResult.Failure;
-        //e.Result = ActionResult.UserExit;
-        //e.Result = Microsoft.Deployment.WindowsInstaller.ActionResult.UserExit;
     }
 
     static void project_AfterExecute(SetupEventArgs e)
     {
-        //Debugger.Launch();
         MessageBox.Show(e.ToString(), "AfterExecute");
     }
 }
