@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using WindowsInstaller;
@@ -101,6 +102,29 @@ namespace WixSharp.UI
         public bool IsInstalled()
         {
             return IsInstalled(this.GetProductCode());
+        }
+
+        /// <summary>
+        /// Extracts the root components of the top-level install directory from the encapsulated MSI database.
+        /// Typically it is a first child of the 'TARGETDIR' MSI directory.
+        /// <para><remarks>The DB view is not closed after the call</remarks></para>
+        /// </summary>
+        /// <returns>
+        /// Root component of install directory. If the 'TARGETDIR' cannot be located then the return value is the 
+        /// expanded value of 'ProgramFilesFolder' WiX constant.
+        /// </returns>
+        public string GetInstallDirectoryRoot()
+        {
+            var qr = this.db.View("SELECT * FROM Directory WHERE Directory_Parent = 'TARGETDIR'").NextRecord();
+
+            // Should be 3 if msi has expected content.
+            if ((int)qr == 3)
+            {
+                string rootDirId = qr.GetString(1);
+                return rootDirId.AsWixVarToPath();
+            }
+            else
+                return "ProgramFilesFolder".AsWixVarToPath(); // Always default to Program Files folder.
         }
 
         /// <summary>

@@ -98,7 +98,7 @@ namespace WixSharp.UI
                 ErrorStatus = "Product is not installed";
         }
 
-        void RunAsync(Action action)
+        void RunAsync(System.Action action)
         {
             //Task.Factory.StartNew(() =>
             ThreadPool.QueueUserWorkItem(x=>

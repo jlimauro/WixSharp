@@ -1,4 +1,5 @@
 using System;
+using sys=System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
@@ -26,12 +27,12 @@ namespace WixSharp.UI
         /// <summary>
         /// Occurs when setup completes.
         /// </summary>
-        public event Action SetupComplete;
+        public event sys.Action SetupComplete;
 
         /// <summary>
         /// Occurs when setup starts.
         /// </summary>
-        public event Action SetupStarted;
+        public event sys.Action SetupStarted;
 
         /// <summary>
         /// Occurs when new setup action started.
@@ -42,7 +43,7 @@ namespace WixSharp.UI
         /// The UI thread marshalling delegate. It should be set for the environments where cross-thread calls
         /// must be marshalled (e.g. WPF, WinForms). Not needed otherwise (e.g. Console application).
         /// </summary>
-        public Action<Action> InUiThread = (action) => action();
+        public sys.Action<sys.Action> InUiThread = (action) => action();
 
         void NotifyHostOnProgress()
         {
