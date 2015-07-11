@@ -23,6 +23,7 @@ public class Script
         var tuts = new Feature("Tutorials", "Product tutorials", true);
         docs.Children.Add(tuts);
 
+
         var project =
             new ManagedProject("ManagedSetup",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
@@ -52,6 +53,8 @@ public class Script
         project.Load += project_Load;
         project.BeforeInstall += project_BeforeExecute;
         project.AfterInstall += project_AfterExecute;
+
+        project.DefaultFeature = null;
 
 #if vs
         project.OutDir = @"..\..\Wix# Samples\Managed Setup".PathGetFullPath();

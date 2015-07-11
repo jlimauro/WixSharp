@@ -86,6 +86,10 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WixSharp.Msi\WixSharp.Msi\WixSharp.Msi.csproj">
+      <Project>{611d8893-7d39-4f3c-92d5-0554f780a914}</Project>
+      <Name>WixSharp.Msi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WixSharp.UI\WixSharp.UI.csproj">
       <Project>{79033a3e-565e-47a3-93f6-d95789b024fc}</Project>
       <Name>WixSharp.UI</Name>

@@ -62,6 +62,17 @@
             </summary>
             <returns>Returns <c>true</c> if the product is installed. Otherwise returns <c>false</c>.</returns>
         </member>
+        <member name="M:WixSharp.UI.MsiParser.GetInstallDirectoryRoot">
+            <summary>
+            Extracts the root components of the top-level install directory from the encapsulated MSI database.
+            Typically it is a first child of the 'TARGETDIR' MSI directory.
+            <para><remarks>The DB view is not closed after the call</remarks></para>
+            </summary>
+            <returns>
+            Root component of install directory. If the 'TARGETDIR' cannot be located then the return value is the 
+            expanded value of 'ProgramFilesFolder' WiX constant.
+            </returns>
+        </member>
         <member name="M:WixSharp.UI.MsiParser.ParseCommonData(System.String)">
             <summary>
             Parses the <c>MsiInstallMessage.CommonData</c> data.

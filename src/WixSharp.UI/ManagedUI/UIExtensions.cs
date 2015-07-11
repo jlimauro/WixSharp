@@ -51,11 +51,11 @@ namespace WixSharp
         {
             List<Dictionary<string, object>> result = session.OpenView("select * from Component", "Directory_");
 
-            var dirs = result.Select(x=>x["Directory_"]).Cast<string>().Distinct().ToArray();
+            var dirs = result.Select(x => x["Directory_"]).Cast<string>().Distinct().ToArray();
 
             string shortestDir = dirs.Select(x => new { Name = x, Parts = session.GetDirectoryPathParts(x) })
                                      .OrderBy(x => x.Parts.Length)
-                                     .Select(x=>x.Name)
+                                     .Select(x => x.Name)
                                      .FirstOrDefault();
             if (shortestDir == null)
                 throw new Exception("GetInstallDirectoryPath Error: cannot find InstallDirectory");
@@ -63,44 +63,44 @@ namespace WixSharp
                 return shortestDir;
         }
 
-public static string GetDirectoryPath(this Session session, string name)
-{
-    string[] subDirs = session.GetDirectoryPathParts(name)
-                                .Select(x => x.AsWixVarToPath())
-                                .ToArray();
-    return string.Join(@"\", subDirs);
-}
-
-static string[] GetDirectoryPathParts(this Session session, string name)
-{
-    var path = new List<string>();
-    var names = new Queue<string>(new[] { name });
-
-    while (names.Any())
-    {
-        var item = names.Dequeue();
-
-        using (var sql = session.Database.OpenView("select * from Directory where Directory = '" + item + "'"))
+        public static string GetDirectoryPath(this Session session, string name)
         {
-            sql.Execute();
-            using (var record = sql.Fetch())
-            {
-                //var _name = record["Directory"];
-                var subDir = record.GetString("DefaultDir").Split('|').Last();
-                path.Add(subDir);
+            string[] subDirs = session.GetDirectoryPathParts(name)
+                                        .Select(x => x.AsWixVarToPath())
+                                        .ToArray();
+            return string.Join(@"\", subDirs);
+        }
 
-                if (!record.IsNull("Directory_Parent"))
+        static string[] GetDirectoryPathParts(this Session session, string name)
+        {
+            var path = new List<string>();
+            var names = new Queue<string>(new[] { name });
+
+            while (names.Any())
+            {
+                var item = names.Dequeue();
+
+                using (var sql = session.Database.OpenView("select * from Directory where Directory = '" + item + "'"))
                 {
-                    var parent = record.GetString("Directory_Parent");
-                    if (parent != "TARGETDIR")
-                        names.Enqueue(parent);
+                    sql.Execute();
+                    using (var record = sql.Fetch())
+                    {
+                        //var _name = record["Directory"];
+                        var subDir = record.GetString("DefaultDir").Split('|').Last();
+                        path.Add(subDir);
+
+                        if (!record.IsNull("Directory_Parent"))
+                        {
+                            var parent = record.GetString("Directory_Parent");
+                            if (parent != "TARGETDIR")
+                                names.Enqueue(parent);
+                        }
+                    }
                 }
             }
+            path.Reverse();
+            return path.ToArray();
         }
-    }
-    path.Reverse();
-    return path.ToArray();
-}
 
         internal static string UserOrDefaultContentOf(string extenalFile, string outDir, string fileName, object defaultContent)
         {

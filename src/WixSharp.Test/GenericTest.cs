@@ -6,6 +6,7 @@ using Microsoft.Deployment.WindowsInstaller;
 using Xunit;
 using WixSharp;
 using io = System.IO;
+using WixSharp.UI;
 
 namespace WixSharp.Test
 {
@@ -19,6 +20,14 @@ namespace WixSharp.Test
 
             var result = Utils.MakeRelative(path, baseDir);
             Assert.Equal(@"..\Content\readme.txt", result);
+        }
+       
+        //[Fact]
+        public void MsiParser_InstallDir()
+        {
+            var parser = new MsiParser(@"..\WixSharp.Samples\Wix# Samples\Managed Setup\ManagedSetup.msi");
+            string dir = parser.GetInstallDirectoryRoot();
+            dir = parser.GetInstallDirectoryRoot();
         }
 
         [Fact]
