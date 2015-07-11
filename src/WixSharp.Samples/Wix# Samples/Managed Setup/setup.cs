@@ -54,7 +54,7 @@ public class Script
         project.BeforeInstall += project_BeforeExecute;
         project.AfterInstall += project_AfterExecute;
 
-        project.DefaultFeature = null;
+        //project.DefaultFeature = null;
 
 #if vs
         project.OutDir = @"..\..\Wix# Samples\Managed Setup".PathGetFullPath();
