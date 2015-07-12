@@ -55,7 +55,7 @@ namespace WixSharp.UI.Forms
                             Text = item.Title,
                             Tag = item, //link view to model
                             IsReadOnly = item.DisallowAbsent,
-                            Checked = item.RequestState != InstallState.Absent
+                            Checked = item.DefaultIsToBeInstalled()
                         };
 
                 item.View = view;
@@ -73,11 +73,13 @@ namespace WixSharp.UI.Forms
                                      itemsToProcess.Enqueue(c); //schedule for further processing
                                  });
             }
-            
+
             //add views to the treeView control
             rootItems.Select(x => x.View)
                      .Cast<TreeNode>()
-                     .ForEach(node=>featuresTree.Nodes.Add(node));
+                     .ForEach(node => featuresTree.Nodes.Add(node));
+
+            isAutoCheckingActive = true;
         }
 
         void back_Click(object sender, System.EventArgs e)
@@ -112,6 +114,34 @@ namespace WixSharp.UI.Forms
         void featuresTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             description.Text = e.Node.FeatureItem().Description;
+        }
+
+        bool isAutoCheckingActive = false;
+        void featuresTree_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            if (isAutoCheckingActive)
+            {
+                isAutoCheckingActive = false;
+                bool newState = e.Node.Checked;
+                var queue = new Queue<TreeNode>();
+                queue.EnqueueRange(e.Node.Nodes.ToArray());
+
+                while (queue.Any())
+                {
+                    var node = queue.Dequeue();
+                    node.Checked = newState;
+                    queue.EnqueueRange(node.Nodes.ToArray());
+
+                }
+                isAutoCheckingActive = true;
+            }
+        }
+
+        void reset_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            isAutoCheckingActive = false;
+            features.ForEach(f => f.ResetViewChecked());
+            isAutoCheckingActive = true;
         }
     }
 

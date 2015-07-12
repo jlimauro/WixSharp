@@ -16,10 +16,26 @@ namespace WixSharp.UI.Forms
                 return (feature.View as TreeNode).Checked;
             return false;
         }
+        
+        public static void ResetViewChecked(this FeatureItem feature)
+        {
+            if (feature.View is TreeNode)
+                (feature.View as TreeNode).Checked = feature.DefaultIsToBeInstalled();
+        }
+        
+        public static bool DefaultIsToBeInstalled(this FeatureItem feature)
+        {
+            return feature.RequestState != InstallState.Absent;
+        }
 
         public static FeatureItem FeatureItem(this TreeNode node)
         {
             return node.Tag as FeatureItem;
+        }
+       
+        public static TreeNode[] ToArray(this TreeNodeCollection nodes)
+        {
+            return nodes.Cast<TreeNode>().ToArray();
         }
 
         public static TreeNode[] AllNodes(this TreeView treeView)
@@ -65,7 +81,9 @@ namespace WixSharp.UI.Forms
             static void treeView_BeforeCheck(object sender, TreeViewCancelEventArgs e)
             {
                 if (IsReadOnly(e.Node))
+                {
                     e.Cancel = true;
+                }
             }
 
             static Pen dotPen = new Pen(Color.FromArgb(128, 128, 128)) { DashStyle = DashStyle.Dot };

@@ -41,6 +41,8 @@ namespace WixSharp.UI.Forms
             this.featuresTree = new System.Windows.Forms.TreeView();
             this.panel3 = new System.Windows.Forms.Panel();
             this.description = new System.Windows.Forms.Label();
+            this.reset = new System.Windows.Forms.LinkLabel();
+            this.label3 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.banner)).BeginInit();
             this.panel1.SuspendLayout();
@@ -139,19 +141,20 @@ namespace WixSharp.UI.Forms
             // featuresTree
             // 
             this.featuresTree.CheckBoxes = true;
-            this.featuresTree.Location = new System.Drawing.Point(15, 78);
+            this.featuresTree.Location = new System.Drawing.Point(15, 95);
             this.featuresTree.Name = "featuresTree";
-            this.featuresTree.Size = new System.Drawing.Size(288, 206);
+            this.featuresTree.Size = new System.Drawing.Size(288, 189);
             this.featuresTree.TabIndex = 0;
+            this.featuresTree.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.featuresTree_AfterCheck);
             this.featuresTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.featuresTree_AfterSelect);
             // 
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.description);
-            this.panel3.Location = new System.Drawing.Point(319, 78);
+            this.panel3.Location = new System.Drawing.Point(319, 95);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(158, 206);
+            this.panel3.Size = new System.Drawing.Size(158, 189);
             this.panel3.TabIndex = 8;
             // 
             // description
@@ -161,12 +164,36 @@ namespace WixSharp.UI.Forms
             this.description.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.description.Location = new System.Drawing.Point(0, 0);
             this.description.Name = "description";
-            this.description.Size = new System.Drawing.Size(156, 204);
+            this.description.Size = new System.Drawing.Size(156, 187);
             this.description.TabIndex = 1;
+            // 
+            // reset
+            // 
+            this.reset.AutoSize = true;
+            this.reset.Location = new System.Drawing.Point(15, 289);
+            this.reset.Name = "reset";
+            this.reset.Size = new System.Drawing.Size(107, 13);
+            this.reset.TabIndex = 9;
+            this.reset.TabStop = true;
+            this.reset.Text = "[CustomizeDlgReset]";
+            this.reset.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.reset_LinkClicked);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.SystemColors.Control;
+            this.label3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(15, 70);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(101, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "[CustomizeDlgText]";
             // 
             // FeaturesDialog
             // 
             this.ClientSize = new System.Drawing.Size(494, 361);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.reset);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -182,6 +209,7 @@ namespace WixSharp.UI.Forms
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -197,5 +225,7 @@ namespace WixSharp.UI.Forms
         private Button cancel;
         private Panel panel3;
         private Label description;
+        private LinkLabel reset;
+        private Label label3;
     }
 }

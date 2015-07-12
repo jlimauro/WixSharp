@@ -312,6 +312,16 @@ namespace WixSharp
             }
             return collection;
         }
+
+        public static Queue<T> EnqueueRange<T>(this Queue<T> queue, IEnumerable<T> collection)
+        {
+            foreach (T item in collection)
+            {
+                queue.Enqueue(item);
+            }
+            return queue;
+        }
+
         /// <summary>
         /// Gets the combined hash code of all items in the collection. This method is convenient to use to 
         /// verify that the collections have identical items.
