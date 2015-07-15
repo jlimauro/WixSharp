@@ -2401,6 +2401,617 @@
             <param name="filePermission"></param>
             <param name="permissionElement"></param>
         </member>
+        <member name="T:WixSharp.Extensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WixSharp.Extensions.IsAdmin(System.Security.Principal.WindowsIdentity)">
+            <summary>
+            Determines whether the current user is administrator.
+            </summary>
+            <param name="identity">The identity.</param>
+            <returns></returns>
+        </member>
+        <member name="F:WixSharp.Extensions.WixScalingFactor">
+            <summary>
+            The WiX UI scaling factor.
+            WiX pixels are not the same as Windows ones. For example Wix.Point(56,17) is equivalent of the Win.Point(75,23)
+            </summary>
+        </member>
+        <member name="M:WixSharp.Extensions.WScale(System.Int32)">
+            <summary>
+            Converts (scales) Windows coordinate value into WiX one.
+            </summary>
+            <param name="data">The data.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.Xml.Linq.XElement)">
+            <summary>
+            Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
+            </summary>
+            <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
+            <param name="element">Element to add.</param>
+            <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
+            <para>
+            <c>elementName</c> can be either the name of the element to be added or the sequence of the elements specified by path (e.g. <c>AddElement("Product/Package")</c>).
+            </para>
+            </summary>
+            <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
+            <param name="elementName">Element to add.</param>
+            <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.String,System.String)">
+            <summary>
+            Adds the element to a given XML element and sets the attributes of the newly created element.
+            <para>
+            <c>elementName</c> can be either the name of the element to be added or the sequence of the elements specified by path (e.g. <c>AddElement("Product/Package")</c>).
+            </para>
+            </summary>
+            <param name="obj">The object.</param>
+            <param name="elementName">The element.</param>
+            <param name="attributesDefinition">The attributes definition. Rules of the composing the
+            definition are the same as for <see cref="P:WixSharp.WixEntity.AttributesDefinition"/>.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToDictionary(System.String,System.Char,System.Char)">
+            <summary>
+            Converts key/value map into the dictionary. The map entry format
+            is as follows: &lt;key&gt;=&lt;value&gt;[;&lt;key&gt;=&lt;value&gt;].
+            </summary>
+            <param name="map">The map.</param>
+            <param name="itemDelimiter">The item delimiter.</param>
+            <param name="valueDelimiter">The value delimiter.</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">Invalid map entry</exception>
+        </member>
+        <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.Xml.Linq.XElement,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
+            </summary>
+            <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
+            <param name="element">Element to add.</param>
+            <param name="attributes">The collection of Name/Value attributes to add.</param>
+            <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.AddAttributes(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Adds the attributes to the to a given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
+            </summary>
+            <param name="obj">The object.</param>
+            <param name="attributesDefinition">The attributes definition. Rules of the composing the
+            definition are the same as for <see cref="P:WixSharp.WixEntity.AttributesDefinition"/>.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.SetAttribute(System.Xml.Linq.XElement,System.String,System.Object)">
+            <summary>
+            Sets the value of the attribute. This is a fluent version of XElement.SetAttributeValue. 
+            </summary>
+            <param name="obj">The object.</param>
+            <param name="name">The name.</param>
+            <param name="value">The value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.SetAttribute(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Sets the value of the attribute. This is a fluent version of XElement.SetAttributeValue that takes the Name/Value 
+            string definition as a single input parameter.
+            </summary>
+            <param name="obj">The object.</param>
+            <param name="nameValuePair">The attribute name/value pair of the "[name]=[value]" format (e.g. ""Version=!(bind.FileVersion.Utils.dll)").</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.AddAttributes(System.Xml.Linq.XElement,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Adds the attributes to the to a given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
+            </summary>
+            <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
+            <param name="attributes">The collection of Name/Value attributes to add.</param>
+            <returns><see cref="T:System.Xml.Linq.XElement"/> with added attributes.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.HasAttribute(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="name">The name.</param>
+            <returns>
+            	<c>true</c> if the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WixSharp.Extensions.HasAttribute(System.Xml.Linq.XElement,System.String,System.Predicate{System.String})">
+            <summary>
+            Determines whether the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute and the attribute value passes the test
+            by <c>attributeValueSelector</c>.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="name">The name.</param>
+            <param name="attributeValueSelector">The attribute value selector. Allows testing the attribute value.</param>
+            <returns>
+            	<c>true</c> if the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WixSharp.Extensions.Parent(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Search for the first parent element (in the "parents chain") with the specified name of the given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
+            </summary>
+            <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
+            <param name="parentName">Name of the parent element to search.</param>
+            <returns><see cref="T:System.Xml.Linq.XElement"/> with the matching name.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.CopyAttributeFrom(System.Xml.Linq.XElement,System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exists, its value is modified.
+            </summary>
+            <param name="dest">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</param>
+            <param name="src">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute from.</param>
+            <param name="attributeName">Name of the source attribute to copy.</param>
+            <returns>The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ReadAttribute(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Reads the attribute value. Returns null if attribute doesn't exist.
+            </summary>
+            <param name="e">The e.</param>
+            <param name="attributeName">Name of the attribute.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            A generic LINQ equivalent of C# foreach loop.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="collection">The collection.</param>
+            <param name="action">The action.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.GetItemsHashCode``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Gets the combined hash code of all items in the collection. This method is convenient to use to 
+            verify that the collections have identical items.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="collection">The collection.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.CopyAttributeFrom(System.Xml.Linq.XElement,System.String,System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exists, its value is modified.
+            </summary>
+            <param name="dest">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</param>
+            <param name="destAttributeName">Name of the destination attribute to copy.</param>
+            <param name="src">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute from.</param>
+            <param name="srcAttributeName">Name of the source attribute to copy.</param>
+            <returns>The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToDirID(System.String)">
+            <summary>
+            Replaces all Wix# predefined string constants in the Wix# directory path with their WiX equivalents. 
+            <para>Processed string can be used as an Id for referencing from other Wix# components and setting the 
+            corresponding path from <c>MsiExec.exe</c> command line.</para>
+            </summary>
+            <param name="path">The Wix# directory path.</param>
+            <returns>Replacement/conversion result.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToInt(System.String,System.Int32)">
+            <summary>
+            Safely converts string to int.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="defaultValue">The default value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToIntPtr(System.String)">
+            <summary>
+            Safely converts string to IntPtr.
+            </summary>
+            <param name="value">The value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.SameAs(System.String,System.String,System.Boolean)">
+            <summary>
+            Simple wrapper around System.String.Compare(string strA, string strB, bool ignoreCase);
+            </summary>
+            <param name="strA">The string a.</param>
+            <param name="strB">The string b.</param>
+            <param name="ignoreCase">if set to <c>true</c> [ignore case].</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.SamePathAs(System.String,System.String)">
+            <summary>
+            Returns true if bothe values represent the same path.
+            </summary>
+            <param name="pathA">The path a.</param>
+            <param name="pathB">The path b.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.PathChangeDirectory(System.String,System.String)">
+            <summary>
+            The change directory of the file path.
+            </summary>
+            <param name="path">The path.</param>
+            <param name="newDir">The new dir.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.PathChangeExtension(System.String,System.String)">
+            <summary>
+            Change extension of the file path.
+            </summary>
+            <param name="path">The path.</param>
+            <param name="extension">The extension.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.PathGetFullPath(System.String)">
+            <summary>
+            Gets the full path.
+            </summary>
+            <param name="path">The path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.FormatInline(System.String,System.Object[])">
+            <summary>
+            Formats the specified string.
+            </summary>
+            <param name="obj">The string to format.</param>
+            <param name="args">The formatting arguments.</param>
+            <returns>The formatted string.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.GetLines(System.String)">
+            <summary>
+            Splits string by lines. The method handles both '\r\n' and '\n' line endings.
+            </summary>
+            <param name="text">The text to be split.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.Expand(System.String)">
+            <summary>
+            Replaces all Wix# predefined string constants (Environment Constants) in the Wix# directory path with their WiX equivalents and escapes all WiX illegal characters (e.g. space character). 
+            <para>
+            <para>It also replaces all "illegal" characters (e.g. !,\) with '_' character to allow the path value to be used as a WiX Id XML attribute.</para>
+            <example>The following is an example of expanding directory name paths.
+            <code>
+            @"%ProgramFiles%\My Company\My Product".Expand()       -> @"ProgramFilesFolder\My_Company\My_Product"
+            @"ProgramFilesFolder\My Company\My Product".Expand()   -> @"ProgramFilesFolder\My_Company\My_Product"
+            @"[ProgramFilesFolder]\My Company\My Product".Expand() -> @"ProgramFilesFolder\My_Company\My_Product"
+            </code>
+            </example>
+            </para>
+            For the list of supported constants analyses <c>WixSharp.Compiler.EnvironmentConstantsMapping.Keys</c>.
+            </summary>
+            <param name="path">The Wix# directory path.</param>
+            <returns>Replacement result.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ContainsWixConstants(System.String)">
+            <summary>
+            Determines whether the string contains WiX constants (values enclosed into square brackets).
+            </summary>
+            <param name="data">The data.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.Map64Dirs(System.String)">
+            <summary>
+            Maps the Wix# constants included in path into their x64 equivalents.
+            <para>For example %ProgramFiles%\My Company\My Product should be preprocessed into %ProgramFiles64%\My Company\My Product</para>
+            </summary>
+            <param name="path">The path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ExpandWixEnvConsts(System.String)">
+            <summary>
+            Replaces all Wix# predefined string constants (Environment Constants) in the Wix# directory path with their WiX equivalents and escapes all WiX illegal characters (e.g. space character). 
+            <para>
+            <example>The following is an example of expanding directory name paths.
+            <code>
+            @"%ProgramFiles%\My Company\My Product".Expand()       -> @"ProgramFilesFolder\My_Company\My_Product"
+            @"ProgramFilesFolder\My Company\My Product".Expand()   -> @"ProgramFilesFolder\My_Company\My_Product"
+            @"[ProgramFilesFolder]\My Company\My Product".Expand() -> @"ProgramFilesFolder\My_Company\My_Product"
+            </code>
+            </example>
+            </para>
+            For the list of supported constants analyse <c>WixSharp.Compiler.EnvironmentConstantsMapping.Keys</c>.
+            </summary>
+            <param name="path">The Wix# directory path.</param>
+            <returns>Replacement result.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ExpandEnvVars(System.String)">
+            <summary>
+            Expands the EnvironmentVariable It is nothing else but a an extension method wrapping Environment.ExpandEnvironmentVariables to allow fluent API.
+            </summary>
+            <param name="path">The path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.PresentIn``1(``0,``0)">
+            <summary>
+            Reverse equivalent of Enum.HasFlag of .NET v4.5
+            </summary>
+        </member>
+        <member name="M:WixSharp.Extensions.IsEmpty(System.String)">
+            <summary>
+            Determines whether the given string is empty.
+            </summary>
+            <param name="s">The string to analyse.</param>
+            <returns>
+            	<c>true</c> if the specified s is empty; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WixSharp.Extensions.IsNotEmpty(System.String)">
+            <summary>
+            Determines whether the given string is empty or not.
+            </summary>
+            <param name="s">The string to analyse.</param>
+            <returns>
+            	<c>true</c> if the specified string is not empty; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WixSharp.Extensions.GetLeftIndent(System.String)">
+            <summary>
+            Returns all leading white-space characters.
+            </summary>
+            <param name="s">The string to analyse.</param>
+            <returns>
+            	Total count of leading white-space characters
+            </returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ConcatItems(System.Collections.Generic.IEnumerable{System.String},System.String)">
+            <summary>
+            Concats the specified strings. In the result string all items are separated with the specified delimiter.
+            </summary>
+            <param name="strings">The strings.</param>
+            <param name="delimiter">The delimiter.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.Select(System.Xml.Linq.XContainer,System.String)">
+            <summary>
+            Selects from the given element the first child element matching the specified path (e.g. <c>Select("Product/Package")</c>).
+            </summary>
+            <param name="element">The element to be searched.</param>
+            <param name="path">The path.</param>
+            <returns>The element matching the path.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.FindDirectory(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Selects from the given element the first child element Directory matching the specified path (e.g. <c>Select("ProgramFiles/MyCompany") by </c>).
+            </summary>
+            <param name="element">The element to be searched.</param>
+            <param name="path">The path.</param>
+            <returns>The element matching the path.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.AllElements(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Flattened "view" of all elements with a given name (LocalName).
+            </summary>
+            <param name="element">The element to be searched.</param>
+            <param name="elementName">The element name.</param>
+            <returns>The elements matching the name.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.HasLocalName(System.Xml.Linq.XElement,System.String,System.Boolean)">
+            <summary>
+            Determines whether the XElement has the specified <c>LocalName</c>.
+            </summary>
+            <param name="element">The element.</param>
+            <param name="elementName">Name of the element.</param>
+            <param name="ignoreCase">if set to <c>true</c> [ignore case].</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.FindSingle(System.Xml.Linq.XContainer,System.String)">
+            <summary>
+            Selects single descendant element with a given name (LocalName). Throws if no or more then one match found
+            </summary>
+            <param name="container">The element to be searched.</param>
+            <param name="elementName">The element local name.</param>
+            <returns>The elements matching the name.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.FindAll(System.Xml.Linq.XContainer,System.String)">
+            <summary>
+            Selects all descendant elements with a given name (LocalName). Throws if no or more then one match found
+            </summary>
+            <param name="element">The element to be searched.</param>
+            <param name="elementName">The element local name.</param>
+            <returns>The elements matching the name.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.MoveTo(System.Xml.Linq.XElement,System.Xml.Linq.XElement)">
+            <summary>
+            Removes the element from its current parent and inserts it into another element.
+            </summary>
+            <param name="element">The element.</param>
+            <param name="newParent">The new parent.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.SelectOrCreate(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Selects, from the given element, the child element matching the specified path.
+            <para>If the child element is not found, a new element is created matching the path.</para>
+            </summary>
+            <param name="element">The element to be searched.</param>
+            <param name="path">The path.</param>
+            <returns>The element matching the path.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToWString(Microsoft.Win32.RegistryHive)">
+            <summary>
+            Gets WiX compatible string representation (e.g. HKCR, HKLM).
+            </summary>
+            <param name="value">The <see cref="T:Microsoft.Win32.RegistryHive"/> value to convert.</param>
+            <returns>WiX compatible string representation.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToWString(WixSharp.Sequence)">
+            <summary>
+            Converts <see cref="T:WixSharp.Sequence"/> into the WiX identifier by removing WiX illegal characters.
+            </summary>
+            <param name="value">The <see cref="T:WixSharp.Sequence"/> value.</param>
+            <returns>Valid WiX identifier.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToWString(System.String)">
+            <summary>
+            Converts the string into the WiX identifier by removing WiX illegal characters.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>Valid WiX identifier.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToCondition(System.String)">
+            <summary>
+            Converts the string into the <see cref="T:WixSharp.Condition"/> instance.
+            </summary>
+            <param name="value">The string value.</param>
+            <returns><see cref="T:WixSharp.Condition"/> instance.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToNoRevisionString(System.Version)">
+            <summary>
+            Generates string representation without revision part.
+            </summary>
+            <param name="ver">The instance of the <see cref="T:System.Version"/>.</param>
+            <returns><see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.GetWType(System.Object)">
+            <summary>
+            Gets WiX compatible type name of the CLR <see cref="T:System.Object"/>. 
+            This method should be used to generate string value of the <c>RegistryValue.Type</c> attribute.
+            </summary>
+            <param name="obj">The instance of the <see cref="T:System.Object"/>.</param>
+            <returns>The WiX compatible type name.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.Combine``1(System.Array,System.Array)">
+            <summary>
+            Combines given <see cref="T:System.Array"/> items with items of another <see cref="T:System.Array"/>.
+            </summary>
+            <typeparam name="T">The type of the elements of <c>obj</c>.</typeparam>
+            <param name="obj">A <see cref="T:System.Array"/> whose elements to combine.</param>
+            <param name="items">Another instance of <see cref="T:System.Array"/> whose elements to combine with <c>obj</c>.</param>
+            <returns>A combined <see cref="T:System.Array"/>.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.Add``2(``0[],``1)">
+            <summary>
+            Adds/combines given <see cref="T:System.Array"/> object with the specified item.
+            </summary>
+            <typeparam name="T1">The type of the elements of <c>obj</c>.</typeparam>
+            <typeparam name="T2">The type of the elements of the items being added.</typeparam>
+            <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
+            <param name="item">The item to be added.</param>
+            <returns>Combined <see cref="T:System.Array"/> object.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.AddRange``2(``0[],System.Collections.Generic.IEnumerable{``1})">
+            <summary>
+            Adds/combines given <see cref="T:System.Array"/> object with the specified items.
+            </summary>
+            <typeparam name="T1">The type of the elements of <c>obj</c>.</typeparam>
+            <typeparam name="T2">The type of the elements of the items being added.</typeparam>
+            <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
+            <param name="items">The items to be added.</param>
+            <returns>Combined <see cref="T:System.Array"/> object.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.Combine``1(System.Collections.Generic.List{``0},System.Collections.Generic.List{``0})">
+            <summary>
+            Combines given <see cref="T:System.Collections.Generic.List"/> items with items of another <see cref="T:System.Collections.Generic.List"/>.
+            </summary>
+            <typeparam name="T">The type of the elements of <c>obj</c>.</typeparam>
+            <param name="obj">A <see cref="T:System.Collections.Generic.List"/>.</param>
+            <param name="items">Another instance of <see cref="T:System.Collections.Generic.List"/> whose elements are to be combined with those of <c>obj</c>.</param>
+            <returns>A combined <see cref="T:System.Collections.Generic.List"/>.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.IsNullOrEmpty(System.String)">
+            <summary>
+            Fluent version of the <see cref="T:System.String.IsNullOrEmpty"/> for analysing the string value 
+            for being <c>null</c> or empty.
+            </summary>
+            <param name="obj">A <see cref="T:System.String"/> whose value to analyse.</param>
+            <returns>true if the value parameter is null or an empty string (""); otherwise, false.</returns>
+        </member>
+        <member name="M:WixSharp.Extensions.IsActive(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Determines whether the specified <see cref="T:Microsoft.Deployment.WindowsInstaller.Session"/> is active.
+            <para>It is useful for checking if the session is terminated (e.g. in deferred custom actions).</para>
+            </summary>
+            <param name="session">The session.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.IsInstalled(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Determines whether the product associated with the session is installed.
+            </summary>
+            <param name="session">The session.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.IsInstalling(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Gets a value indicating whether the product is being installed.
+            </summary>
+            <value>
+            <c>true</c> if installing; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:WixSharp.Extensions.IsRepairing(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Gets a value indicating whether the product is being repaired.
+            </summary>
+        </member>
+        <member name="M:WixSharp.Extensions.IsUninstalling(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Gets a value indicating whether the product is being uninstalled.
+            </summary>
+        </member>
+        <member name="M:WixSharp.Extensions.IsBasic(Microsoft.Deployment.WindowsInstaller.InstallUIOptions)">
+            <summary>
+            Determines whether this is basic UI level.
+            </summary>
+            <param name="level">The level.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.Property(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
+            <summary>
+            Returns the value of the named property of the specified <see cref="T:Microsoft.Deployment.WindowsInstaller.Session"/> object.
+            <para>It can be uses as a generic way of accessing the properties as it redirects (transparently) access to the 
+            <see cref="T:Microsoft.Deployment.WindowsInstaller.Session.CustomActionData"/> if the session is terminated (e.g. in deferred 
+            custom actions).</para>
+            </summary>
+            <param name="session">The session.</param>
+            <param name="name">The name.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.SaveBinary(Microsoft.Deployment.WindowsInstaller.Session,System.String,System.String)">
+            <summary>
+            Saves the binary (from the Binary table) into the file.
+            </summary>
+            <param name="session">The session.</param>
+            <param name="binary">The binary.</param>
+            <param name="file">The file.</param>
+        </member>
+        <member name="M:WixSharp.Extensions.TryReadBinary(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
+            <summary>
+            Tries the read the binary (from the Binary table) into the byte array.
+            </summary>
+            <param name="session">The session.</param>
+            <param name="binary">The binary.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ReadBinary(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
+            <summary>
+            Read the binary (from the Binary table) into the byte array.
+            </summary>
+            <param name="session">The session.</param>
+            <param name="binary">The binary.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.HandleErrors(Microsoft.Deployment.WindowsInstaller.Session,System.Action)">
+            <summary>
+            Handles the errors in the specified action being executed. The all exceptions are caught and logged to the msi log.
+            </summary>
+            <param name="session">The session.</param>
+            <param name="action">The action.</param>
+            <returns><see cref="T:Microsoft.Deployment.WindowsInstaller.ActionResult.Success"/> if no errors detected, otherwise
+            it returns <see cref="T:Microsoft.Deployment.WindowsInstaller.ActionResult.Failure"/>.
+            </returns>
+        </member>
+        <member name="M:WixSharp.Extensions.ToWObject``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            To a collection into WixObject that can be passed in the Project constructor.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
         <member name="T:WixSharp.SqlDbOption">
             <summary>
             Attributes represented by this enum will be rendered as having the value 'yes'.
@@ -3720,617 +4331,6 @@
             <returns>
             The result of the conversion.
             </returns>
-        </member>
-        <member name="T:WixSharp.Extensions">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:WixSharp.Extensions.IsAdmin(System.Security.Principal.WindowsIdentity)">
-            <summary>
-            Determines whether the current user is administrator.
-            </summary>
-            <param name="identity">The identity.</param>
-            <returns></returns>
-        </member>
-        <member name="F:WixSharp.Extensions.WixScalingFactor">
-            <summary>
-            The WiX UI scaling factor.
-            WiX pixels are not the same as Windows ones. For example Wix.Point(56,17) is equivalent of the Win.Point(75,23)
-            </summary>
-        </member>
-        <member name="M:WixSharp.Extensions.WScale(System.Int32)">
-            <summary>
-            Converts (scales) Windows coordinate value into WiX one.
-            </summary>
-            <param name="data">The data.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.Xml.Linq.XElement)">
-            <summary>
-            Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
-            </summary>
-            <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
-            <param name="element">Element to add.</param>
-            <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
-            <para>
-            <c>elementName</c> can be either the name of the element to be added or the sequence of the elements specified by path (e.g. <c>AddElement("Product/Package")</c>).
-            </para>
-            </summary>
-            <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
-            <param name="elementName">Element to add.</param>
-            <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.String,System.String)">
-            <summary>
-            Adds the element to a given XML element and sets the attributes of the newly created element.
-            <para>
-            <c>elementName</c> can be either the name of the element to be added or the sequence of the elements specified by path (e.g. <c>AddElement("Product/Package")</c>).
-            </para>
-            </summary>
-            <param name="obj">The object.</param>
-            <param name="elementName">The element.</param>
-            <param name="attributesDefinition">The attributes definition. Rules of the composing the
-            definition are the same as for <see cref="P:WixSharp.WixEntity.AttributesDefinition"/>.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ToDictionary(System.String,System.Char,System.Char)">
-            <summary>
-            Converts key/value map into the dictionary. The map entry format
-            is as follows: &lt;key&gt;=&lt;value&gt;[;&lt;key&gt;=&lt;value&gt;].
-            </summary>
-            <param name="map">The map.</param>
-            <param name="itemDelimiter">The item delimiter.</param>
-            <param name="valueDelimiter">The value delimiter.</param>
-            <returns></returns>
-            <exception cref="T:System.Exception">Invalid map entry</exception>
-        </member>
-        <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.Xml.Linq.XElement,System.Collections.Generic.Dictionary{System.String,System.String})">
-            <summary>
-            Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
-            </summary>
-            <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
-            <param name="element">Element to add.</param>
-            <param name="attributes">The collection of Name/Value attributes to add.</param>
-            <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.AddAttributes(System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Adds the attributes to the to a given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
-            </summary>
-            <param name="obj">The object.</param>
-            <param name="attributesDefinition">The attributes definition. Rules of the composing the
-            definition are the same as for <see cref="P:WixSharp.WixEntity.AttributesDefinition"/>.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.SetAttribute(System.Xml.Linq.XElement,System.String,System.Object)">
-            <summary>
-            Sets the value of the attribute. This is a fluent version of XElement.SetAttributeValue. 
-            </summary>
-            <param name="obj">The object.</param>
-            <param name="name">The name.</param>
-            <param name="value">The value.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.SetAttribute(System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Sets the value of the attribute. This is a fluent version of XElement.SetAttributeValue that takes the Name/Value 
-            string definition as a single input parameter.
-            </summary>
-            <param name="obj">The object.</param>
-            <param name="nameValuePair">The attribute name/value pair of the "[name]=[value]" format (e.g. ""Version=!(bind.FileVersion.Utils.dll)").</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.AddAttributes(System.Xml.Linq.XElement,System.Collections.Generic.Dictionary{System.String,System.String})">
-            <summary>
-            Adds the attributes to the to a given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
-            </summary>
-            <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
-            <param name="attributes">The collection of Name/Value attributes to add.</param>
-            <returns><see cref="T:System.Xml.Linq.XElement"/> with added attributes.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.HasAttribute(System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Determines whether the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute.
-            </summary>
-            <param name="obj">The obj.</param>
-            <param name="name">The name.</param>
-            <returns>
-            	<c>true</c> if the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="M:WixSharp.Extensions.HasAttribute(System.Xml.Linq.XElement,System.String,System.Predicate{System.String})">
-            <summary>
-            Determines whether the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute and the attribute value passes the test
-            by <c>attributeValueSelector</c>.
-            </summary>
-            <param name="obj">The obj.</param>
-            <param name="name">The name.</param>
-            <param name="attributeValueSelector">The attribute value selector. Allows testing the attribute value.</param>
-            <returns>
-            	<c>true</c> if the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="M:WixSharp.Extensions.Parent(System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Search for the first parent element (in the "parents chain") with the specified name of the given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
-            </summary>
-            <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
-            <param name="parentName">Name of the parent element to search.</param>
-            <returns><see cref="T:System.Xml.Linq.XElement"/> with the matching name.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.CopyAttributeFrom(System.Xml.Linq.XElement,System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exists, its value is modified.
-            </summary>
-            <param name="dest">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</param>
-            <param name="src">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute from.</param>
-            <param name="attributeName">Name of the source attribute to copy.</param>
-            <returns>The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ReadAttribute(System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Reads the attribute value. Returns null if attribute doesn't exist.
-            </summary>
-            <param name="e">The e.</param>
-            <param name="attributeName">Name of the attribute.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
-            <summary>
-            A generic LINQ equivalent of C# foreach loop.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="collection">The collection.</param>
-            <param name="action">The action.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.GetItemsHashCode``1(System.Collections.Generic.IEnumerable{``0})">
-            <summary>
-            Gets the combined hash code of all items in the collection. This method is convenient to use to 
-            verify that the collections have identical items.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="collection">The collection.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.CopyAttributeFrom(System.Xml.Linq.XElement,System.String,System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Copies attribute value from one <see cref="T:System.Xml.Linq.XElement"/> to another. If the attribute already exists, its value is modified.
-            </summary>
-            <param name="dest">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</param>
-            <param name="destAttributeName">Name of the destination attribute to copy.</param>
-            <param name="src">The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute from.</param>
-            <param name="srcAttributeName">Name of the source attribute to copy.</param>
-            <returns>The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ToDirID(System.String)">
-            <summary>
-            Replaces all Wix# predefined string constants in the Wix# directory path with their WiX equivalents. 
-            <para>Processed string can be used as an Id for referencing from other Wix# components and setting the 
-            corresponding path from <c>MsiExec.exe</c> command line.</para>
-            </summary>
-            <param name="path">The Wix# directory path.</param>
-            <returns>Replacement/conversion result.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ToInt(System.String,System.Int32)">
-            <summary>
-            Safely converts string to int.
-            </summary>
-            <param name="value">The value.</param>
-            <param name="defaultValue">The default value.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ToIntPtr(System.String)">
-            <summary>
-            Safely converts string to IntPtr.
-            </summary>
-            <param name="value">The value.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.SameAs(System.String,System.String,System.Boolean)">
-            <summary>
-            Simple wrapper around System.String.Compare(string strA, string strB, bool ignoreCase);
-            </summary>
-            <param name="strA">The string a.</param>
-            <param name="strB">The string b.</param>
-            <param name="ignoreCase">if set to <c>true</c> [ignore case].</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.SamePathAs(System.String,System.String)">
-            <summary>
-            Returns true if bothe values represent the same path.
-            </summary>
-            <param name="pathA">The path a.</param>
-            <param name="pathB">The path b.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.PathChangeDirectory(System.String,System.String)">
-            <summary>
-            The change directory of the file path.
-            </summary>
-            <param name="path">The path.</param>
-            <param name="newDir">The new dir.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.PathChangeExtension(System.String,System.String)">
-            <summary>
-            Change extension of the file path.
-            </summary>
-            <param name="path">The path.</param>
-            <param name="extension">The extension.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.PathGetFullPath(System.String)">
-            <summary>
-            Gets the full path.
-            </summary>
-            <param name="path">The path.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.FormatInline(System.String,System.Object[])">
-            <summary>
-            Formats the specified string.
-            </summary>
-            <param name="obj">The string to format.</param>
-            <param name="args">The formatting arguments.</param>
-            <returns>The formatted string.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.GetLines(System.String)">
-            <summary>
-            Splits string by lines. The method handles both '\r\n' and '\n' line endings.
-            </summary>
-            <param name="text">The text to be split.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.Expand(System.String)">
-            <summary>
-            Replaces all Wix# predefined string constants (Environment Constants) in the Wix# directory path with their WiX equivalents and escapes all WiX illegal characters (e.g. space character). 
-            <para>
-            <para>It also replaces all "illegal" characters (e.g. !,\) with '_' character to allow the path value to be used as a WiX Id XML attribute.</para>
-            <example>The following is an example of expanding directory name paths.
-            <code>
-            @"%ProgramFiles%\My Company\My Product".Expand()       -> @"ProgramFilesFolder\My_Company\My_Product"
-            @"ProgramFilesFolder\My Company\My Product".Expand()   -> @"ProgramFilesFolder\My_Company\My_Product"
-            @"[ProgramFilesFolder]\My Company\My Product".Expand() -> @"ProgramFilesFolder\My_Company\My_Product"
-            </code>
-            </example>
-            </para>
-            For the list of supported constants analyses <c>WixSharp.Compiler.EnvironmentConstantsMapping.Keys</c>.
-            </summary>
-            <param name="path">The Wix# directory path.</param>
-            <returns>Replacement result.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ContainsWixConstants(System.String)">
-            <summary>
-            Determines whether the string contains WiX constants (values enclosed into square brackets).
-            </summary>
-            <param name="data">The data.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.Map64Dirs(System.String)">
-            <summary>
-            Maps the Wix# constants included in path into their x64 equivalents.
-            <para>For example %ProgramFiles%\My Company\My Product should be preprocessed into %ProgramFiles64%\My Company\My Product</para>
-            </summary>
-            <param name="path">The path.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ExpandWixEnvConsts(System.String)">
-            <summary>
-            Replaces all Wix# predefined string constants (Environment Constants) in the Wix# directory path with their WiX equivalents and escapes all WiX illegal characters (e.g. space character). 
-            <para>
-            <example>The following is an example of expanding directory name paths.
-            <code>
-            @"%ProgramFiles%\My Company\My Product".Expand()       -> @"ProgramFilesFolder\My_Company\My_Product"
-            @"ProgramFilesFolder\My Company\My Product".Expand()   -> @"ProgramFilesFolder\My_Company\My_Product"
-            @"[ProgramFilesFolder]\My Company\My Product".Expand() -> @"ProgramFilesFolder\My_Company\My_Product"
-            </code>
-            </example>
-            </para>
-            For the list of supported constants analyse <c>WixSharp.Compiler.EnvironmentConstantsMapping.Keys</c>.
-            </summary>
-            <param name="path">The Wix# directory path.</param>
-            <returns>Replacement result.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ExpandEnvVars(System.String)">
-            <summary>
-            Expands the EnvironmentVariable It is nothing else but a an extension method wrapping Environment.ExpandEnvironmentVariables to allow fluent API.
-            </summary>
-            <param name="path">The path.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.PresentIn``1(``0,``0)">
-            <summary>
-            Reverse equivalent of Enum.HasFlag of .NET v4.5
-            </summary>
-        </member>
-        <member name="M:WixSharp.Extensions.IsEmpty(System.String)">
-            <summary>
-            Determines whether the given string is empty.
-            </summary>
-            <param name="s">The string to analyse.</param>
-            <returns>
-            	<c>true</c> if the specified s is empty; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="M:WixSharp.Extensions.IsNotEmpty(System.String)">
-            <summary>
-            Determines whether the given string is empty or not.
-            </summary>
-            <param name="s">The string to analyse.</param>
-            <returns>
-            	<c>true</c> if the specified string is not empty; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="M:WixSharp.Extensions.GetLeftIndent(System.String)">
-            <summary>
-            Returns all leading white-space characters.
-            </summary>
-            <param name="s">The string to analyse.</param>
-            <returns>
-            	Total count of leading white-space characters
-            </returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ConcatItems(System.Collections.Generic.IEnumerable{System.String},System.String)">
-            <summary>
-            Concats the specified strings. In the result string all items are separated with the specified delimiter.
-            </summary>
-            <param name="strings">The strings.</param>
-            <param name="delimiter">The delimiter.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.Select(System.Xml.Linq.XContainer,System.String)">
-            <summary>
-            Selects from the given element the first child element matching the specified path (e.g. <c>Select("Product/Package")</c>).
-            </summary>
-            <param name="element">The element to be searched.</param>
-            <param name="path">The path.</param>
-            <returns>The element matching the path.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.FindDirectory(System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Selects from the given element the first child element Directory matching the specified path (e.g. <c>Select("ProgramFiles/MyCompany") by </c>).
-            </summary>
-            <param name="element">The element to be searched.</param>
-            <param name="path">The path.</param>
-            <returns>The element matching the path.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.AllElements(System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Flattened "view" of all elements with a given name (LocalName).
-            </summary>
-            <param name="element">The element to be searched.</param>
-            <param name="elementName">The element name.</param>
-            <returns>The elements matching the name.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.HasLocalName(System.Xml.Linq.XElement,System.String,System.Boolean)">
-            <summary>
-            Determines whether the XElement has the specified <c>LocalName</c>.
-            </summary>
-            <param name="element">The element.</param>
-            <param name="elementName">Name of the element.</param>
-            <param name="ignoreCase">if set to <c>true</c> [ignore case].</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.FindSingle(System.Xml.Linq.XContainer,System.String)">
-            <summary>
-            Selects single descendant element with a given name (LocalName). Throws if no or more then one match found
-            </summary>
-            <param name="container">The element to be searched.</param>
-            <param name="elementName">The element local name.</param>
-            <returns>The elements matching the name.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.FindAll(System.Xml.Linq.XContainer,System.String)">
-            <summary>
-            Selects all descendant elements with a given name (LocalName). Throws if no or more then one match found
-            </summary>
-            <param name="element">The element to be searched.</param>
-            <param name="elementName">The element local name.</param>
-            <returns>The elements matching the name.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.MoveTo(System.Xml.Linq.XElement,System.Xml.Linq.XElement)">
-            <summary>
-            Removes the element from its current parent and inserts it into another element.
-            </summary>
-            <param name="element">The element.</param>
-            <param name="newParent">The new parent.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.SelectOrCreate(System.Xml.Linq.XElement,System.String)">
-            <summary>
-            Selects, from the given element, the child element matching the specified path.
-            <para>If the child element is not found, a new element is created matching the path.</para>
-            </summary>
-            <param name="element">The element to be searched.</param>
-            <param name="path">The path.</param>
-            <returns>The element matching the path.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ToWString(Microsoft.Win32.RegistryHive)">
-            <summary>
-            Gets WiX compatible string representation (e.g. HKCR, HKLM).
-            </summary>
-            <param name="value">The <see cref="T:Microsoft.Win32.RegistryHive"/> value to convert.</param>
-            <returns>WiX compatible string representation.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ToWString(WixSharp.Sequence)">
-            <summary>
-            Converts <see cref="T:WixSharp.Sequence"/> into the WiX identifier by removing WiX illegal characters.
-            </summary>
-            <param name="value">The <see cref="T:WixSharp.Sequence"/> value.</param>
-            <returns>Valid WiX identifier.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ToWString(System.String)">
-            <summary>
-            Converts the string into the WiX identifier by removing WiX illegal characters.
-            </summary>
-            <param name="value">The value.</param>
-            <returns>Valid WiX identifier.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ToCondition(System.String)">
-            <summary>
-            Converts the string into the <see cref="T:WixSharp.Condition"/> instance.
-            </summary>
-            <param name="value">The string value.</param>
-            <returns><see cref="T:WixSharp.Condition"/> instance.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ToNoRevisionString(System.Version)">
-            <summary>
-            Generates string representation without revision part.
-            </summary>
-            <param name="ver">The instance of the <see cref="T:System.Version"/>.</param>
-            <returns><see cref="T:System.String"/></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.GetWType(System.Object)">
-            <summary>
-            Gets WiX compatible type name of the CLR <see cref="T:System.Object"/>. 
-            This method should be used to generate string value of the <c>RegistryValue.Type</c> attribute.
-            </summary>
-            <param name="obj">The instance of the <see cref="T:System.Object"/>.</param>
-            <returns>The WiX compatible type name.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.Combine``1(System.Array,System.Array)">
-            <summary>
-            Combines given <see cref="T:System.Array"/> items with items of another <see cref="T:System.Array"/>.
-            </summary>
-            <typeparam name="T">The type of the elements of <c>obj</c>.</typeparam>
-            <param name="obj">A <see cref="T:System.Array"/> whose elements to combine.</param>
-            <param name="items">Another instance of <see cref="T:System.Array"/> whose elements to combine with <c>obj</c>.</param>
-            <returns>A combined <see cref="T:System.Array"/>.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.Add``2(``0[],``1)">
-            <summary>
-            Adds/combines given <see cref="T:System.Array"/> object with the specified item.
-            </summary>
-            <typeparam name="T1">The type of the elements of <c>obj</c>.</typeparam>
-            <typeparam name="T2">The type of the elements of the items being added.</typeparam>
-            <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
-            <param name="item">The item to be added.</param>
-            <returns>Combined <see cref="T:System.Array"/> object.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.AddRange``2(``0[],System.Collections.Generic.IEnumerable{``1})">
-            <summary>
-            Adds/combines given <see cref="T:System.Array"/> object with the specified items.
-            </summary>
-            <typeparam name="T1">The type of the elements of <c>obj</c>.</typeparam>
-            <typeparam name="T2">The type of the elements of the items being added.</typeparam>
-            <param name="obj">The instance of the <see cref="T:System.Array"/>.</param>
-            <param name="items">The items to be added.</param>
-            <returns>Combined <see cref="T:System.Array"/> object.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.Combine``1(System.Collections.Generic.List{``0},System.Collections.Generic.List{``0})">
-            <summary>
-            Combines given <see cref="T:System.Collections.Generic.List"/> items with items of another <see cref="T:System.Collections.Generic.List"/>.
-            </summary>
-            <typeparam name="T">The type of the elements of <c>obj</c>.</typeparam>
-            <param name="obj">A <see cref="T:System.Collections.Generic.List"/>.</param>
-            <param name="items">Another instance of <see cref="T:System.Collections.Generic.List"/> whose elements are to be combined with those of <c>obj</c>.</param>
-            <returns>A combined <see cref="T:System.Collections.Generic.List"/>.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.IsNullOrEmpty(System.String)">
-            <summary>
-            Fluent version of the <see cref="T:System.String.IsNullOrEmpty"/> for analysing the string value 
-            for being <c>null</c> or empty.
-            </summary>
-            <param name="obj">A <see cref="T:System.String"/> whose value to analyse.</param>
-            <returns>true if the value parameter is null or an empty string (""); otherwise, false.</returns>
-        </member>
-        <member name="M:WixSharp.Extensions.IsActive(Microsoft.Deployment.WindowsInstaller.Session)">
-            <summary>
-            Determines whether the specified <see cref="T:Microsoft.Deployment.WindowsInstaller.Session"/> is active.
-            <para>It is useful for checking if the session is terminated (e.g. in deferred custom actions).</para>
-            </summary>
-            <param name="session">The session.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.IsInstalled(Microsoft.Deployment.WindowsInstaller.Session)">
-            <summary>
-            Determines whether the product associated with the session is installed.
-            </summary>
-            <param name="session">The session.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.IsInstalling(Microsoft.Deployment.WindowsInstaller.Session)">
-            <summary>
-            Gets a value indicating whether the product is being installed.
-            </summary>
-            <value>
-            <c>true</c> if installing; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="M:WixSharp.Extensions.IsRepairing(Microsoft.Deployment.WindowsInstaller.Session)">
-            <summary>
-            Gets a value indicating whether the product is being repaired.
-            </summary>
-        </member>
-        <member name="M:WixSharp.Extensions.IsUninstalling(Microsoft.Deployment.WindowsInstaller.Session)">
-            <summary>
-            Gets a value indicating whether the product is being uninstalled.
-            </summary>
-        </member>
-        <member name="M:WixSharp.Extensions.IsBasic(Microsoft.Deployment.WindowsInstaller.InstallUIOptions)">
-            <summary>
-            Determines whether this is basic UI level.
-            </summary>
-            <param name="level">The level.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.Property(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
-            <summary>
-            Returns the value of the named property of the specified <see cref="T:Microsoft.Deployment.WindowsInstaller.Session"/> object.
-            <para>It can be uses as a generic way of accessing the properties as it redirects (transparently) access to the 
-            <see cref="T:Microsoft.Deployment.WindowsInstaller.Session.CustomActionData"/> if the session is terminated (e.g. in deferred 
-            custom actions).</para>
-            </summary>
-            <param name="session">The session.</param>
-            <param name="name">The name.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.SaveBinary(Microsoft.Deployment.WindowsInstaller.Session,System.String,System.String)">
-            <summary>
-            Saves the binary (from the Binary table) into the file.
-            </summary>
-            <param name="session">The session.</param>
-            <param name="binary">The binary.</param>
-            <param name="file">The file.</param>
-        </member>
-        <member name="M:WixSharp.Extensions.TryReadBinary(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
-            <summary>
-            Tries the read the binary (from the Binary table) into the byte array.
-            </summary>
-            <param name="session">The session.</param>
-            <param name="binary">The binary.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ReadBinary(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
-            <summary>
-            Read the binary (from the Binary table) into the byte array.
-            </summary>
-            <param name="session">The session.</param>
-            <param name="binary">The binary.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.Extensions.HandleErrors(Microsoft.Deployment.WindowsInstaller.Session,System.Action)">
-            <summary>
-            Handles the errors in the specified action being executed. The all exceptions are caught and logged to the msi log.
-            </summary>
-            <param name="session">The session.</param>
-            <param name="action">The action.</param>
-            <returns><see cref="T:Microsoft.Deployment.WindowsInstaller.ActionResult.Success"/> if no errors detected, otherwise
-            it returns <see cref="T:Microsoft.Deployment.WindowsInstaller.ActionResult.Failure"/>.
-            </returns>
-        </member>
-        <member name="M:WixSharp.Extensions.ToWObject``1(System.Collections.Generic.IEnumerable{``0})">
-            <summary>
-            To a collection into WixObject that can be passed in the Project constructor.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="items">The items.</param>
-            <returns></returns>
         </member>
         <member name="T:WixSharp.WixButton">
             <summary>

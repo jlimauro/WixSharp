@@ -79,6 +79,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\WixSharp\SharedExtensions.cs">
+      <Link>SharedExtensions.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="MsiExtensions.cs" />
@@ -89,12 +92,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="WixSharpStrongName.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\WixSharp\WixSharp.csproj">
-      <Project>{8860b29b-749f-4925-86c8-f9c4b93c9da5}</Project>
-      <Name>WixSharp</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

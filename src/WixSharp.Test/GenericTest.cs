@@ -1,4 +1,6 @@
-﻿using System;
+﻿extern alias WixSharpMsi;
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,6 +9,8 @@ using Xunit;
 using WixSharp;
 using io = System.IO;
 using WixSharp.UI;
+
+using WixMsi = WixSharpMsi::WixSharp;
 
 namespace WixSharp.Test
 {
@@ -26,8 +30,8 @@ namespace WixSharp.Test
         public void MsiParser_InstallDir()
         {
             //var parser = new MsiParser(@"..\WixSharp.Samples\Wix# Samples\Managed Setup\ManagedSetup.msi");
-            string msi = @"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Shortcuts\setup.msi";
-            var parser = new MsiParser(msi);
+            string msi = @"E:\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Shortcuts\setup.msi";
+            var parser = new WixMsi.UI.MsiParser(msi);
             string installDirProperty = "INSTALLDIR";
             string dir = parser.GetDirectoryPath(installDirProperty);
         }
@@ -88,30 +92,32 @@ namespace WixSharp.Test
         [Fact]
         public void Shoud_Resolve_WixVars()
         {
-            var adminToolsFolder = "AdminToolsFolder".AsWixVarToPath();
-            var appDataFolder = "AppDataFolder".AsWixVarToPath();
-            var commonAppDataFolder = "CommonAppDataFolder".AsWixVarToPath();
-            var commonFiles64Folder = "CommonFiles64Folder".AsWixVarToPath();
-            var commonFilesFolder = "CommonFilesFolder".AsWixVarToPath();
-            var desktopFolder = "DesktopFolder".AsWixVarToPath();
-            var favoritesFolder = "FavoritesFolder".AsWixVarToPath();
-            var programFiles64Folder = "ProgramFiles64Folder".AsWixVarToPath();
-            var programFilesFolder = "ProgramFilesFolder".AsWixVarToPath();
-            var myPicturesFolder = "MyPicturesFolder".AsWixVarToPath();
-            var sendToFolder = "SendToFolder".AsWixVarToPath();
-            var localAppDataFolder = "LocalAppDataFolder".AsWixVarToPath();
-            var personalFolder = "PersonalFolder".AsWixVarToPath();
-            var startMenuFolder = "StartMenuFolder".AsWixVarToPath();
-            var startupFolder = "StartupFolder".AsWixVarToPath();
-            var programMenuFolder = "ProgramMenuFolder".AsWixVarToPath();
-            var system16Folder = "System16Folder".AsWixVarToPath();
-            var system64Folder = "System64Folder".AsWixVarToPath();
-            var systemFolder = "SystemFolder".AsWixVarToPath();
-            var templateFolder = "TemplateFolder".AsWixVarToPath();
-            var windowsVolume = "WindowsVolume".AsWixVarToPath();
-            var windowsFolder = "WindowsFolder".AsWixVarToPath();
-            var fontsFolder = "FontsFolder".AsWixVarToPath();
-            var tempFolder = "TempFolder".AsWixVarToPath();
+            Func<string, string > asWixVarToPath = name=>WixSharpMsi.WixSharp.Extensions.AsWixVarToPath(name);
+
+            var adminToolsFolder = asWixVarToPath("AdminToolsFolder");
+            var appDataFolder = asWixVarToPath("AppDataFolder");
+            var commonAppDataFolder = asWixVarToPath("CommonAppDataFolder");
+            var commonFiles64Folder = asWixVarToPath("CommonFiles64Folder");
+            var commonFilesFolder = asWixVarToPath("CommonFilesFolder");
+            var desktopFolder = asWixVarToPath("DesktopFolder");
+            var favoritesFolder = asWixVarToPath("FavoritesFolder");
+            var programFiles64Folder = asWixVarToPath("ProgramFiles64Folder");
+            var programFilesFolder = asWixVarToPath("ProgramFilesFolder");
+            var myPicturesFolder = asWixVarToPath("MyPicturesFolder");
+            var sendToFolder = asWixVarToPath("SendToFolder");
+            var localAppDataFolder = asWixVarToPath("LocalAppDataFolder");
+            var personalFolder = asWixVarToPath("PersonalFolder");
+            var startMenuFolder = asWixVarToPath("StartMenuFolder");
+            var startupFolder = asWixVarToPath("StartupFolder");
+            var programMenuFolder = asWixVarToPath("ProgramMenuFolder");
+            var system16Folder = asWixVarToPath("System16Folder");
+            var system64Folder = asWixVarToPath("System64Folder");
+            var systemFolder = asWixVarToPath("SystemFolder");
+            var templateFolder = asWixVarToPath("TemplateFolder");
+            var windowsVolume = asWixVarToPath("WindowsVolume");
+            var windowsFolder = asWixVarToPath("WindowsFolder");
+            var fontsFolder = asWixVarToPath("FontsFolder");
+            var tempFolder = asWixVarToPath("TempFolder");
 
             Func<string, string, bool> isValid = (dir, ending) => io.Directory.Exists(dir) && dir.EndsWith(ending, StringComparison.OrdinalIgnoreCase);
 
