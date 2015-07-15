@@ -1,17 +1,16 @@
-using Microsoft.Deployment.WindowsInstaller;
-//css_dir ..\..\;
-//css_ref Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
-//css_ref WixSharp.UI.dll;
-//css_ref System.Core.dll;
-//css_ref System.Xml.dll;
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using WixSharp;
 using WixSharp.Forms;
 using WixSharp.UI.Forms;
 
+//css_dir ..\..\;
+//css_ref Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
+//css_ref WixSharp.UI.dll;
+//css_ref System.Core.dll;
+//css_ref System.Xml.dll;
 public class Script
 {
     static public void Main()
@@ -20,7 +19,7 @@ public class Script
 
         var binaries = new Feature("Binaries", "Product binaries", true, false);
         var docs = new Feature("Documentation", "Product documentation (manuals and user guides)", true);
-        var tuts = new Feature("Tutorials", "Product tutorials", true);
+        var tuts = new Feature("Tutorials", "Product tutorials", false);
         docs.Children.Add(tuts);
 
 
@@ -36,6 +35,7 @@ public class Script
         //project.Platform = Platform.x64;
 
         project.ManagedUI = ManagedUI.Default;
+        //instead of the actual types you can use pseudo-Enum: ...ModifyDialogs.Add(Dialogs.MaintenanceType)
         project.ManagedUI.InstallDialogs.Add<WelcomeDialog>()
                                         .Add<LicenceDialog>()
                                         .Add<SetupTypeDialog>()
@@ -44,14 +44,17 @@ public class Script
                                         .Add<ProgressDialog>()
                                         .Add<ExitDialog>();
 
-        project.ManagedUI.ModifyDialogs.Add(Dialogs.SetupType)
+        project.ManagedUI.ModifyDialogs.Add<MaintenanceTypeDialog>()
                                        .Add<FeaturesDialog>()
                                        .Add<ProgressDialog>()
                                        .Add<ExitDialog>();
 
-        project.Load += project_Load;
-        project.BeforeInstall += project_BeforeExecute;
-        project.AfterInstall += project_AfterExecute;
+        project.ManagedUI.InstallDialogs.Clear();
+        project.ManagedUI.ModifyDialogs.Clear();
+        
+        //project.Load += project_Load;
+        //project.BeforeInstall += project_BeforeExecute;
+        //project.AfterInstall += project_AfterExecute;
 
         //project.DefaultFeature = null;
 

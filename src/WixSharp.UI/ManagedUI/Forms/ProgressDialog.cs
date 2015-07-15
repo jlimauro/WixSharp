@@ -8,7 +8,7 @@ using Microsoft.Deployment.WindowsInstaller;
 
 namespace WixSharp.UI.Forms
 {
-    public partial class ProgressDialog : ManagedForm
+    public partial class ProgressDialog : ManagedForm, IProgressDialog
     {
         public ProgressDialog()
         {

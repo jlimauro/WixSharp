@@ -47,7 +47,7 @@ namespace WixSharp
             return control;
         }
 
-        //not reliable
+        //NOT RELIABLE
         //The detection of the installdir is not deterministic. For example 'Shortcuts' sample has 
         //three logical installdirs INSTALLDIR, DesktopFolder and ProgramMenuFolder. The INSTALLDIR 
         //is the real one that we need to discover but there is no way to understand its role by analyzing 
@@ -92,15 +92,17 @@ namespace WixSharp
                     sql.Execute();
                     using (var record = sql.Fetch())
                     {
-                        //var _name = record["Directory"];
-                        var subDir = record.GetString("DefaultDir").Split('|').Last();
-                        path.Add(subDir);
-
-                        if (!record.IsNull("Directory_Parent"))
+                        if (record != null)
                         {
-                            var parent = record.GetString("Directory_Parent");
-                            if (parent != "TARGETDIR")
-                                names.Enqueue(parent);
+                            var subDir = record.GetString("DefaultDir").Split('|').Last();
+                            path.Add(subDir);
+
+                            if (!record.IsNull("Directory_Parent"))
+                            {
+                                var parent = record.GetString("Directory_Parent");
+                                if (parent != "TARGETDIR")
+                                    names.Enqueue(parent);
+                            }
                         }
                     }
                 }

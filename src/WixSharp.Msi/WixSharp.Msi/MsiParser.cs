@@ -152,14 +152,17 @@ namespace WixSharp.UI
                 var item = names.Dequeue();
 
                 var data = this.db.View("select * from Directory where Directory = '" + item + "'").GetData();
-                var row = data.FirstOrDefault();
+                if (data.Any())
+                {
+                    var row = data.FirstOrDefault();
 
-                var subDir = row["DefaultDir"].ToString().Split('|').Last();
-                path.Add(subDir);
+                    var subDir = row["DefaultDir"].ToString().Split('|').Last();
+                    path.Add(subDir);
 
-                var parent = (string)row["Directory_Parent"];
-                if (parent != null && parent != "TARGETDIR")
-                    names.Enqueue(parent.ToString());
+                    var parent = (string)row["Directory_Parent"];
+                    if (parent != null && parent != "TARGETDIR")
+                        names.Enqueue(parent.ToString());
+                }
             }
             path.Reverse();
             return path.ToArray();

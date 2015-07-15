@@ -7,6 +7,10 @@ using Microsoft.Deployment.WindowsInstaller;
 
 namespace WixSharp
 {
+    public interface IProgressDialog : IManagedDialog
+    {
+    }
+
     public interface IManagedDialog
     {
         IManagedUIShell Shell { get; set; }

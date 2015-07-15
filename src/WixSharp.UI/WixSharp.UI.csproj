@@ -87,6 +87,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ManagedUI\Forms\ReadOnlyTreeNode.cs" />
+    <Compile Include="ManagedUI\Forms\MaintenanceTypeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagedUI\Forms\MaintenanceTypeDialog.Designer.cs">
+      <DependentUpon>MaintenanceTypeDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ManagedUI\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -166,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ManagedUI\Forms\LicenceDialog.resx">
       <DependentUpon>LicenceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManagedUI\Forms\MaintenanceTypeDialog.resx">
+      <DependentUpon>MaintenanceTypeDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ManagedUI\Forms\SetupTypeDialog.resx">
       <DependentUpon>SetupTypeDialog.cs</DependentUpon>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -6,6 +7,7 @@ using Microsoft.Deployment.Samples.EmbeddedUI;
 using Microsoft.Deployment.WindowsInstaller;
 using WixSharp.Forms;
 using forms = System.Windows.Forms;
+using System.Threading;
 
 #pragma warning disable 1591
 
@@ -38,6 +40,7 @@ namespace WixSharp
         InstallProgressCounter progressCounter = new InstallProgressCounter(0.5);
         bool started = false;
         bool canceled = false;
+        bool finished = false;
 
         public ManagedDialogs Dialogs { get; set; }
 
@@ -85,8 +88,6 @@ namespace WixSharp
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            shellView = new ShellView();
-
             UI = ui;
             MsiRuntime = msiRuntime;
 
@@ -99,9 +100,18 @@ namespace WixSharp
                 Dialogs = ui.ModifyDialogs;
             }
 
-            GoNext();
-
-            shellView.ShowDialog();
+            if (Dialogs.Any())
+            {
+                shellView = new ShellView();
+                GoNext();
+                shellView.ShowDialog();
+            }
+            else
+            {
+                this.StartExecute();
+                while (!finished)
+                    Thread.Sleep(1000);
+            }
         }
 
         public void GoNext()
@@ -137,7 +147,8 @@ namespace WixSharp
             {
                 this.progressCounter.ProcessMessage(messageType, messageRecord);
 
-                InUIThread(() => currentDialog.OnProgress((int)Math.Round(100 * this.progressCounter.Progress)));
+                if (currentDialog != null)
+                    InUIThread(() => currentDialog.OnProgress((int)Math.Round(100 * this.progressCounter.Progress)));
 
                 switch (messageType)
                 {
@@ -165,6 +176,7 @@ namespace WixSharp
                                     UserInterrupted = (lastValue == "2");
                                 }
                                 catch { }//nothing we can do really
+                                finished = true;
                             }
 
                             this.LogMessage("{0}: {1}", messageType, messageRecord);
@@ -186,7 +198,8 @@ namespace WixSharp
             var result = MessageResult.OK;
             InUIThread(() =>
             {
-                result = currentDialog.ProcessMessage(messageType, messageRecord, buttons, icon, defaultButton);
+                if (currentDialog != null)
+                    result = currentDialog.ProcessMessage(messageType, messageRecord, buttons, icon, defaultButton);
             });
             return result;
 
@@ -202,17 +215,22 @@ namespace WixSharp
 
         public void OnExecuteStarted()
         {
-            InUIThread(currentDialog.OnExecuteStarted);
+            if (currentDialog != null)
+                InUIThread(currentDialog.OnExecuteStarted);
         }
 
         public void OnExecuteComplete()
         {
-            InUIThread(currentDialog.OnExecuteComplete);
+            if (currentDialog != null)
+                InUIThread(currentDialog.OnExecuteComplete);
         }
 
         public void InUIThread(System.Action action)
         {
-            shellView.Invoke(action);
+            if (shellView != null)
+                shellView.Invoke(action);
+            else
+                action();
         }
     }
 }

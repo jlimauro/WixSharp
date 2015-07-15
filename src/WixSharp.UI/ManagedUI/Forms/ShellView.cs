@@ -12,6 +12,7 @@ namespace WixSharp.Forms
         static public Type InstallDir = typeof(InstallDirDialog);
         static public Type Progress = typeof(ProgressDialog);
         static public Type SetupType = typeof(SetupTypeDialog);
+        static public Type MaintenanceType = typeof(MaintenanceTypeDialog);
         static public Type Exit = typeof(ExitDialog);
     }
 
