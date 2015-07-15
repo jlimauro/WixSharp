@@ -34,6 +34,8 @@ namespace WixSharp
             project.AddBinary(new Binary(new Id("WixUI_Bmp_Banner"), DialogBannerFileFor(project)));
         }
 
+        public string InstallDirId { get; set; }
+
         string LocalizationFileFor(Project project)
         {
             return UIExtensions.UserOrDefaultContentOf(project.LocalizationFile, project.OutDir, project.Name + ".wxl", Resources.WixUI_en_us);

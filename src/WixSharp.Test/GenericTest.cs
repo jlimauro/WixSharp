@@ -21,13 +21,15 @@ namespace WixSharp.Test
             var result = Utils.MakeRelative(path, baseDir);
             Assert.Equal(@"..\Content\readme.txt", result);
         }
-       
-        //[Fact]
+
+        [Fact]
         public void MsiParser_InstallDir()
         {
-            var parser = new MsiParser(@"..\WixSharp.Samples\Wix# Samples\Managed Setup\ManagedSetup.msi");
-            string dir = parser.GetInstallDirectoryRoot();
-            dir = parser.GetInstallDirectoryRoot();
+            //var parser = new MsiParser(@"..\WixSharp.Samples\Wix# Samples\Managed Setup\ManagedSetup.msi");
+            string msi = @"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Shortcuts\setup.msi";
+            var parser = new MsiParser(msi);
+            string installDirProperty = "INSTALLDIR";
+            string dir = parser.GetDirectoryPath(installDirProperty);
         }
 
         [Fact]
@@ -57,7 +59,7 @@ namespace WixSharp.Test
             Compiler.GuidGenerator = (seed) => Guid.Parse("9e2974a1-9539-4c5c-bef7-80fc35b9d7b0");
             Compiler.GuidGenerator = (seed) => Guid.NewGuid();
         }
-       
+
         //[Fact]
         public void FeaturesAPI()
         {
@@ -73,7 +75,7 @@ namespace WixSharp.Test
                     if (currentInstallFeature.State == InstallState.Local)
                     {
                         Debug.WriteLine(string.Format("Migrating feature {0} - marking as Present", currentInstallFeature.FeatureName));
-                        
+
                     }
                     else
                     {

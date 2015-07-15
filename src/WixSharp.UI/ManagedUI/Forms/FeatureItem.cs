@@ -32,7 +32,7 @@ namespace WixSharp.UI.Forms
 
         public FeatureItem(Session session, string name)
         {
-            var data = session.OpenView("select * from Feature where Feature = '" + name + "'", "Feature, Feature_Parent, Title, Description, Display, Level, Directory_, Attributes");
+            var data = session.OpenView("select * from Feature where Feature = '" + name + "'");
 
             Dictionary<string, object> row = data.FirstOrDefault();
 

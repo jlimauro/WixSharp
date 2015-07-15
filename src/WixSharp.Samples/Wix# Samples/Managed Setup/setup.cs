@@ -35,11 +35,10 @@ public class Script
         //project.LocalizationFile = "wixui_cs-cz.wxl";
         //project.Platform = Platform.x64;
 
-
         project.ManagedUI = ManagedUI.Default;
         project.ManagedUI.InstallDialogs.Add<WelcomeDialog>()
                                         .Add<LicenceDialog>()
-                                        //.Add<SetupTypeDialog>()
+                                        .Add<SetupTypeDialog>()
                                         .Add<FeaturesDialog>()
                                         .Add<InstallDirDialog>()
                                         .Add<ProgressDialog>()
@@ -62,7 +61,7 @@ public class Script
         project.EmitConsistentPackageId = true;
         Compiler.CandleOptions += " -sw1091";
 
-        project.PreserveTempFiles = true;
+        //project.PreserveTempFiles = true;
         
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 

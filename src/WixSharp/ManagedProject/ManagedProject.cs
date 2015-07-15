@@ -116,6 +116,8 @@ namespace WixSharp
 
                 if (ManagedUI != null)
                 {
+                    this.AddProperty(new Property("WixSharp_UI_INSTALLDIR", ManagedUI.InstallDirId ?? "INSTALLDIR"));
+
                     ManagedUI.EmbeddResourcesInto(this);
 
                     InjectDialogs("WixSharp_InstallDialogs", ManagedUI.InstallDialogs);

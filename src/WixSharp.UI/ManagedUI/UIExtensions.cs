@@ -47,21 +47,28 @@ namespace WixSharp
             return control;
         }
 
-        public static string GetInstallDirectoryName(this Session session)
-        {
-            List<Dictionary<string, object>> result = session.OpenView("select * from Component", "Directory_");
+        //not reliable
+        //The detection of the installdir is not deterministic. For example 'Shortcuts' sample has 
+        //three logical installdirs INSTALLDIR, DesktopFolder and ProgramMenuFolder. The INSTALLDIR 
+        //is the real one that we need to discover but there is no way to understand its role by analyzing 
+        //the MSI tables. And the other problem is that we cannot rely on its name as user can overwrite it. 
+        //WIX solves this problem by requiring the user explicitly link the installdir ID to the WIXUI_INSTALLDIR 
+        //property: <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR"  />.
+        //public static string GetInstallDirectoryName(this Session session)
+        //{
+        //    List<Dictionary<string, object>> result = session.OpenView("select * from Component");
 
-            var dirs = result.Select(x => x["Directory_"]).Cast<string>().Distinct().ToArray();
+        //    var dirs = result.Select(x => x["Directory_"]).Cast<string>().Distinct().ToArray();
 
-            string shortestDir = dirs.Select(x => new { Name = x, Parts = session.GetDirectoryPathParts(x) })
-                                     .OrderBy(x => x.Parts.Length)
-                                     .Select(x => x.Name)
-                                     .FirstOrDefault();
-            if (shortestDir == null)
-                throw new Exception("GetInstallDirectoryPath Error: cannot find InstallDirectory");
-            else
-                return shortestDir;
-        }
+        //    string shortestDir = dirs.Select(x => new { Name = x, Parts = session.GetDirectoryPathParts(x) })
+        //                             .OrderBy(x => x.Parts.Length)
+        //                             .Select(x => x.Name)
+        //                             .FirstOrDefault();
+        //    if (shortestDir == null)
+        //        throw new Exception("GetInstallDirectoryPath Error: cannot find InstallDirectory");
+        //    else
+        //        return shortestDir;
+        //}
 
         public static string GetDirectoryPath(this Session session, string name)
         {

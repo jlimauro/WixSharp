@@ -35,6 +35,7 @@ namespace WixSharp
 
     public interface IManagedUI
     {
+        string InstallDirId { get; set; }
         ManagedDialogs InstallDialogs { get; }
         ManagedDialogs ModifyDialogs { get; }
         void EmbeddResourcesInto(ManagedProject project);

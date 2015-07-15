@@ -1248,32 +1248,21 @@ namespace WixSharp
             return GetEmbeddedData(session, binary);
         }
 
-        public static List<Dictionary<string, object>> OpenView(this Session session, string sqlText, params string[] fieldsToSelect)
+        public static List<Dictionary<string, object>> OpenView(this Session session, string sqlText)
         {
-            //tempting just to put date into DataSet though MSI does not allow column names discovery and resorting to Reflection is just too risky  
             var table = new List<Dictionary<string, object>>();
-
-            var fields = fieldsToSelect.SelectMany(x => x.Split(',')).Select(x => x.Trim()).ToArray();
 
             using (var sql = session.Database.OpenView(sqlText))
             {
                 sql.Execute();
-
+                
                 Record record;
                 while ((record = sql.Fetch()) != null)
                     using (record)
                     {
                         var row = new Dictionary<string, object>();
-                        if (fields.Length != 0)
-                        {
-                            foreach (string item in fields)
-                                row[item] = record[item];
-                        }
-                        else
-                        {
-                            for (int i = 0; i < record.FieldCount; i++)
-                                row[i.ToString()] = record[i];
-                        }
+                        foreach (var col in sql.Columns)
+                            row[col.Name] = record[col.Name];
 
                         table.Add(row);
                     }

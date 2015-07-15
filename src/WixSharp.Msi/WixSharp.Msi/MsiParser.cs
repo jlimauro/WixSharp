@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -104,28 +105,66 @@ namespace WixSharp.UI
             return IsInstalled(this.GetProductCode());
         }
 
-        /// <summary>
-        /// Extracts the root components of the top-level install directory from the encapsulated MSI database.
-        /// Typically it is a first child of the 'TARGETDIR' MSI directory.
-        /// <para><remarks>The DB view is not closed after the call</remarks></para>
-        /// </summary>
-        /// <returns>
-        /// Root component of install directory. If the 'TARGETDIR' cannot be located then the return value is the 
-        /// expanded value of 'ProgramFilesFolder' WiX constant.
-        /// </returns>
-        public string GetInstallDirectoryRoot()
-        {
-            var qr = this.db.View("SELECT * FROM Directory WHERE Directory_Parent = 'TARGETDIR'").NextRecord();
+        ///// <summary>
+        ///// Extracts the root components of the top-level install directory from the encapsulated MSI database.
+        ///// Typically it is a first child of the 'TARGETDIR' MSI directory.
+        ///// <para><remarks>The DB view is not closed after the call</remarks></para>
+        ///// </summary>
+        ///// <returns>
+        ///// Root component of install directory. If the 'TARGETDIR' cannot be located then the return value is the 
+        ///// expanded value of 'ProgramFilesFolder' WiX constant.
+        ///// </returns>
+        //public string GetInstallDirectoryRoot()
+        //{
 
-            // Should be 3 if msi has expected content.
-            if ((int)qr == 3)
-            {
-                string rootDirId = qr.GetString(1);
-                return rootDirId.AsWixVarToPath();
-            }
-            else
-                return "ProgramFilesFolder".AsWixVarToPath(); // Always default to Program Files folder.
+        //    while (IntPtr.Zero != (rec = view.NextRecord()))
+        //    {
+        //        var row = view.GetFieldValues(rec);
+        //        data.Add(row);
+        //        rec.Close();
+        //    }
+
+        //    view.Close();
+
+        //    // Should be 3 if msi has expected content.
+        //    //if ((int)qr == 3)
+        //    //{
+        //    //    string rootDirId = qr.GetString(1);
+        //    //    return rootDirId.AsWixVarToPath();
+        //    //}
+        //    //else
+        //    return "ProgramFilesFolder".AsWixVarToPath(); // Always default to Program Files folder.
+        //}
+
+        public string GetDirectoryPath(string name)
+        {
+            string[] subDirs = GetDirectoryPathParts(name).Select(x => x.AsWixVarToPath()).ToArray();
+            return string.Join(@"\", subDirs);
         }
+
+        string[] GetDirectoryPathParts(string name)
+        {
+            var path = new List<string>();
+            var names = new Queue<string>(new[] { name });
+
+            while (names.Any())
+            {
+                var item = names.Dequeue();
+
+                var data = this.db.View("select * from Directory where Directory = '" + item + "'").GetData();
+                var row = data.FirstOrDefault();
+
+                var subDir = row["DefaultDir"].ToString().Split('|').Last();
+                path.Add(subDir);
+
+                var parent = (string)row["Directory_Parent"];
+                if (parent != null && parent != "TARGETDIR")
+                    names.Enqueue(parent.ToString());
+            }
+            path.Reverse();
+            return path.ToArray();
+        }
+
 
         /// <summary>
         /// Parses the <c>MsiInstallMessage.CommonData</c> data.

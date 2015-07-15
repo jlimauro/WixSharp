@@ -114,11 +114,11 @@
     <Compile Include="ManagedUI\ManagedUI.cs" />
     <Compile Include="ManagedAction.cs" />
     <Compile Include="ManagedUI\MsiRuntime.cs" />
-    <Compile Include="ManagedUI\Forms\ModifyStartDialog.cs">
+    <Compile Include="ManagedUI\Forms\SetupTypeDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ManagedUI\Forms\ModifyStartDialog.Designer.cs">
-      <DependentUpon>ModifyStartDialog.cs</DependentUpon>
+    <Compile Include="ManagedUI\Forms\SetupTypeDialog.Designer.cs">
+      <DependentUpon>SetupTypeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ManagedBA\SilentBA.cs" />
     <Compile Include="ManagedUI\Forms\ShellView.cs">
@@ -167,8 +167,8 @@
     <EmbeddedResource Include="ManagedUI\Forms\LicenceDialog.resx">
       <DependentUpon>LicenceDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ManagedUI\Forms\ModifyStartDialog.resx">
-      <DependentUpon>ModifyStartDialog.cs</DependentUpon>
+    <EmbeddedResource Include="ManagedUI\Forms\SetupTypeDialog.resx">
+      <DependentUpon>SetupTypeDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ManagedUI\Forms\ProgressDialog.resx">
       <DependentUpon>ProgressDialog.cs</DependentUpon>

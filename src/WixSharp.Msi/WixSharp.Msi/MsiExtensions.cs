@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using WindowsInstaller;
 
@@ -24,7 +25,11 @@ namespace WixSharp.UI
         public static IntPtr NextRecord(this IntPtr view)
         {
             IntPtr record = IntPtr.Zero;
-            Invoke(() => MsiInterop.MsiViewFetch(view, ref record));
+            var res = MsiInterop.MsiViewFetch(view, ref record);
+            if (res == MsiError.NoMoreItems)
+                return IntPtr.Zero;
+            else if (res != MsiError.NoError)
+                throw new Exception(res.ToString());
             return record;
         }
 
@@ -35,6 +40,55 @@ namespace WixSharp.UI
             Invoke(() => MsiInterop.MsiRecordGetString(record, fieldIndex, builder, ref valueSize));
 
             return builder.ToString();
+        }
+
+        public static List<Dictionary<string, object>> GetData(this IntPtr view, bool close = true)
+        {
+            var data = new List<Dictionary<string, object>>();
+
+            IntPtr rec;
+            while (IntPtr.Zero != (rec = view.NextRecord()))
+            {
+                var row = view.GetFieldValues(rec);
+                data.Add(row);
+                rec.Close();
+            }
+
+            if (close)
+                view.Close();
+
+            return data;
+        }
+
+        public static Dictionary<string, object> GetFieldValues(this IntPtr view, IntPtr record)
+        {
+            IntPtr names;
+            var info = (IntPtr)MsiInterop.MsiViewGetColumnInfo(view, MsiColInfoType.Names, out names);
+
+            var result = new Dictionary<string, object>();
+
+            for (uint i = 0; i <= MsiInterop.MsiRecordGetFieldCount(names); i++)
+            {
+                string name = names.GetString(i);
+                result[name] = record.GetObject(i);
+            }
+
+            info.Close();
+            names.Close();
+
+            return result;
+        }
+
+        public static object GetObject(this IntPtr record, uint fieldIndex)
+        {
+            if (MsiInterop.MsiRecordIsNull(record, fieldIndex))
+                return null;
+
+            int result = record.GetInt(fieldIndex);
+            if (result == MsiInterop.MsiNullInteger) //the field is s string
+                return record.GetString(fieldIndex);
+            else
+                return result;
         }
 
         public static int GetInt(this IntPtr record, uint fieldIndex)

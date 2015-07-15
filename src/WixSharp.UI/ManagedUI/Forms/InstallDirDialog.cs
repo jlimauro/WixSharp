@@ -11,11 +11,11 @@ namespace WixSharp.UI.Forms
             InitializeComponent();
         }
 
-        string installDirProperty = "INSTALLDIR";
+        string installDirProperty;
 
         void InstallDirDialog_Load(object sender, EventArgs e)
         {
-            installDirProperty = MsiRuntime.Session.GetInstallDirectoryName(); //user may overwrite it
+            installDirProperty = MsiRuntime.Session.Property("WixSharp_UI_INSTALLDIR");
 
             banner.Image = MsiRuntime.Session.GetEmbeddedBitmap("WixUI_Bmp_Banner");
             installDir.Text = MsiRuntime.Session.GetDirectoryPath(installDirProperty);
