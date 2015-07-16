@@ -3635,12 +3635,12 @@
             Maps to the FailIfExists property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.LogOnAsBatchJob">
+        <member name="P:WixSharp.User.LogonAsBatchJob">
             <summary>
             Maps to the LogOnAsBatchJob property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.LogOnAsService">
+        <member name="P:WixSharp.User.LogonAsService">
             <summary>
             Maps to the LogOnAsService property of User
             </summary>

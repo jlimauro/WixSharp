@@ -125,12 +125,12 @@ namespace WixSharp
         /// <summary>
         /// Maps to the LogOnAsBatchJob property of User
         /// </summary>
-        public bool? LogOnAsBatchJob { get; set; } //only allowed under a component
+        public bool? LogonAsBatchJob { get; set; } //only allowed under a component
 
         /// <summary>
         /// Maps to the LogOnAsService property of User
         /// </summary>
-        public bool? LogOnAsService { get; set; } //only allowed under a component
+        public bool? LogonAsService { get; set; } //only allowed under a component
 
         /// <summary>
         /// Maps to the Name property of User
@@ -180,8 +180,8 @@ namespace WixSharp
                        || CreateUser.HasValue
                        || Disabled.HasValue
                        || FailIfExists.HasValue
-                       || LogOnAsBatchJob.HasValue
-                       || LogOnAsService.HasValue
+                       || LogonAsBatchJob.HasValue
+                       || LogonAsService.HasValue
                        || PasswordExpired.HasValue
                        || PasswordNeverExpires.HasValue
                        || RemoveOnUninstall.HasValue
@@ -211,8 +211,8 @@ namespace WixSharp
             user.Disabled.Do(b => userElement.SetAttribute("Disabled", b.ToYesNo()));
             if (!string.IsNullOrEmpty(user.Domain)) userElement.SetAttributeValue("Domain", user.Domain);
             user.FailIfExists.Do(b => userElement.SetAttribute("FailIfExists", b.ToYesNo()));
-            user.LogOnAsBatchJob.Do(b => userElement.SetAttribute("LogOnAsBatchJob", b.ToYesNo()));
-            user.LogOnAsService.Do(b => userElement.SetAttribute("LogOnAsService", b.ToYesNo()));
+            user.LogonAsBatchJob.Do(b => userElement.SetAttribute("LogonAsBatchJob", b.ToYesNo()));
+            user.LogonAsService.Do(b => userElement.SetAttribute("LogonAsService", b.ToYesNo()));
             if (!string.IsNullOrEmpty(user.Password)) userElement.SetAttributeValue("Password", user.Password);
             user.PasswordExpired.Do(b => userElement.SetAttribute("PasswordExpired", b.ToYesNo()));
             user.PasswordNeverExpires.Do(b => userElement.SetAttribute("PasswordNeverExpires", b.ToYesNo()));
