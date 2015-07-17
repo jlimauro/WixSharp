@@ -1814,17 +1814,12 @@ namespace WixSharp
                                 new XAttribute("Id", compId),
                                 new XAttribute("Guid", WixGuid.NewGuid(compId))));
 
-                    var userElement = new XElement(WixExtension.Util.ToXNamespace() + "User");
-                    user.EmitAttributes(userElement);
-
-                    userComponent.Add(userElement);
+                    userComponent.Add(user.ToXml());
                 }
                 //the user definition is a reference, only
                 else
                 {
-                    var userElement = new XElement(WixExtension.Util.ToXNamespace() + "User");
-                    user.EmitAttributes(userElement);
-                    product.Add(userElement);
+                    product.Add(user.ToXml());
                 }
             }
         }

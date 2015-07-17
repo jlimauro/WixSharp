@@ -353,7 +353,7 @@ namespace WixSharp
 
                     foreach (XElement item in compoonentsWithNoFiles)
                     {
-                        if (xDir.Attribute("Name").Value != "DummyDir")
+                        if (!item.Attribute("Id").Value.EndsWith(".EmptyDirectory"))
                             InsertCreateFolder(item);
                         else if (!xDir.ContainsAnyRemoveFolder())
                             InsertRemoveFolder(xDir, item, "both"); //to keep WiX/compiler happy and allow removal of the dummy directory

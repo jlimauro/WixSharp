@@ -19,14 +19,22 @@ namespace WixSharp
         /// <summary>
         /// Creates an instance of User representing <paramref name="name" />
         /// </summary>
+        /// <param name="name">The name.</param>
+        /// <exception cref="ArgumentNullException">name;name is a null reference or empty</exception>
+        public User(string name)
+        {
+            Name = name;
+        }
+
+        /// <summary>
+        /// Creates an instance of User representing <paramref name="name" />
+        /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
         /// <exception cref="ArgumentNullException">name;name is a null reference or empty</exception>
         public User(Id id, string name)
+            : this(name)
         {
-            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name", "name is a null reference or empty");
-
-            Name = name;
             Id = id;
         }
 
@@ -39,7 +47,17 @@ namespace WixSharp
         public User(Id id, Feature feature, string name)
             : this(id, name)
         {
-            Id = id;
+            Feature = feature;
+        }
+
+        /// <summary>
+        /// Creates an instance of User representing <paramref name="name" />
+        /// </summary>
+        /// <param name="feature">The feature.</param>
+        /// <param name="name">The name.</param>
+        public User(Feature feature, string name)
+            : this(name)
+        {
             Feature = feature;
         }
 
@@ -58,6 +76,17 @@ namespace WixSharp
         /// <summary>
         /// Creates an instance of User representing <paramref name="name" />@<paramref name="domain" />
         /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="domain">The domain.</param>
+        public User(string name, string domain)
+            : this(name)
+        {
+            Domain = domain;
+        }
+
+        /// <summary>
+        /// Creates an instance of User representing <paramref name="name" />@<paramref name="domain" />
+        /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="feature">The feature.</param>
         /// <param name="name">The name.</param>
@@ -68,12 +97,24 @@ namespace WixSharp
             Domain = domain;
         }
 
+        /// <summary>
+        /// Creates an instance of User representing <paramref name="name" />@<paramref name="domain" />
+        /// </summary>
+        /// <param name="feature">The feature.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="domain">The domain.</param>
+        public User(Feature feature, string name, string domain)
+            : this(feature, name)
+        {
+            Domain = domain;
+        }
+
         #endregion
 
         /// <summary>
         /// <see cref="Feature"></see> the User belongs to.
         /// </summary>
-        public Feature Feature { get; set; }
+        public Feature Feature;
 
         /// <summary>
         /// Requests that the User element is included inside a Component element - allowing the User to be installed.
@@ -84,8 +125,8 @@ namespace WixSharp
         /// <item>CreateUser</item>
         /// <item>Disabled</item>
         /// <item>FailIfExists</item>
-        /// <item>LogOnAsBatchJob</item>
-        /// <item>LogOnAsService</item>
+        /// <item>LogonAsBatchJob</item>
+        /// <item>LogonAsService</item>
         /// <item>PasswordExpired</item>
         /// <item>PasswordNeverExpires</item>
         /// <item>RemoveOnUninstall</item>
@@ -93,79 +134,74 @@ namespace WixSharp
         /// <item>Vital</item>
         /// </list>
         /// </summary>
-        public bool WixIncludeInComponent { get; set; }
+        public bool WixIncludeInComponent;
 
         #region Wix User attributes
 
         /// <summary>
         /// Maps to the CanNotChangePassword property of User
         /// </summary>
-        public bool? CanNotChangePassword { get; set; } //only allowed under a component
+        public bool? CanNotChangePassword; //only allowed under a component
 
         /// <summary>
         /// Maps to the CreateUser property of User
         /// </summary>
-        public bool? CreateUser { get; set; } //only allowed under a component
+        public bool? CreateUser; //only allowed under a component
 
         /// <summary>
         /// Maps to the Disabled property of User
         /// </summary>
-        public bool? Disabled { get; set; } //only allowed under a component
+        public bool? Disabled; //only allowed under a component
 
         /// <summary>
         /// Maps to the Domain property of User
         /// </summary>
-        public string Domain { get; set; }
+        public string Domain;
 
         /// <summary>
         /// Maps to the FailIfExists property of User
         /// </summary>
-        public bool? FailIfExists { get; set; } //only allowed under a component
+        public bool? FailIfExists; //only allowed under a component
 
         /// <summary>
         /// Maps to the LogOnAsBatchJob property of User
         /// </summary>
-        public bool? LogonAsBatchJob { get; set; } //only allowed under a component
+        public bool? LogonAsBatchJob; //only allowed under a component
 
         /// <summary>
         /// Maps to the LogOnAsService property of User
         /// </summary>
-        public bool? LogonAsService { get; set; } //only allowed under a component
-
-        /// <summary>
-        /// Maps to the Name property of User
-        /// </summary>
-        public new string Name { get; set; } //required
+        public bool? LogonAsService; //only allowed under a component
 
         /// <summary>
         /// Maps to the Password property of User
         /// </summary>
-        public string Password { get; set; }
+        public string Password;
 
         /// <summary>
         /// Maps to the PasswordExpired property of User
         /// </summary>
-        public bool? PasswordExpired { get; set; } //only allowed under a component
+        public bool? PasswordExpired; //only allowed under a component
 
         /// <summary>
         /// Maps to the PasswordNeverExpires property of User
         /// </summary>
-        public bool? PasswordNeverExpires { get; set; } //only allowed under a component
+        public bool? PasswordNeverExpires; //only allowed under a component
 
         /// <summary>
         /// Maps to the RemoveOnUninstall property of User
         /// </summary>
-        public bool? RemoveOnUninstall { get; set; } //only allowed under a component
+        public bool? RemoveOnUninstall; //only allowed under a component
 
         /// <summary>
         /// Maps to the UpdateIfExists property of User
         /// </summary>
-        public bool? UpdateIfExists { get; set; } //only allowed under a component
+        public bool? UpdateIfExists; //only allowed under a component
 
         /// <summary>
         /// Maps to the Vital property of User
         /// </summary>
-        public bool? Vital { get; set; } //only allowed under a component
+        public bool? Vital; //only allowed under a component
 
         #endregion
 
@@ -191,34 +227,30 @@ namespace WixSharp
             }
         }
 
-    }
-
-    internal static class UserExt
-    {
-        static void Do<T>(this T? nullable, Action<T> action) where T : struct
+        /// <summary>
+        /// Emits WiX XML.
+        /// </summary>
+        /// <returns></returns>
+        public XContainer[] ToXml()
         {
-            if (!nullable.HasValue) return;
-            action(nullable.Value);
-        }
+            var userElement = new XElement(WixExtension.Util.ToXNamespace() + "User")
+                                  .SetAttribute("Id", Id)
+                                  .SetAttribute("Name", Name)
+                                  .SetAttribute("CanNotChangePassword", CanNotChangePassword)
+                                  .SetAttribute("CreateUser", CreateUser)
+                                  .SetAttribute("Disabled", Disabled)
+                                  .SetAttribute("Domain", Domain)
+                                  .SetAttribute("FailIfExists", FailIfExists)
+                                  .SetAttribute("LogonAsBatchJob", LogonAsBatchJob)
+                                  .SetAttribute("LogonAsService", LogonAsService)
+                                  .SetAttribute("Password", Password)
+                                  .SetAttribute("PasswordExpired", PasswordExpired)
+                                  .SetAttribute("PasswordNeverExpires", PasswordNeverExpires)
+                                  .SetAttribute("RemoveOnUninstall", RemoveOnUninstall)
+                                  .SetAttribute("UpdateIfExists", UpdateIfExists)
+                                  .SetAttribute("Vital", Vital);
 
-        public static void EmitAttributes(this User user, XElement userElement)
-        {
-            userElement.SetAttributeValue("Id", user.Id);
-            userElement.SetAttributeValue("Name", user.Name);
-
-            user.CanNotChangePassword.Do(b => userElement.SetAttribute("CanNotChangePassword", b.ToYesNo()));
-            user.CreateUser.Do(b => userElement.SetAttribute("CreateUser", b.ToYesNo()));
-            user.Disabled.Do(b => userElement.SetAttribute("Disabled", b.ToYesNo()));
-            if (!string.IsNullOrEmpty(user.Domain)) userElement.SetAttributeValue("Domain", user.Domain);
-            user.FailIfExists.Do(b => userElement.SetAttribute("FailIfExists", b.ToYesNo()));
-            user.LogonAsBatchJob.Do(b => userElement.SetAttribute("LogonAsBatchJob", b.ToYesNo()));
-            user.LogonAsService.Do(b => userElement.SetAttribute("LogonAsService", b.ToYesNo()));
-            if (!string.IsNullOrEmpty(user.Password)) userElement.SetAttributeValue("Password", user.Password);
-            user.PasswordExpired.Do(b => userElement.SetAttribute("PasswordExpired", b.ToYesNo()));
-            user.PasswordNeverExpires.Do(b => userElement.SetAttribute("PasswordNeverExpires", b.ToYesNo()));
-            user.RemoveOnUninstall.Do(b => userElement.SetAttribute("RemoveOnUninstall", b.ToYesNo()));
-            user.UpdateIfExists.Do(b => userElement.SetAttribute("UpdateIfExists", b.ToYesNo()));
-            user.Vital.Do(b => userElement.SetAttribute("Vital", b.ToYesNo()));
+            return new[] { userElement };
         }
     }
 }

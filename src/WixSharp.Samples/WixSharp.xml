@@ -3552,6 +3552,13 @@
             Creates an instance of User
             </summary>
         </member>
+        <member name="M:WixSharp.User.#ctor(System.String)">
+            <summary>
+            Creates an instance of User representing <paramref name="name"/>
+            </summary>
+            <param name="name">The name.</param>
+            <exception cref="T:System.ArgumentNullException">name;name is a null reference or empty</exception>
+        </member>
         <member name="M:WixSharp.User.#ctor(WixSharp.Id,System.String)">
             <summary>
             Creates an instance of User representing <paramref name="name"/>
@@ -3568,11 +3575,25 @@
             <param name="feature">The feature.</param>
             <param name="name">The name.</param>
         </member>
+        <member name="M:WixSharp.User.#ctor(WixSharp.Feature,System.String)">
+            <summary>
+            Creates an instance of User representing <paramref name="name" />
+            </summary>
+            <param name="feature">The feature.</param>
+            <param name="name">The name.</param>
+        </member>
         <member name="M:WixSharp.User.#ctor(WixSharp.Id,System.String,System.String)">
             <summary>
             Creates an instance of User representing <paramref name="name" />@<paramref name="domain" />
             </summary>
             <param name="id">The identifier.</param>
+            <param name="name">The name.</param>
+            <param name="domain">The domain.</param>
+        </member>
+        <member name="M:WixSharp.User.#ctor(System.String,System.String)">
+            <summary>
+            Creates an instance of User representing <paramref name="name" />@<paramref name="domain" />
+            </summary>
             <param name="name">The name.</param>
             <param name="domain">The domain.</param>
         </member>
@@ -3585,12 +3606,20 @@
             <param name="name">The name.</param>
             <param name="domain">The domain.</param>
         </member>
-        <member name="P:WixSharp.User.Feature">
+        <member name="M:WixSharp.User.#ctor(WixSharp.Feature,System.String,System.String)">
             <summary>
-            <see cref="P:WixSharp.User.Feature"></see> the User belongs to.
+            Creates an instance of User representing <paramref name="name" />@<paramref name="domain" />
+            </summary>
+            <param name="feature">The feature.</param>
+            <param name="name">The name.</param>
+            <param name="domain">The domain.</param>
+        </member>
+        <member name="F:WixSharp.User.Feature">
+            <summary>
+            <see cref="F:WixSharp.User.Feature"></see> the User belongs to.
             </summary>
         </member>
-        <member name="P:WixSharp.User.WixIncludeInComponent">
+        <member name="F:WixSharp.User.WixIncludeInComponent">
             <summary>
             Requests that the User element is included inside a Component element - allowing the User to be installed.
             If any of the following properties are assigned (non-null), this property is ignored during compilation and assumed
@@ -3600,8 +3629,8 @@
             <item>CreateUser</item>
             <item>Disabled</item>
             <item>FailIfExists</item>
-            <item>LogOnAsBatchJob</item>
-            <item>LogOnAsService</item>
+            <item>LogonAsBatchJob</item>
+            <item>LogonAsService</item>
             <item>PasswordExpired</item>
             <item>PasswordNeverExpires</item>
             <item>RemoveOnUninstall</item>
@@ -3610,75 +3639,76 @@
             </list>
             </summary>
         </member>
-        <member name="P:WixSharp.User.CanNotChangePassword">
+        <member name="F:WixSharp.User.CanNotChangePassword">
             <summary>
             Maps to the CanNotChangePassword property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.CreateUser">
+        <member name="F:WixSharp.User.CreateUser">
             <summary>
             Maps to the CreateUser property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.Disabled">
+        <member name="F:WixSharp.User.Disabled">
             <summary>
             Maps to the Disabled property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.Domain">
+        <member name="F:WixSharp.User.Domain">
             <summary>
             Maps to the Domain property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.FailIfExists">
+        <member name="F:WixSharp.User.FailIfExists">
             <summary>
             Maps to the FailIfExists property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.LogonAsBatchJob">
+        <member name="F:WixSharp.User.LogonAsBatchJob">
             <summary>
             Maps to the LogOnAsBatchJob property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.LogonAsService">
+        <member name="F:WixSharp.User.LogonAsService">
             <summary>
             Maps to the LogOnAsService property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.Name">
-            <summary>
-            Maps to the Name property of User
-            </summary>
-        </member>
-        <member name="P:WixSharp.User.Password">
+        <member name="F:WixSharp.User.Password">
             <summary>
             Maps to the Password property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.PasswordExpired">
+        <member name="F:WixSharp.User.PasswordExpired">
             <summary>
             Maps to the PasswordExpired property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.PasswordNeverExpires">
+        <member name="F:WixSharp.User.PasswordNeverExpires">
             <summary>
             Maps to the PasswordNeverExpires property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.RemoveOnUninstall">
+        <member name="F:WixSharp.User.RemoveOnUninstall">
             <summary>
             Maps to the RemoveOnUninstall property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.UpdateIfExists">
+        <member name="F:WixSharp.User.UpdateIfExists">
             <summary>
             Maps to the UpdateIfExists property of User
             </summary>
         </member>
-        <member name="P:WixSharp.User.Vital">
+        <member name="F:WixSharp.User.Vital">
             <summary>
             Maps to the Vital property of User
             </summary>
+        </member>
+        <member name="M:WixSharp.User.ToXml">
+            <summary>
+            Emits WiX XML.
+            </summary>
+            <returns></returns>
         </member>
         <member name="P:WixSharp.User.MustDescendFromComponent">
             <summary>
