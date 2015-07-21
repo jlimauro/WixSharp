@@ -4,8 +4,14 @@ using System.Windows.Forms;
 
 namespace WixSharp.UI.Forms
 {
+    /// <summary>
+    /// The standard Exit dialog
+    /// </summary>
     public partial class ExitDialog : ManagedForm
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExitDialog"/> class.
+        /// </summary>
         public ExitDialog()
         {
             InitializeComponent();

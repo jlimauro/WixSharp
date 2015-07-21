@@ -6,12 +6,17 @@ using System.Windows.Forms;
 
 using io = System.IO;
 
-#pragma warning disable 1591
 
 namespace WixSharp.UI.Forms
 {
+    /// <summary>
+    /// The standard Licence dialog
+    /// </summary>
     public partial class LicenceDialog : ManagedForm
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LicenceDialog"/> class.
+        /// </summary>
         public LicenceDialog()
         {
             InitializeComponent();

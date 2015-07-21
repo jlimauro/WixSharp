@@ -8,36 +8,68 @@ using System.Windows.Forms.VisualStyles;
 
 namespace WixSharp.UI.Forms
 {
+    /// <summary>
+    /// Set of extension methods for working with ManagedUI dialogs
+    /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Determines whether the feature checkbox is checked.
+        /// </summary>
+        /// <param name="feature">The feature.</param>
+        /// <returns></returns>
         public static bool IsViewChecked(this FeatureItem feature)
         {
             if (feature.View is TreeNode)
                 return (feature.View as TreeNode).Checked;
             return false;
         }
-        
+
+        /// <summary>
+        /// Resets the whether the feature checkbox checked state to the initial stat.
+        /// </summary>
+        /// <param name="feature">The feature.</param>
         public static void ResetViewChecked(this FeatureItem feature)
         {
             if (feature.View is TreeNode)
                 (feature.View as TreeNode).Checked = feature.DefaultIsToBeInstalled();
         }
-        
+
+        /// <summary>
+        /// Returns default 'is to be installed' state of teh feature.
+        /// </summary>
+        /// <param name="feature">The feature.</param>
+        /// <returns></returns>
         public static bool DefaultIsToBeInstalled(this FeatureItem feature)
         {
-            return feature.RequestState != InstallState.Absent;
+            return feature.RequestedState != InstallState.Absent;
         }
 
+        /// <summary>
+        /// Returns the FeatireItem bound to the TreeNode.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
         public static FeatureItem FeatureItem(this TreeNode node)
         {
             return node.Tag as FeatureItem;
         }
-       
+
+        /// <summary>
+        /// Converts TreeNodeCollection into the TreeNode array.
+        /// </summary>
+        /// <param name="nodes">The nodes.</param>
+        /// <returns></returns>
         public static TreeNode[] ToArray(this TreeNodeCollection nodes)
         {
             return nodes.Cast<TreeNode>().ToArray();
         }
 
+        /// <summary>
+        /// Aggregates all nodes of the TreeView control.
+        /// </summary>
+        /// <param name="treeView">The tree view.</param>
+        /// <returns></returns>
         public static TreeNode[] AllNodes(this TreeView treeView)
         {
             var result = new List<TreeNode>();
@@ -53,6 +85,7 @@ namespace WixSharp.UI.Forms
             return result.ToArray();
         }
     }
+
     internal class ReadOnlyTreeNode : TreeNode
     {
         public bool IsReadOnly { get; set; }

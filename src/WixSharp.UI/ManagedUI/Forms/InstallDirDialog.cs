@@ -4,8 +4,14 @@ using System.Windows.Forms;
 
 namespace WixSharp.UI.Forms
 {
+    /// <summary>
+    /// The standard InstallDir dialog
+    /// </summary>
     public partial class InstallDirDialog : ManagedForm, IManagedDialog
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InstallDirDialog"/> class.
+        /// </summary>
         public InstallDirDialog()
         {
             InitializeComponent();

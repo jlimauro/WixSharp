@@ -5,28 +5,63 @@ using Microsoft.Deployment.WindowsInstaller;
 using WixSharp.CommonTasks;
 using WixSharp.UI.ManagedUI;
 using System.Diagnostics;
+using WixSharp.UI.Forms;
 
-#pragma warning disable 1591
 
 namespace WixSharp
 {
     public class ManagedUI : IManagedUI, IEmbeddedUI
     {
+        /// <summary>
+        /// The default implementation of ManagedUI. It implements all major dialogs of a typical MSI UI.
+        /// </summary>
         static public ManagedUI Default = new ManagedUI
             {
-                //http://wixtoolset.org/documentation/manual/v3/wixui/dialog_reference/wixui_featuretree.html
+                InstallDialogs = new ManagedDialogs()
+                                        .Add<WelcomeDialog>()
+                                        .Add<LicenceDialog>()
+                                        .Add<SetupTypeDialog>()
+                                        .Add<FeaturesDialog>()
+                                        .Add<InstallDirDialog>()
+                                        .Add<ProgressDialog>()
+                                        .Add<ExitDialog>(),
+
+                ModifyDialogs = new ManagedDialogs()
+                                       .Add<MaintenanceTypeDialog>()
+                                       .Add<FeaturesDialog>()
+                                       .Add<ProgressDialog>()
+                                       .Add<ExitDialog>()
             };
 
+        /// <summary>
+        /// The default implementation of ManagedUI with no UI dialogs.
+        /// </summary>
+        static public ManagedUI Empty = new ManagedUI();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ManagedUI"/> class.
+        /// </summary>
         public ManagedUI()
         {
             InstallDialogs = new ManagedDialogs();
             ModifyDialogs = new ManagedDialogs();
         }
 
+        /// <summary>
+        /// The location of the ManagedUI dialog bitmap. If not defined the Wix# compiler will use standard WiX dialog bitmap.
+        /// </summary>
         public string DialogBitmap;
+        /// <summary>
+        /// The location of the ManagedUI dialog banner bitmap. If not defined the Wix# compiler will use standard WiX dialog banner bitmap.
+        /// </summary>
         public string DialogBanner;
 
-        public void EmbeddResourcesInto(ManagedProject project)
+        /// <summary>
+        /// This method is called (indirectly) by Wix# compiler just befor building the MSI. It allows embedding UI specific resources (e.g. license file, properties)
+        /// into the MSI.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        public void BeforeBuild(ManagedProject project)
         {
             project.AddBinary(new Binary(new Id("WixSharp_UIText"), LocalizationFileFor(project)));
             project.AddBinary(new Binary(new Id("WixSharp_LicenceFile"), LicenceFileFor(project)));
@@ -34,29 +69,42 @@ namespace WixSharp
             project.AddBinary(new Binary(new Id("WixUI_Bmp_Banner"), DialogBannerFileFor(project)));
         }
 
+        /// <summary>
+        /// Gets or sets the id of the 'installdir' (destination folder) directory. It is the directory,
+        /// which is bound to the input UI elements of the Browse dialog (e.g. WiX BrowseDlg, Wix# InstallDirDialog).
+        /// </summary>
+        /// <value>
+        /// The install dir identifier.
+        /// </value>
         public string InstallDirId { get; set; }
 
         string LocalizationFileFor(Project project)
         {
-            return UIExtensions.UserOrDefaultContentOf(project.LocalizationFile, project.OutDir, project.Name + ".wxl", Resources.WixUI_en_us);
+            return UIExtensions.UserOrDefaultContentOf(project.LocalizationFile, project.SourceBaseDir, project.OutDir, project.Name + ".wxl", Resources.WixUI_en_us);
         }
 
         string LicenceFileFor(Project project)
         {
-            return UIExtensions.UserOrDefaultContentOf(project.LicenceFile, project.OutDir, project.Name + ".licence.rtf", Resources.WixSharp_LicenceFile);
+            return UIExtensions.UserOrDefaultContentOf(project.LicenceFile, project.SourceBaseDir, project.OutDir, project.Name + ".licence.rtf", Resources.WixSharp_LicenceFile);
         }
 
         string DialogBitmapFileFor(Project project)
         {
-            return UIExtensions.UserOrDefaultContentOf(DialogBitmap, project.OutDir, project.Name + ".dialog_bmp.png", Resources.WixUI_Bmp_Dialog);
+            return UIExtensions.UserOrDefaultContentOf(DialogBitmap, project.SourceBaseDir, project.OutDir, project.Name + ".dialog_bmp.png", Resources.WixUI_Bmp_Dialog);
         }
 
         string DialogBannerFileFor(Project project)
         {
-            return UIExtensions.UserOrDefaultContentOf(DialogBanner, project.OutDir, project.Name + ".dialog_banner.png", Resources.WixUI_Bmp_Banner);
+            return UIExtensions.UserOrDefaultContentOf(DialogBanner, project.SourceBaseDir, project.OutDir, project.Name + ".dialog_banner.png", Resources.WixUI_Bmp_Banner);
         }
 
+        /// <summary>
+        /// Sequence of the dialogs to be displayed during the installation of the product.
+        /// </summary>
         public ManagedDialogs InstallDialogs { get; set; }
+        /// <summary>
+        /// Sequence of the dialogs to be displayed during the customization of the installed product.
+        /// </summary>
         public ManagedDialogs ModifyDialogs { get; set; }
 
         ManualResetEvent uiExitEvent = new ManualResetEvent(false);
@@ -74,6 +122,7 @@ namespace WixSharp
 
         public bool Initialize(Session session, string resourcePath, ref InstallUIOptions uiLevel)
         {
+            //System.Diagnostics.Debugger.Launch();
             if (session != null && (session.IsUninstalling() || uiLevel.IsBasic()))
                 return false; //use built-in MSI basic UI
 
@@ -83,7 +132,6 @@ namespace WixSharp
 
             var uiThread = new Thread(() =>
             {
-
                 shell = new UIShell(); //important to create the instance in the same thread that call ShowModal
                 shell.ShowModal(new MsiRuntime(session) { StartExecute = () => startEvent.Set() }, this);
                 uiExitEvent.Set();

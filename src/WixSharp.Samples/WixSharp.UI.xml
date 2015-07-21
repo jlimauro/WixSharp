@@ -4,6 +4,21 @@
         <name>WixSharp.UI</name>
     </assembly>
     <members>
+        <member name="T:WixSharp.UI.Forms.ExitDialog">
+            <summary>
+            The standard Exit dialog
+            </summary>
+        </member>
+        <member name="T:WixSharp.UI.Forms.ManagedForm">
+            <summary>
+            The base class for all WinForm based dialogs of ManagedUI. 
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.ExitDialog.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.UI.Forms.ExitDialog"/> class.
+            </summary>
+        </member>
         <member name="F:WixSharp.UI.Forms.ExitDialog.components">
             <summary>
             Required designer variable.
@@ -23,7 +38,105 @@
         </member>
         <member name="T:WixSharp.UI.Forms.FeatureItem">
             <summary>
-            Equivalent of FeatureInfo which is read-only and doesn't work anyway (at least in WiX v3.9)
+            Equivalent of Microsoft.Deployment.WindowsInstaller.FeatureInfo which is read-only and doesn't work anyway (at least in WiX v3.9)
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.FeatureItem.Name">
+            <summary>
+            The name of the Feature
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.FeatureItem.ParentName">
+            <summary>
+            The name of the parent Feature
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.FeatureItem.Title">
+            <summary>
+            The title of the Feature
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.FeatureItem.Description">
+            <summary>
+            The description of the Feature
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.FeatureItem.View">
+            <summary>
+            The view of the Feature. Typically a TreeNode
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.FeatureItem.Parent">
+            <summary>
+            The parent FeatureItem
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.FeatureItem.RequestedState">
+            <summary>
+            The requested state. Defines the InstallState of the feature to be achieved as the result of the MSI execution.
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.FeatureItem.CurrentState">
+            <summary>
+            The current state. Defines the InstallState of the feature before the MSI execution.
+            </summary>
+        </member>
+        <member name="F:WixSharp.UI.Forms.FeatureItem.Attributes">
+            <summary>
+            The defines how the feature should be displayed in the feature tree.
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.FeatureItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.UI.Forms.FeatureItem"/> class.
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.FeatureItem.#ctor(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.UI.Forms.FeatureItem"/> class.
+            </summary>
+            <param name="session">The session.</param>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:WixSharp.UI.Forms.FeatureItem.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:WixSharp.UI.Forms.FeatureItem.DetectFeatureState(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
+            <summary>
+            Detects the state of the feature.
+            </summary>
+            <param name="session">The session.</param>
+            <param name="name">The name.</param>
+            <returns></returns>
+        </member>
+        <member name="P:WixSharp.UI.Forms.FeatureItem.DisallowAbsent">
+            <summary>
+            Gets a value indicating whether the feature is allowed to be "absent".
+            </summary>
+            <value>
+              <c>true</c> if "disallow absent"; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:WixSharp.UI.Forms.AdvancedFeaturesDialog">
+            <summary>
+            The standard Features dialog.  
+            </summary>
+        </member>
+        <member name="T:WixSharp.UI.Forms.FeaturesDialog">
+            <summary>
+            The logical equivalent of the standard Features dialog. Though it implement slightly 
+            different user experience as it has checkboxes bound to the features instead of icons context menu
+            as MSI dialog has.
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.FeaturesDialog.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.UI.Forms.FeaturesDialog"/> class.
             </summary>
         </member>
         <member name="F:WixSharp.UI.Forms.FeaturesDialog.components">
@@ -58,6 +171,62 @@
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:WixSharp.UI.Forms.Extensions">
+            <summary>
+            Set of extension methods for working with ManagedUI dialogs
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.Extensions.IsViewChecked(WixSharp.UI.Forms.FeatureItem)">
+            <summary>
+            Determines whether the feature checkbox is checked.
+            </summary>
+            <param name="feature">The feature.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.UI.Forms.Extensions.ResetViewChecked(WixSharp.UI.Forms.FeatureItem)">
+            <summary>
+            Resets the whether the feature checkbox checked state to the initial stat.
+            </summary>
+            <param name="feature">The feature.</param>
+        </member>
+        <member name="M:WixSharp.UI.Forms.Extensions.DefaultIsToBeInstalled(WixSharp.UI.Forms.FeatureItem)">
+            <summary>
+            Returns default 'is to be installed' state of teh feature.
+            </summary>
+            <param name="feature">The feature.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.UI.Forms.Extensions.FeatureItem(System.Windows.Forms.TreeNode)">
+            <summary>
+            Returns the FeatireItem bound to the TreeNode.
+            </summary>
+            <param name="node">The node.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.UI.Forms.Extensions.ToArray(System.Windows.Forms.TreeNodeCollection)">
+            <summary>
+            Converts TreeNodeCollection into the TreeNode array.
+            </summary>
+            <param name="nodes">The nodes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.UI.Forms.Extensions.AllNodes(System.Windows.Forms.TreeView)">
+            <summary>
+            Aggregates all nodes of the TreeView control.
+            </summary>
+            <param name="treeView">The tree view.</param>
+            <returns></returns>
+        </member>
+        <member name="T:WixSharp.UI.Forms.MaintenanceTypeDialog">
+            <summary>
+            The standard Maintenance Type dialog
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.MaintenanceTypeDialog.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.UI.Forms.MaintenanceTypeDialog"/> class.
             </summary>
         </member>
         <member name="F:WixSharp.UI.Forms.MaintenanceTypeDialog.components">
@@ -116,6 +285,16 @@
               Looks up a localized resource of type System.Byte[].
             </summary>
         </member>
+        <member name="T:WixSharp.UI.Forms.WelcomeDialog">
+            <summary>
+            The standard Welcome dialog
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.WelcomeDialog.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.UI.Forms.WelcomeDialog"/> class.
+            </summary>
+        </member>
         <member name="F:WixSharp.UI.Forms.WelcomeDialog.components">
             <summary>
             Required designer variable.
@@ -131,6 +310,16 @@
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:WixSharp.UI.Forms.InstallDirDialog">
+            <summary>
+            The standard InstallDir dialog
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.InstallDirDialog.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.UI.Forms.InstallDirDialog"/> class.
             </summary>
         </member>
         <member name="F:WixSharp.UI.Forms.InstallDirDialog.components">
@@ -160,6 +349,16 @@
             Gets a number between 0 and 1 that indicates the overall installation progress.
             </summary>
         </member>
+        <member name="T:WixSharp.UI.Forms.LicenceDialog">
+            <summary>
+            The standard Licence dialog
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.LicenceDialog.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.UI.Forms.LicenceDialog"/> class.
+            </summary>
+        </member>
         <member name="F:WixSharp.UI.Forms.LicenceDialog.components">
             <summary>
             Required designer variable.
@@ -175,6 +374,57 @@
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ManagedUI.Default">
+            <summary>
+            The default implementation of ManagedUI. It implements all major dialogs of a typical MSI UI.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ManagedUI.Empty">
+            <summary>
+            The default implementation of ManagedUI with no UI dialogs.
+            </summary>
+        </member>
+        <member name="M:WixSharp.ManagedUI.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.ManagedUI"/> class.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ManagedUI.DialogBitmap">
+            <summary>
+            The location of the ManagedUI dialog bitmap. If not defined the Wix# compiler will use standard WiX dialog bitmap.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ManagedUI.DialogBanner">
+            <summary>
+            The location of the ManagedUI dialog banner bitmap. If not defined the Wix# compiler will use standard WiX dialog banner bitmap.
+            </summary>
+        </member>
+        <member name="M:WixSharp.ManagedUI.BeforeBuild(WixSharp.ManagedProject)">
+            <summary>
+            This method is called (indirectly) by Wix# compiler just befor building the MSI. It allows embedding UI specific resources (e.g. license file, properties)
+            into the MSI.
+            </summary>
+            <param name="project">The project.</param>
+        </member>
+        <member name="P:WixSharp.ManagedUI.InstallDirId">
+            <summary>
+            Gets or sets the id of the 'installdir' (destination folder) directory. It is the directory,
+            which is bound to the input UI elements of the Browse dialog (e.g. WiX BrowseDlg, Wix# InstallDirDialog).
+            </summary>
+            <value>
+            The install dir identifier.
+            </value>
+        </member>
+        <member name="P:WixSharp.ManagedUI.InstallDialogs">
+            <summary>
+            Sequence of the dialogs to be displayed during the installation of the product.
+            </summary>
+        </member>
+        <member name="P:WixSharp.ManagedUI.ModifyDialogs">
+            <summary>
+            Sequence of the dialogs to be displayed during the customization of the installed product.
             </summary>
         </member>
         <member name="T:WixSharp.ShowClrDialogAction">
@@ -365,6 +615,61 @@
             <summary>
             Method that gets invoked when the Bootstrapper ApplyComplete event is fired.
             This is called after a bundle installation has completed. Make sure we updated the view.
+            </summary>
+        </member>
+        <member name="T:WixSharp.Forms.Dialogs">
+            <summary>
+            Set of ManagedUI dialogs (WinForm) that implement all standard MSI UI dialogs.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Forms.Dialogs.Welcome">
+            <summary>
+            The standard Welcome dialog
+            </summary>
+        </member>
+        <member name="F:WixSharp.Forms.Dialogs.Licence">
+            <summary>
+            The standard Licence dialog
+            </summary>
+        </member>
+        <member name="F:WixSharp.Forms.Dialogs.Features">
+            <summary>
+            The standard Features dialog
+            </summary>
+        </member>
+        <member name="F:WixSharp.Forms.Dialogs.InstallDir">
+            <summary>
+            The standard InstallDir dialog
+            </summary>
+        </member>
+        <member name="F:WixSharp.Forms.Dialogs.Progress">
+            <summary>
+            The standard Installation Progress dialog
+            </summary>
+        </member>
+        <member name="F:WixSharp.Forms.Dialogs.SetupType">
+            <summary>
+            The standard Setup Type dialog. To be used during the installation of the product.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Forms.Dialogs.MaintenanceType">
+            <summary>
+            The standard Maintenance Type dialog.To be used during the maintenance of the product.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Forms.Dialogs.Exit">
+            <summary>
+            The standard Exit dialog
+            </summary>
+        </member>
+        <member name="T:WixSharp.UI.Forms.ProgressDialog">
+            <summary>
+            The standard Installation Progress dialog
+            </summary>
+        </member>
+        <member name="M:WixSharp.UI.Forms.ProgressDialog.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.UI.Forms.ProgressDialog"/> class.
             </summary>
         </member>
         <member name="F:WixSharp.UI.Forms.ProgressDialog.components">

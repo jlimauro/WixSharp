@@ -5,10 +5,14 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Deployment.WindowsInstaller;
 
-#pragma warning disable 1591
 
 namespace WixSharp.UI.Forms
 {
+    /// <summary>
+    /// The logical equivalent of the standard Features dialog. Though it implement slightly 
+    /// different user experience as it has checkboxes bound to the features instead of icons context menu
+    /// as MSI dialog has.
+    /// </summary>
     public partial class FeaturesDialog : ManagedForm
     {
         /*https://msdn.microsoft.com/en-us/library/aa367536(v=vs.85).aspx
@@ -19,6 +23,9 @@ namespace WixSharp.UI.Forms
 
         FeatureItem[] features;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeaturesDialog"/> class.
+        /// </summary>
         public FeaturesDialog()
         {
             InitializeComponent();

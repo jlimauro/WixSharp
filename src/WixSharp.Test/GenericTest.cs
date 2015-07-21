@@ -26,15 +26,15 @@ namespace WixSharp.Test
             Assert.Equal(@"..\Content\readme.txt", result);
         }
 
-        [Fact]
+        //[Fact]
         public void MsiParser_InstallDir()
         {
-            //var parser = new MsiParser(@"..\WixSharp.Samples\Wix# Samples\Managed Setup\ManagedSetup.msi");
             string msi = @"E:\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Shortcuts\setup.msi";
             var parser = new WixMsi.UI.MsiParser(msi);
             string installDirProperty = "INSTALLDIR";
             string dir = parser.GetDirectoryPath(installDirProperty);
         }
+
 
         [Fact]
         public void EnumExtensions()
@@ -92,7 +92,7 @@ namespace WixSharp.Test
         [Fact]
         public void Shoud_Resolve_WixVars()
         {
-            Func<string, string > asWixVarToPath = name=>WixSharpMsi.WixSharp.Extensions.AsWixVarToPath(name);
+            Func<string, string> asWixVarToPath = name => WixSharpMsi.WixSharp.Extensions.AsWixVarToPath(name);
 
             var adminToolsFolder = asWixVarToPath("AdminToolsFolder");
             var appDataFolder = asWixVarToPath("AppDataFolder");

@@ -136,6 +136,11 @@ namespace WixSharp.UI
         //    return "ProgramFilesFolder".AsWixVarToPath(); // Always default to Program Files folder.
         //}
 
+        /// <summary>
+        /// Returns the full path of the directory entry from the Directory MSI table
+        /// </summary>
+        /// <param name="name">The name (e.g. INSTALLDIR).</param>
+        /// <returns></returns>
         public string GetDirectoryPath(string name)
         {
             string[] subDirs = GetDirectoryPathParts(name).Select(x => x.AsWixVarToPath()).ToArray();

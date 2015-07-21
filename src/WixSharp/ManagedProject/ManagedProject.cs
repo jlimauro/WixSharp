@@ -9,8 +9,6 @@ using WixSharp.CommonTasks;
 using IO = System.IO;
 using System.IO;
 
-#pragma warning disable 1591
-
 namespace WixSharp
 {
     /// <summary>
@@ -58,6 +56,10 @@ namespace WixSharp
         /// </summary>
         public event SetupEventHandler AfterInstall;
 
+        /// <summary>
+        /// An instance of ManagedUI defining MSI UI dialogs sequence. User should set it if he/she wants native MSI dialogs to be 
+        /// replaced by managed ones.
+        /// </summary>
         public IManagedUI ManagedUI;
 
         bool preprocessed = false;
@@ -97,7 +99,7 @@ namespace WixSharp
         /// The default properties mapped for use with the deferred custom actions. See <see cref="ManagedAction.UsesProperties"/> for the details.
         /// <para>The default value is "INSTALLDIR,UILevel"</para>
         /// </summary>
-        public string DefaultDeferredProperties = "INSTALLDIR";
+        public string DefaultDeferredProperties = "INSTALLDIR,UILevel,ProductName";
 
         override internal void Preprocess()
         {
@@ -118,7 +120,7 @@ namespace WixSharp
                 {
                     this.AddProperty(new Property("WixSharp_UI_INSTALLDIR", ManagedUI.InstallDirId ?? "INSTALLDIR"));
 
-                    ManagedUI.EmbeddResourcesInto(this);
+                    ManagedUI.BeforeBuild(this);
 
                     InjectDialogs("WixSharp_InstallDialogs", ManagedUI.InstallDialogs);
                     InjectDialogs("WixSharp_ModifyDialogs", ManagedUI.ModifyDialogs);
@@ -187,9 +189,7 @@ namespace WixSharp
             string[] parts = info.Split('|');
 
             var assembly = System.Reflection.Assembly.Load(parts[0]);
-            var type = assembly.GetTypes().Single(t => t.FullName == parts[1]);
-
-            return type;
+            return assembly.GetType(parts[1]);
         }
 
         static void ValidateHandlerInfo(string info)
@@ -268,12 +268,13 @@ namespace WixSharp
 
         internal static ActionResult Init(Session session)
         {
-            //Debugger.Launch();
+            //System.Diagnostics.Debugger.Launch();
             var data = new SetupEventArgs.AppData();
             try
             {
                 data["Installed"] = session["Installed"];
                 data["REMOVE"] = session["REMOVE"];
+                data["ProductName"] = session["ProductName"];
                 data["REINSTALL"] = session["REINSTALL"];
                 data["UPGRADINGPRODUCTCODE"] = session["UPGRADINGPRODUCTCODE"];
                 data["UILevel"] = session["UILevel"];

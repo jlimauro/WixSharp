@@ -1,22 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using WixSharp;
-using WixSharp.Forms;
-using WixSharp.UI.Forms;
-
 //css_dir ..\..\;
 //css_ref Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 //css_ref WixSharp.UI.dll;
 //css_ref System.Core.dll;
 //css_ref System.Xml.dll;
+using System;
+using System.Diagnostics;
+using System.Windows.Forms;
+using Microsoft.Deployment.WindowsInstaller;
+using WixSharp;
+using io = System.IO;
+
 public class Script
 {
     static public void Main()
     {
-        //NOTE: IT IS STILL A WORK IN PROGRESS FEATURE PREVIEW
-
         var binaries = new Feature("Binaries", "Product binaries", true, false);
         var docs = new Feature("Documentation", "Product documentation (manuals and user guides)", true);
         var tuts = new Feature("Tutorials", "Product tutorials", false);
@@ -26,63 +23,48 @@ public class Script
         var project =
             new ManagedProject("ManagedSetup",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
-                    new File(binaries, "myApp.exe"),
+                    new File(binaries, @"Files\bin\MyApp.exe"),
                     new Dir("Docs",
                         new File(docs, "readme.txt"),
-                        new File(tuts, "setup.cs")))); 
+                        new File(tuts, "setup.cs"))));
 
-        //project.LocalizationFile = "wixui_cs-cz.wxl";
-        //project.Platform = Platform.x64;
+        project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
         project.ManagedUI = ManagedUI.Default;
-        //instead of the actual types you can use pseudo-Enum: ...ModifyDialogs.Add(Dialogs.MaintenanceType)
-        project.ManagedUI.InstallDialogs.Add<WelcomeDialog>()
-                                        .Add<LicenceDialog>()
-                                        .Add<SetupTypeDialog>()
-                                        .Add<FeaturesDialog>()
-                                        .Add<InstallDirDialog>()
-                                        .Add<ProgressDialog>()
-                                        .Add<ExitDialog>();
-
-        project.ManagedUI.ModifyDialogs.Add<MaintenanceTypeDialog>()
-                                       .Add<FeaturesDialog>()
-                                       .Add<ProgressDialog>()
-                                       .Add<ExitDialog>();
-
-        project.ManagedUI.InstallDialogs.Clear();
-        project.ManagedUI.ModifyDialogs.Clear();
-        
-        //project.Load += project_Load;
-        //project.BeforeInstall += project_BeforeExecute;
-        //project.AfterInstall += project_AfterExecute;
-
-        //project.DefaultFeature = null;
-
-#if vs
-        project.OutDir = @"..\..\Wix# Samples\Managed Setup".PathGetFullPath();
-#endif
-        project.EmitConsistentPackageId = true;
-        Compiler.CandleOptions += " -sw1091";
-
-        //project.PreserveTempFiles = true;
-        
-        project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
+        project.Load += project_Load;
+        project.AfterInstall += project_AfterInstall;
 
         project.BuildMsi();
     }
 
     static void project_Load(SetupEventArgs e)
     {
-        MessageBox.Show(e.ToString(), "Load");
+        if (e.IsInstalling)
+        {
+            //pseudo validation
+            if (Environment.MachineName.Length > 3)
+            {
+                string message = "Your PC is too fancy for this app!";
+                e.Session.Log(message);
+
+                if (e.IsUISupressed)
+                    MessageBox.Show(message, e.ProductName);
+
+                e.Result = ActionResult.SkipRemainingActions;
+            }
+        }
     }
 
-    static void project_BeforeExecute(SetupEventArgs e)
+    static void project_AfterInstall(SetupEventArgs e)
     {
-        MessageBox.Show(e.ToString(), "BeforeInstall");
-    }
+        if (!e.IsUninstalling && !e.IsUISupressed)
+        {
+            string readme = io.Path.Combine(e.InstallDir, @"Docs\readme.txt");
 
-    static void project_AfterExecute(SetupEventArgs e)
-    {
-        MessageBox.Show(e.ToString(), "AfterExecute");
+            if (io.File.Exists(readme))
+                Process.Start(readme);
+            else
+                MessageBox.Show("Readme.txt is not present. You may want to download it from the product website.", e.ProductName);
+        }
     }
 }

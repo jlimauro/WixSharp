@@ -5,10 +5,12 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Deployment.WindowsInstaller;
 
-#pragma warning disable 1591
 
 namespace WixSharp.UI.Forms
 {
+    /// <summary>
+    /// The standard Features dialog.  
+    /// </summary>
     public partial class AdvancedFeaturesDialog : FeaturesDialog
     {
         //At this stage it is a full equivalent of FeaturesDialog

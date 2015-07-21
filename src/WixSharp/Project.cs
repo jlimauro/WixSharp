@@ -710,22 +710,13 @@ namespace WixSharp
 
         internal bool IsLocalized
         {
-            get { return (Language.ToLower() != "en-us" && Language.ToLower() != "en") || !localizationFile.IsEmpty(); }
+            get { return (Language.ToLower() != "en-us" && Language.ToLower() != "en") || !LocalizationFile.IsEmpty(); }
         }
 
-        string localizationFile = "";
         /// <summary>
-        /// Path to the Localization file. This value is used only if the setup language is not <c>"en-US"</c>.
-        /// <para>If the <see cref="LocalizationFile"/> is not specified and the setup language 
-        /// <see cref="Compiler"/> will generate <see cref="LocalizationFile"/> value as following:
-        /// <c>WixUI_[Language].wxl</c>.
-        /// </para>
+        /// Path to the Localization file. 
         /// </summary>
-        public string LocalizationFile
-        {
-            get { return localizationFile.IsEmpty() ? "wixui_" + new CultureInfo(this.Language).Name + ".wxl" : localizationFile; }
-            set { localizationFile = value; }
-        }
+        public string LocalizationFile = "";
 
         /// <summary>
         /// Name (path) of the directory which was assigned <see cref="T:WixSharp.Compiler.AutoGeneration.InstallDirDefaultId"/> ID as part of XML auto-generation (see <see cref="T:WixSharp.AutoGenerationOptions"/>).

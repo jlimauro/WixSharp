@@ -331,6 +331,10 @@ namespace WixSharp
             set { WixGuid.Generator = value; }
         }
 
+        /// <summary>
+        /// The collection of temporary files created by compiler routine(s). These files will always be deleted unless Project/Compiler 
+        /// PreserveTempFiles property is set to true;
+        /// </summary>
         public static List<string> TempFiles = new List<string>();
 
         /// <summary>
@@ -340,6 +344,7 @@ namespace WixSharp
         /// <returns>Path to the built MSI file. Returns <c>null</c> if <c>MSI</c> cannot be built.</returns>
         static public string BuildMsi(Project project)
         {
+            //Debugger.Launch();
             //very important to keep "ClientAssembly = " in all "public Build*" methods to ensure GetCallingAssembly
             //returns the build script assembly but not just another method of Compiler.
             if (ClientAssembly.IsEmpty())
@@ -607,7 +612,9 @@ namespace WixSharp
                             IO.File.Delete(msiFile);
 
                         if (project.IsLocalized && IO.File.Exists(project.LocalizationFile))
+                        {
                             Run(linker, lightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language + " -loc \"" + project.LocalizationFile + "\"");
+                        }
                         else
                             Run(linker, lightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language);
 

@@ -11,7 +11,6 @@ using Microsoft.Deployment.WindowsInstaller;
 using sys = System.Windows.Forms;
 using System.Drawing.Imaging;
 
-#pragma warning disable 1591
 
 namespace WixSharp
 {
@@ -22,7 +21,8 @@ namespace WixSharp
      *        Installed                     False       True        False       True        True    
      *        REINSTALL                     True        False       True        False       False     
      *        UPGRADINGPRODUCTCODE          True        False       True        True        True      
-     * Though in reality it is like this:
+     *        
+     * Though in the reality it is like this:
      *        Property Name                 Install     Uninstall   Repair      Modify      Upgrade
      *        ---------------------------------------------------------------------------------------------------
      *        Installed                     <null>      00:00:00    00:00:00    00:00:00    <not tested yet>    

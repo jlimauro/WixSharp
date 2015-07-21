@@ -313,6 +313,13 @@ namespace WixSharp
             return collection;
         }
 
+        /// <summary>
+        /// Enqueues the range of the items into a instance of the  <see cref="T:System.Collections.Generics.Queue"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="queue">The queue.</param>
+        /// <param name="collection">The collection.</param>
+        /// <returns></returns>
         public static Queue<T> EnqueueRange<T>(this Queue<T> queue, IEnumerable<T> collection)
         {
             foreach (T item in collection)
@@ -381,7 +388,14 @@ namespace WixSharp
             int.TryParse(value, out result);
             return result;
         }
-       
+
+        /// <summary>
+        /// A simple generic wrapper around more specialized <see cref="T:String.Join"/>, which is limited to
+        /// work with string arrays only.
+        /// </summary>
+        /// <param name="strings">The strings.</param>
+        /// <param name="separator">The separator.</param>
+        /// <returns></returns>
         public static string Join(this IEnumerable<string> strings, string separator)
         {
             return string.Join(separator, strings.ToArray());
@@ -1080,14 +1094,23 @@ namespace WixSharp
         }
 
 
+        /// <summary>
+        /// Determines whether MSI is running in "modifying" mode.
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <returns></returns>
         static public bool IsModifying(this Session session)
         {
             return session.IsInstalled() && !session.IsUninstalling();
         }
 
         /// <summary>
-        /// Gets a value indicating whether the product is being uninstalled.
+        /// Determines whether MSI is running in "uninstalling" mode.
         /// </summary>
+        /// <summary>
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <returns></returns>
         static public bool IsUninstalling(this Session session)
         {
             return session.Property("REMOVE").SameAs("All", true);
@@ -1194,6 +1217,13 @@ namespace WixSharp
             return GetEmbeddedData(session, binary);
         }
 
+        /// <summary>
+        /// A simple generic wrapper around MSI View open operation. It retrieves all view data and returns it as a 
+        /// collection of dictionaries (set of named values).
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <param name="sqlText">The SQL text.</param>
+        /// <returns></returns>
         public static List<Dictionary<string, object>> OpenView(this Session session, string sqlText)
         {
             var table = new List<Dictionary<string, object>>();
@@ -1216,6 +1246,12 @@ namespace WixSharp
             return table;
         }
 
+        /// <summary>
+        /// Extracts the bitmap embedded into MSI (into Binary table).
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <param name="binary">The name on resource in the Binary table.</param>
+        /// <returns></returns>
         public static Bitmap GetEmbeddedBitmap(this Session session, string binary)
         {
             using (var sql = session.Database.OpenView("select Data from Binary where Name = '" + binary + "'"))
@@ -1241,11 +1277,23 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        ///  Extracts the string embedded into MSI (into Binary table).
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <param name="binary">The name on resource in the Binary table.</param>
+        /// <returns></returns>
         public static string GetEmbeddedString(this Session session, string binary)
         {
             return GetEmbeddedData(session, binary).GetString();
         }
 
+        /// <summary>
+        ///  Extracts the data embedded into MSI (into Binary table).
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <param name="binary">The name on resource in the Binary table.</param>
+        /// <returns></returns>
         public static byte[] GetEmbeddedData(this Session session, string binary)
         {
             //If binary is accessed this way it will raise "stream handle is not valid" exception

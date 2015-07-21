@@ -4,6 +4,31 @@
         <name>WixSharp.Msi</name>
     </assembly>
     <members>
+        <member name="T:WixSharp.Extensions">
+            <summary>
+            Collection of generic WixSharp extension methods
+            </summary>
+        </member>
+        <member name="M:WixSharp.Extensions.Is64OS">
+            <summary>
+            Returns <c>true</c> if the OS (this routine is executed on) has an x64 CPU architecture.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.AsWixVarToPath(System.String)">
+            <summary>
+            'Interprets' a string as a WiX constant and expands into a proper Fiel System path. For example "DesktopFolder"
+            will be expanded into "[SysDrive]:\Users\[user]\Desktop". Tis method is a logical equivalent of C# Environment.GetFolderPath. 
+            Though it handles discrepancies between 'special folders' mapping in .NET and WiX.
+            
+            <remarks>
+            The method will always be called from x86 runtime as MSI always loads ManagedUI in x86 host. 
+            From the other hand CustomActions are called in the deployment specific CPU type context.
+            </remarks>
+            </summary>
+            <param name="path">The path.</param>
+            <returns></returns>
+        </member>
         <member name="T:WixSharp.UI.MsiParser">
             <summary>
             Utility class for simplifying MSI interpreting tasks DB querying, message data parsing  
@@ -61,6 +86,13 @@
             Determines whether the product from the encapsulated msi file is installed.
             </summary>
             <returns>Returns <c>true</c> if the product is installed. Otherwise returns <c>false</c>.</returns>
+        </member>
+        <member name="M:WixSharp.UI.MsiParser.GetDirectoryPath(System.String)">
+            <summary>
+            Returns the full path of the directory entry from the Directory MSI table
+            </summary>
+            <param name="name">The name (e.g. INSTALLDIR).</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.UI.MsiParser.ParseCommonData(System.String)">
             <summary>

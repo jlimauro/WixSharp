@@ -9,8 +9,6 @@ using WixSharp.Forms;
 using forms = System.Windows.Forms;
 using System.Threading;
 
-#pragma warning disable 1591
-
 namespace WixSharp
 {
     interface IUIContainer

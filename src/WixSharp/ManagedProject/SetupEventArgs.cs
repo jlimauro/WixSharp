@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 
-#pragma warning disable 1591
-
 namespace WixSharp
 {
     /// <summary>
@@ -59,6 +57,10 @@ namespace WixSharp
         /// </value>
         public ActionResult Result { get; set; }
 
+        /// <summary>
+        /// Gets name of the product being installed
+        /// </summary>
+        public string ProductName { get { return Data["ProductName"]; } }
         /// <summary>
         /// Gets a value indicating whether Authored UI and wizard dialog boxes suppressed.
         /// </summary>

@@ -4,12 +4,17 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Deployment.WindowsInstaller;
 
-#pragma warning disable 1591
 
 namespace WixSharp.UI.Forms
 {
+    /// <summary>
+    /// The standard Installation Progress dialog
+    /// </summary>
     public partial class ProgressDialog : ManagedForm, IProgressDialog
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProgressDialog"/> class.
+        /// </summary>
         public ProgressDialog()
         {
             //Debugger.Launch();
@@ -52,7 +57,34 @@ namespace WixSharp.UI.Forms
 
                         try
                         {
-                            var message = messageRecord[messageRecord.FieldCount - 1].ToString();
+                            //messageRecord[0] - is reserved for FormatString value
+
+                            string message = null;
+ 
+                            bool simple = true;
+                            if (simple)
+                            {
+                                for (int i = messageRecord.FieldCount - 1; i > 0; i--)
+                                {
+                                    message = messageRecord[i].ToString();
+                                }
+                            }
+                            else
+                            {
+                                message = messageRecord.FormatString;
+                                if (message.IsNotEmpty())
+                                {
+                                    for (int i = 1; i < messageRecord.FieldCount; i++) 
+                                    {
+                                        message = message.Replace("[" + i + "]", messageRecord[i].ToString());
+                                    }
+                                }
+                                else
+                                {
+                                    message = messageRecord[messageRecord.FieldCount - 1].ToString();
+                                }
+                            }
+
 
                             if (message.IsNotEmpty())
                                 currentAction.Text = message;

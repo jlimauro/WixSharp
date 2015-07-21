@@ -7,8 +7,14 @@ using System.Windows.Forms;
 
 namespace WixSharp.UI.Forms
 {
+    /// <summary>
+    /// The standard Welcome dialog
+    /// </summary>
     public partial class WelcomeDialog : ManagedForm, IManagedDialog
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WelcomeDialog"/> class.
+        /// </summary>
         public WelcomeDialog()
         {
             InitializeComponent();

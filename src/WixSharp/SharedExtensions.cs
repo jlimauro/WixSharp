@@ -3,8 +3,15 @@ using System.IO;
 
 namespace WixSharp
 {
+    /// <summary>
+    /// Collection of generic WixSharp extension methods
+    /// </summary>
     public static partial class Extensions
     {
+        /// <summary>
+        /// Returns <c>true</c> if the OS (this routine is executed on) has an x64 CPU architecture.
+        /// </summary>
+        /// <returns></returns>
         public static bool Is64OS()
         {
             //cannot use Environment.Is64BitOperatingSystem class as it is v3.5
@@ -16,8 +23,19 @@ namespace WixSharp
             return Directory.Exists(progFiles32);
         }
 
-        //will always be called from x86 runtime as MSI always loads ManagedUI in x86 host.
-        //Though CustomActions are called in the deployment specific CPU type context.
+
+        /// <summary>
+        /// 'Interprets' a string as a WiX constant and expands into a proper Fiel System path. For example "DesktopFolder"
+        /// will be expanded into "[SysDrive]:\Users\[user]\Desktop". Tis method is a logical equivalent of C# Environment.GetFolderPath. 
+        /// Though it handles discrepancies between 'special folders' mapping in .NET and WiX.
+        /// 
+        /// <remarks>
+        /// The method will always be called from x86 runtime as MSI always loads ManagedUI in x86 host. 
+        /// From the other hand CustomActions are called in the deployment specific CPU type context.
+        /// </remarks>
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
         public static string AsWixVarToPath(this string path)
         {
             switch (path)

@@ -3,6 +3,9 @@ using System.Windows.Forms;
 
 namespace WixSharp.UI.Forms
 {
+    /// <summary>
+    /// The base class for all WinForm based dialogs of ManagedUI. 
+    /// </summary>
     public class ManagedForm : Form, IManagedDialog
     {
         IManagedUIShell shell;

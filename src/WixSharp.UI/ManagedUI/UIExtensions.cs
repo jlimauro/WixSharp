@@ -111,30 +111,28 @@ namespace WixSharp
             return path.ToArray();
         }
 
-        internal static string UserOrDefaultContentOf(string extenalFile, string outDir, string fileName, object defaultContent)
+        internal static string UserOrDefaultContentOf(string extenalFilePath, string srcDir, string outDir, string fileName, object defaultContent)
         {
-            if (extenalFile.IsNotEmpty())
-            {
+            string extenalFile = Utils.PathCombine(srcDir, extenalFilePath);
+
+            if (extenalFilePath.IsNotEmpty()) //important to test before PathComibed 
                 return extenalFile;
-            }
+
+            var file = Path.Combine(outDir, fileName);
+
+            if (defaultContent is byte[])
+                io.File.WriteAllBytes(file, (byte[])defaultContent);
+            else if (defaultContent is Bitmap)
+                ((Bitmap)defaultContent).Save(file, ImageFormat.Png);
+            else if (defaultContent is string)
+                io.File.WriteAllBytes(file, ((string)defaultContent).GetBytes());
+            else if (defaultContent == null)
+                return "<null>";
             else
-            {
-                var file = Path.Combine(outDir, fileName);
+                throw new Exception("Unsupported ManagedUI resource type.");
 
-                if (defaultContent is byte[])
-                    io.File.WriteAllBytes(file, (byte[])defaultContent);
-                else if (defaultContent is Bitmap)
-                    ((Bitmap)defaultContent).Save(file, ImageFormat.Png);
-                else if (defaultContent is string)
-                    io.File.WriteAllBytes(file, ((string)defaultContent).GetBytes());
-                else if (defaultContent == null)
-                    return "<null>";
-                else
-                    throw new Exception("Unsupported ManagedUI resource type.");
-
-                Compiler.TempFiles.Add(file);
-                return file;
-            }
+            Compiler.TempFiles.Add(file);
+            return file;
         }
 
         public static sys.Control LocalizeFrom(this sys.Control control, Func<string, string> localize)

@@ -27,13 +27,13 @@ using IO = System.IO;
 
 namespace WixSharp
 {
-    internal static class Utils
+    public static class Utils
     {
         //fix for unexpected behavior: System.IO.Path.Combine(@"C:\Test", @"\Docs\readme.txt") return @"\Docs\readme.txt";
-        internal static string PathCombine(string path1, string path2)
+        public static string PathCombine(string path1, string path2)
         {
-            var p1 = path1.ExpandEnvVars();
-            var p2 = path2.ExpandEnvVars();
+            var p1 = (path1??"").ExpandEnvVars();
+            var p2 = (path2??"").ExpandEnvVars();
 
             if (p2.Length == 0)
             {
@@ -52,7 +52,7 @@ namespace WixSharp
             return IO.Path.Combine(p1, p2);
         }
 
-        public static string MakeRelative(this string filePath, string referencePath)
+        internal static string MakeRelative(this string filePath, string referencePath)
         {
             //1 - 'Uri.MakeRelativeUri' doesn't work without *.config file
             //2 - Substring doesn't work for paths containing ..\..\
@@ -115,7 +115,7 @@ namespace WixSharp
             });
         }
 
-        public static void ExecuteInTempDomain<T>(Action<T> action) where T: MarshalByRefObject
+        internal static void ExecuteInTempDomain<T>(Action<T> action) where T : MarshalByRefObject
         {
             ExecuteInTempDomain<T>(asm =>
             {
@@ -123,7 +123,8 @@ namespace WixSharp
                 return null;
             });
         }
-        public static object ExecuteInTempDomain<T>(Func<T, object> action) where T: MarshalByRefObject
+
+        internal static object ExecuteInTempDomain<T>(Func<T, object> action) where T : MarshalByRefObject
         {
             var domain = AppDomain.CurrentDomain.Clone();
             

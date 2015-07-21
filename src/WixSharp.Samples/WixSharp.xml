@@ -1787,6 +1787,12 @@
             Indicates whether compiler should emit relative or absolute paths in the WiX XML source.
             </summary>
         </member>
+        <member name="F:WixSharp.Compiler.TempFiles">
+            <summary>
+            The collection of temporary files created by compiler routine(s). These files will always be deleted unless Project/Compiler 
+            PreserveTempFiles property is set to true;
+            </summary>
+        </member>
         <member name="M:WixSharp.Compiler.BuildMsi(WixSharp.Project)">
             <summary>
             Builds the MSI file from the specified <see cref="T:WixSharp.Project"/> instance.
@@ -2403,8 +2409,31 @@
         </member>
         <member name="T:WixSharp.Extensions">
             <summary>
+            Collection of generic WixSharp extension methods
+            </summary>
+            <summary>
             
             </summary>
+        </member>
+        <member name="M:WixSharp.Extensions.Is64OS">
+            <summary>
+            Returns <c>true</c> if the OS (this routine is executed on) has an x64 CPU architecture.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.AsWixVarToPath(System.String)">
+            <summary>
+            'Interprets' a string as a WiX constant and expands into a proper Fiel System path. For example "DesktopFolder"
+            will be expanded into "[SysDrive]:\Users\[user]\Desktop". Tis method is a logical equivalent of C# Environment.GetFolderPath. 
+            Though it handles discrepancies between 'special folders' mapping in .NET and WiX.
+            
+            <remarks>
+            The method will always be called from x86 runtime as MSI always loads ManagedUI in x86 host. 
+            From the other hand CustomActions are called in the deployment specific CPU type context.
+            </remarks>
+            </summary>
+            <param name="path">The path.</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.Extensions.IsAdmin(System.Security.Principal.WindowsIdentity)">
             <summary>
@@ -2569,6 +2598,15 @@
             <param name="action">The action.</param>
             <returns></returns>
         </member>
+        <member name="M:WixSharp.Extensions.EnqueueRange``1(System.Collections.Generic.Queue{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Enqueues the range of the items into a instance of the  <see cref="T:System.Collections.Generics.Queue"/>.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="queue">The queue.</param>
+            <param name="collection">The collection.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.GetItemsHashCode``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>
             Gets the combined hash code of all items in the collection. This method is convenient to use to 
@@ -2603,6 +2641,15 @@
             </summary>
             <param name="value">The value.</param>
             <param name="defaultValue">The default value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.Join(System.Collections.Generic.IEnumerable{System.String},System.String)">
+            <summary>
+            A simple generic wrapper around more specialized <see cref="T:String.Join"/>, which is limited to
+            work with string arrays only.
+            </summary>
+            <param name="strings">The strings.</param>
+            <param name="separator">The separator.</param>
             <returns></returns>
         </member>
         <member name="M:WixSharp.Extensions.ToIntPtr(System.String)">
@@ -2947,10 +2994,21 @@
             Gets a value indicating whether the product is being repaired.
             </summary>
         </member>
+        <member name="M:WixSharp.Extensions.IsModifying(Microsoft.Deployment.WindowsInstaller.Session)">
+            <summary>
+            Determines whether MSI is running in "modifying" mode.
+            </summary>
+            <param name="session">The session.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.IsUninstalling(Microsoft.Deployment.WindowsInstaller.Session)">
             <summary>
-            Gets a value indicating whether the product is being uninstalled.
+            Determines whether MSI is running in "uninstalling" mode.
             </summary>
+            <summary>
+            </summary>
+            <param name="session">The session.</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.Extensions.IsBasic(Microsoft.Deployment.WindowsInstaller.InstallUIOptions)">
             <summary>
@@ -2992,6 +3050,39 @@
             </summary>
             <param name="session">The session.</param>
             <param name="binary">The binary.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.OpenView(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
+            <summary>
+            A simple generic wrapper around MSI View open operation. It retrieves all view data and returns it as a 
+            collection of dictionaries (set of named values).
+            </summary>
+            <param name="session">The session.</param>
+            <param name="sqlText">The SQL text.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.GetEmbeddedBitmap(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
+            <summary>
+            Extracts the bitmap embedded into MSI (into Binary table).
+            </summary>
+            <param name="session">The session.</param>
+            <param name="binary">The name on resource in the Binary table.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.GetEmbeddedString(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
+            <summary>
+             Extracts the string embedded into MSI (into Binary table).
+            </summary>
+            <param name="session">The session.</param>
+            <param name="binary">The name on resource in the Binary table.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.GetEmbeddedData(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
+            <summary>
+             Extracts the data embedded into MSI (into Binary table).
+            </summary>
+            <param name="session">The session.</param>
+            <param name="binary">The name on resource in the Binary table.</param>
             <returns></returns>
         </member>
         <member name="M:WixSharp.Extensions.HandleErrors(Microsoft.Deployment.WindowsInstaller.Session,System.Action)">
@@ -5914,6 +6005,65 @@
             The message to be displayed during the installation if <see cref="T:WixSharp.LaunchCondition"/> evaluated as <c>False</c>.
             </summary>
         </member>
+        <member name="T:WixSharp.IManagedUI">
+            <summary>
+            Interface for an embedded external user interface implementing Wix# ManagedUI architecture. 
+            <para>The interface itself is reasonable simple and it basically implements the 
+            collection/sequence of the runtime UI dialogs with a couple of methods for integrating the ManagedUI
+            with the MSI.</para>
+            </summary>
+        </member>
+        <member name="M:WixSharp.IManagedUI.BeforeBuild(WixSharp.ManagedProject)">
+            <summary>
+            This method is called (indirectly) by Wix# compiler just befor building the MSI. It allows embedding UI specific resources (e.g. license file, properties)
+            into the MSI.
+            </summary>
+            <param name="project">The project.</param>
+        </member>
+        <member name="P:WixSharp.IManagedUI.InstallDirId">
+            <summary>
+            Gets or sets the id of the 'installdir' (destination folder) directory. It is the directory, 
+            which is bound to the input UI elements of the Browse dialog (e.g. WiX BrowseDlg, Wix# InstallDirDialog).
+            </summary>
+            <value>
+            The install dir identifier.
+            </value>
+        </member>
+        <member name="P:WixSharp.IManagedUI.InstallDialogs">
+            <summary>
+            Sequence of the dialogs to be displayed during the installation of the product.
+            </summary>
+        </member>
+        <member name="P:WixSharp.IManagedUI.ModifyDialogs">
+            <summary>
+            Sequence of the dialogs to be displayed during the customization of the installed product.
+            </summary>
+        </member>
+        <member name="T:WixSharp.ManagedDialogs">
+            <summary>
+            Customized version of 'List&lt;Type&gt;', containing Fluent extension methods 
+            </summary>
+        </member>
+        <member name="M:WixSharp.ManagedDialogs.Add``1">
+            <summary>
+            Adds an typeof(T) object to the end of the collections.
+            </summary>
+            <typeparam name="T">Type implementing ManagedUI dialog</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.ManagedDialogs.Add(System.Type)">
+            <summary>
+            Adds an Type object to the end of the collections.
+            </summary>
+            <param name="type">Type implementing ManagedUI dialog.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.ManagedDialogs.Clear">
+            <summary>
+            Clears the collection.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:WixSharp.ManagedProjectActions">
             <summary>
             
@@ -6308,6 +6458,11 @@
             <param name="path">The path string.</param>
             <returns><see cref="T:WixSharp.Dir"/> instance if the search was succesfull, otherwise return <c>null</c></returns>
         </member>
+        <member name="F:WixSharp.Project.LocalizationFile">
+            <summary>
+            Path to the Localization file. 
+            </summary>
+        </member>
         <member name="F:WixSharp.Project.AutoAssignedInstallDirPath">
             <summary>
             Name (path) of the directory which was assigned <see cref="T:WixSharp.Compiler.AutoGeneration.InstallDirDefaultId"/> ID as part of XML auto-generation (see <see cref="T:WixSharp.AutoGenerationOptions"/>).
@@ -6398,15 +6553,6 @@
             <see cref="T:System.Globalization.CultureInfo"/> object based on the specified <see cref="T:WixSharp.WixProject.Language"/>
             </summary>
         </member>
-        <member name="P:WixSharp.Project.LocalizationFile">
-            <summary>
-            Path to the Localization file. This value is used only if the setup language is not <c>"en-US"</c>.
-            <para>If the <see cref="P:WixSharp.Project.LocalizationFile"/> is not specified and the setup language 
-            <see cref="T:WixSharp.Compiler"/> will generate <see cref="P:WixSharp.Project.LocalizationFile"/> value as following:
-            <c>WixUI_[Language].wxl</c>.
-            </para>
-            </summary>
-        </member>
         <member name="M:WixSharp.ManagedProject.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.ManagedProject"/> class.
@@ -6418,6 +6564,12 @@
             </summary>
             <param name="name">The name of the project. Typically it is the name of the product to be installed.</param>
             <param name="items">The project installable items (e.g. directories, files, registry keys, Custom Actions).</param>
+        </member>
+        <member name="F:WixSharp.ManagedProject.ManagedUI">
+            <summary>
+            An instance of ManagedUI defining MSI UI dialogs sequence. User should set it if he/she wants native MSI dialogs to be 
+            replaced by managed ones.
+            </summary>
         </member>
         <member name="F:WixSharp.ManagedProject.DefaultDeferredProperties">
             <summary>
@@ -6484,6 +6636,11 @@
             <value>
             The result.
             </value>
+        </member>
+        <member name="P:WixSharp.SetupEventArgs.ProductName">
+            <summary>
+            Gets name of the product being installed
+            </summary>
         </member>
         <member name="P:WixSharp.SetupEventArgs.IsUISupressed">
             <summary>
