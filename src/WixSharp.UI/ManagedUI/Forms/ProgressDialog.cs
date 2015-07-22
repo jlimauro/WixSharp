@@ -17,7 +17,6 @@ namespace WixSharp.UI.Forms
         /// </summary>
         public ProgressDialog()
         {
-            //Debugger.Launch();
             InitializeComponent();
         }
 
@@ -27,7 +26,11 @@ namespace WixSharp.UI.Forms
             Shell.StartExecute();
         }
 
-        public override void OnShellChanged()
+        /// <summary>
+        /// Called when Shell is changed. It is a good place to initialize the dialog to reflect the MSI session 
+        /// (e.g. localize the view).
+        /// </summary>
+        protected override void OnShellChanged()
         {
             if (MsiRuntime.Session.IsUninstalling())
             {
@@ -48,6 +51,15 @@ namespace WixSharp.UI.Forms
             this.Localize();
         }
 
+        /// <summary>
+        /// Processes the message.
+        /// </summary>
+        /// <param name="messageType">Type of the message.</param>
+        /// <param name="messageRecord">The message record.</param>
+        /// <param name="buttons">The buttons.</param>
+        /// <param name="icon">The icon.</param>
+        /// <param name="defaultButton">The default button.</param>
+        /// <returns></returns>
         public override MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton)
         {
             switch (messageType)
@@ -96,11 +108,18 @@ namespace WixSharp.UI.Forms
             return MessageResult.OK;
         }
 
+        /// <summary>
+        /// Called when MSI execution progress is changed.
+        /// </summary>
+        /// <param name="progressPercentage">The progress percentage.</param>
         public override void OnProgress(int progressPercentage)
         {
             progress.Value = progressPercentage;
         }
 
+        /// <summary>
+        /// Called when MSI execution is complete.
+        /// </summary>
         public override void OnExecuteComplete()
         {
             currentAction.Text = null;

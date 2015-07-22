@@ -135,7 +135,20 @@ namespace WixSharp
             return file;
         }
 
-        public static sys.Control LocalizeFrom(this sys.Control control, Func<string, string> localize)
+        /// <summary>
+        /// Localizes the control its contained <see cref="T:System.Windows.Forms.Control.Text"/> from the specified localization 
+        /// delegate 'localize'. 
+        /// <para>The method substitutes both localization file (*.wxl) entries and MSI properties contained by the input string
+        /// with their translated/converted values.</para>
+        /// <remarks>
+        /// Note that both localization entries and MSI properties must be enclosed in the square brackets 
+        /// (e.g. "[ProductName] Setup", "[InstallDirDlg_Title]").
+        /// </remarks>
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="localize">The localize.</param>
+        /// <returns></returns>
+        public static sys.Control LocalizeWith(this sys.Control control, Func<string, string> localize)
         {
             var controls = new Queue<sys.Control>(new[] { control });
 
@@ -143,7 +156,7 @@ namespace WixSharp
             {
                 var item = controls.Dequeue();
 
-                item.Text = item.Text.LocalizeFrom(localize);
+                item.Text = item.Text.LocalizeWith(localize);
 
                 item.Controls
                 .OfType<sys.Control>()
@@ -156,7 +169,19 @@ namespace WixSharp
         static Regex locRegex = new Regex(@"\[.+?\]");
         static Regex cleanRegex = new Regex(@"{\\(.*?)}"); //removes font info "{\WixUI_Font_Bigger}Welcome to the [ProductName] Setup Wizard"
 
-        public static string LocalizeFrom(this string textToLocalize, Func<string, string> localize)
+        /// <summary>
+        /// Localizes the string from the specified localization delegate 'localize'.
+        /// <para>The method substitutes both localization file (*.wxl) entries and MSI properties contained by the input string
+        /// with their translated/converted values.</para>
+        /// <remarks>
+        /// Note that both localization entries and MSI properties must be enclosed in the square brackets 
+        /// (e.g. "[ProductName] Setup", "[InstallDirDlg_Title]").
+        /// </remarks>
+        /// </summary>
+        /// <param name="textToLocalize">The text to localize.</param>
+        /// <param name="localize">The localize.</param>
+        /// <returns></returns>
+        public static string LocalizeWith(this string textToLocalize, Func<string, string> localize)
         {
             if (textToLocalize.IsEmpty()) return textToLocalize;
 

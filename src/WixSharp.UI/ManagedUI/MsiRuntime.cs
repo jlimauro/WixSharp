@@ -33,11 +33,27 @@ namespace WixSharp
 
 
 
+    /// <summary>
+    /// Represents MSI runtime context. This class is to be used by ManagedUI dialogs to interact with the MSI session. 
+    /// </summary>
     public class MsiRuntime
     {
+        /// <summary>
+        /// Starts the execution of the MSI installation.
+        /// </summary>
         public System.Action StartExecute;
+        /// <summary>
+        /// The session object.
+        /// </summary>
         public Session Session;
+        /// <summary>
+        /// Localization map. 
+        /// </summary>
         public ResourcesData UIText = new ResourcesData();
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MsiRuntime"/> class.
+        /// </summary>
+        /// <param name="session">The session.</param>
         public MsiRuntime(Session session)
         {
             this.Session = session;
@@ -49,7 +65,7 @@ namespace WixSharp
                 ProductCode = session.Property("ProductCode");
                 ProductVersion = session.Property("ProductVersion");
 
-                //it is important to preserve some product properties for localization as at the end of setup session will no longer be available
+                //it is important to preserve some product properties for localization as at the end of setup the session object will no longer be available
                 UIText["ProductName"] = ProductName;
                 UIText["ProductCode"] = ProductCode;
                 UIText["ProductVersion"] = ProductVersion;
@@ -61,6 +77,11 @@ namespace WixSharp
             catch { }
         }
 
+        /// <summary>
+        /// Gets the bitmap from the MSI embedded resources ('Binary' table).
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public Bitmap GetMsiBitmap(string name)
         {
             try
@@ -73,6 +94,14 @@ namespace WixSharp
             return null;
         }
 
+        /// <summary>
+        /// Localizes the specified text.
+        /// <para>The localization is performed according two possible scenarios. The method will return the match form the MSI embedded localization file. 
+        /// However if it cannot find the match the method will try to find the and return the match in the MSI session properties.</para>
+        /// <para>This method is mainly used by 'LocalizeWith' extension for a single step localization of WinForm controls.</para>
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns></returns>
         public string Localize(string text)
         {
             if (UIText.ContainsKey(text))
@@ -91,11 +120,23 @@ namespace WixSharp
             return text;
         }
 
+        /// <summary>
+        /// The product name
+        /// </summary>
         public string ProductName;
+        /// <summary>
+        /// The product code
+        /// </summary>
         public string ProductCode;
+        /// <summary>
+        /// The product version
+        /// </summary>
         public string ProductVersion;
     }
 
+    /// <summary>
+    /// Localization map. It is nothing else but a specialized version of a generic string-to-string Dictionary.
+    /// </summary>
     public class ResourcesData : Dictionary<string, string>
     {
         /// <summary>
@@ -117,6 +158,11 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value associated with the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         public new string this[string key]
         {
             get

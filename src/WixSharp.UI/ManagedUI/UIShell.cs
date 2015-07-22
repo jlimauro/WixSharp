@@ -11,24 +11,75 @@ using System.Threading;
 
 namespace WixSharp
 {
+    /// <summary>
+    /// Interface of the main window implementation of the MSI external/embedded UI. This interface is designed to be 
+    /// used by Wix#/MSI runtime (e.g. ManagedUI). It is the interface that is directly bound to the 
+    /// <see cref="T:Microsoft.Deployment.WindowsInstaller.IEmbeddedUI"/> (e.g. <see cref="T:WixSharp.ManagedUI"/>). 
+    /// </summary>
     interface IUIContainer
     {
+        /// <summary>
+        /// Shows the modal window of the MSI UI. This method is called by the <see cref="T:Microsoft.Deployment.WindowsInstaller.IEmbeddedUI"/>
+        /// when it is initialized at runtime.
+        /// </summary>
+        /// <param name="msiRuntime">The MSI runtime.</param>
+        /// <param name="ui">The MSI external/embedded UI.</param>
         void ShowModal(MsiRuntime msiRuntime, IManagedUI ui);
+        /// <summary>
+        /// Called when MSI execution is complete.
+        /// </summary>
         void OnExecuteComplete();
+        /// <summary>
+        /// Called when MSI execute started.
+        /// </summary>
         void OnExecuteStarted();
+
+        /// <summary>
+        ///  Processes information and progress messages sent to the user interface.
+        /// <para> This method directly mapped to the 
+        /// <see cref="T:Microsoft.Deployment.WindowsInstaller.IEmbeddedUI.ProcessMessage"/>.</para>
+        /// </summary>
+        /// <param name="messageType">Type of the message.</param>
+        /// <param name="messageRecord">The message record.</param>
+        /// <param name="buttons">The buttons.</param>
+        /// <param name="icon">The icon.</param>
+        /// <param name="defaultButton">The default button.</param>
+        /// <returns></returns>
         MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton);
     }
 
 
     public partial class UIShell : IUIContainer, IManagedUIShell
     {
+        /// <summary>
+        /// Gets the runtime context object. Typically this object is of the <see cref="T:WixSharp.MsiRuntime" /> type.
+        /// </summary>
+        /// <value>
+        /// The runtime context.
+        /// </value>
         public object RuntimeContext { get { return MsiRuntime; } }
-        public MsiRuntime MsiRuntime { get; set; }
-        public IManagedUI UI { get; set; }
 
+        internal MsiRuntime MsiRuntime { get; set; }
+        internal IManagedUI UI { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the MSI session was interrupted (canceled) by user.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if it was user interrupted; otherwise, <c>false</c>.
+        /// </value>
         public bool UserInterrupted { get; private set; }
+        /// <summary>
+        /// Gets a value indicating whether MSI session ended with error.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if error was detected; otherwise, <c>false</c>.
+        /// </value>
         public bool ErrorDetected { get; private set; }
 
+        /// <summary>
+        /// Starts the execution of the MSI installation.
+        /// </summary>
         public void StartExecute()
         {
             started = true;
@@ -40,13 +91,19 @@ namespace WixSharp
         bool canceled = false;
         bool finished = false;
 
+        /// <summary>
+        /// Gets the sequence of the UI dialogs specific for the current setup type (e.g. install vs. modify).
+        /// </summary>
+        /// <value>
+        /// The dialogs.
+        /// </value>
         public ManagedDialogs Dialogs { get; set; }
 
         IManagedDialog currentDialog;
         Form shellView;
 
         int currentViewIndex = -1;
-        public int CurrentDialogIndex
+        internal int CurrentDialogIndex
         {
             get { return currentViewIndex; }
 
@@ -63,7 +120,7 @@ namespace WixSharp
                         Type viewType = Dialogs[currentViewIndex];
 
                         var view = (Form)Activator.CreateInstance(viewType);
-                        view.LocalizeFrom(MsiRuntime.Localize);
+                        view.LocalizeWith(MsiRuntime.Localize);
                         view.FormBorderStyle = forms.FormBorderStyle.None;
                         view.TopLevel = false;
                         view.Dock = DockStyle.Fill;
@@ -80,6 +137,12 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Shows the modal window of the MSI UI. This method is called by the <see cref="T:Microsoft.Deployment.WindowsInstaller.IEmbeddedUI" />
+        /// when it is initialized at runtime.
+        /// </summary>
+        /// <param name="msiRuntime">The MSI runtime.</param>
+        /// <param name="ui">The MSI external/embedded UI.</param>
         public void ShowModal(MsiRuntime msiRuntime, IManagedUI ui)
         {
             //Debugger.Launch();
@@ -112,26 +175,42 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Proceeds to the next UI dialog.
+        /// </summary>
         public void GoNext()
         {
             CurrentDialogIndex++;
         }
 
+        /// <summary>
+        /// Moves to the previous UI Dialog.
+        /// </summary>
         public void GoPrev()
         {
             CurrentDialogIndex--;
         }
 
+        /// <summary>
+        /// Moves to the UI Dialog by the specified index in the <see cref="T:WixSharp.IManagedUIShell.Dialogs" /> sequence.
+        /// </summary>
+        /// <param name="index">The index.</param>
         public void GoTo(int index)
         {
             CurrentDialogIndex = index;
         }
 
+        /// <summary>
+        /// Exits this MSI UI application.
+        /// </summary>
         public void Exit()
         {
             shellView.Close();
         }
 
+        /// <summary>
+        /// Cancels the MSI installation.
+        /// </summary>
         public void Cancel()
         {
             canceled = true;
@@ -139,6 +218,17 @@ namespace WixSharp
                 Exit();
         }
 
+        /// <summary>
+        /// Processes information and progress messages sent to the user interface.
+        /// <para> This method directly mapped to the
+        /// <see cref="T:Microsoft.Deployment.WindowsInstaller.IEmbeddedUI.ProcessMessage" />.</para>
+        /// </summary>
+        /// <param name="messageType">Type of the message.</param>
+        /// <param name="messageRecord">The message record.</param>
+        /// <param name="buttons">The buttons.</param>
+        /// <param name="icon">The icon.</param>
+        /// <param name="defaultButton">The default button.</param>
+        /// <returns></returns>
         public MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton)
         {
             try
@@ -204,6 +294,12 @@ namespace WixSharp
         }
 
         StringBuilder log = new StringBuilder();
+        /// <summary>
+        /// Gets the MSI log text.
+        /// </summary>
+        /// <value>
+        /// The log.
+        /// </value>
         public string Log { get { return log.ToString(); } }
 
         void LogMessage(string message, params object[] args)
@@ -211,19 +307,25 @@ namespace WixSharp
             log.AppendLine(message.FormatInline(args));
         }
 
+        /// <summary>
+        /// Called when MSI execute started.
+        /// </summary>
         public void OnExecuteStarted()
         {
             if (currentDialog != null)
                 InUIThread(currentDialog.OnExecuteStarted);
         }
 
+        /// <summary>
+        /// Called when MSI execution is complete.
+        /// </summary>
         public void OnExecuteComplete()
         {
             if (currentDialog != null)
                 InUIThread(currentDialog.OnExecuteComplete);
         }
 
-        public void InUIThread(System.Action action)
+        internal void InUIThread(System.Action action)
         {
             if (shellView != null)
                 shellView.Invoke(action);

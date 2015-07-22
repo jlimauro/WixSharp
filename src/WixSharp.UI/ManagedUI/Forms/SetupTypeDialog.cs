@@ -4,8 +4,14 @@ using System.Linq;
 
 namespace WixSharp.UI.Forms
 {
+    /// <summary>
+    /// The standard Setup Type dialog
+    /// </summary>
     public partial class SetupTypeDialog : ManagedForm
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SetupTypeDialog"/> class.
+        /// </summary>
         public SetupTypeDialog()
         {
             InitializeComponent();

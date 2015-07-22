@@ -27,9 +27,20 @@ using IO = System.IO;
 
 namespace WixSharp
 {
+    /// <summary>
+    /// Collection of a 'utility' routines.
+    /// </summary>
     public static class Utils
     {
-        //fix for unexpected behavior: System.IO.Path.Combine(@"C:\Test", @"\Docs\readme.txt") return @"\Docs\readme.txt";
+        /// <summary>
+        /// Combines two path strings.
+        /// <para>
+        /// It is a fix for unexpected behavior of System.IO.Path.Combine: Path.Combine(@"C:\Test", @"\Docs\readme.txt") return @"\Docs\readme.txt";
+        /// </para>
+        /// </summary>
+        /// <param name="path1">The path1.</param>
+        /// <param name="path2">The path2.</param>
+        /// <returns></returns>
         public static string PathCombine(string path1, string path2)
         {
             var p1 = (path1??"").ExpandEnvVars();
@@ -184,7 +195,14 @@ namespace WixSharp
             }
         }
 
-        //needed to have reliable HASH as x64 and x32 have different algorithms; This leads to the inability of script clients to calculate cache directory correctly  
+
+
+        /// <summary>
+        /// Returns the hash code for the instance of a string. It uses deterministic hash-code generation algorithm,
+        /// which produces the same result on x86 and x64 OSs (ebject.GetHashCode doesn't).
+        /// </summary>
+        /// <param name="s">The string.</param>
+        /// <returns></returns>
         public static int GetHashCode32(this string s)
         {
             char[] chars = s.ToCharArray();

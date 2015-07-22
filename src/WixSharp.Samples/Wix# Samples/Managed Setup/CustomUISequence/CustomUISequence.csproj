@@ -59,10 +59,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>System.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System.Linq">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>System.Linq.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>System.Core.dll</HintPath>

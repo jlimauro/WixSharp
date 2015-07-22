@@ -48,15 +48,15 @@ namespace MyProduct
             else if (networkDomain.Checked)
                 domain.Text = Environment.UserDomainName;
 
-            Validate();
+            UpdateEnabledStates();
         }
 
         void password_TextChanged(object sender, EventArgs e)
         {
-            Validate();
+            UpdateEnabledStates();
         }
 
-        void Validate()
+        void UpdateEnabledStates()
         {
             domain.Enabled = networkDomain.Checked;
             next.Enabled = password.Text.IsNotEmpty();

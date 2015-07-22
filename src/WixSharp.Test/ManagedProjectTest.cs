@@ -33,7 +33,7 @@ namespace WixSharp.Test
 
             var text = "123 [aaa] 321 [bbb]";
 
-            var locText = text.LocalizeFrom(localizer);
+            var locText = text.LocalizeWith(localizer);
 
             Assert.Equal("123 AAA 321 BBB CCC DDD", locText);
         }

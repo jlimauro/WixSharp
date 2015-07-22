@@ -230,6 +230,11 @@ namespace WixSharp
                 return string.Join("\n", this.Select(x => x.Key + "=" + x.Value.Replace("\n", "{$NL}")).ToArray());
             }
 
+            /// <summary>
+            /// Gets or sets the value associated with the specified key.
+            /// </summary>
+            /// <param name="key">The key.</param>
+            /// <returns></returns>
             public new string this[string key]
             {
                 get
