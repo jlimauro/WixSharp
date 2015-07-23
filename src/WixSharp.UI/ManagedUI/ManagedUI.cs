@@ -10,6 +10,9 @@ using WixSharp.UI.Forms;
 
 namespace WixSharp
 {
+    /// <summary>
+    /// Implements as standard dialog-based MSI embedded UI.
+    /// </summary>
     public class ManagedUI : IManagedUI, IEmbeddedUI
     {
         /// <summary>
@@ -120,6 +123,14 @@ namespace WixSharp
 
         }
 
+        /// <summary>
+        /// Initializes the specified session.
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <param name="resourcePath">The resource path.</param>
+        /// <param name="uiLevel">The UI level.</param>
+        /// <returns></returns>
+        /// <exception cref="Microsoft.Deployment.WindowsInstaller.InstallCanceledException"></exception>
         public bool Initialize(Session session, string resourcePath, ref InstallUIOptions uiLevel)
         {
             //System.Diagnostics.Debugger.Launch();
@@ -156,11 +167,37 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Processes information and progress messages sent to the user interface.
+        /// </summary>
+        /// <param name="messageType">Message type.</param>
+        /// <param name="messageRecord">Record that contains message data.</param>
+        /// <param name="buttons">Message buttons.</param>
+        /// <param name="icon">Message box icon.</param>
+        /// <param name="defaultButton">Message box default button.</param>
+        /// <returns>
+        /// Result of processing the message.
+        /// </returns>
+        /// <remarks>
+        /// <p>
+        /// Win32 MSI API:
+        /// <a href="http://msdn.microsoft.com/library/en-us/msi/setup/embeddeduihandler.asp">EmbeddedUIHandler</a></p>
+        /// </remarks>
         public MessageResult ProcessMessage(InstallMessage messageType, Record messageRecord, MessageButtons buttons, MessageIcon icon, MessageDefaultButton defaultButton)
         {
             return shell.ProcessMessage(messageType, messageRecord, buttons, icon, defaultButton);
         }
 
+        /// <summary>
+        /// Shuts down the embedded UI at the end of the installation.
+        /// </summary>
+        /// <remarks>
+        /// If the installation was canceled during initialization, this method will not be called.
+        /// If the installation was canceled or failed at any later point, this method will be called at the end.
+        /// <p>
+        /// Win32 MSI API:
+        /// <a href="http://msdn.microsoft.com/library/en-us/msi/setup/shutdownembeddedui.asp">ShutdownEmbeddedUI</a></p>
+        /// </remarks>
         public void Shutdown()
         {
             shell.OnExecuteComplete();

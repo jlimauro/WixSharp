@@ -6706,6 +6706,13 @@
             <para>The default value is "INSTALLDIR,UILevel"</para>
             </summary>
         </member>
+        <member name="M:WixSharp.ManagedProject.ReadDialogs(System.String)">
+            <summary>
+            Reads and returns the dialog types from the string definition. This method is to be used by WixSharp assembly.
+            </summary>
+            <param name="data">The data.</param>
+            <returns></returns>
+        </member>
         <member name="E:WixSharp.ManagedProject.Load">
             <summary>
             Occurs before AppSearch standard action.

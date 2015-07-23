@@ -6,6 +6,38 @@ namespace WixSharp.UI.Forms
     /// <summary>
     /// The base class for all WinForm based dialogs of ManagedUI.
     /// </summary>
+    /// <example>The following is an example of defining installation directory <c>Progam Files/My Company/My Product</c>
+    /// containing a single file <c>MyApp.exe</c> and subdirectory <c>Documentation</c> with <c>UserManual.pdf</c> file.
+    /// <code>
+    /// public partial class CustomDialog : ManagedForm, IManagedDialog
+    /// {
+    ///     public UserNameDialog()
+    ///     {
+    ///         //instantiate banner PictureBox and back/next/cancel Buttons
+    ///         InitializeComponent();
+    ///     }
+    ///     
+    ///     void InstallDirDialog_Load(object sender, EventArgs e)
+    ///     {
+    ///         banner.Image = MsiRuntime.Session.GetEmbeddedBitmap("WixUI_Bmp_Banner");
+    ///     } 
+    ///     
+    ///     void back_Click(object sender, EventArgs e)
+    ///     {
+    ///         Shell.GoPrev();
+    ///     }
+    ///     
+    ///     void next_Click(object sender, EventArgs e)
+    ///     {
+    ///         Shell.GoNext();
+    ///     }
+    ///     
+    ///     void cancel_Click(object sender, EventArgs e)
+    ///     {
+    ///         Shell.Cancel();
+    ///     }
+    /// }
+    /// </code>
     public class ManagedForm : Form, IManagedDialog
     {
         IManagedUIShell shell;

@@ -49,6 +49,9 @@ namespace WixSharp
     }
 
 
+    /// <summary>
+    /// The main window WinForms implementation of the MSI external/embedded UI. 
+    /// </summary>
     public partial class UIShell : IUIContainer, IManagedUIShell
     {
         /// <summary>

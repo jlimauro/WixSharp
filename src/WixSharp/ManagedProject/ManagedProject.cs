@@ -154,6 +154,11 @@ namespace WixSharp
             }
         }
 
+        /// <summary>
+        /// Reads and returns the dialog types from the string definition. This method is to be used by WixSharp assembly.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
         public static List<Type> ReadDialogs(string data)
         {
             return data.Split('\n')
