@@ -11,16 +11,40 @@ using WixSharp.UI.Forms;
 namespace WixSharp
 {
     /// <summary>
-    /// Implements as standard dialog-based MSI embedded UI.
+    /// Implements as standard dialog-based MSI embedded UI. 
+    /// <para>
+    /// This class allows defining separate sequences of UI dialogs for 'install' 
+    /// and 'modify' MSI executions. The dialog sequence can contain any mixture 
+    /// of built-in standard dialogs and/or custom dialogs (Form inherited from <see cref="T:WixSharp.UI.Forms.ManagedForm"/>).
+    /// </para>
     /// </summary>
+    /// <example>The following is an example of installing <c>MyLibrary.dll</c> assembly and registering it in GAC.
+    /// <code>
+    /// ...
+    /// project.ManagedUI = new ManagedUI();
+    /// project.ManagedUI.InstallDialogs.Add(Dialogs.Welcome)
+    ///                                 .Add(Dialogs.Licence)
+    ///                                 .Add(Dialogs.SetupType)
+    ///                                 .Add(Dialogs.Features)
+    ///                                 .Add(Dialogs.InstallDir)
+    ///                                 .Add(Dialogs.Progress)
+    ///                                 .Add(Dialogs.Exit);
+    ///
+    ///    project.ManagedUI.ModifyDialogs.Add(Dialogs.MaintenanceType)
+    ///                                   .Add(Dialogs.Features)
+    ///                                   .Add(Dialogs.Progress)
+    ///                                   .Add(Dialogs.Exit);
+    ///
+    /// </code>
+    /// </example>
     public class ManagedUI : IManagedUI, IEmbeddedUI
     {
         /// <summary>
         /// The default implementation of ManagedUI. It implements all major dialogs of a typical MSI UI.
         /// </summary>
         static public ManagedUI Default = new ManagedUI
-            {
-                InstallDialogs = new ManagedDialogs()
+        {
+            InstallDialogs = new ManagedDialogs()
                                         .Add<WelcomeDialog>()
                                         .Add<LicenceDialog>()
                                         .Add<SetupTypeDialog>()
@@ -29,12 +53,12 @@ namespace WixSharp
                                         .Add<ProgressDialog>()
                                         .Add<ExitDialog>(),
 
-                ModifyDialogs = new ManagedDialogs()
+            ModifyDialogs = new ManagedDialogs()
                                        .Add<MaintenanceTypeDialog>()
                                        .Add<FeaturesDialog>()
                                        .Add<ProgressDialog>()
                                        .Add<ExitDialog>()
-            };
+        };
 
         /// <summary>
         /// The default implementation of ManagedUI with no UI dialogs.

@@ -12,8 +12,29 @@ using System.IO;
 namespace WixSharp
 {
     /// <summary>
-    ///
+    /// Extends <see cref="T:WixSharp.Project"/> with runtime event-driven behavior ans managed UI (see <see cref="T:WixSharp.ManagedUI"/> and 
+    /// <see cref="T:WixSharp.UI.Forms.ManagedForm"/>).
+    /// <para>
+    /// The managed project has three very important events that are raised during deployment at run: Load/BeforeInstall/AfterInstall. 
+    /// </para>
     /// </summary>
+    /// <example>The following is an example of a simple setup handling the three setup events at runtime.
+    /// <code>
+    /// var project = new ManagedProject("ManagedSetup",
+    ///                   new Dir(@"%ProgramFiles%\My Company\My Product", 
+    ///                       new File(@"..\Files\bin\MyApp.exe")));
+    ///
+    /// project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
+    /// 
+    /// project.ManagedUI = ManagedUI.Empty;
+    ///
+    /// project.Load += project_Load;
+    /// project.BeforeInstall += project_BeforeInstall;
+    /// project.AfterInstall += project_AfterInstall;
+    ///
+    /// project.BuildMsi();
+    /// </code>
+    /// </example>
     public partial class ManagedProject : Project
     {
         //some materials to consider: http://cpiekarski.com/2012/05/18/wix-custom-action-sequencing/
@@ -52,7 +73,7 @@ namespace WixSharp
         public event SetupEventHandler BeforeInstall;
 
         /// <summary>
-        /// Occurs after InstallFiles standard action. The event is fired from the elevated execution.
+        /// Occurs after InstallFiles standard action. The event is fired from the elevated execution context.
         /// </summary>
         public event SetupEventHandler AfterInstall;
 

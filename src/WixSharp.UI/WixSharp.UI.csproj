@@ -127,9 +127,7 @@
       <DependentUpon>SetupTypeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ManagedBA\SilentBA.cs" />
-    <Compile Include="ManagedUI\Forms\ShellView.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ManagedUI\Forms\ShellView.cs" />
     <Compile Include="ManagedUI\UIExtensions.cs" />
     <Compile Include="ManagedUI\UIShell.cs" />
     <Compile Include="ManagedUI\UIShell.Designer.cs">

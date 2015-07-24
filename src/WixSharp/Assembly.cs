@@ -33,7 +33,6 @@ namespace WixSharp
     /// to define if the assembly file needs to be registered in GAC during the installation.
     /// </para>
     /// </summary>
-    /// 
     /// <example>The following is an example of installing <c>MyLibrary.dll</c> assembly and registering it in GAC.
     ///<code>
     /// var project = new Project()

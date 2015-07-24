@@ -38,6 +38,7 @@ namespace WixSharp.UI.Forms
     ///     }
     /// }
     /// </code>
+    /// </example>
     public class ManagedForm : Form, IManagedDialog
     {
         IManagedUIShell shell;

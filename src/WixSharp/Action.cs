@@ -35,7 +35,6 @@ namespace WixSharp
     /// or for declaring heterogeneous collections.
     /// </para>
     /// </summary>
-    /// 
     /// <example>The following is an example of initializing an
     /// <c>Action</c> type:
     /// <code>
