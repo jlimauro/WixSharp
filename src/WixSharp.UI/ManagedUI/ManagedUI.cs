@@ -30,10 +30,10 @@ namespace WixSharp
     ///                                 .Add(Dialogs.Progress)
     ///                                 .Add(Dialogs.Exit);
     ///
-    ///    project.ManagedUI.ModifyDialogs.Add(Dialogs.MaintenanceType)
-    ///                                   .Add(Dialogs.Features)
-    ///                                   .Add(Dialogs.Progress)
-    ///                                   .Add(Dialogs.Exit);
+    /// project.ManagedUI.ModifyDialogs.Add(Dialogs.MaintenanceType)
+    ///                                .Add(Dialogs.Features)
+    ///                                .Add(Dialogs.Progress)
+    ///                                .Add(Dialogs.Exit);
     ///
     /// </code>
     /// </example>

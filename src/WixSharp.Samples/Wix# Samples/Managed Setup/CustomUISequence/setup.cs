@@ -15,29 +15,29 @@ public class Script
         var tuts = new Feature("Tutorials", "Product tutorials", false);
         docs.Children.Add(tuts);
 
-        var project = new ManagedProject("ManagedSetup",
-                          new Dir(@"%ProgramFiles%\My Company\My Product",
-                              new File(binaries, @"..\Files\bin\MyApp.exe"),
-                              new Dir("Docs",
-                                  new File(docs, "readme.txt"),
-                                  new File(tuts, "setup.cs")))); 
+var project = new ManagedProject("ManagedSetup",
+                    new Dir(@"%ProgramFiles%\My Company\My Product",
+                        new File(binaries, @"..\Files\bin\MyApp.exe"),
+                        new Dir("Docs",
+                            new File(docs, "readme.txt"),
+                            new File(tuts, "setup.cs")))); 
 
-        project.ManagedUI = new ManagedUI();
+project.ManagedUI = new ManagedUI();
 
-        //removing all entry dialogs and installdir
-        project.ManagedUI.InstallDialogs//.Add(Dialogs.Welcome)
-                                        //.Add(Dialogs.Licence)
-                                        //.Add(Dialogs.SetupType)
-                                        .Add(Dialogs.Features)
-                                        //.Add(Dialogs.InstallDir)
-                                        .Add(Dialogs.Progress)
-                                        .Add(Dialogs.Exit);
+//removing all entry dialogs and installdir
+project.ManagedUI.InstallDialogs//.Add(Dialogs.Welcome)
+                                //.Add(Dialogs.Licence)
+                                //.Add(Dialogs.SetupType)
+                                .Add(Dialogs.Features)
+                                //.Add(Dialogs.InstallDir)
+                                .Add(Dialogs.Progress)
+                                .Add(Dialogs.Exit);
 
-        //removing entry dialog
-        project.ManagedUI.ModifyDialogs//.Add(Dialogs.MaintenanceType)
-                                       .Add(Dialogs.Features)
-                                       .Add(Dialogs.Progress)
-                                       .Add(Dialogs.Exit);
+//removing entry dialog
+project.ManagedUI.ModifyDialogs//.Add(Dialogs.MaintenanceType)
+                                .Add(Dialogs.Features)
+                                .Add(Dialogs.Progress)
+                                .Add(Dialogs.Exit);
 
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 

@@ -1169,8 +1169,8 @@ namespace WixSharp
                        .ForEach(key => feature2XML.Remove(key));
 
             var topLevelFeatures = feature2XML.Keys
-                                              .Where(x=>x.Parent == null)
-                                              .Select(x=>feature2XML[x]);
+                                              .Where(x => x.Parent == null)
+                                              .Select(x => feature2XML[x]);
 
             foreach (XElement xFeature in topLevelFeatures)
             {
@@ -1180,6 +1180,11 @@ namespace WixSharp
 
         static void ProcessUpgradeStrategy(Project project, XElement product)
         {
+            if (project.MajorUpgrade != null)
+            {
+                product.Add(project.MajorUpgrade.ToXml());
+            }
+
             if (project.MajorUpgradeStrategy != null)
             {
                 Func<string, string> ExpandVersion = (version) => version == "%this%" ? project.Version.ToString() : version;
@@ -1444,7 +1449,7 @@ namespace WixSharp
                 sc = comp.AddElement(
                    new XElement("Shortcut",
                        new XAttribute("Id", wDir.Id + "." + wShortcut.Id),
-                    //new XAttribute("Directory", wDir.Id), //not needed for Wix# as this attributed is required only if the shortcut is not nested under a Component element.
+                       //new XAttribute("Directory", wDir.Id), //not needed for Wix# as this attributed is required only if the shortcut is not nested under a Component element.
                        new XAttribute("WorkingDirectory", !wShortcut.WorkingDirectory.IsEmpty() ? wShortcut.WorkingDirectory.Expand() : GetShortcutWorkingDirectopry(wShortcut.Target)),
                        new XAttribute("Target", wShortcut.Target),
                        new XAttribute("Arguments", wShortcut.Arguments),

@@ -291,6 +291,11 @@ namespace WixSharp
         public CustomUI CustomUI = null;
 
         /// <summary>
+        /// Simplifies authoring for major upgrades, including support for preventing downgrades.
+        /// </summary>
+        public MajorUpgrade MajorUpgrade = null;
+
+        /// <summary>
         /// This is the value of the <c>UpgradeCode</c> attribute of the Wix <c>Product</c> element. 
         /// <para>Both WiX and MSI consider this element as optional even it is the only available identifier 
         /// for defining relationship between different versions of the same product. Wix# in contrary enforces

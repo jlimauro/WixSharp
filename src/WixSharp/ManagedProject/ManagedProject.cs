@@ -17,6 +17,23 @@ namespace WixSharp
     /// <para>
     /// The managed project has three very important events that are raised during deployment at run: Load/BeforeInstall/AfterInstall. 
     /// </para>
+    /// <remark>
+    /// ManagedProject still maintains backward compatibility for the all older features. That is why it is important to distinguish the use cases
+    /// associated with the project class members dedicated to the same problem domain but resolving the problems in different ways:
+    /// <para><c>UI support</c></para>
+    /// <para>   project.UI - to be used to define native MSI/WiX UI.</para>
+    /// <para>   project.CustomUI - to be used for minor to customization of native MSI/WiX UI and injection of CLR dialogs. </para>
+    /// <para>   project.ManagedUI - to be used to define managed Embedded UI. It allows full customization of the UI</para>
+    /// <para> </para>
+    /// <para><c>Events</c></para>
+    /// <para>   project.WixSourceGenerated</para>
+    /// <para>   project.WixSourceFormated</para>
+    /// <para>   project.WixSourceSaved - to be used at compile time to customize WiX source code (XML) generation.</para>
+    /// <para> </para>
+    /// <para>   project.Load</para>
+    /// <para>   project.BeforeInstall</para>
+    /// <para>   project.AfterInstall - to be used at runtime (msi execution) to customize deployment behaver.</para>
+    /// </remark>
     /// </summary>
     /// <example>The following is an example of a simple setup handling the three setup events at runtime.
     /// <code>

@@ -79,10 +79,12 @@ namespace WixSharp
         /// a newer version is detected, <c>"Newer version already installed"</c> message is displayed.
         /// </summary>
         public static MajorUpgradeStrategy Default = new MajorUpgradeStrategy
-                                                     {
-                                                         UpgradeVersions = VersionRange.OlderThanThis,
-                                                         PreventDowngradingVersions = VersionRange.NewerThanThis,
-                                                         NewerProductInstalledErrorMessage = "Newer version already installed",
-                                                     };
+        {
+            UpgradeVersions = VersionRange.OlderThanThis,
+            PreventDowngradingVersions = VersionRange.NewerThanThis,
+            NewerProductInstalledErrorMessage = "Newer version already installed",
+        };
     }
 }
+
+

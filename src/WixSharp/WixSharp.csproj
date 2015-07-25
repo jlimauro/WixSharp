@@ -115,6 +115,7 @@
     <Compile Include="Bootstrapper\Packages.cs" />
     <Compile Include="CommonTasks.cs" />
     <Compile Include="Compiler.Bootstrapper.cs" />
+    <Compile Include="MajorUpgrade.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="SharedExtensions.cs" />
     <Compile Include="Sql.cs" />
