@@ -13,7 +13,7 @@ namespace MyProduct
             InitializeComponent();
         }
 
-        void InstallDirDialog_Load(object sender, EventArgs e)
+        void dialog_Load(object sender, EventArgs e)
         {
             banner.Image = MsiRuntime.Session.GetEmbeddedBitmap("WixUI_Bmp_Banner");
 

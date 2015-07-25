@@ -31,13 +31,13 @@ public class Script
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
         project.ManagedUI = ManagedUI.Default;
-        project.Load += project_Load;
-        project.AfterInstall += project_AfterInstall;
+        project.Load += msi_Load;
+        project.AfterInstall += msi_AfterInstall;
 
         project.BuildMsi();
     }
 
-    static void project_Load(SetupEventArgs e)
+    static void msi_Load(SetupEventArgs e)
     {
         if (e.IsInstalling)
         {
@@ -55,7 +55,7 @@ public class Script
         }
     }
 
-    static void project_AfterInstall(SetupEventArgs e)
+    static void msi_AfterInstall(SetupEventArgs e)
     {
         if (!e.IsUninstalling && !e.IsUISupressed)
         {

@@ -99,8 +99,8 @@ namespace WixSharp
         public event XDocumentSavedDlgt WixSourceSaved;
 
         /// <summary>
-        /// Occurs when WiX source file is formatted and ready to be saved. Use this event if you need to do any custom formatting of the XML content before
-        /// it is saved by the compiler.
+        /// Occurs when WiX source file is formatted and ready to be saved. Use this event if you need to do any custom formatting 
+        /// of the XML content before it is saved by the compiler.
         /// </summary>
         public event XDocumentFormatedDlgt WixSourceFormated;
 

@@ -39,12 +39,12 @@ public class Script
         project.ManagedUI.ModifyDialogs.Add<Wix_Forms.ProgressDialog>()
                                        .Add<Wix_Forms.ExitDialog>();
 
-        project.BeforeInstall += project_BeforeInstall;
+        project.BeforeInstall += msi_BeforeInstall;
 
         project.BuildMsi();
     }
 
-    static void project_BeforeInstall(SetupEventArgs e)
+    static void msi_BeforeInstall(SetupEventArgs e)
     {
         //Note: the property will not be from UserNameDialog if MSI UI is suppressed
         if (e.Session["DOMAIN"] == null)

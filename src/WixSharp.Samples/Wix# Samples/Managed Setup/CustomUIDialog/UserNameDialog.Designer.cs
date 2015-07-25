@@ -240,7 +240,7 @@
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "UserNameDialog";
             this.Text = "[UserNameDlg_Title]";
-            this.Load += new System.EventHandler(this.InstallDirDialog_Load);
+            this.Load += new System.EventHandler(this.dialog_Load);
             ((System.ComponentModel.ISupportInitialize)(this.banner)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
