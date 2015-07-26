@@ -179,15 +179,16 @@ namespace WixSharp
         {
             try
             {
-                string lastArg = Environment.GetCommandLineArgs().LastOrDefault() ?? "";
-
                 // /MBSBUILD:$(ProjectName)
                 var preffix = "/MBSBUILD:";
-                if (lastArg.StartsWith(preffix))
+
+                string arg = Environment.GetCommandLineArgs().Where(x=>x.StartsWith(preffix)).LastOrDefault() ?? "";
+
+                if (arg != null)
                 {
                     //if building as part of the VS project with WixSharp NuGet package create (auto-generated) wxs file
 
-                    string projName = lastArg.Substring(preffix.Length);
+                    string projName = arg.Substring(preffix.Length);
 
                     //MSBuild always sets currdir to the project directory
                     string destDir = IO.Path.Combine(Environment.CurrentDirectory, "wix");
