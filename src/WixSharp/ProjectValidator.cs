@@ -131,8 +131,9 @@ namespace WixSharp
             if (incosnistentInstalledFileActions)
                 try
                 {
-                    Debug.WriteLine("Warning: InstalledFileAction should be scheduled for after InstallExecute. Otherwise it may produce undesired side effects.");
-                    Console.WriteLine("Warning: InstalledFileAction should be scheduled for after InstallExecute. Otherwise it may produce undesired side effects.");
+                    var msg = "Warning: InstalledFileAction should be scheduled for after InstallExecute. Otherwise it may produce undesired side effects.";
+                    Debug.WriteLine(msg);
+                    Console.WriteLine(msg);
                 }
                 catch { }
 
@@ -145,6 +146,22 @@ namespace WixSharp
                 {
                     asmReflector.ValidateCAAssembly(file, typeof(CustomActionAttribute).Assembly.Location);
                 });
+        }
+
+        public static void ValidateAssemblyCompatibility(Reflection.Assembly assembly)
+        {
+            if (!assembly.ImageRuntimeVersion.StartsWith("v2."))
+                try
+                {
+                    var msg = string.Format("Warning: assembly '{0}' is compiled for {1} runtime, which may not be compatible with the CLR version hosted by MSI. "+
+                                            "The incompatibility is particularly possible for the Embedded UI scenarios. " +
+                                            "The safest way to solve the problem is to compile the assembly for v3.5 Target Framework.",
+                                            assembly.GetName().Name, assembly.ImageRuntimeVersion);
+                    Debug.WriteLine(msg);
+                    Console.WriteLine(msg);
+                }
+                catch { }
+
         }
     }
 

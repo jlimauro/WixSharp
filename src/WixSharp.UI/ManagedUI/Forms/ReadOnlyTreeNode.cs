@@ -86,7 +86,8 @@ namespace WixSharp.UI.Forms
         }
     }
 
-    internal class ReadOnlyTreeNode : TreeNode
+#pragma warning disable 1591
+    public class ReadOnlyTreeNode : TreeNode
     {
         public bool IsReadOnly { get; set; }
 
@@ -244,4 +245,5 @@ namespace WixSharp.UI.Forms
             }
         }
     }
+#pragma warning restore 1591
 }

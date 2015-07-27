@@ -10,7 +10,7 @@ class Script
 {
     static public void Main(string[] args)
     {
-        Project project =
+        var project =
             new Project("TestProduct",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
                     new File(@"Files\1\MyApp.exe"),

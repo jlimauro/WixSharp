@@ -84,7 +84,7 @@ namespace WixSharp
         public string DialogBanner;
 
         /// <summary>
-        /// This method is called (indirectly) by Wix# compiler just befor building the MSI. It allows embedding UI specific resources (e.g. license file, properties)
+        /// This method is called (indirectly) by Wix# compiler just before building the MSI. It allows embedding UI specific resources (e.g. license file, properties)
         /// into the MSI.
         /// </summary>
         /// <param name="project">The project.</param>
@@ -161,33 +161,41 @@ namespace WixSharp
             if (session != null && (session.IsUninstalling() || uiLevel.IsBasic()))
                 return false; //use built-in MSI basic UI
 
-            ReadDialogs(session);
-
-            var startEvent = new ManualResetEvent(false);
-
-            var uiThread = new Thread(() =>
+            try
             {
-                shell = new UIShell(); //important to create the instance in the same thread that call ShowModal
-                shell.ShowModal(new MsiRuntime(session) { StartExecute = () => startEvent.Set() }, this);
-                uiExitEvent.Set();
-            });
+                ReadDialogs(session);
 
-            uiThread.SetApartmentState(ApartmentState.STA);
-            uiThread.Start();
+                var startEvent = new ManualResetEvent(false);
 
-            int waitResult = WaitHandle.WaitAny(new[] { startEvent, uiExitEvent });
-            if (waitResult == 1)
-            {
-                //UI exited without starting the install. Cancel the installation.
-                throw new InstallCanceledException();
+                var uiThread = new Thread(() =>
+                {
+                    shell = new UIShell(); //important to create the instance in the same thread that call ShowModal
+                    shell.ShowModal(new MsiRuntime(session) { StartExecute = () => startEvent.Set() }, this);
+                    uiExitEvent.Set();
+                });
+
+                uiThread.SetApartmentState(ApartmentState.STA);
+                uiThread.Start();
+
+                int waitResult = WaitHandle.WaitAny(new[] { startEvent, uiExitEvent });
+                if (waitResult == 1)
+                {
+                    //UI exited without starting the install. Cancel the installation.
+                    throw new InstallCanceledException();
+                }
+                else
+                {
+                    // Start the installation with a silenced internal UI.
+                    // This "embedded external UI" will handle message types except for source resolution.
+                    uiLevel = InstallUIOptions.NoChange | InstallUIOptions.SourceResolutionOnly;
+                    shell.OnExecuteStarted();
+                    return true;
+                }
             }
-            else
+            catch (Exception e)
             {
-                // Start the installation with a silenced internal UI.
-                // This "embedded external UI" will handle message types except for source resolution.
-                uiLevel = InstallUIOptions.NoChange | InstallUIOptions.SourceResolutionOnly;
-                shell.OnExecuteStarted();
-                return true;
+                session.Log("Cannot attach ManagedUI: " + e);
+                throw;
             }
         }
 

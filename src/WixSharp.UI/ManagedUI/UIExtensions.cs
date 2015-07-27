@@ -26,10 +26,11 @@ namespace WixSharp
 
     //    static Type ProgressDialog = typeof(ProgressDialog);
     //}
-
-    internal static class UIExtensions
+#pragma warning disable 1591
+    public static class UIExtensions
     {
-        public static System.Drawing.Icon GetAssiciatedIcon(this string extension)
+#pragma warning restore 1591
+        internal static System.Drawing.Icon GetAssiciatedIcon(this string extension)
         {
             var dummy = Path.GetTempPath() + extension;
             System.IO.File.WriteAllText(dummy, "");
@@ -38,7 +39,7 @@ namespace WixSharp
             return result;
         }
 
-        public static sys.Control ClearChildren(this sys.Control control)
+        internal static sys.Control ClearChildren(this sys.Control control)
         {
             foreach (sys.Control item in control.Controls)
                 item.Dispose();
@@ -70,6 +71,12 @@ namespace WixSharp
         //        return shortestDir;
         //}
 
+        /// <summary>
+        /// Gets the target system directory path based on specified directory name (MSI Directory table).
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static string GetDirectoryPath(this Session session, string name)
         {
             string[] subDirs = session.GetDirectoryPathParts(name)
@@ -211,6 +218,5 @@ namespace WixSharp
             }
             return cleanRegex.Replace(result.ToString(), "");
         }
-
     }
 }

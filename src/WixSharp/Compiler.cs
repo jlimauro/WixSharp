@@ -2597,9 +2597,8 @@ namespace WixSharp
                     writer.Write(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
                                                 <configuration>
                                                     <startup useLegacyV2RuntimeActivationPolicy=""true"">
-
                                                         <supportedRuntime version=""v" + Environment.Version.ToNoRevisionString() + @"""/>
-
+                                                        <supportedRuntime version=""v4.0"" sku="".NETFramework,Version=v4.5""/>
                                                         <supportedRuntime version=""v4.0"" sku="".NETFramework,Version=v4.0""/>
                                                         <supportedRuntime version=""v2.0.50727""/>
                                                         <supportedRuntime version=""v2.0.50215""/>

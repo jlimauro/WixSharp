@@ -600,7 +600,7 @@
         </member>
         <member name="M:WixSharp.ManagedUI.BeforeBuild(WixSharp.ManagedProject)">
             <summary>
-            This method is called (indirectly) by Wix# compiler just befor building the MSI. It allows embedding UI specific resources (e.g. license file, properties)
+            This method is called (indirectly) by Wix# compiler just before building the MSI. It allows embedding UI specific resources (e.g. license file, properties)
             into the MSI.
             </summary>
             <param name="project">The project.</param>
@@ -951,6 +951,14 @@
             <summary>
             The standard Exit dialog
             </summary>
+        </member>
+        <member name="M:WixSharp.UIExtensions.GetDirectoryPath(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
+            <summary>
+            Gets the target system directory path based on specified directory name (MSI Directory table).
+            </summary>
+            <param name="session">The session.</param>
+            <param name="name">The name.</param>
+            <returns></returns>
         </member>
         <member name="M:WixSharp.UIExtensions.LocalizeWith(System.Windows.Forms.Control,System.Func{System.String,System.String})">
             <summary>
