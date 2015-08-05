@@ -315,8 +315,8 @@ namespace WixSharp
         /// </summary>
         public void OnExecuteStarted()
         {
-           //Debug.Assert(false);
-            //MsiRuntime.CaptureSessionData();
+            //Debugger.Break();
+            MsiRuntime.FetchInstallDir(); //user may have updated it
 
             if (currentDialog != null)
                 InUIThread(currentDialog.OnExecuteStarted);

@@ -803,7 +803,7 @@
             The product name
             </summary>
         </member>
-        <member name="F:WixSharp.MsiRuntime.InstallDir">
+        <member name="P:WixSharp.MsiRuntime.InstallDir">
             <summary>
             The directory the product is to be installed. This field will contain a valid path only after the MSI execution started.
             </summary>

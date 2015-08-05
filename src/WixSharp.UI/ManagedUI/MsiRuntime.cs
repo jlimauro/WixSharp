@@ -78,6 +78,17 @@ namespace WixSharp
         /// Localization map. 
         /// </summary>
         public ResourcesData UIText = new ResourcesData();
+
+        internal void FetchInstallDir()
+        {
+            string installDirProperty = this.Session.Property("WixSharp_UI_INSTALLDIR");
+            string dir = this.Session.Property(installDirProperty);
+            if (dir.IsNotEmpty())
+                InstallDir = dir; //user entered INSTALLDIR
+            else
+                InstallDir = this.Session.GetDirectoryPath(installDirProperty); //default INSTALLDIR
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MsiRuntime"/> class.
         /// </summary>
@@ -93,6 +104,8 @@ namespace WixSharp
                 ProductName = session.Property("ProductName");
                 ProductCode = session.Property("ProductCode");
                 ProductVersion = session.Property("ProductVersion");
+
+                FetchInstallDir();
 
                 //it is important to preserve some product properties for localization as at the end of setup the session object will no longer be available
                 UIText["ProductName"] = ProductName;
@@ -156,7 +169,7 @@ namespace WixSharp
         /// <summary>
         /// The directory the product is to be installed. This field will contain a valid path only after the MSI execution started.
         /// </summary>
-        public string InstallDir;
+        public string InstallDir { get; internal set; }
         /// <summary>
         /// The product code
         /// </summary>
