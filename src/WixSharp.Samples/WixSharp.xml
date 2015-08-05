@@ -2380,6 +2380,17 @@
             	<c>true</c> if the specified <see cref="T:System.Xml.Linq.XElement"/> has attribute; otherwise, <c>false</c>.
             </returns>
         </member>
+        <member name="M:WixSharp.Extensions.HasAttribute(System.Xml.Linq.XElement,System.String,System.String)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Xml.Linq.XElement" /> has attribute and the specific attribute value.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="name">The name.</param>
+            <param name="attributeValue">The attribute value.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Xml.Linq.XElement" /> has attribute; otherwise, <c>false</c>.
+            </returns>
+        </member>
         <member name="M:WixSharp.Extensions.Parent(System.Xml.Linq.XElement,System.String)">
             <summary>
             Search for the first parent element (in the "parents chain") with the specified name of the given XML element (<see cref="T:System.Xml.Linq.XElement"/>).

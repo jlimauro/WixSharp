@@ -16,7 +16,8 @@ internal class Script
     [STAThread]
     static public void Main()
     {
-        string msiFile = @"E:\Galos\Projects\WixSharp\Main\WixSharp.Samples\Wix# Samples\_CustomDialog\External_CLR_GUI\MsiInterop\MyProduct.msi";
+        //just a sample
+        string msiFile = @"..\Projects\WixSharp\Main\WixSharp.Samples\Wix# Samples\_CustomDialog\External_CLR_GUI\MsiInterop\MyProduct.msi";
 
         string msiParams = ""; //install
         msiParams = "REMOVE=ALL"; //uninstall

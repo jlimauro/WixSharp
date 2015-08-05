@@ -52,8 +52,16 @@ namespace WpfSetup
             InitialCanUnInstall = CanUnInstall;
             InitialCanRepair = CanRepair;
 
+            SetupStarted += MyProductSetup_SetupStarted;
+
             //Uncomment if you want to see current action name changes. Otherwise it is too quick.
             //ProgressStepDelay = 50;
+        }
+
+
+        private void MyProductSetup_SetupStarted()
+        {
+            //this.LogFileCreated
         }
     }
 }

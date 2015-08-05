@@ -9,6 +9,7 @@ namespace WixSharp.Test
 {
     public class IssueFixesTest
     {
+
         [Fact]
         [Description("Issue #37")]
         public void Should_Preserve_ConstantsInAttrDefs()
@@ -34,6 +35,37 @@ namespace WixSharp.Test
 
             Assert.Equal("[IIS_SITE_ADDRESS]", address.ReadAttribute("Id"));
             Assert.Equal("[IIS_SITE_PORT]", address.ReadAttribute("Port"));
+        }
+
+        [Fact]
+        [Description("Discussions #642332")]
+        public void Should_Process_DirAttributes()
+        {
+            Dir dir1, dir2;
+
+            var project =
+                new Project("My Product",
+                    dir1 = new Dir(@"%ProgramFiles%\MyCompany",
+                        dir2 = new Dir("MyWebApp", new File("Default.aspx"))));
+
+
+            dir1.AttributesDefinition = "DiskId=1";
+            dir2.AttributesDefinition = "DiskId=2";
+
+            string wxs = project.BuildWxs();
+
+            var dirs = XDocument.Load(wxs)
+                                .FindAll("Directory")
+                                .Where(x=>x.HasAttribute("DiskId"))
+                                .ToArray();
+
+            Assert.Equal(2, dirs.Count());
+
+            Assert.True(dirs[0].HasAttribute("Name", "MyCompany"));
+            Assert.True(dirs[0].HasAttribute("DiskId", "1"));
+
+            Assert.True(dirs[1].HasAttribute("Name", "MyWebApp"));
+            Assert.True(dirs[1].HasAttribute("DiskId", "2"));
         }
 
         [Fact]

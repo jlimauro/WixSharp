@@ -184,7 +184,7 @@ namespace WixSharp
 
                 string arg = Environment.GetCommandLineArgs().Where(x=>x.StartsWith(preffix)).LastOrDefault() ?? "";
 
-                if (arg != null)
+                if (arg.IsNotEmpty())
                 {
                     //if building as part of the VS project with WixSharp NuGet package create (auto-generated) wxs file
 
@@ -2726,10 +2726,18 @@ namespace WixSharp
                 }
             }
 
-            XElement newSubDir = parent.AddElement(
-                                             new XElement("Directory",
-                                                 new XAttribute("Id", id),
-                                                 new XAttribute("Name", name)));
+            var newSubDir = new XElement("Directory",
+                                         new XAttribute("Id", id),
+                                         new XAttribute("Name", name));
+
+            if(!wDir.IsAutoParent())
+                newSubDir.AddAttributes(wDir.Attributes);
+
+            Dir autoRoot = wDir.GetRootAutoParent();
+            if (autoRoot != null)
+                newSubDir.AddAttributes(autoRoot.Attributes);
+
+            parent.AddElement(newSubDir);
 
             return newSubDir;
         }

@@ -46,6 +46,34 @@ namespace WixSharp
         /// The session object.
         /// </summary>
         public Session Session;
+
+        //DOESN'T work reliably. For example if no InstallDir dialog is displayed the MSI session does not have "INSTALLDIR" property initialized.
+        //The other properties (e.g. UI Level) are even never available at all.
+        //It looks like Session is initialized/updated correctly for the 'custom actions' session but not for the 'Embedded UI' session.  
+        //In fact because of these problems a session object can no longer be considered as a single connection point between all MSI runtime modules. 
+        internal void CaptureSessionData()
+        {
+            try
+            {
+                if (Session.IsActive())
+                {
+                    Data["INSTALLDIR"] = Session["INSTALLDIR"];
+                    Data["Installed"] = Session["Installed"];
+                    Data["REMOVE"] = Session["REMOVE"];
+                    Data["REINSTALL"] = Session["REINSTALL"];
+                    Data["UPGRADINGPRODUCTCODE"] = Session["UPGRADINGPRODUCTCODE"];
+                    Data["UILevel"] = Session["UILevel"];
+
+                    string installDirProperty = Session["WixSharp_UI_INSTALLDIR"];
+                    if (!string.IsNullOrEmpty(installDirProperty))
+                        InstallDir = Data[installDirProperty];
+                }
+            }
+            catch { }
+        }
+
+        internal Dictionary<string, string> Data = new Dictionary<string, string>();
+
         /// <summary>
         /// Localization map. 
         /// </summary>
@@ -61,6 +89,7 @@ namespace WixSharp
             {
                 var bytes = session.TryReadBinary("WixSharp_UIText");
                 UIText.InitFromWxl(bytes);
+
                 ProductName = session.Property("ProductName");
                 ProductCode = session.Property("ProductCode");
                 ProductVersion = session.Property("ProductVersion");
@@ -124,6 +153,10 @@ namespace WixSharp
         /// The product name
         /// </summary>
         public string ProductName;
+        /// <summary>
+        /// The directory the product is to be installed. This field will contain a valid path only after the MSI execution started.
+        /// </summary>
+        public string InstallDir;
         /// <summary>
         /// The product code
         /// </summary>

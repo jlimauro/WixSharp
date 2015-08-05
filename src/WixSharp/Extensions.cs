@@ -245,6 +245,20 @@ namespace WixSharp
         }
 
         /// <summary>
+        /// Determines whether the specified <see cref="T:System.Xml.Linq.XElement" /> has attribute and the specific attribute value.
+        /// </summary>
+        /// <param name="obj">The obj.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="attributeValue">The attribute value.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="T:System.Xml.Linq.XElement" /> has attribute; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool HasAttribute(this XElement obj, string name, string attributeValue)
+        {
+            return obj.Attribute(name) != null && obj.Attribute(name).Value == attributeValue;
+        }
+
+        /// <summary>
         /// Search for the first parent element (in the "parents chain") with the specified name of the given XML element (<see cref="T:System.Xml.Linq.XElement"/>).
         /// </summary>
         /// <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>

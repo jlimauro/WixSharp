@@ -203,6 +203,26 @@ namespace WixSharp
         /// </summary>
         public Dir[] Dirs = new Dir[0];
 
+        internal Dir AutoParent;
+        internal Dir GetRootAutoParent()
+        {
+            Dir result = this.AutoParent;
+            while (result != null)
+            {
+                if (result.AutoParent == null)
+                    break;
+                else
+                    result = result.AutoParent;
+            }
+            return result;
+        }
+
+        internal bool IsAutoParent()
+        {
+            return Dirs.Any(x=>x.AutoParent == this);
+        }
+
+
         /// <summary>
         /// Collection of the contained <see cref="File"/>s.
         /// </summary>
@@ -281,10 +301,13 @@ namespace WixSharp
                 for (int i = 1; i < nestedDirs.Length; i++)
                 {
                     Dir nextSubDir = new Dir(nestedDirs[i]);
+                    nextSubDir.AutoParent = currDir;
+                    //currDir.MoveAttributesTo(nextSubDir); //attributes may not be set at this stage
                     currDir.Dirs = new Dir[] { nextSubDir };
                     currDir = nextSubDir;
                 }
             }
+
             return currDir;
         }
 

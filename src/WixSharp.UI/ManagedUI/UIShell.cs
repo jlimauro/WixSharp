@@ -315,6 +315,9 @@ namespace WixSharp
         /// </summary>
         public void OnExecuteStarted()
         {
+           //Debug.Assert(false);
+            //MsiRuntime.CaptureSessionData();
+
             if (currentDialog != null)
                 InUIThread(currentDialog.OnExecuteStarted);
         }

@@ -100,6 +100,16 @@ namespace WixSharp
     /// </summary>
     public class WixEntity : WixObject
     {
+        internal void MoveAttributesTo(WixEntity dest)
+        {
+            var attrs = this.Attributes;
+            var attrsDefinition = this.AttributesDefinition;
+            this.Attributes.Clear();
+            this.AttributesDefinition = null;
+            dest.Attributes = attrs;
+            dest.AttributesDefinition = attrsDefinition;
+        }
+
         /// <summary>
         /// Collection of Attribute/Value pairs for WiX element attributes not supported directly by Wix# objects.
         /// <para>You should use <c>Attributes</c> if you want to inject specific XML attributes 

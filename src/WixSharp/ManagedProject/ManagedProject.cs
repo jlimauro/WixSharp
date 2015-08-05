@@ -8,6 +8,7 @@ using Microsoft.Deployment.WindowsInstaller;
 using WixSharp.CommonTasks;
 using IO = System.IO;
 using System.IO;
+using System.Diagnostics;
 
 namespace WixSharp
 {
@@ -141,6 +142,7 @@ namespace WixSharp
 
         override internal void Preprocess()
         {
+            //Debug.Assert(false);
             base.Preprocess();
 
             if (!preprocessed)
@@ -164,6 +166,8 @@ namespace WixSharp
                     InjectDialogs("WixSharp_ModifyDialogs", ManagedUI.ModifyDialogs);
 
                     this.EmbeddedUI = new EmbeddedAssembly(ManagedUI.GetType().Assembly.Location);
+
+                    this.DefaultRefAssemblies.Add(ManagedUI.GetType().Assembly.Location);
                 }
 
                 Bind(() => Load, When.Before, Step.AppSearch);
@@ -280,7 +284,21 @@ namespace WixSharp
             string[] parts = info.Split('|');
 
             var assembly = System.Reflection.Assembly.Load(parts[0]);
-            var type = assembly.GetTypes().Single(t => t.FullName == parts[1]);
+
+            Type type = null;
+
+            //Ideally need to iterate through the all types in order to find even private ones
+            //Though loading some internal (irrelevant) types can fail because of the dependencies.
+            try
+            {
+                assembly.GetTypes().Single(t => t.FullName == parts[1]);
+            }
+            catch { }
+
+            //If we failed to iterate through the types then try to load the type explicitly. Though in this case it has to be public.
+            if (type == null)
+                type = assembly.GetType(parts[1]);
+
             var method = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.Static)
                              .Single(m => m.Name == parts[2]);
 
@@ -314,7 +332,10 @@ namespace WixSharp
 
                 eventArgs.SaveData();
             }
-            catch { }
+            catch (Exception e)
+            {
+                session.Log(e.Message);
+            }
             return eventArgs.Result;
         }
 

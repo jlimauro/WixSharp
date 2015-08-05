@@ -47,7 +47,7 @@ public class Script
                 string message = "Your PC is too fancy for this app!";
                 e.Session.Log(message);
 
-                if (e.IsUISupressed)
+                if (e.UILevel > 4)
                     MessageBox.Show(message, e.ProductName);
 
                 e.Result = ActionResult.SkipRemainingActions;
@@ -57,7 +57,7 @@ public class Script
 
     static void msi_AfterInstall(SetupEventArgs e)
     {
-        if (!e.IsUninstalling && !e.IsUISupressed)
+        if (!e.IsUninstalling && e.UILevel > 2)
         {
             string readme = io.Path.Combine(e.InstallDir, @"Docs\readme.txt");
 
