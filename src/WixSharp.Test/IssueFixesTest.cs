@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
+using WixSharp.CommonTasks;
 using Xunit;
 
 namespace WixSharp.Test
@@ -56,7 +57,7 @@ namespace WixSharp.Test
 
             var dirs = XDocument.Load(wxs)
                                 .FindAll("Directory")
-                                .Where(x=>x.HasAttribute("DiskId"))
+                                .Where(x => x.HasAttribute("DiskId"))
                                 .ToArray();
 
             Assert.Equal(2, dirs.Count());
@@ -66,6 +67,105 @@ namespace WixSharp.Test
 
             Assert.True(dirs[1].HasAttribute("Name", "MyWebApp"));
             Assert.True(dirs[1].HasAttribute("DiskId", "2"));
+        }
+
+        [Fact]
+        [Description("Discussions #642332")]
+        public void Should_Process_DirAttributes_2()
+        {
+            Dir dir1, dir2;
+
+            var project =
+                new Project("My Product",
+                    new Dir(@"%ProgramFiles%\MyCompany",
+                        new Dir("MyWebApp", new File("Default.aspx"))));
+
+            project.AddEnvironmentVariable(new EnvironmentVariable("someVar", "Some value") { AttributesDefinition = "DiskId=2" });
+
+            string wxs = project.BuildWxs();
+
+            var doc = XDocument.Load(wxs);
+        }
+
+        [Fact]
+        [Description("Discussions #642263")]
+        public void Should_CanInject_UserProfileNoiseAutomatically()
+        {
+            var project = new Project("TestProject",
+
+                           new Dir(@"%ProgramFiles%\My Company\My Product",
+                               new File(@"Files\notepad.exe")),
+
+                           new Dir(@"%CommonAppDataFolder%\Test Project",
+                               new File(@"Files\TextFile.txt")),
+
+                           new Dir(@"%PersonalFolder%\Test Project",
+                               new File(@"Files\Baskets.bbd")));
+
+            string wxs = project.BuildWxs();
+
+            var doc = XDocument.Load(wxs);
+        }
+
+        [Fact]
+        [Description("Discussions #642263")]
+        public void Should_CanInject_UserProfileNoise()
+        {
+            var project = new Project("TestProject",
+
+                           new Dir(@"%ProgramFiles%\My Company\My Product",
+                               new File(@"Files\notepad.exe")),
+
+                           new Dir(@"%CommonAppDataFolder%\Test Project",
+                               new File(@"Files\TextFile.txt")),
+
+                           new Dir(@"%PersonalFolder%\Test Project",
+                               new File(@"Files\Baskets.bbd")));
+
+            project.WixSourceGenerated += xml =>
+            {
+                var dir = xml.FindAll("Directory")
+                             .Where(x => x.HasAttribute("Name", "PersonalFolder"))
+                             .SelectMany(x => x.FindAll("Component"))
+                             .ForEach(comp => comp.InsertUserProfileRegValue()
+                                                  .InsertUserProfileRemoveFolder());
+            };
+            string wxs = project.BuildWxs();
+
+            var doc = XDocument.Load(wxs);
+        }
+
+        [Fact]
+        [Description("Discussions #642263")]
+        public void Should_Inject_RemoveFolder()
+        {
+            var project = new Project("TestProject",
+
+                           new Dir(@"%ProgramFiles%\My Company\My Product",
+                               new File(@"Files\notepad.exe")),
+
+                           new Dir(@"%CommonAppDataFolder%\Test Project",
+                               new File(@"Files\TextFile.txt")),
+
+                           new Dir(@"%PersonalFolder%\Test Project",
+                               new File(@"Files\Baskets.bbd")));
+
+            project.WixSourceGenerated += Project_WixSourceGenerated;
+            string wxs = project.BuildWxs();
+
+            var doc = XDocument.Load(wxs);
+
+        }
+
+        void Project_WixSourceGenerated(XDocument document)
+        {
+            var dir = document.FindAll("Directory")
+                              .Where(x => x.HasAttribute("Name", "Test Project") && x.Parent.HasAttribute("Name", "PersonalFolder"))
+                              .First();
+
+            var comp = dir.Element("Component");
+            comp.AddElement("RemoveFolder", "On=uninstall; Id=" + dir.Attribute("Id"));
+            comp.AddElement("RegistryValue", @"Root=HKCU; Key=Software\[Manufacturer]\[ProductName]; Type=string; Value=; KeyPath=yes");
         }
 
         [Fact]
@@ -161,7 +261,7 @@ namespace WixSharp.Test
 
                 var msi = project.BuildMsi();
             }
-         
+
             {
                 var project = new Project("MyProduct");
 

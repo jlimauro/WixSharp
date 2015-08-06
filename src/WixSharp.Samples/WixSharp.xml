@@ -1115,6 +1115,14 @@
             <param name="items">The items.</param>
             <returns></returns>
         </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddEnvironmentVariable(WixSharp.Project,WixSharp.EnvironmentVariable[])">
+            <summary>
+            Adds the environment variable.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.CommonTasks.Tasks.AddRefAssembly(WixSharp.ManagedAction,System.String[])">
             <summary>
             Adds the assembly reference.

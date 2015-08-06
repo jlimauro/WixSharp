@@ -73,9 +73,21 @@ namespace WixSharp
 
         static void InsertRemoveFolder(XElement xDir, XElement xComponent, string when = "uninstall")
         {
-            xComponent.Add(new XElement("RemoveFolder",
-                               new XAttribute("Id", xDir.Attribute("Id").Value),
-                               new XAttribute("On", when)));
+            if (!xDir.IsUserProfileRoot())
+                xComponent.Add(new XElement("RemoveFolder",
+                                   new XAttribute("Id", xDir.Attribute("Id").Value),
+                                   new XAttribute("On", when)));
+        }
+
+        public static XElement InsertUserProfileRemoveFolder(this XElement xComponent)
+        {
+            var xDir = xComponent.Parent("Directory");
+            if (!xDir.Descendants("RemoveFolder").Any() && !xDir.IsUserProfileRoot())
+                xComponent.Add(new XElement("RemoveFolder",
+                                   new XAttribute("Id", xDir.Attribute("Id").Value),
+                                   new XAttribute("On", "uninstall")));
+
+            return xComponent;
         }
 
         static void InsertCreateFolder(XElement xComponent)
@@ -90,25 +102,31 @@ namespace WixSharp
             }
         }
 
-        static void InsertDummyUserProfileRegistry(XElement xComponent)
+        public static XElement InsertUserProfileRegValue(this XElement xComponent)
         {
-            if (!DisableAutoUserProfileRegistry)
-            {
-                var keyPathes = xComponent.Elements()
+            var keyPathes = xComponent.Elements()
                           .Select(e => e.Attribute("KeyPath"))
                           .Where(a => a != null && a.Value == "yes")
                           .ToList();
 
-                keyPathes.ForEach(a => a.Remove());
+            keyPathes.ForEach(a => a.Remove());
 
-                xComponent.Add(
-                            new XElement("RegistryKey",
-                                new XAttribute("Root", "HKCU"),
-                                new XAttribute("Key", @"Software\WixSharp\Used"),
-                                new XElement("RegistryValue",
-                                    new XAttribute("Value", "0"),
-                                    new XAttribute("Type", "string"),
-                                    new XAttribute("KeyPath", "yes"))));
+            xComponent.Add(
+                        new XElement("RegistryKey",
+                            new XAttribute("Root", "HKCU"),
+                            new XAttribute("Key", @"Software\WixSharp\Used"),
+                            new XElement("RegistryValue",
+                                new XAttribute("Value", "0"),
+                                new XAttribute("Type", "string"),
+                                new XAttribute("KeyPath", "yes"))));
+            return xComponent;
+        }
+
+        static void InsertDummyUserProfileRegistry(XElement xComponent)
+        {
+            if (!DisableAutoUserProfileRegistry)
+            {
+                InsertUserProfileRegValue(xComponent);
             }
         }
 
@@ -135,9 +153,9 @@ namespace WixSharp
             return xComp.Elements("File").Count() != 0;
         }
 
-        static bool ContainsComponents(this XElement xComp)
+        static bool ContainsComponents(this XElement xDir)
         {
-            return xComp.Elements("Component").Count() != 0;
+            return xDir.Elements("Component").Any();
         }
 
         static bool ContainsAdvertisedShortcuts(this XElement xComp)
@@ -181,6 +199,7 @@ namespace WixSharp
                         "AppDataFolder",
                         "LocalAppDataFolder",
                         "TempFolder",
+                        "PersonalFolder",
                         "DesktopFolder"
                     };
         }
@@ -204,6 +223,13 @@ namespace WixSharp
             while (xParentDir != null);
 
             return false;
+        }
+
+        static bool IsUserProfileRoot(this XElement xDir)
+        {
+            string[] userProfileFolders = GetUserProfileFolders();
+
+            return userProfileFolders.Contains(xDir.Attribute("Name").Value);
         }
 
         internal static void InjectShortcutIcons(XDocument doc)
@@ -349,9 +375,9 @@ namespace WixSharp
 
                 if (dirComponents.Any())
                 {
-                    var compoonentsWithNoFiles = dirComponents.Where(x => !x.ContainsFiles()).ToArray();
+                    var componentsWithNoFiles = dirComponents.Where(x => !x.ContainsFiles()).ToArray();
 
-                    foreach (XElement item in compoonentsWithNoFiles)
+                    foreach (XElement item in componentsWithNoFiles)
                     {
                         if (!item.Attribute("Id").Value.EndsWith(".EmptyDirectory"))
                             InsertCreateFolder(item);
@@ -362,14 +388,6 @@ namespace WixSharp
 
                 foreach (XElement xComp in dirComponents)
                 {
-                    //if (!xComp.ContainsFiles())
-                    //{
-                    //    if (xDir.Attribute("Name").Value != "DummyDir")
-                    //        InsertCreateFolder(xDir, xComp);
-                    //    else if (!xDir.ContainsAnyRemoveFolder())
-                    //        InsertRemoveFolder(xDir, xComp, "both"); //to keep WiX/compiler happy and allow removal of the dummy directory
-                    //}
-
                     if (xDir.InUserProfile())
                     {
                         if (!xDir.ContainsAnyRemoveFolder())
@@ -392,23 +410,26 @@ namespace WixSharp
 
                 if (!xDir.ContainsComponents() && xDir.InUserProfile())
                 {
-                    XElement xComp1 = doc.CrteateComponentFor(xDir);
-                    if (!xDir.ContainsAnyRemoveFolder())
-                        InsertRemoveFolder(xDir, xComp1);
+                    if (!xDir.IsUserProfileRoot())
+                    {
+                        XElement xComp1 = doc.CrteateComponentFor(xDir);
+                        if (!xDir.ContainsAnyRemoveFolder())
+                            InsertRemoveFolder(xDir, xComp1);
 
-                    if (!xComp1.ContainsDummyUserProfileRegistry())
-                        InsertDummyUserProfileRegistry(xComp1);
+                        if (!xComp1.ContainsDummyUserProfileRegistry())
+                            InsertDummyUserProfileRegistry(xComp1);
+                    }
                 }
             }
         }
 
-        
+
         internal static void NormalizeFilePaths(XDocument doc, string sourceBaseDir, bool emitRelativePaths)
         {
             string rootDir = sourceBaseDir;
-            if(rootDir.IsEmpty())
+            if (rootDir.IsEmpty())
                 rootDir = Environment.CurrentDirectory;
-            
+
             rootDir = IO.Path.GetFullPath(rootDir);
 
             Action<IEnumerable<XElement>, string> normalize = (elements, attributeName) =>
@@ -417,12 +438,12 @@ namespace WixSharp
                             .ForEach(e =>
                                 {
                                     var attr = e.Attribute(attributeName);
-                                    if(emitRelativePaths)
+                                    if (emitRelativePaths)
                                         attr.Value = Utils.MakeRelative(attr.Value, rootDir);
                                     else
                                         attr.Value = Path.GetFullPath(attr.Value);
                                 });
-                            
+
                 };
 
             normalize(doc.Root.FindAll("Icon"), "SourceFile");

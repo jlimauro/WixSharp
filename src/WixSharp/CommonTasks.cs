@@ -330,11 +330,24 @@ namespace WixSharp.CommonTasks
         /// <param name="project">The project.</param>
         /// <param name="items">The items.</param>
         /// <returns></returns>
+        [Obsolete("AddEnvironmentVariabl is obsolete as the name has a typo. Please use AddEnvironmentVariable instead.", false)]
         static public Project AddEnvironmentVariabl(this Project project, params EnvironmentVariable[] items)
+        {
+            return AddEnvironmentVariable(project, items);
+        }
+
+        /// <summary>
+        /// Adds the environment variable.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        static public Project AddEnvironmentVariable(this Project project, params EnvironmentVariable[] items)
         {
             project.EnvironmentVariables = project.EnvironmentVariables.AddRange(items);
             return project;
         }
+
 
         /// <summary>
         /// Adds the assembly reference.

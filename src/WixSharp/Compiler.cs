@@ -1290,6 +1290,7 @@ namespace WixSharp
                 return;
             }
 
+
             if (wDir.Feature != null)
             {
                 string compId = "Component." + wDir.Id;
