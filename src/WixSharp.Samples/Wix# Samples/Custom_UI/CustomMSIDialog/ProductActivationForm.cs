@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WixSharp;
+using WixSharp.Controls;
 
 namespace ConsoleApplication1
 {
-    public partial class ProductActivationForm : WixForm
+    public partial class ProductActivationForm : WixSharp.Controls.WixForm
     {
         public ProductActivationForm()
         {

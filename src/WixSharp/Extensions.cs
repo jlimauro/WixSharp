@@ -31,6 +31,7 @@ using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
 using IO = System.IO;
 using System.Data;
+using System.Security.Principal;
 
 namespace WixSharp
 {
@@ -39,6 +40,17 @@ namespace WixSharp
     /// </summary>
     public static partial class Extensions
     {
+        /// <summary>
+        /// Determines whether the current user is administrator.
+        /// </summary>
+        /// <param name="identity">The identity.</param>
+        /// <returns></returns>
+        static public bool IsAdmin(this WindowsIdentity identity)
+        {
+            var p = new WindowsPrincipal(identity);
+            return p.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
         /// <summary>
         /// Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
         /// </summary>

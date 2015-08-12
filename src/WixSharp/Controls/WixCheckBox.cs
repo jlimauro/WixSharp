@@ -44,7 +44,7 @@ using System.Drawing.Design;
 using System.Windows.Forms;
 using Wix = WixSharp;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     /// <summary>
     /// Defines <see cref="T:System.Windows.Forms" /> CheckBox control for generating WiX Button element.
@@ -149,9 +149,9 @@ namespace WixSharp
         /// Instance of the WixSharp.Control.
         /// </returns>
         /// <exception cref="System.ApplicationException">WixCheckBox (' + control.Id + ') must have BoundProperty set to non-empty value.</exception>
-        public virtual Wix.Control ToWControl()
+        public virtual Wix.Controls.Control ToWControl()
         {
-            Wix.Control control = this.ConvertToWControl(ControlType.CheckBox);
+            Wix.Controls.Control control = this.ConvertToWControl(ControlType.CheckBox);
 
             //It is tempting to allow WiX compiler report the problem. However WiX is not reliable with the error reporting.
             //For example it does it for "CheckBox" but not for "Edit"

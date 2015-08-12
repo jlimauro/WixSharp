@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     /// <summary>
     /// Delegate for  <see cref="IWixInteractiveControl"/> event <c>Click</c>.
@@ -106,7 +106,7 @@ namespace WixSharp
         /// Converts the WinForm control into WiX custom UI control <see cref="T:WixSharp.Control"/>.
         /// </summary>
         /// <returns>Instance of the WixSharp.Control.</returns>
-        WixSharp.Control ToWControl();
+        WixSharp.Controls.Control ToWControl();
     }
 
     /// <summary>

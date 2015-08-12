@@ -19,7 +19,6 @@ public class Script
         var tuts = new Feature("Tutorials", "Product tutorials", false);
         docs.Children.Add(tuts);
 
-
         var project =
             new ManagedProject("ManagedSetup",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
@@ -48,9 +47,9 @@ public class Script
                 e.Session.Log(message);
 
                 if (e.UILevel > 4)
-                    MessageBox.Show(message, e.ProductName);
+                    MessageBox.Show(message, e.ProductName +" "+e.UILevel);
 
-                e.Result = ActionResult.SkipRemainingActions;
+                e.Result = ActionResult.Failure;
             }
         }
     }

@@ -6,7 +6,7 @@ using System.Drawing.Design;
 using System.Windows.Forms;
 using Wix = WixSharp;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     /* Problems:
      * Bitmap source is encoded as text
@@ -183,7 +183,7 @@ namespace WixSharp
         /// <returns>
         /// Instance of the WixSharp.Control.
         /// </returns>
-        public virtual Wix.Control ToWControl()
+        public virtual Wix.Controls.Control ToWControl()
         {
             return this.ConvertToWControl(this.ControlType);
         }

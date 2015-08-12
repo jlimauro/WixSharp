@@ -7,7 +7,7 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Collections.Generic;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     /// <summary>
     /// Defines <see cref="T:System.Windows.Forms" /> text box control for generating WiX TextBox element.
@@ -98,9 +98,9 @@ namespace WixSharp
         /// Instance of the WixSharp.Control.
         /// </returns>
         /// <exception cref="System.ApplicationException">WixTextBox (' + control.Id + ') must have BoundProperty set to non-empty value.</exception>
-        public virtual Wix.Control ToWControl()
+        public virtual Wix.Controls.Control ToWControl()
         {
-            Wix.Control control = this.ConvertToWControl(ControlType.Edit);
+            Wix.Controls.Control control = this.ConvertToWControl(ControlType.Edit);
 
             if (BoundProperty.IsEmpty())
                 throw new ApplicationException("WixTextBox ('" + control.Id + "') must have BoundProperty set to non-empty value.");

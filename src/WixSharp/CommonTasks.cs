@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using WixSharp.Controls;
 using IO = System.IO;
 
 namespace WixSharp.CommonTasks
@@ -476,10 +477,10 @@ namespace WixSharp.CommonTasks
         static public Project RemoveDialogsBetween(this Project project, string start, string end)
         {
             if (project.CustomUI == null)
-                project.CustomUI = new DialogSequence();
+                project.CustomUI = new Controls.DialogSequence();
 
-            project.CustomUI.On(start, Buttons.Next, new ShowDialog(end) { Order = DialogSequence.DefaultOrder });
-            project.CustomUI.On(end, Buttons.Back, new ShowDialog(start) { Order = DialogSequence.DefaultOrder });
+            project.CustomUI.On(start, Controls.Buttons.Next, new Controls.ShowDialog(end) { Order = Controls.DialogSequence.DefaultOrder });
+            project.CustomUI.On(end, Controls.Buttons.Back, new Controls.ShowDialog(start) { Order = Controls.DialogSequence.DefaultOrder });
             return project;
         }
 

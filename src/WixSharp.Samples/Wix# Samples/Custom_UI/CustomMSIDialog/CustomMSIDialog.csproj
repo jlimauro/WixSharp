@@ -74,7 +74,7 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-   <Reference Include="WixSharp">
+    <Reference Include="WixSharp">
       <HintPath>..\..\..\WixSharp.dll</HintPath>
     </Reference>
     <Reference Include="WixSharp.UI">

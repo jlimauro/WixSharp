@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using Wix = WixSharp;
 using System.Collections.Generic;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     /// <summary>
     /// Defines <see cref="T:System.Windows.Forms" /> label control for generating WiX Label element.
@@ -101,9 +101,9 @@ namespace WixSharp
         /// <returns>
         /// Instance of the WixSharp.Control.
         /// </returns>
-        public virtual Wix.Control ToWControl()
+        public virtual Wix.Controls.Control ToWControl()
         {
-            Wix.Control retval = this.ConvertToWControl(ControlType.Text);
+            Wix.Controls.Control retval = this.ConvertToWControl(ControlType.Text);
             //if (NoPrefix)
             //    retval.AttributesDefinition += ";NoPrefix=yes";
             return retval;

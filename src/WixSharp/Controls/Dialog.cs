@@ -37,7 +37,7 @@
 
 using System.Xml.Linq;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     /// <summary>
     /// Defines MSI Dialog. It represents WiX <c>Dialog</c> element.

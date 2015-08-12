@@ -2,28 +2,17 @@ using System;
 using System.Security.Principal;
 using Wix = WixSharp;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     public static partial class Extensions
     {
-        internal static Wix.Control ConvertToWControl(this IWixControl srcControl, ControlType controlType)
+        internal static Wix.Controls.Control ConvertToWControl(this IWixControl srcControl, ControlType controlType)
         {
-            var wControl = new Wix.Control { Type = controlType.ToString() };
+            var wControl = new Wix.Controls.Control { Type = controlType.ToString() };
 
             wControl.CopyCommonPropertiesFrom(srcControl);
 
             return wControl;
-        }
-
-        /// <summary>
-        /// Determines whether the current user is administrator.
-        /// </summary>
-        /// <param name="identity">The identity.</param>
-        /// <returns></returns>
-        static public bool IsAdmin(this WindowsIdentity identity)
-        {
-            var p = new WindowsPrincipal(identity);
-            return p.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
         /// <summary>
@@ -43,7 +32,7 @@ namespace WixSharp
         }
 
 
-        internal static void CopyCommonPropertiesFrom(this Wix.Control destControl, IWixControl srcControl)
+        internal static void CopyCommonPropertiesFrom(this Wix.Controls.Control destControl, IWixControl srcControl)
         {
             var formControl = (System.Windows.Forms.Control)srcControl;
 

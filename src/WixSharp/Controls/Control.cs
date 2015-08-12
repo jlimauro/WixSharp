@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     /// <summary>
     /// Defines generic WiX Control.  

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Wix = WixSharp;
 using System;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     /// <summary>
     /// Defines Form designer compatible <c>Condition</c> associated with the WixControl action.

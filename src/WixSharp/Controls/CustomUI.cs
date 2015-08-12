@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     /// <summary>
     /// Defines the association between an MSI dialog control and the <see cref="T:WixSharp.PublishingInfo" />.

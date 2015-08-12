@@ -3,6 +3,7 @@ using Microsoft.Deployment.WindowsInstaller;
 using System.Diagnostics;
 using System.Windows.Forms;
 using WixSharp;
+using WixSharp.Controls;
 
 class Script
 {
@@ -30,7 +31,7 @@ class Script
         project.CustomUI = CustomUIBuilder.BuildPostLicenseDialogUI(customDialog: productActivationDialog,
                                                                     onNextActions: new DialogAction[]{
                                                                                        new ExecuteCustomAction ("ValidateLicenceKey"),
-                                                                                       new ShowDialog(Dialogs.InstallDirDlg, "SERIALNUMBER_VALIDATED = \"TRUE\"")});
+                                                                                       new ShowDialog(NativeDialogs.InstallDirDlg, "SERIALNUMBER_VALIDATED = \"TRUE\"")});
         
         //In this sample we are using built-in BuildPostLicenseDialogUI but if it is not suitable for
         //you can define you own routine for building UI definition.

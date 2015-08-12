@@ -85,4 +85,9 @@ namespace WixSharp
         public static WixExtension Sql = new WixExtension("WixSqlExtension.dll", "sql", "http://schemas.microsoft.com/wix/SqlExtension");
 
     }
+
+    public interface IXmlAware
+    {
+        XContainer[] ToXml();
+    }
 }

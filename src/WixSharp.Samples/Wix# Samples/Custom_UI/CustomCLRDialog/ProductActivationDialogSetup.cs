@@ -1,5 +1,6 @@
 using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
+using WixSharp.Controls;
 
 public static class ProductActivationDialogSetup
 {

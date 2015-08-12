@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     /// <summary>
     /// Defines <see cref="T:System.Windows.Forms" /> Form for generating WiX Dialog element.
@@ -140,7 +140,7 @@ namespace WixSharp
             if (!this.Id.IsNullOrEmpty())
                 wDialog.Id = this.Id;
 
-            var wControls = new List<WixSharp.Control>();
+            var wControls = new List<WixSharp.Controls.Control>();
 
             foreach (var item in this.Controls)
                 if (item is IWixControl)

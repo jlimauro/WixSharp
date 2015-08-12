@@ -126,6 +126,7 @@ namespace WixSharp.Test
             {
                 var dir = xml.FindAll("Directory")
                              .Where(x => x.HasAttribute("Name", "PersonalFolder"))
+                             //.Where(x => x.HasAttribute("Name", v => v == "PersonalFolder"))
                              .SelectMany(x => x.FindAll("Component"))
                              .ForEach(comp => comp.InsertUserProfileRegValue()
                                                   .InsertUserProfileRemoveFolder());
@@ -154,7 +155,6 @@ namespace WixSharp.Test
             string wxs = project.BuildWxs();
 
             var doc = XDocument.Load(wxs);
-
         }
 
         void Project_WixSourceGenerated(XDocument document)
@@ -164,7 +164,7 @@ namespace WixSharp.Test
                               .First();
 
             var comp = dir.Element("Component");
-            comp.AddElement("RemoveFolder", "On=uninstall; Id=" + dir.Attribute("Id"));
+            comp.AddElement("RemoveFolder", "On=uninstall; Id=" + dir.Attribute("Id").Value);
             comp.AddElement("RegistryValue", @"Root=HKCU; Key=Software\[Manufacturer]\[ProductName]; Type=string; Value=; KeyPath=yes");
         }
 

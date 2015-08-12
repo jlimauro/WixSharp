@@ -16,6 +16,7 @@ namespace WixSharp
     public interface IProgressDialog : IManagedDialog
     {
     }
+
     /// <summary>
     /// Interface of a typical UI dialog managed by shell (the main window) of the MSI external/embedded UI. 
     /// </summary>

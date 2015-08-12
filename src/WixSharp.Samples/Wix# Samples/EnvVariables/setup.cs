@@ -7,7 +7,8 @@ using System.Xml;
 using System.Xml.Linq;
 using WixSharp;
 using WixSharp.CommonTasks;
-using File=WixSharp.File;
+using WixSharp.Controls;
+using File = WixSharp.File;
 
 class Script
 {

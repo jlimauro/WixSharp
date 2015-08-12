@@ -28,6 +28,7 @@ using System.Xml.Linq;
 
 namespace WixSharp
 {
+
     /// <summary>
     /// Defines WiX <c>Condition</c>. <c>Condition</c> is normally associated with <c>CustomActions</c> or WiX elements (e.g. <c>Shortcut</c>).
     /// <para>

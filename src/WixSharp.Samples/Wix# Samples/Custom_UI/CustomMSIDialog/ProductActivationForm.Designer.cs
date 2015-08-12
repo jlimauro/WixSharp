@@ -1,4 +1,6 @@
-﻿namespace ConsoleApplication1
+﻿using WixSharp.Controls;
+
+namespace ConsoleApplication1
 {
     partial class ProductActivationForm
     {
@@ -29,18 +31,18 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProductActivationForm));
-            this.wixLabel2 = new WixSharp.WixLabel();
-            this.wixLabel1 = new WixSharp.WixLabel();
-            this.wixControl1 = new WixSharp.WixControl();
-            this.lineControl1 = new WixSharp.WixControl();
-            this.wixTextBox1 = new WixSharp.WixTextBox();
-            this.wixCheckBox1 = new WixSharp.WixCheckBox();
-            this.BackButton = new WixSharp.WixButton();
-            this.NextButton = new WixSharp.WixButton();
-            this.CancelButton = new WixSharp.WixButton();
-            this.wixControl2 = new WixSharp.WixControl();
-            this.wixControl3 = new WixSharp.WixControl();
-            this.wixButton = new WixSharp.WixButton();
+            this.wixLabel2 = new WixSharp.Controls.WixLabel();
+            this.wixLabel1 = new WixSharp.Controls.WixLabel();
+            this.wixControl1 = new WixSharp.Controls.WixControl();
+            this.lineControl1 = new WixSharp.Controls.WixControl();
+            this.wixTextBox1 = new WixSharp.Controls.WixTextBox();
+            this.wixCheckBox1 = new WixSharp.Controls.WixCheckBox();
+            this.BackButton = new WixSharp.Controls.WixButton();
+            this.NextButton = new WixSharp.Controls.WixButton();
+            this.CancelButton = new WixSharp.Controls.WixButton();
+            this.wixControl2 = new WixSharp.Controls.WixControl();
+            this.wixControl3 = new WixSharp.Controls.WixControl();
+            this.wixButton = new WixSharp.Controls.WixButton();
             this.SuspendLayout();
             // 
             // wixLabel2
@@ -70,7 +72,7 @@
             // wixControl1
             // 
             this.wixControl1.BoundProperty = null;
-            this.wixControl1.ControlType = WixSharp.ControlType.Bitmap;
+            this.wixControl1.ControlType = WixSharp.Controls.ControlType.Bitmap;
             this.wixControl1.EmbeddedXML = null;
             this.wixControl1.Hidden = false;
             this.wixControl1.Id = null;
@@ -85,7 +87,7 @@
             // lineControl1
             // 
             this.lineControl1.BoundProperty = null;
-            this.lineControl1.ControlType = WixSharp.ControlType.Line;
+            this.lineControl1.ControlType = WixSharp.Controls.ControlType.Line;
             this.lineControl1.EmbeddedXML = null;
             this.lineControl1.Hidden = false;
             this.lineControl1.Id = null;
@@ -131,13 +133,13 @@
             this.BackButton.Text = "Back";
             this.BackButton.Tooltip = null;
             this.BackButton.WixAttributes = null;
-            this.BackButton.Click += new WixSharp.ClickHandler(this.BackButton_Click);
+            this.BackButton.Click += new WixSharp.Controls.ClickHandler(this.BackButton_Click);
             // 
             // NextButton
             // 
             this.NextButton.BoundProperty = null;
-            this.NextButton.Conditions.Add(((WixSharp.WixControlCondition)(resources.GetObject("NextButton.Conditions"))));
-            this.NextButton.Conditions.Add(((WixSharp.WixControlCondition)(resources.GetObject("NextButton.Conditions1"))));
+            this.NextButton.Conditions.Add(((WixSharp.Controls.WixControlCondition)(resources.GetObject("NextButton.Conditions"))));
+            this.NextButton.Conditions.Add(((WixSharp.Controls.WixControlCondition)(resources.GetObject("NextButton.Conditions1"))));
             this.NextButton.Hidden = false;
             this.NextButton.Id = "Next";
             this.NextButton.Location = new System.Drawing.Point(307, 322);
@@ -146,7 +148,7 @@
             this.NextButton.Text = "Next";
             this.NextButton.Tooltip = null;
             this.NextButton.WixAttributes = "Default=yes";
-            this.NextButton.Click += new WixSharp.ClickHandler(this.NextButton_Click);
+            this.NextButton.Click += new WixSharp.Controls.ClickHandler(this.NextButton_Click);
             // 
             // CancelButton
             // 
@@ -159,12 +161,12 @@
             this.CancelButton.Text = "Cancel";
             this.CancelButton.Tooltip = null;
             this.CancelButton.WixAttributes = null;
-            this.CancelButton.Click += new WixSharp.ClickHandler(this.CancelButton_Click);
+            this.CancelButton.Click += new WixSharp.Controls.ClickHandler(this.CancelButton_Click);
             // 
             // wixControl2
             // 
             this.wixControl2.BoundProperty = "LICENCING_MODEL";
-            this.wixControl2.ControlType = WixSharp.ControlType.RadioButtonGroup;
+            this.wixControl2.ControlType = WixSharp.Controls.ControlType.RadioButtonGroup;
             this.wixControl2.EmbeddedXML = resources.GetString("wixControl2.EmbeddedXML");
             this.wixControl2.Hidden = false;
             this.wixControl2.Id = null;
@@ -179,7 +181,7 @@
             // wixControl3
             // 
             this.wixControl3.BoundProperty = null;
-            this.wixControl3.ControlType = WixSharp.ControlType.Line;
+            this.wixControl3.ControlType = WixSharp.Controls.ControlType.Line;
             this.wixControl3.EmbeddedXML = null;
             this.wixControl3.Hidden = false;
             this.wixControl3.Id = null;
@@ -201,7 +203,7 @@
             this.wixButton.Text = "Get Licence Key";
             this.wixButton.Tooltip = "Go to the [ProductName] Web site and claim the licence key";
             this.wixButton.WixAttributes = null;
-            this.wixButton.Click += new WixSharp.ClickHandler(this.wixButton_Click);
+            this.wixButton.Click += new WixSharp.Controls.ClickHandler(this.wixButton_Click);
             // 
             // ProductActivationForm
             // 
@@ -228,17 +230,17 @@
 
         #endregion
 
-        new private WixSharp.WixButton CancelButton;
-        private WixSharp.WixCheckBox wixCheckBox1;
-        private WixSharp.WixButton BackButton;
-        private WixSharp.WixButton NextButton;
-        private WixSharp.WixTextBox wixTextBox1;
-        private WixSharp.WixControl lineControl1;
-        private WixSharp.WixControl wixControl1;
-        private WixSharp.WixLabel wixLabel1;
-        private WixSharp.WixLabel wixLabel2;
-        private WixSharp.WixControl wixControl2;
-        private WixSharp.WixControl wixControl3;
-        private WixSharp.WixButton wixButton;
+        new private WixSharp.Controls.WixButton CancelButton;
+        private WixSharp.Controls.WixCheckBox wixCheckBox1;
+        private WixSharp.Controls.WixButton BackButton;
+        private WixSharp.Controls.WixButton NextButton;
+        private WixSharp.Controls.WixTextBox wixTextBox1;
+        private WixSharp.Controls.WixControl lineControl1;
+        private WixSharp.Controls.WixControl wixControl1;
+        private WixSharp.Controls.WixLabel wixLabel1;
+        private WixSharp.Controls.WixLabel wixLabel2;
+        private WixSharp.Controls.WixControl wixControl2;
+        private WixSharp.Controls.WixControl wixControl3;
+        private WixSharp.Controls.WixButton wixButton;
     }
 }

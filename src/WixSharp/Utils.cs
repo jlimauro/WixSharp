@@ -43,8 +43,8 @@ namespace WixSharp
         /// <returns></returns>
         public static string PathCombine(string path1, string path2)
         {
-            var p1 = (path1??"").ExpandEnvVars();
-            var p2 = (path2??"").ExpandEnvVars();
+            var p1 = (path1 ?? "").ExpandEnvVars();
+            var p2 = (path2 ?? "").ExpandEnvVars();
 
             if (p2.Length == 0)
             {
@@ -120,7 +120,7 @@ namespace WixSharp
         internal static string OriginalAssemblyFile(string file)
         {
             //need to do it in a separate domain as we do not want to lock the assembly
-            return (string)ExecuteInTempDomain<AsmReflector>(asm=>
+            return (string)ExecuteInTempDomain<AsmReflector>(asm =>
             {
                 return asm.OriginalAssemblyFile(file);
             });
@@ -138,16 +138,34 @@ namespace WixSharp
         internal static object ExecuteInTempDomain<T>(Func<T, object> action) where T : MarshalByRefObject
         {
             var domain = AppDomain.CurrentDomain.Clone();
-            
+
+            domain.AssemblyResolve += Domain_AssemblyResolve;
+
             var obj = domain.CreateInstanceFromAndUnwrap<T>();
 
             var result = action(obj);
 
+            domain.AssemblyResolve -= Domain_AssemblyResolve;
             domain.Unload();
 
             return result;
         }
 
+        private static System.Reflection.Assembly Domain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var domain = (AppDomain)sender;
+
+            //mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+            string potentialAsm = IO.Path.Combine(domain.SetupInformation.ApplicationBase, args.Name.Split(',').First() + ".dll");
+
+            if (IO.File.Exists(potentialAsm))
+                try
+                {
+                    return System.Reflection.Assembly.LoadFrom(potentialAsm);
+                }
+                catch { }
+            return null;
+        }
 
         internal static void Unload(this AppDomain domain)
         {
@@ -161,12 +179,13 @@ namespace WixSharp
 
         internal static AppDomain Clone(this AppDomain domain, string name = null)
         {
-            AppDomainSetup setup = new AppDomainSetup();
+            //return AppDomain.CreateDomain(name ?? Guid.NewGuid().ToString(), null, new AppDomainSetup());
+
+            var setup = new AppDomainSetup();
             setup.ApplicationBase = IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            setup.PrivateBinPath = AppDomain.CurrentDomain.BaseDirectory;
             setup.ShadowCopyFiles = "true";
             setup.ShadowCopyDirectories = setup.ApplicationBase;
-
+            setup.PrivateBinPath = AppDomain.CurrentDomain.BaseDirectory;
             return AppDomain.CreateDomain(name ?? Guid.NewGuid().ToString(), null, setup);
         }
 

@@ -10,7 +10,7 @@ using System.IO;
 using System;
 using System.Text;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     //VS designer property grid does not like if the control designer attribute type is generic so make it a concrete type 
 #pragma warning disable 1591

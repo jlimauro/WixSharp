@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 //using System.Linq;
 using System.Windows.Forms;
 using WixSharp;
@@ -36,6 +37,17 @@ public class Script
 
     static void project_Load(SetupEventArgs e)
     {
+        try
+        {
+            if (string.IsNullOrEmpty(e.Session["INSTALLDIR"])) //installdir is not set yet
+            {
+                string installDirProperty = e.Session.Property("WixSharp_UI_INSTALLDIR");
+                string defaultinstallDir = e.Session.GetDirectoryPath(installDirProperty);
+
+                e.Session["INSTALLDIR"]= System.IO.Path.Combine(defaultinstallDir, Environment.UserName);
+            }
+        }
+        catch { }
         MessageBox.Show(e.ToString(), "Load");
     }
 

@@ -2266,19 +2266,6 @@
             <param name="identity">The identity.</param>
             <returns></returns>
         </member>
-        <member name="F:WixSharp.Extensions.WixScalingFactor">
-            <summary>
-            The WiX UI scaling factor.
-            WiX pixels are not the same as Windows ones. For example Wix.Point(56,17) is equivalent of the Win.Point(75,23)
-            </summary>
-        </member>
-        <member name="M:WixSharp.Extensions.WScale(System.Int32)">
-            <summary>
-            Converts (scales) Windows coordinate value into WiX one.
-            </summary>
-            <param name="data">The data.</param>
-            <returns></returns>
-        </member>
         <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.Xml.Linq.XElement)">
             <summary>
             Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
@@ -3798,106 +3785,106 @@
             <param name="namespacePrefix">The namespace prefix.</param>
             <param name="namespace">The namespace.</param>
         </member>
-        <member name="T:WixSharp.Control">
+        <member name="T:WixSharp.Controls.Control">
             <summary>
             Defines generic WiX Control.  
             </summary>
         </member>
-        <member name="M:WixSharp.Control.#ctor">
+        <member name="M:WixSharp.Controls.Control.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.Control"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.Control"/> class.
             </summary>
         </member>
-        <member name="M:WixSharp.Control.#ctor(WixSharp.Id)">
+        <member name="M:WixSharp.Controls.Control.#ctor(WixSharp.Id)">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.Control"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.Control"/> class.
             </summary>
             <param name="id">The <c>Control</c> id.</param>
         </member>
-        <member name="F:WixSharp.Control.Type">
+        <member name="F:WixSharp.Controls.Control.Type">
             <summary>
             The type of the control. Could be one of the following: Billboard, Bitmap, CheckBox, ComboBox, DirectoryCombo, DirectoryList, Edit, GroupBox, Icon, Line, ListBox, ListView, MaskedEdit, PathEdit, ProgressBar, PushButton, RadioButtonGroup, ScrollableText, SelectionTree, Text, VolumeCostList, VolumeSelectCombo.
-            Use <see cref="T:WixSharp.ControlType"></see> constants to define the type of the control.
+            Use <see cref="!:WixSharp.ControlType"></see> constants to define the type of the control.
             </summary>
         </member>
-        <member name="F:WixSharp.Control.X">
+        <member name="F:WixSharp.Controls.Control.X">
             <summary>
             Horizontal coordinate of the upper-left corner of the rectangular boundary of the control. This must be a non-negative number.
             </summary>
         </member>
-        <member name="F:WixSharp.Control.Y">
+        <member name="F:WixSharp.Controls.Control.Y">
             <summary>
             Width of the rectangular boundary of the control. This must be a non-negative number.
             </summary>
         </member>
-        <member name="F:WixSharp.Control.Height">
+        <member name="F:WixSharp.Controls.Control.Height">
             <summary>
             Vertical coordinate of the upper-left corner of the rectangular boundary of the control. This must be a non-negative number.
             </summary>
         </member>
-        <member name="F:WixSharp.Control.Width">
+        <member name="F:WixSharp.Controls.Control.Width">
             <summary>
             Width of the rectangular boundary of the control. This must be a non-negative number.
             </summary>
         </member>
-        <member name="F:WixSharp.Control.Text">
+        <member name="F:WixSharp.Controls.Control.Text">
             <summary>
             A localizable string used to set the initial text contained in a control.
             This attribute can contain a formatted string that is processed at install time to insert the values of properties using [PropertyName] syntax. Also supported are environment variables, file installation paths, and component installation directories.
             </summary>
         </member>
-        <member name="F:WixSharp.Control.Hidden">
+        <member name="F:WixSharp.Controls.Control.Hidden">
             <summary>
             Sets whether the control is hidden.
             </summary>
         </member>
-        <member name="F:WixSharp.Control.Disabled">
+        <member name="F:WixSharp.Controls.Control.Disabled">
             <summary>
             Sets whether the control is disabled.
             </summary>
         </member>
-        <member name="F:WixSharp.Control.Property">
+        <member name="F:WixSharp.Controls.Control.Property">
             <summary>
             The name of a defined property to be linked to this control. This column is required for active controls.
             </summary>
         </member>
-        <member name="F:WixSharp.Control.EmbeddedXML">
+        <member name="F:WixSharp.Controls.Control.EmbeddedXML">
             <summary>
             The raw XML string to be embedded into WiX <c>Control</c> element.
             </summary>
         </member>
-        <member name="F:WixSharp.Control.Tooltip">
+        <member name="F:WixSharp.Controls.Control.Tooltip">
             <summary>
             The string used for the Tooltip.
             </summary>
         </member>
-        <member name="F:WixSharp.Control.Conditions">
+        <member name="F:WixSharp.Controls.Control.Conditions">
             <summary>
             Conditions for the control.
             </summary>
         </member>
-        <member name="F:WixSharp.Control.Actions">
+        <member name="F:WixSharp.Controls.Control.Actions">
             <summary>
             The actions.
             </summary>
         </member>
-        <member name="M:WixSharp.Control.ToXElement">
+        <member name="M:WixSharp.Controls.Control.ToXElement">
             <summary>
             Converts the <see cref="T:WixSharp.Control"/> instance into WiX <see cref="T:System.Xml.Linq.XElement"/>.
             </summary>
             <returns><see cref="T:System.Xml.Linq.XElement"/> instance.</returns>
         </member>
-        <member name="T:WixSharp.ClickHandler">
+        <member name="T:WixSharp.Controls.ClickHandler">
             <summary>
-            Delegate for  <see cref="T:WixSharp.IWixInteractiveControl"/> event <c>Click</c>.
+            Delegate for  <see cref="T:WixSharp.Controls.IWixInteractiveControl"/> event <c>Click</c>.
             </summary>
         </member>
-        <member name="T:WixSharp.IWixInteractiveControl">
+        <member name="T:WixSharp.Controls.IWixInteractiveControl">
             <summary>
             The interface for the WinForm control representing WiX custom UI control exhibiting interactive behaviour.
             </summary>
         </member>
-        <member name="P:WixSharp.IWixInteractiveControl.Actions">
+        <member name="P:WixSharp.Controls.IWixInteractiveControl.Actions">
             <summary>
             Gets the actions associated with the WiX <c>Control</c>.
             </summary>
@@ -3905,23 +3892,23 @@
             The actions.
             </value>
         </member>
-        <member name="E:WixSharp.IWixInteractiveControl.Click">
+        <member name="E:WixSharp.Controls.IWixInteractiveControl.Click">
             <summary>
             Occurs when <see cref="T:WixSharp.Compiler"/> triggers it in order to generate WiX XML
             for the control action(s).
             </summary>
         </member>
-        <member name="M:WixSharp.IWixInteractiveControl.PerformClick">
+        <member name="M:WixSharp.Controls.IWixInteractiveControl.PerformClick">
             <summary>
             Triggers <c>Click</c> event.
             </summary>
         </member>
-        <member name="T:WixSharp.IWixControl">
+        <member name="T:WixSharp.Controls.IWixControl">
             <summary>
             The interface for the WinForm control representing generic WiX custom UI control.
             </summary>
         </member>
-        <member name="P:WixSharp.IWixControl.Id">
+        <member name="P:WixSharp.Controls.IWixControl.Id">
             <summary>
             Gets or sets the Id.
             </summary>
@@ -3929,7 +3916,7 @@
             The Id.
             </value>
         </member>
-        <member name="P:WixSharp.IWixControl.BoundProperty">
+        <member name="P:WixSharp.Controls.IWixControl.BoundProperty">
             <summary>
             Gets or sets the bound property name.
             </summary>
@@ -3937,7 +3924,7 @@
             The bound property name.
             </value>
         </member>
-        <member name="P:WixSharp.IWixControl.Tooltip">
+        <member name="P:WixSharp.Controls.IWixControl.Tooltip">
             <summary>
             Gets or sets the tooltip.
             </summary>
@@ -3945,7 +3932,7 @@
             The tooltip.
             </value>
         </member>
-        <member name="P:WixSharp.IWixControl.WixAttributes">
+        <member name="P:WixSharp.Controls.IWixControl.WixAttributes">
             <summary>
             Gets or sets the WiX attributes.
             </summary>
@@ -3953,7 +3940,7 @@
             The WiX attributes.
             </value>
         </member>
-        <member name="P:WixSharp.IWixControl.WixSize">
+        <member name="P:WixSharp.Controls.IWixControl.WixSize">
             <summary>
             Gets the size of the <c>Control</c>.
             </summary>
@@ -3961,7 +3948,7 @@
             The size of the <c>Control</c>.
             </value>
         </member>
-        <member name="P:WixSharp.IWixControl.WixLocation">
+        <member name="P:WixSharp.Controls.IWixControl.WixLocation">
             <summary>
             Gets the <c>Control</c> location.
             </summary>
@@ -3969,15 +3956,15 @@
             The <c>Control</c> location.
             </value>
         </member>
-        <member name="P:WixSharp.IWixControl.Hidden">
+        <member name="P:WixSharp.Controls.IWixControl.Hidden">
             <summary>
-            Gets or sets a value indicating whether this <see cref="T:WixSharp.IWixControl"/> is hidden.
+            Gets or sets a value indicating whether this <see cref="T:WixSharp.Controls.IWixControl"/> is hidden.
             </summary>
             <value>
               <c>true</c> if hidden; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:WixSharp.IWixControl.Conditions">
+        <member name="P:WixSharp.Controls.IWixControl.Conditions">
             <summary>
             Gets or sets the control conditions.
             </summary>
@@ -3985,23 +3972,23 @@
             The control conditions.
             </value>
         </member>
-        <member name="M:WixSharp.IWixControl.ToWControl">
+        <member name="M:WixSharp.Controls.IWixControl.ToWControl">
             <summary>
             Converts the WinForm control into WiX custom UI control <see cref="T:WixSharp.Control"/>.
             </summary>
             <returns>Instance of the WixSharp.Control.</returns>
         </member>
-        <member name="T:WixSharp.ControlType">
+        <member name="T:WixSharp.Controls.ControlType">
             <summary>
             UI Control types supported by wiX/MSI.
             </summary>
         </member>
-        <member name="T:WixSharp.PublishingInfo">
+        <member name="T:WixSharp.Controls.PublishingInfo">
             <summary>
             Defines the association between an MSI dialog control and the <see cref="T:WixSharp.PublishingInfo" />.
             </summary>
         </member>
-        <member name="P:WixSharp.PublishingInfo.Dialog">
+        <member name="P:WixSharp.Controls.PublishingInfo.Dialog">
             <summary>
             Gets or sets the dialog Id.
             </summary>
@@ -4009,7 +3996,7 @@
             The dialog Id.
             </value>
         </member>
-        <member name="P:WixSharp.PublishingInfo.Control">
+        <member name="P:WixSharp.Controls.PublishingInfo.Control">
             <summary>
             Gets or sets the control Id.
             </summary>
@@ -4017,118 +4004,118 @@
             The control Id.
             </value>
         </member>
-        <member name="F:WixSharp.PublishingInfo.Actions">
+        <member name="F:WixSharp.Controls.PublishingInfo.Actions">
             <summary>
             The actions associated with the dialog control.
             </summary>
         </member>
-        <member name="T:WixSharp.ShowDialog">
+        <member name="T:WixSharp.Controls.ShowDialog">
             <summary>
             Defines <see cref="T:WixSharp.DialogAction"/> for showing MSI dialog.
             </summary>
         </member>
-        <member name="M:WixSharp.ShowDialog.#ctor(System.String,System.String)">
+        <member name="M:WixSharp.Controls.ShowDialog.#ctor(System.String,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.ShowDialog"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.ShowDialog"/> class.
             </summary>
             <param name="dialogName">Name of the dialog.</param>
             <param name="condition">The condition.</param>
         </member>
-        <member name="M:WixSharp.ShowDialog.#ctor(System.String,WixSharp.Condition)">
+        <member name="M:WixSharp.Controls.ShowDialog.#ctor(System.String,WixSharp.Condition)">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.ShowDialog"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.ShowDialog"/> class.
             </summary>
             <param name="dialogName">Name of the dialog.</param>
             <param name="condition">The condition.</param>
         </member>
-        <member name="T:WixSharp.SpawnDialog">
+        <member name="T:WixSharp.Controls.SpawnDialog">
             <summary>
             Defines <see cref="T:WixSharp.DialogAction"/> for creating a child of a modal dialog box while keeping the present dialog box running. 
             </summary>
         </member>
-        <member name="M:WixSharp.SpawnDialog.#ctor(System.String,System.String)">
+        <member name="M:WixSharp.Controls.SpawnDialog.#ctor(System.String,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.SpawnDialog"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.SpawnDialog"/> class.
             </summary>
             <param name="dialogName">Name of the dialog.</param>
             <param name="condition">The condition.</param>
         </member>
-        <member name="M:WixSharp.SpawnDialog.#ctor(System.String,WixSharp.Condition)">
+        <member name="M:WixSharp.Controls.SpawnDialog.#ctor(System.String,WixSharp.Condition)">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.SpawnDialog"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.SpawnDialog"/> class.
             </summary>
             <param name="dialogName">Name of the dialog.</param>
             <param name="condition">The condition.</param>
         </member>
-        <member name="T:WixSharp.ExecuteCustomAction">
+        <member name="T:WixSharp.Controls.ExecuteCustomAction">
             <summary>
             Defines <see cref="T:WixSharp.DialogAction"/> for executing MSI CustomAction ("DoAction").
             </summary>
         </member>
-        <member name="M:WixSharp.ExecuteCustomAction.#ctor(System.String,System.String)">
+        <member name="M:WixSharp.Controls.ExecuteCustomAction.#ctor(System.String,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.ExecuteCustomAction"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.ExecuteCustomAction"/> class.
             </summary>
             <param name="actionName">Name of the action.</param>
             <param name="condition">The condition.</param>
         </member>
-        <member name="M:WixSharp.ExecuteCustomAction.#ctor(WixSharp.Action,System.String)">
+        <member name="M:WixSharp.Controls.ExecuteCustomAction.#ctor(WixSharp.Action,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.ExecuteCustomAction"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.ExecuteCustomAction"/> class.
             </summary>
             <param name="action">The action.</param>
             <param name="condition">The condition.</param>
         </member>
-        <member name="T:WixSharp.SetTargetPath">
+        <member name="T:WixSharp.Controls.SetTargetPath">
             <summary>
             Defines "SetTargetPath" <see cref="T:WixSharp.DialogAction"/>.
             </summary>
         </member>
-        <member name="M:WixSharp.SetTargetPath.#ctor(System.String,System.String)">
+        <member name="M:WixSharp.Controls.SetTargetPath.#ctor(System.String,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.SetTargetPath"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.SetTargetPath"/> class.
             </summary>
             <param name="propertyValue">The property value. Default value is "[WIXUI_INSTALLDIR]".</param>
             <param name="condition">The condition.</param>
         </member>
-        <member name="T:WixSharp.SetProperty">
+        <member name="T:WixSharp.Controls.SetProperty">
             <summary>
             Defines <see cref="T:WixSharp.DialogAction"/> for setting property.
             </summary>
         </member>
-        <member name="M:WixSharp.SetProperty.#ctor(System.String,System.String,System.String)">
+        <member name="M:WixSharp.Controls.SetProperty.#ctor(System.String,System.String,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.SetProperty"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.SetProperty"/> class.
             </summary>
             <param name="propertyName">Name of the property.</param>
             <param name="propertyValue">The property value.</param>
             <param name="condition">The condition.</param>
         </member>
-        <member name="T:WixSharp.CloseDialog">
+        <member name="T:WixSharp.Controls.CloseDialog">
             <summary>
             Defines custom UI control "Close Dialog" action.
             </summary>
         </member>
-        <member name="M:WixSharp.CloseDialog.#ctor(System.String,System.String)">
+        <member name="M:WixSharp.Controls.CloseDialog.#ctor(System.String,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.CloseDialog"/> class.
             </summary>
             <param name="returnValue">The return value.</param>
             <param name="condition">The condition.</param>
         </member>
-        <member name="M:WixSharp.CloseDialog.#ctor(System.String,WixSharp.Condition)">
+        <member name="M:WixSharp.Controls.CloseDialog.#ctor(System.String,WixSharp.Condition)">
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.CloseDialog"/> class.
             </summary>
             <param name="returnValue">The return value.</param>
             <param name="condition">The condition.</param>
         </member>
-        <member name="T:WixSharp.DialogAction">
+        <member name="T:WixSharp.Controls.DialogAction">
             <summary>
             Defines custom UI control generic action. 
             </summary>
         </member>
-        <member name="T:WixSharp.DialogSequence">
+        <member name="T:WixSharp.Controls.DialogSequence">
             <summary>
             Simple class that defines custom UI (WiX <c>UI</c> element). This is a specialized version of <see cref="T:WixSharp.CustomUI" /> class
             designed to allow simple customization of the dialogs sequence without the introduction of any custom dialogs.
@@ -4141,12 +4128,12 @@
             </code></example>
             </summary>
         </member>
-        <member name="M:WixSharp.DialogSequence.#ctor">
+        <member name="M:WixSharp.Controls.DialogSequence.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.DialogSequence"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.DialogSequence"/> class.
             </summary>
         </member>
-        <member name="M:WixSharp.DialogSequence.On(System.String,System.String,WixSharp.DialogAction[])">
+        <member name="M:WixSharp.Controls.DialogSequence.On(System.String,System.String,WixSharp.Controls.DialogAction[])">
             <summary>
             Defines the WiX Dialog UI control Action (event handler).
             <para>Note that all handlers will have <c>Order</c> field automatically assigned '5' 
@@ -4157,12 +4144,12 @@
             <param name="handlers">The handlers.</param>
             <returns></returns>
         </member>
-        <member name="F:WixSharp.DialogSequence.DefaultOrder">
+        <member name="F:WixSharp.Controls.DialogSequence.DefaultOrder">
             <summary>
             The default value of the Order of the DialogAction. It is automatically assigned of handler doesn't have it set.
             </summary>
         </member>
-        <member name="T:WixSharp.CustomUI">
+        <member name="T:WixSharp.Controls.CustomUI">
             <summary>
             Defines custom UI (WiX <c>UI</c> element). This class is to be used to define the customization of the standard MSI UI. 
             The usual scenario of the customization is the injection of the custom <see cref="T:WixSharp.Dialog"/> 
@@ -4186,33 +4173,33 @@
             </code>
             </summary>
         </member>
-        <member name="F:WixSharp.CustomUI.Properties">
+        <member name="F:WixSharp.Controls.CustomUI.Properties">
             <summary>
             The collection of PropertyId vs. PropertyValue pairs to be defined as the <c>Property</c> WiX elements inside of the <c>UI</c> element.
             </summary>
         </member>
-        <member name="F:WixSharp.CustomUI.TextStyles">
+        <member name="F:WixSharp.Controls.CustomUI.TextStyles">
             <summary>
             The collection of StyleId vs. Font pairs to be defined as the <c>TextStyle</c> WiX elements inside of the <c>UI</c> element.
             </summary>
         </member>
-        <member name="F:WixSharp.CustomUI.DialogRefs">
+        <member name="F:WixSharp.Controls.CustomUI.DialogRefs">
             <summary>
             The collection of dialog IDs to be defined as the <c>DialogRef</c> WiX elements inside of the <c>UI</c> element.
             By default it contains references to all MSI predefined dialogs.
             </summary>
         </member>
-        <member name="F:WixSharp.CustomUI.CustomDialogs">
+        <member name="F:WixSharp.Controls.CustomUI.CustomDialogs">
             <summary>
             The collection of <see cref="T:WixSharp.Dialog"/>s to be defined as the custom <c>Dialog</c> WiX elements inside of the <c>UI</c> element.
             </summary>
         </member>
-        <member name="F:WixSharp.CustomUI.UISequence">
+        <member name="F:WixSharp.Controls.CustomUI.UISequence">
             <summary>
             Defines UI sequence via collection of <see cref="T:WixSharp.PublishingInfo"/> items containing association between Dialog controls and MSI Dialog actions. 
             </summary>
         </member>
-        <member name="M:WixSharp.CustomUI.On(System.String,System.String,WixSharp.DialogAction[])">
+        <member name="M:WixSharp.Controls.CustomUI.On(System.String,System.String,WixSharp.Controls.DialogAction[])">
             <summary>
             Defines the WiX Dialog UI control Action (event handler).
             <code>
@@ -4224,7 +4211,7 @@
             <param name="handlers">The handlers.</param>
             <returns></returns>
         </member>
-        <member name="M:WixSharp.CustomUI.On(WixSharp.Dialog,System.String,WixSharp.DialogAction[])">
+        <member name="M:WixSharp.Controls.CustomUI.On(WixSharp.Controls.Dialog,System.String,WixSharp.Controls.DialogAction[])">
             <summary>
             Defines the <see cref="T:WixSharp.Dialog" /> UI control Action (event handler).
             <code>
@@ -4236,50 +4223,50 @@
             <param name="handlers">The handlers.</param>
             <returns></returns>
         </member>
-        <member name="M:WixSharp.CustomUI.ToXElement">
+        <member name="M:WixSharp.Controls.CustomUI.ToXElement">
             <summary>
             Converts the <see cref="T:WixSharp.CustomUI"/> instance into WiX <see cref="T:System.Xml.Linq.XElement"/>.
             </summary>
             <returns><see cref="T:System.Xml.Linq.XElement"/> instance.</returns>
         </member>
-        <member name="T:WixSharp.CommomDialogsUI">
+        <member name="T:WixSharp.Controls.CommomDialogsUI">
             <summary>
             Class defining all <c>Publish</c> declarations associated with the <c>WixUI_Common</c> dialogs. This class is used as a starting point for 
             UI customization with injection of CLR Dialog (WinForms). 
             </summary>
         </member>
-        <member name="M:WixSharp.CommomDialogsUI.#ctor">
+        <member name="M:WixSharp.Controls.CommomDialogsUI.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.CommomDialogsUI"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.CommomDialogsUI"/> class.
             </summary>
         </member>
-        <member name="T:WixSharp.CommonDialogs">
+        <member name="T:WixSharp.Controls.CommonDialogs">
             <summary>
             Defines values (names) for the WiX custom UI predefined dialog types. 
             </summary>
         </member>
-        <member name="M:WixSharp.CommonDialogs.AllValues">
+        <member name="M:WixSharp.Controls.CommonDialogs.AllValues">
             <summary>
             Returns all WiX custom UI predefined dialog types.
             </summary>
             <returns>Array of dialog types.</returns>
         </member>
-        <member name="T:WixSharp.NativeDialogs">
+        <member name="T:WixSharp.Controls.NativeDialogs">
             <summary>
             Defines values (names) for the standard WiX dialogs. 
             </summary>
         </member>
-        <member name="F:WixSharp.NativeDialogs.CustomizeDlg">
+        <member name="F:WixSharp.Controls.NativeDialogs.CustomizeDlg">
             <summary>
             The customize features dialog
             </summary>
         </member>
-        <member name="T:WixSharp.Buttons">
+        <member name="T:WixSharp.Controls.Buttons">
             <summary>
             Defines values (names) for the WiX custom UI predefined buttons. 
             </summary>
         </member>
-        <member name="T:WixSharp.CustomUIBuilder">
+        <member name="T:WixSharp.Controls.CustomUIBuilder">
             <summary>
             The Factory class for building <see cref="T:WixSharp.CustomUI"/>. 
             <para>
@@ -4295,7 +4282,7 @@
             </code>
             </summary>
         </member>
-        <member name="M:WixSharp.CustomUIBuilder.BuildPostLicenseDialogUI(WixSharp.Dialog,WixSharp.DialogAction[],WixSharp.DialogAction[],WixSharp.DialogAction[])">
+        <member name="M:WixSharp.Controls.CustomUIBuilder.BuildPostLicenseDialogUI(WixSharp.Controls.Dialog,WixSharp.Controls.DialogAction[],WixSharp.Controls.DialogAction[],WixSharp.Controls.DialogAction[])">
             <summary>
             Builds <see cref="T:WixSharp.CustomUI"/> instance and injects <see cref="T:WixSharp.Dialog"/> into the standard UI sequence 
             just after <c>LicenceDialog</c> step. 
@@ -4306,7 +4293,7 @@
             <param name="onCancelActions">The on cancel actions.</param>
             <returns><see cref="T:WixSharp.CustomUI"/> instance.</returns>
         </member>
-        <member name="M:WixSharp.CustomUIBuilder.InjectPostLicenseClrDialog(System.String,System.String)">
+        <member name="M:WixSharp.Controls.CustomUIBuilder.InjectPostLicenseClrDialog(System.String,System.String)">
             <summary>
             Injects the post license CLR dialog.
             Builds <see cref="T:WixSharp.CustomUI"/> instance and injects the ID of the <see cref="T:WixSharp.ManagedAction"/> for displaying 
@@ -4321,49 +4308,49 @@
             <param name="clrDialogGoNextCondition">The CLR dialog go next condition.</param>
             <returns></returns>
         </member>
-        <member name="T:WixSharp.Dialog">
+        <member name="T:WixSharp.Controls.Dialog">
             <summary>
             Defines MSI Dialog. It represents WiX <c>Dialog</c> element.
             </summary>
         </member>
-        <member name="M:WixSharp.Dialog.#ctor">
+        <member name="M:WixSharp.Controls.Dialog.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.Dialog"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.Dialog"/> class.
             </summary>
         </member>
-        <member name="M:WixSharp.Dialog.#ctor(WixSharp.Id)">
+        <member name="M:WixSharp.Controls.Dialog.#ctor(WixSharp.Id)">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.Dialog"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.Dialog"/> class.
             </summary>
             <param name="id">The id.</param>
         </member>
-        <member name="F:WixSharp.Dialog.Height">
+        <member name="F:WixSharp.Controls.Dialog.Height">
             <summary>
             The height of the dialog box in dialog units.
             </summary>
         </member>
-        <member name="F:WixSharp.Dialog.Width">
+        <member name="F:WixSharp.Controls.Dialog.Width">
             <summary>
             The width of the dialog box in dialog units.
             </summary>
         </member>
-        <member name="F:WixSharp.Dialog.Title">
+        <member name="F:WixSharp.Controls.Dialog.Title">
             <summary>
             The title of the dialog box.
             </summary>
         </member>
-        <member name="F:WixSharp.Dialog.Controls">
+        <member name="F:WixSharp.Controls.Dialog.Controls">
             <summary>
-            Collection of the contained nested <see cref="T:WixSharp.Control"/>s (UI elements).
+            Collection of the contained nested <see cref="T:WixSharp.Controls.Control"/>s (UI elements).
             </summary>
         </member>
-        <member name="M:WixSharp.Dialog.ToXElement">
+        <member name="M:WixSharp.Controls.Dialog.ToXElement">
             <summary>
             Converts the <see cref="T:WixSharp.Dialog"/> instance into WiX <see cref="T:System.Xml.Linq.XElement"/>.
             </summary>
             <returns><see cref="T:System.Xml.Linq.XElement"/> instance.</returns>
         </member>
-        <member name="M:WixSharp.Dialog.ToString">
+        <member name="M:WixSharp.Controls.Dialog.ToString">
             <summary>
             Returns a <see cref="T:System.String" /> that represents this instance.
             </summary>
@@ -4371,16 +4358,29 @@
             A <see cref="T:System.String" /> that represents this instance.
             </returns>
         </member>
-        <member name="M:WixSharp.Dialog.op_Implicit(WixSharp.Dialog)~System.String">
+        <member name="M:WixSharp.Controls.Dialog.op_Implicit(WixSharp.Controls.Dialog)~System.String">
             <summary>
-            Performs an implicit conversion from <see cref="T:WixSharp.Dialog"/> to <see cref="T:System.String"/>.
+            Performs an implicit conversion from <see cref="T:WixSharp.Controls.Dialog"/> to <see cref="T:System.String"/>.
             </summary>
             <param name="obj">The object.</param>
             <returns>
             The result of the conversion.
             </returns>
         </member>
-        <member name="T:WixSharp.WixButton">
+        <member name="F:WixSharp.Controls.Extensions.WixScalingFactor">
+            <summary>
+            The WiX UI scaling factor.
+            WiX pixels are not the same as Windows ones. For example Wix.Point(56,17) is equivalent of the Win.Point(75,23)
+            </summary>
+        </member>
+        <member name="M:WixSharp.Controls.Extensions.WScale(System.Int32)">
+            <summary>
+            Converts (scales) Windows coordinate value into WiX one.
+            </summary>
+            <param name="data">The data.</param>
+            <returns></returns>
+        </member>
+        <member name="T:WixSharp.Controls.WixButton">
             <summary>
             Defines <see cref="T:System.Windows.Forms" /> button control for generating WiX Button element.
             <para>
@@ -4390,7 +4390,7 @@
             </para>
             </summary>
         </member>
-        <member name="P:WixSharp.WixButton.Conditions">
+        <member name="P:WixSharp.Controls.WixButton.Conditions">
             <summary>
             Gets or sets the control conditions.
             </summary>
@@ -4398,12 +4398,12 @@
             The control conditions.
             </value>
         </member>
-        <member name="M:WixSharp.WixButton.#ctor">
+        <member name="M:WixSharp.Controls.WixButton.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.WixButton"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.WixButton"/> class.
             </summary>
         </member>
-        <member name="P:WixSharp.WixButton.WixSize">
+        <member name="P:WixSharp.Controls.WixButton.WixSize">
             <summary>
             Gets the size of the <c>Control</c>.
             </summary>
@@ -4411,7 +4411,7 @@
             The size of the <c>Control</c>.
             </value>
         </member>
-        <member name="P:WixSharp.WixButton.WixLocation">
+        <member name="P:WixSharp.Controls.WixButton.WixLocation">
             <summary>
             Gets the <c>Control</c> location.
             </summary>
@@ -4419,7 +4419,7 @@
             The <c>Control</c> location.
             </value>
         </member>
-        <member name="P:WixSharp.WixButton.Actions">
+        <member name="P:WixSharp.Controls.WixButton.Actions">
             <summary>
             Gets the actions associated with the WiX <c>Control</c>.
             </summary>
@@ -4427,13 +4427,13 @@
             The actions.
             </value>
         </member>
-        <member name="E:WixSharp.WixButton.Click">
+        <member name="E:WixSharp.Controls.WixButton.Click">
             <summary>
             Occurs when <see cref="T:WixSharp.Compiler" /> triggers it in order to generate WiX XML
             for the control action(s).
             </summary>
         </member>
-        <member name="M:WixSharp.WixButton.PerformClick">
+        <member name="M:WixSharp.Controls.WixButton.PerformClick">
             <summary>
             Generates a <see cref="T:System.Windows.Forms.Control.Click" /> event for a button.
             </summary>
@@ -4441,7 +4441,7 @@
             the <see cref="T:WixSharp.Compiler"/> but not by the user at runtime (deployment time).
             </remarks>
         </member>
-        <member name="P:WixSharp.WixButton.Id">
+        <member name="P:WixSharp.Controls.WixButton.Id">
             <summary>
             Gets or sets the <c>Control</c> Id.
             </summary>
@@ -4449,7 +4449,7 @@
             The Id.
             </value>
         </member>
-        <member name="P:WixSharp.WixButton.Tooltip">
+        <member name="P:WixSharp.Controls.WixButton.Tooltip">
             <summary>
             Gets or sets the <c>Control</c> tooltip.
             </summary>
@@ -4457,7 +4457,7 @@
             The tooltip.
             </value>
         </member>
-        <member name="P:WixSharp.WixButton.BoundProperty">
+        <member name="P:WixSharp.Controls.WixButton.BoundProperty">
             <summary>
             Gets or sets the bound property name.
             </summary>
@@ -4465,15 +4465,15 @@
             The bound property name.
             </value>
         </member>
-        <member name="P:WixSharp.WixButton.Hidden">
+        <member name="P:WixSharp.Controls.WixButton.Hidden">
             <summary>
-            Gets or sets a value indicating whether this <see cref="T:WixSharp.IWixControl" /> is hidden.
+            Gets or sets a value indicating whether this <see cref="T:WixSharp.Controls.IWixControl" /> is hidden.
             </summary>
             <value>
               <c>true</c> if hidden; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:WixSharp.WixButton.WixAttributes">
+        <member name="P:WixSharp.Controls.WixButton.WixAttributes">
             <summary>
             Gets or sets the WiX attributes.
             </summary>
@@ -4481,7 +4481,7 @@
             The WiX attributes.
             </value>
         </member>
-        <member name="M:WixSharp.WixButton.ToWControl">
+        <member name="M:WixSharp.Controls.WixButton.ToWControl">
             <summary>
             Converts the WinForm control into WiX custom UI control <see cref="T:WixSharp.Control" />.
             </summary>
@@ -4489,12 +4489,12 @@
             Instance of the WixSharp.Control.
             </returns>
         </member>
-        <member name="T:WixSharp.ControlActionData">
+        <member name="T:WixSharp.Controls.ControlActionData">
             <summary>
             Predefined values for the <c>Control</c> actions.
             </summary>
         </member>
-        <member name="T:WixSharp.WixCheckBox">
+        <member name="T:WixSharp.Controls.WixCheckBox">
             <summary>
             Defines <see cref="T:System.Windows.Forms" /> CheckBox control for generating WiX Button element.
             <para>
@@ -4504,7 +4504,7 @@
             </para>
             </summary>
         </member>
-        <member name="P:WixSharp.WixCheckBox.Conditions">
+        <member name="P:WixSharp.Controls.WixCheckBox.Conditions">
             <summary>
             Gets or sets the control conditions.
             </summary>
@@ -4512,12 +4512,12 @@
             The control conditions.
             </value>
         </member>
-        <member name="M:WixSharp.WixCheckBox.#ctor">
+        <member name="M:WixSharp.Controls.WixCheckBox.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.WixCheckBox"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.WixCheckBox"/> class.
             </summary>
         </member>
-        <member name="P:WixSharp.WixCheckBox.WixSize">
+        <member name="P:WixSharp.Controls.WixCheckBox.WixSize">
             <summary>
             Gets the size of the CheckBox.
             </summary>
@@ -4525,7 +4525,7 @@
             The size of the CheckBox.
             </value>
         </member>
-        <member name="P:WixSharp.WixCheckBox.WixLocation">
+        <member name="P:WixSharp.Controls.WixCheckBox.WixLocation">
             <summary>
             Gets the CheckBox location.
             </summary>
@@ -4533,7 +4533,7 @@
             The CheckBox location.
             </value>
         </member>
-        <member name="P:WixSharp.WixCheckBox.Id">
+        <member name="P:WixSharp.Controls.WixCheckBox.Id">
             <summary>
             Gets or sets the CheckBox Id.
             </summary>
@@ -4541,7 +4541,7 @@
             The CheckBox Id.
             </value>
         </member>
-        <member name="P:WixSharp.WixCheckBox.Tooltip">
+        <member name="P:WixSharp.Controls.WixCheckBox.Tooltip">
             <summary>
             Gets or sets the tooltip.
             </summary>
@@ -4549,7 +4549,7 @@
             The tooltip.
             </value>
         </member>
-        <member name="P:WixSharp.WixCheckBox.CheckBoxValue">
+        <member name="P:WixSharp.Controls.WixCheckBox.CheckBoxValue">
             <summary>
             Gets or sets the CheckBox value.
             </summary>
@@ -4557,7 +4557,7 @@
             The CheckBox value.
             </value>
         </member>
-        <member name="P:WixSharp.WixCheckBox.BoundProperty">
+        <member name="P:WixSharp.Controls.WixCheckBox.BoundProperty">
             <summary>
             Gets or sets the bound property name.
             </summary>
@@ -4565,15 +4565,15 @@
             The bound property name.
             </value>
         </member>
-        <member name="P:WixSharp.WixCheckBox.Hidden">
+        <member name="P:WixSharp.Controls.WixCheckBox.Hidden">
             <summary>
-            Gets or sets a value indicating whether this <see cref="T:WixSharp.IWixControl" /> is hidden.
+            Gets or sets a value indicating whether this <see cref="T:WixSharp.Controls.IWixControl" /> is hidden.
             </summary>
             <value>
               <c>true</c> if hidden; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:WixSharp.WixCheckBox.WixAttributes">
+        <member name="P:WixSharp.Controls.WixCheckBox.WixAttributes">
             <summary>
             Gets or sets the WiX attributes.
             </summary>
@@ -4581,7 +4581,7 @@
             The WiX attributes.
             </value>
         </member>
-        <member name="M:WixSharp.WixCheckBox.ToWControl">
+        <member name="M:WixSharp.Controls.WixCheckBox.ToWControl">
             <summary>
             Converts the WinForm control into WiX custom UI control <see cref="T:WixSharp.Control" />.
             </summary>
@@ -4590,7 +4590,7 @@
             </returns>
             <exception cref="T:System.ApplicationException">WixCheckBox (' + control.Id + ') must have BoundProperty set to non-empty value.</exception>
         </member>
-        <member name="T:WixSharp.WixControl">
+        <member name="T:WixSharp.Controls.WixControl">
             <summary>
             Defines <see cref="T:System.Windows.Forms" /> generic control for generating WiX Control element.
             <para>
@@ -4600,7 +4600,7 @@
             </para>
             </summary>
         </member>
-        <member name="P:WixSharp.WixControl.Conditions">
+        <member name="P:WixSharp.Controls.WixControl.Conditions">
             <summary>
             Gets or sets the control conditions.
             </summary>
@@ -4608,18 +4608,18 @@
             The control conditions.
             </value>
         </member>
-        <member name="M:WixSharp.WixControl.#ctor">
+        <member name="M:WixSharp.Controls.WixControl.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.WixControl"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.WixControl"/> class.
             </summary>
         </member>
-        <member name="E:WixSharp.WixControl.Click">
+        <member name="E:WixSharp.Controls.WixControl.Click">
             <summary>
             Occurs when <see cref="T:WixSharp.Compiler" /> triggers it in order to generate WiX XML
             for the control action(s).
             </summary>
         </member>
-        <member name="P:WixSharp.WixControl.Actions">
+        <member name="P:WixSharp.Controls.WixControl.Actions">
             <summary>
             Gets the actions associated with the WiX <c>Control</c>.
             </summary>
@@ -4627,12 +4627,12 @@
             The actions.
             </value>
         </member>
-        <member name="M:WixSharp.WixControl.PerformClick">
+        <member name="M:WixSharp.Controls.WixControl.PerformClick">
             <summary>
             Triggers <c>Click</c> event.
             </summary>
         </member>
-        <member name="P:WixSharp.WixControl.WixSize">
+        <member name="P:WixSharp.Controls.WixControl.WixSize">
             <summary>
             Gets the size of the <c>Control</c>.
             </summary>
@@ -4640,7 +4640,7 @@
             The size of the <c>Control</c>.
             </value>
         </member>
-        <member name="P:WixSharp.WixControl.WixLocation">
+        <member name="P:WixSharp.Controls.WixControl.WixLocation">
             <summary>
             Gets the WiX <c>Control</c> location.
             </summary>
@@ -4648,7 +4648,7 @@
             The location.
             </value>
         </member>
-        <member name="P:WixSharp.WixControl.Id">
+        <member name="P:WixSharp.Controls.WixControl.Id">
             <summary>
             Gets or sets the <c>Control</c> Id.
             </summary>
@@ -4656,7 +4656,7 @@
             The Id.
             </value>
         </member>
-        <member name="P:WixSharp.WixControl.WixText">
+        <member name="P:WixSharp.Controls.WixControl.WixText">
             <summary>
             Gets or sets the text to be displayed by the <c>Control</c>.
             </summary>
@@ -4664,7 +4664,7 @@
             The text.
             </value>
         </member>
-        <member name="P:WixSharp.WixControl.Tooltip">
+        <member name="P:WixSharp.Controls.WixControl.Tooltip">
             <summary>
             Gets or sets the tooltip.
             </summary>
@@ -4672,7 +4672,7 @@
             The tooltip.
             </value>
         </member>
-        <member name="P:WixSharp.WixControl.BoundProperty">
+        <member name="P:WixSharp.Controls.WixControl.BoundProperty">
             <summary>
             Gets or sets the bound property name.
             </summary>
@@ -4680,7 +4680,7 @@
             The bound property name.
             </value>
         </member>
-        <member name="P:WixSharp.WixControl.EmbeddedXML">
+        <member name="P:WixSharp.Controls.WixControl.EmbeddedXML">
             <summary>
             Gets or sets the raw XML to be embedded into WiX <c>Control</c> element.
             </summary>
@@ -4688,7 +4688,7 @@
             The embedded XML.
             </value>
         </member>
-        <member name="P:WixSharp.WixControl.ControlType">
+        <member name="P:WixSharp.Controls.WixControl.ControlType">
             <summary>
             Gets or sets the type of the control.
             </summary>
@@ -4696,15 +4696,15 @@
             The type of the control.
             </value>
         </member>
-        <member name="P:WixSharp.WixControl.Hidden">
+        <member name="P:WixSharp.Controls.WixControl.Hidden">
             <summary>
-            Gets or sets a value indicating whether this <see cref="T:WixSharp.IWixControl" /> is hidden.
+            Gets or sets a value indicating whether this <see cref="T:WixSharp.Controls.IWixControl" /> is hidden.
             </summary>
             <value>
               <c>true</c> if hidden; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:WixSharp.WixControl.WixAttributes">
+        <member name="P:WixSharp.Controls.WixControl.WixAttributes">
             <summary>
             Gets or sets the WiX element attributes.
             </summary>
@@ -4712,7 +4712,7 @@
             The WiX element attributes.
             </value>
         </member>
-        <member name="M:WixSharp.WixControl.ToWControl">
+        <member name="M:WixSharp.Controls.WixControl.ToWControl">
             <summary>
             Converts the WinForm control into WiX custom UI control <see cref="T:WixSharp.Control" />.
             </summary>
@@ -4720,12 +4720,12 @@
             Instance of the WixSharp.Control.
             </returns>
         </member>
-        <member name="T:WixSharp.WixControlCondition">
+        <member name="T:WixSharp.Controls.WixControlCondition">
             <summary>
             Defines Form designer compatible <c>Condition</c> associated with the WixControl action.
             </summary>
         </member>
-        <member name="P:WixSharp.WixControlCondition.Action">
+        <member name="P:WixSharp.Controls.WixControlCondition.Action">
             <summary>
             Gets or sets the action.
             <para>Used only under Control elements and is required. Allows
@@ -4740,7 +4740,7 @@
             The action.
             </value>
         </member>
-        <member name="P:WixSharp.WixControlCondition.Value">
+        <member name="P:WixSharp.Controls.WixControlCondition.Value">
             <summary>
             Gets or sets the value for the action condition of the WiX Control element.
             </summary>
@@ -4748,36 +4748,36 @@
             The value.
             </value>
         </member>
-        <member name="T:WixSharp.ConditionAction">
+        <member name="T:WixSharp.Controls.ConditionAction">
             <summary>
             Defines condition action type values for the WiX Control elements. 
             </summary>
         </member>
-        <member name="T:WixSharp.WixControlDesigner`1">
+        <member name="T:WixSharp.Controls.WixControlDesigner`1">
             <summary>
             Implements Form Designer support for the WixSharp MSI UI controls. 
             </summary>
             <typeparam name="T">WinForm control to be supported by Form Designer.</typeparam>
         </member>
-        <member name="F:WixSharp.WixControlDesigner`1.VisibleBaseProperties">
+        <member name="F:WixSharp.Controls.WixControlDesigner`1.VisibleBaseProperties">
             <summary>
             The ';' separated list of the <see cref="T:System.Windows.Forms.Control" /> properties 
             to be visible in the properties grid by default.
             </summary>
         </member>
-        <member name="M:WixSharp.WixControlDesigner`1.PreFilterProperties(System.Collections.IDictionary)">
+        <member name="M:WixSharp.Controls.WixControlDesigner`1.PreFilterProperties(System.Collections.IDictionary)">
             <summary>
             Adjusts the set of properties the component exposes through a <see cref="T:System.ComponentModel.TypeDescriptor" />.
             </summary>
             <param name="properties">An <see cref="T:System.Collections.IDictionary" /> containing the properties for the class of the component.</param>
         </member>
-        <member name="M:WixSharp.WixControlDesigner`1.PreFilterEvents(System.Collections.IDictionary)">
+        <member name="M:WixSharp.Controls.WixControlDesigner`1.PreFilterEvents(System.Collections.IDictionary)">
             <summary>
             Allows a designer to add to the set of events that it exposes through a <see cref="T:System.ComponentModel.TypeDescriptor" />.
             </summary>
             <param name="events">The events for the class of the component.</param>
         </member>
-        <member name="T:WixSharp.WixForm">
+        <member name="T:WixSharp.Controls.WixForm">
             <summary>
             Defines <see cref="T:System.Windows.Forms" /> Form for generating WiX Dialog element.
             <para>
@@ -4787,17 +4787,17 @@
             </para>
             </summary>
         </member>
-        <member name="F:WixSharp.WixForm.dialogActions">
+        <member name="F:WixSharp.Controls.WixForm.dialogActions">
             <summary>
             The dialog actions
             </summary>
         </member>
-        <member name="M:WixSharp.WixForm.#ctor">
+        <member name="M:WixSharp.Controls.WixForm.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.WixForm"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.WixForm"/> class.
             </summary>
         </member>
-        <member name="P:WixSharp.WixForm.WixSize">
+        <member name="P:WixSharp.Controls.WixForm.WixSize">
             <summary>
             Gets the size of the <c>Control</c>.
             </summary>
@@ -4805,7 +4805,7 @@
             The size of the <c>Control</c>.
             </value>
         </member>
-        <member name="M:WixSharp.WixForm.Do(System.String,System.String,System.String,System.String)">
+        <member name="M:WixSharp.Controls.WixForm.Do(System.String,System.String,System.String,System.String)">
             <summary>
             Generates and adds the action to the list of the dialog actions, which is to be used at compile time for 
             generating WiX Dialog element actions.
@@ -4821,7 +4821,7 @@
             <param name="property">The property name.</param>
             <param name="condition">The action condition.</param>
         </member>
-        <member name="M:WixSharp.WixForm.EndDialog(System.String,System.String)">
+        <member name="M:WixSharp.Controls.WixForm.EndDialog(System.String,System.String)">
             <summary>
             Generates and adds the EndDialog action to the list of the dialog actions, which is to be used at compile time for 
             generating WiX Dialog element actions.
@@ -4835,7 +4835,7 @@
             <param name="value">The action value.</param>
             <param name="condition">The action condition.</param>
         </member>
-        <member name="M:WixSharp.WixForm.SetPrperty(System.String,System.String,System.String)">
+        <member name="M:WixSharp.Controls.WixForm.SetPrperty(System.String,System.String,System.String)">
             <summary>
             Generates and adds the SetProperty action to the list of the dialog actions, which is to be used at compile time for 
             generating WiX Dialog element actions.
@@ -4844,7 +4844,7 @@
             <param name="value">The property value.</param>
             <param name="condition">The action condition.</param>
         </member>
-        <member name="P:WixSharp.WixForm.Id">
+        <member name="P:WixSharp.Controls.WixForm.Id">
             <summary>
             Gets or sets the id.
             </summary>
@@ -4852,7 +4852,7 @@
             The id.
             </value>
         </member>
-        <member name="P:WixSharp.WixForm.WixAttributes">
+        <member name="P:WixSharp.Controls.WixForm.WixAttributes">
             <summary>
             Gets or sets the WiX element attributes.
             </summary>
@@ -4860,23 +4860,23 @@
             The WiX element attributes.
             </value>
         </member>
-        <member name="M:WixSharp.WixForm.ToWDialog">
+        <member name="M:WixSharp.Controls.WixForm.ToWDialog">
             <summary>
             Converts the WixForm (WinForm) instance into WiX custom UI control WixSharp.<see cref="T:WixSharp.Dialog"/>.
             </summary>
             <returns>WixSharp.<see cref="T:WixSharp.Dialog"/> instance.</returns>
         </member>
-        <member name="T:WixSharp.ControlAction">
+        <member name="T:WixSharp.Controls.ControlAction">
             <summary>
             Predefined WiX custom UI control (element) action types.
             </summary>
         </member>
-        <member name="T:WixSharp.EndDialogValue">
+        <member name="T:WixSharp.Controls.EndDialogValue">
             <summary>
             Predefined values for the <c>EndDialog</c> action.
             </summary>
         </member>
-        <member name="T:WixSharp.WixLabel">
+        <member name="T:WixSharp.Controls.WixLabel">
             <summary>
             Defines <see cref="T:System.Windows.Forms" /> label control for generating WiX Label element.
             <para>
@@ -4886,7 +4886,7 @@
             </para>
             </summary>
         </member>
-        <member name="P:WixSharp.WixLabel.Conditions">
+        <member name="P:WixSharp.Controls.WixLabel.Conditions">
             <summary>
             Gets or sets the control conditions.
             </summary>
@@ -4894,12 +4894,12 @@
             The control conditions.
             </value>
         </member>
-        <member name="M:WixSharp.WixLabel.#ctor">
+        <member name="M:WixSharp.Controls.WixLabel.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.WixLabel"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.WixLabel"/> class.
             </summary>
         </member>
-        <member name="P:WixSharp.WixLabel.WixSize">
+        <member name="P:WixSharp.Controls.WixLabel.WixSize">
             <summary>
             Gets the size of the <c>Control</c>.
             </summary>
@@ -4907,7 +4907,7 @@
             The size of the <c>Control</c>.
             </value>
         </member>
-        <member name="P:WixSharp.WixLabel.WixLocation">
+        <member name="P:WixSharp.Controls.WixLabel.WixLocation">
             <summary>
             Gets the <c>Control</c> location.
             </summary>
@@ -4915,7 +4915,7 @@
             The <c>Control</c> location.
             </value>
         </member>
-        <member name="P:WixSharp.WixLabel.Id">
+        <member name="P:WixSharp.Controls.WixLabel.Id">
             <summary>
             Gets or sets the Id.
             </summary>
@@ -4923,7 +4923,7 @@
             The Id.
             </value>
         </member>
-        <member name="P:WixSharp.WixLabel.Tooltip">
+        <member name="P:WixSharp.Controls.WixLabel.Tooltip">
             <summary>
             Gets or sets the tooltip.
             </summary>
@@ -4931,7 +4931,7 @@
             The tooltip.
             </value>
         </member>
-        <member name="P:WixSharp.WixLabel.BoundProperty">
+        <member name="P:WixSharp.Controls.WixLabel.BoundProperty">
             <summary>
             Gets or sets the bound property name.
             </summary>
@@ -4939,15 +4939,15 @@
             The bound property name.
             </value>
         </member>
-        <member name="P:WixSharp.WixLabel.Hidden">
+        <member name="P:WixSharp.Controls.WixLabel.Hidden">
             <summary>
-            Gets or sets a value indicating whether this <see cref="T:WixSharp.IWixControl" /> is hidden.
+            Gets or sets a value indicating whether this <see cref="T:WixSharp.Controls.IWixControl" /> is hidden.
             </summary>
             <value>
               <c>true</c> if hidden; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:WixSharp.WixLabel.WixAttributes">
+        <member name="P:WixSharp.Controls.WixLabel.WixAttributes">
             <summary>
             Gets or sets the WiX element attributes.
             </summary>
@@ -4955,7 +4955,7 @@
             The WiX element attributes.
             </value>
         </member>
-        <member name="M:WixSharp.WixLabel.ToWControl">
+        <member name="M:WixSharp.Controls.WixLabel.ToWControl">
             <summary>
             Converts the WinForm control into WiX custom UI control <see cref="T:WixSharp.Control" />.
             </summary>
@@ -4963,7 +4963,7 @@
             Instance of the WixSharp.Control.
             </returns>
         </member>
-        <member name="T:WixSharp.WixTextBox">
+        <member name="T:WixSharp.Controls.WixTextBox">
             <summary>
             Defines <see cref="T:System.Windows.Forms" /> text box control for generating WiX TextBox element.
             <para>
@@ -4973,7 +4973,7 @@
             </para>
             </summary>
         </member>
-        <member name="P:WixSharp.WixTextBox.Conditions">
+        <member name="P:WixSharp.Controls.WixTextBox.Conditions">
             <summary>
             Gets or sets the control conditions.
             </summary>
@@ -4981,12 +4981,12 @@
             The control conditions.
             </value>
         </member>
-        <member name="M:WixSharp.WixTextBox.#ctor">
+        <member name="M:WixSharp.Controls.WixTextBox.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:WixSharp.WixTextBox"/> class.
+            Initializes a new instance of the <see cref="T:WixSharp.Controls.WixTextBox"/> class.
             </summary>
         </member>
-        <member name="P:WixSharp.WixTextBox.WixSize">
+        <member name="P:WixSharp.Controls.WixTextBox.WixSize">
             <summary>
             Gets the size of the <c>Control</c>.
             </summary>
@@ -4994,7 +4994,7 @@
             The size of the <c>Control</c>.
             </value>
         </member>
-        <member name="P:WixSharp.WixTextBox.WixLocation">
+        <member name="P:WixSharp.Controls.WixTextBox.WixLocation">
             <summary>
             Gets the <c>Control</c> location.
             </summary>
@@ -5002,7 +5002,7 @@
             The <c>Control</c> location.
             </value>
         </member>
-        <member name="P:WixSharp.WixTextBox.Id">
+        <member name="P:WixSharp.Controls.WixTextBox.Id">
             <summary>
             Gets or sets the Id.
             </summary>
@@ -5010,7 +5010,7 @@
             The Id.
             </value>
         </member>
-        <member name="P:WixSharp.WixTextBox.Tooltip">
+        <member name="P:WixSharp.Controls.WixTextBox.Tooltip">
             <summary>
             Gets or sets the tooltip.
             </summary>
@@ -5018,7 +5018,7 @@
             The tooltip.
             </value>
         </member>
-        <member name="P:WixSharp.WixTextBox.BoundProperty">
+        <member name="P:WixSharp.Controls.WixTextBox.BoundProperty">
             <summary>
             Gets or sets the bound property name.
             </summary>
@@ -5026,15 +5026,15 @@
             The bound property name.
             </value>
         </member>
-        <member name="P:WixSharp.WixTextBox.Hidden">
+        <member name="P:WixSharp.Controls.WixTextBox.Hidden">
             <summary>
-            Gets or sets a value indicating whether this <see cref="T:WixSharp.IWixControl" /> is hidden.
+            Gets or sets a value indicating whether this <see cref="T:WixSharp.Controls.IWixControl" /> is hidden.
             </summary>
             <value>
               <c>true</c> if hidden; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:WixSharp.WixTextBox.WixAttributes">
+        <member name="P:WixSharp.Controls.WixTextBox.WixAttributes">
             <summary>
             Gets or sets the WiX element attributes.
             </summary>
@@ -5042,7 +5042,7 @@
             The WiX element attributes.
             </value>
         </member>
-        <member name="M:WixSharp.WixTextBox.ToWControl">
+        <member name="M:WixSharp.Controls.WixTextBox.ToWControl">
             <summary>
             Converts the WinForm control into WiX custom UI control <see cref="T:WixSharp.Control" />.
             </summary>
@@ -8010,7 +8010,7 @@
         <member name="F:WixSharp.Project.CustomUI">
             <summary>
             The custom UI definition. Use CustomUIBuilder to generate the WiX UI definition or compose 
-            <see cref="T:WixSharp.CustomUI"/> manually.
+            <see cref="!:WixSharp.CustomUI"/> manually.
             </summary>
         </member>
         <member name="F:WixSharp.Project.MajorUpgrade">

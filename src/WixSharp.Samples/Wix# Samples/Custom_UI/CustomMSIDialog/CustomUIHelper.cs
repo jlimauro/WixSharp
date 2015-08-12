@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using ConsoleApplication1;
 using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
+using WixSharp.Controls;
 using System;
 
 class CustomUIHelper
@@ -23,36 +24,36 @@ class CustomUIHelper
 
         customUI.CustomDialogs.Add(activationDialog);
 
-        customUI.On(Dialogs.ExitDialog, Buttons.Finish, new CloseDialog() { Order = 9999 });
+        customUI.On(NativeDialogs.ExitDialog, Buttons.Finish, new CloseDialog() { Order = 9999 });
 
-        customUI.On(Dialogs.WelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.LicenseAgreementDlg));
+        customUI.On(NativeDialogs.WelcomeDlg, Buttons.Next, new ShowDialog(NativeDialogs.LicenseAgreementDlg));
 
-        customUI.On(Dialogs.LicenseAgreementDlg, Buttons.Back, new ShowDialog(Dialogs.WelcomeDlg));
-        customUI.On(Dialogs.LicenseAgreementDlg, Buttons.Next, new ShowDialog(activationDialog, "LicenseAccepted = \"1\""));
+        customUI.On(NativeDialogs.LicenseAgreementDlg, Buttons.Back, new ShowDialog(NativeDialogs.WelcomeDlg));
+        customUI.On(NativeDialogs.LicenseAgreementDlg, Buttons.Next, new ShowDialog(activationDialog, "LicenseAccepted = \"1\""));
 
-        customUI.On(activationDialog, Buttons.Back, new ShowDialog(Dialogs.LicenseAgreementDlg));
+        customUI.On(activationDialog, Buttons.Back, new ShowDialog(NativeDialogs.LicenseAgreementDlg));
 
         customUI.On(activationDialog, Buttons.Next, new DialogAction { Name = "DoAction", Value = "ValidateLicenceKey" },
-                                                    new ShowDialog(Dialogs.InstallDirDlg, "SERIALNUMBER_VALIDATED = \"TRUE\""));
+                                                    new ShowDialog(NativeDialogs.InstallDirDlg, "SERIALNUMBER_VALIDATED = \"TRUE\""));
 
         customUI.On(activationDialog, Buttons.Cancel, new CloseDialog("Exit"));
 
-        customUI.On(Dialogs.InstallDirDlg, Buttons.Back, new ShowDialog(activationDialog));
-        customUI.On(Dialogs.InstallDirDlg, Buttons.Next, new SetTargetPath(),
-                                                         new ShowDialog(Dialogs.VerifyReadyDlg));
+        customUI.On(NativeDialogs.InstallDirDlg, Buttons.Back, new ShowDialog(activationDialog));
+        customUI.On(NativeDialogs.InstallDirDlg, Buttons.Next, new SetTargetPath(),
+                                                         new ShowDialog(NativeDialogs.VerifyReadyDlg));
 
-        customUI.On(Dialogs.InstallDirDlg, Buttons.ChangeFolder,
+        customUI.On(NativeDialogs.InstallDirDlg, Buttons.ChangeFolder,
                                                          new SetProperty("_BrowseProperty", "[WIXUI_INSTALLDIR]"),
                                                          new ShowDialog(CommonDialogs.BrowseDlg));
 
-        customUI.On(Dialogs.VerifyReadyDlg, Buttons.Back, new ShowDialog(Dialogs.InstallDirDlg, Condition.NOT_Installed),
-                                                          new ShowDialog(Dialogs.MaintenanceTypeDlg, Condition.Installed));
+        customUI.On(NativeDialogs.VerifyReadyDlg, Buttons.Back, new ShowDialog(NativeDialogs.InstallDirDlg, Condition.NOT_Installed),
+                                                          new ShowDialog(NativeDialogs.MaintenanceTypeDlg, Condition.Installed));
 
-        customUI.On(Dialogs.MaintenanceWelcomeDlg, Buttons.Next, new ShowDialog(Dialogs.MaintenanceTypeDlg));
+        customUI.On(NativeDialogs.MaintenanceWelcomeDlg, Buttons.Next, new ShowDialog(NativeDialogs.MaintenanceTypeDlg));
 
-        customUI.On(Dialogs.MaintenanceTypeDlg, Buttons.Back, new ShowDialog(Dialogs.MaintenanceWelcomeDlg));
-        customUI.On(Dialogs.MaintenanceTypeDlg, Buttons.Repair, new ShowDialog(Dialogs.VerifyReadyDlg));
-        customUI.On(Dialogs.MaintenanceTypeDlg, Buttons.Remove, new ShowDialog(Dialogs.VerifyReadyDlg));
+        customUI.On(NativeDialogs.MaintenanceTypeDlg, Buttons.Back, new ShowDialog(NativeDialogs.MaintenanceWelcomeDlg));
+        customUI.On(NativeDialogs.MaintenanceTypeDlg, Buttons.Repair, new ShowDialog(NativeDialogs.VerifyReadyDlg));
+        customUI.On(NativeDialogs.MaintenanceTypeDlg, Buttons.Remove, new ShowDialog(NativeDialogs.VerifyReadyDlg));
 
         return customUI;
     }

@@ -6,7 +6,7 @@ using System.Drawing.Design;
 using System.Windows.Forms;
 using Wix = WixSharp;
 
-namespace WixSharp
+namespace WixSharp.Controls
 {
     /// <summary>
     /// Defines <see cref="T:System.Windows.Forms" /> button control for generating WiX Button element.
@@ -136,7 +136,7 @@ namespace WixSharp
         /// <returns>
         /// Instance of the WixSharp.Control.
         /// </returns>
-        public virtual Wix.Control ToWControl()
+        public virtual Wix.Controls.Control ToWControl()
         {
             return this.ConvertToWControl(ControlType.PushButton);
         }
