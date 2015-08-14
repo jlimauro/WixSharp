@@ -522,6 +522,46 @@ namespace WixSharp.Controls
 #pragma warning restore 1591
     }
 
+    /// <summary>
+    /// Predefined values for the <c>Control</c> actions.
+    /// </summary>
+    public class ControlActionData
+    {
+#pragma warning disable 1591
+        public string Event;
+        public string Property;
+        public string Value;
+        public string Condition;
+#pragma warning restore 1591
+    }
+
+
+    /// <summary>
+    /// Predefined WiX custom UI control (element) action types.
+    /// </summary>
+    public class ControlAction
+    {
+#pragma warning disable 1591
+        public const string EndDialog = "EndDialog";
+        public const string NewDialog = "NewDialog";
+        public const string DoAction = "DoAction";
+        public const string SetTargetPath = "SetTargetPath";
+        public const string SpawnDialog = "SpawnDialog";
+#pragma warning restore 1591
+    }
+
+    /// <summary>
+    /// Predefined values for the <c>EndDialog</c> action.
+    /// </summary>
+    public class EndDialogValue
+    {
+#pragma warning disable 1591
+        public const string Exit = "Exit";
+        public const string Retry = "Retry";
+        public const string Ignore = "Ignore";
+        public const string Return = "Return";
+#pragma warning restore 1591
+    }
 
     /// <summary>
     /// Defines values (names) for the WiX custom UI predefined buttons. 

@@ -138,8 +138,6 @@ namespace ConsoleApplication1
             // NextButton
             // 
             this.NextButton.BoundProperty = null;
-            this.NextButton.Conditions.Add(((WixSharp.Controls.WixControlCondition)(resources.GetObject("NextButton.Conditions"))));
-            this.NextButton.Conditions.Add(((WixSharp.Controls.WixControlCondition)(resources.GetObject("NextButton.Conditions1"))));
             this.NextButton.Hidden = false;
             this.NextButton.Id = "Next";
             this.NextButton.Location = new System.Drawing.Point(307, 322);

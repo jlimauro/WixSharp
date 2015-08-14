@@ -9,6 +9,9 @@ class Script
 {
     static public void Main()
     {
+        //Support for building native MSI UI is an experimental feature and no longer supported.
+        //It has been superseded by the "Managed UI" feature available in v1.0.22.0 and higher. 
+
         Dialog productActivationDialog = new ProductActivationForm().ToWDialog();
 
         var project = new Project("CustomDialogTest",

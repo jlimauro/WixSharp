@@ -142,16 +142,5 @@ namespace WixSharp.Controls
         }
     }
 
-    /// <summary>
-    /// Predefined values for the <c>Control</c> actions.
-    /// </summary>
-    public class ControlActionData
-    {
-#pragma warning disable 1591
-        public string Event;
-        public string Property;
-        public string Value;
-        public string Condition;
-#pragma warning restore 1591
-    }
+   
 }

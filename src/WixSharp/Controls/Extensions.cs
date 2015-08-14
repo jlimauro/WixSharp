@@ -1,38 +1,8 @@
-using System;
-using System.Security.Principal;
-using Wix = WixSharp;
-
 namespace WixSharp.Controls
 {
     public static partial class Extensions
     {
-        internal static Wix.Controls.Control ConvertToWControl(this IWixControl srcControl, ControlType controlType)
-        {
-            var wControl = new Wix.Controls.Control { Type = controlType.ToString() };
-
-            wControl.CopyCommonPropertiesFrom(srcControl);
-
-            return wControl;
-        }
-
-        /// <summary>
-        /// The WiX UI scaling factor.
-        /// WiX pixels are not the same as Windows ones. For example Wix.Point(56,17) is equivalent of the Win.Point(75,23)
-        /// </summary>
-        static public double WixScalingFactor = 0.756;
-
-        /// <summary>
-        /// Converts (scales) Windows coordinate value into WiX one.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <returns></returns>
-        internal static int WScale(this int data)
-        {
-            return (int)(data * WixScalingFactor);
-        }
-
-
-        internal static void CopyCommonPropertiesFrom(this Wix.Controls.Control destControl, IWixControl srcControl)
+        internal static void CopyCommonPropertiesFrom(this WixSharp.Controls.Control destControl, IWixControl srcControl)
         {
             var formControl = (System.Windows.Forms.Control)srcControl;
 
@@ -67,5 +37,41 @@ namespace WixSharp.Controls
                 destControl.Actions.AddRange((srcControl as IWixInteractiveControl).Actions);
             }
         }
+
+        internal static WixSharp.Controls.Control ConvertToWControl(this IWixControl srcControl, ControlType controlType)
+        {
+            var wControl = new WixSharp.Controls.Control { Type = controlType.ToString() };
+
+            wControl.CopyCommonPropertiesFrom(srcControl);
+
+            return wControl;
+        }
+
+        /// <summary>
+        /// The WiX UI scaling factor.
+        /// WiX pixels are not the same as Windows ones. For example Wix.Point(56,17) is equivalent of the Win.Point(75,23)
+        /// </summary>
+        static public double WixScalingFactor = 0.756;
+
+        /// <summary>
+        /// Converts (scales) Windows coordinate value into WiX one.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        internal static int WScale(this int data)
+        {
+            return (int)(data * WixScalingFactor);
+        }
     }
+
+    //VS designer property grid does not like if the control designer attribute type is generic so make it a concrete type
+#pragma warning disable 1591
+
+    public class WixControlDesigner : WixControlDesigner<WixControl> { }
+    public class WixButtonDesigner : WixControlDesigner<WixButton> { }
+    public class WixLabelDesigner : WixControlDesigner<WixLabel> { }
+    public class WixFormDesigner : WixControlDesigner<WixForm> { }
+    public class WixCheckBoxDesigner : WixControlDesigner<WixCheckBox> { }
+    public class WixTextBoxDesigner : WixControlDesigner<WixTextBox> { }
+#pragma warning restore 1591
 }

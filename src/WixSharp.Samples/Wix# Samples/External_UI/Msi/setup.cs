@@ -10,7 +10,7 @@ class Script
         var docs = new Feature("Documentation");
         var binaries = new Feature("Binaries");
 
-        Project project =
+        var project =
             new Project("MyProduct",
 
                 new LaunchCondition("CUSTOM_UI=\"true\" OR REMOVE=\"ALL\"", "Please run setup.exe instead."),

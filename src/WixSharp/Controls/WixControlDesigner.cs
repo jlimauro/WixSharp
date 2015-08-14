@@ -12,16 +12,6 @@ using System.Text;
 
 namespace WixSharp.Controls
 {
-    //VS designer property grid does not like if the control designer attribute type is generic so make it a concrete type 
-#pragma warning disable 1591
-    public class WixControlDesigner : WixControlDesigner<WixControl> { }
-    public class WixButtonDesigner : WixControlDesigner<WixButton> { }
-    public class WixLabelDesigner : WixControlDesigner<WixLabel> { }
-    public class WixFormDesigner : WixControlDesigner<WixForm> { }
-    public class WixCheckBoxDesigner : WixControlDesigner<WixCheckBox> { }
-    public class WixTextBoxDesigner : WixControlDesigner<WixTextBox> { }
-#pragma warning restore 1591
-
     /// <summary>
     /// Implements Form Designer support for the WixSharp MSI UI controls. 
     /// </summary>

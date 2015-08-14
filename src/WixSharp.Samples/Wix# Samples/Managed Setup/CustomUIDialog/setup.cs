@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using WixSharp;
-using Wix_Forms = WixSharp.UI.Forms;
+using WixSharp.UI.Forms;
 
 internal static class Defaults
 {
@@ -30,14 +30,14 @@ public class Script
         project.LocalizationFile = "MyProduct.en-us.wxl";
 
         project.ManagedUI = new ManagedUI();
-        project.ManagedUI.InstallDialogs.Add<Wix_Forms.WelcomeDialog>()
+        project.ManagedUI.InstallDialogs.Add<WelcomeDialog>()
                                         .Add<MyProduct.UserNameDialog>()
-                                        .Add<Wix_Forms.ProgressDialog>()
-                                        .Add<Wix_Forms.ExitDialog>();
+                                        .Add<ProgressDialog>()
+                                        .Add<ExitDialog>();
 
         //it effectively becomes a 'Repair' sequence 
-        project.ManagedUI.ModifyDialogs.Add<Wix_Forms.ProgressDialog>()
-                                       .Add<Wix_Forms.ExitDialog>();
+        project.ManagedUI.ModifyDialogs.Add<ProgressDialog>()
+                                       .Add<ExitDialog>();
 
         project.BeforeInstall += msi_BeforeInstall;
 
