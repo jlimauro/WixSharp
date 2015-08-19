@@ -891,6 +891,161 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:WixSharp.Certificate">
+            <summary>
+            This class defines website certificate attributes. It is a close equivalent of Certificate WiX element.
+            </summary>
+        </member>
+        <member name="M:WixSharp.Certificate.#ctor">
+            <summary>
+            Creates an instance of Certificate
+            </summary>
+        </member>
+        <member name="M:WixSharp.Certificate.#ctor(System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String)">
+            <summary>
+            Creates an instance of Certificate where the certificate is a binary resource
+            </summary>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="binaryKey">The binary key.</param>
+            <exception cref="T:System.ArgumentNullException">
+            name;name is a null reference or empty
+            or
+            binaryKey;binaryKey is a null reference or empty
+            </exception>
+        </member>
+        <member name="M:WixSharp.Certificate.#ctor(WixSharp.Id,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String)">
+            <summary>
+            Creates an instance of Certificate where the certificate is a binary resource
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="binaryKey">The binary key.</param>
+        </member>
+        <member name="M:WixSharp.Certificate.#ctor(WixSharp.Feature,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String)">
+            <summary>
+            Creates an instance of Certificate where the certificate is a binary resource
+            </summary>
+            <param name="feature">The feature.</param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="binaryKey">The binary key.</param>
+        </member>
+        <member name="M:WixSharp.Certificate.#ctor(WixSharp.Id,WixSharp.Feature,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String)">
+            <summary>
+            Creates an instance of Certificate where the certificate is a binary resource
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="feature">The feature.</param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="binaryKey">The binary key.</param>
+        </member>
+        <member name="M:WixSharp.Certificate.#ctor(System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String,System.Boolean)">
+            <summary>
+            Creates an instance of Certificate where the certificate is requested or exists at the specified path
+            </summary>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="certificatePath">The certificate path.</param>
+            <param name="authorityRequest">if set to <c>true</c> [authority request].</param>
+            <exception cref="T:System.ArgumentNullException">name;name is a null reference or empty
+            or
+            certificatePath;certificatePath is a null reference or empty</exception>
+        </member>
+        <member name="M:WixSharp.Certificate.#ctor(WixSharp.Id,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String,System.Boolean)">
+            <summary>
+            Creates an instance of Certificate where the certificate is requested or exists at the specified path
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="certificatePath">The certificate path.</param>
+            <param name="request">if set to <c>true</c> [request].</param>
+        </member>
+        <member name="M:WixSharp.Certificate.#ctor(WixSharp.Feature,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String,System.Boolean)">
+            <summary>
+            Creates an instance of Certificate where the certificate is requested or exists at the specified path
+            </summary>
+            <param name="feature">The feature.</param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="certificatePath">The certificate path.</param>
+            <param name="request">if set to <c>true</c> [request].</param>
+        </member>
+        <member name="M:WixSharp.Certificate.#ctor(WixSharp.Id,WixSharp.Feature,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String,System.Boolean)">
+            <summary>
+            Creates an instance of Certificate where the certificate is requested or exists at the specified path
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="feature">The feature.</param>
+            <param name="name">The name.</param>
+            <param name="storeLocation">The store location.</param>
+            <param name="storeName">Name of the store.</param>
+            <param name="certificatePath">The certificate path.</param>
+            <param name="request">if set to <c>true</c> [request].</param>
+        </member>
+        <member name="F:WixSharp.Certificate.Feature">
+            <summary>
+            <see cref="F:WixSharp.Certificate.Feature"></see> the WebSite belongs to.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.BinaryKey">
+            <summary>
+            The Id of a Binary instance that is the certificate to be installed
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.CertificatePath">
+            <summary>
+            If the Request attribute is <c>false</c> then this attribute is the path to the certificate file outside of the package.
+            If the Request attribute is <c>true</c> then this attribute is the certificate authority to request the certificate from.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.Name">
+            <summary>
+            The name of the certificate being installed
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.Overwrite">
+            <summary>
+            Flag to indicate if the certificate should be overwritten.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.Request">
+            <summary>
+            This attribute controls whether the CertificatePath attribute is a path to a certificate file (Request=<c>false</c>) or
+            the certificate authority to request the certificate from (Request=<c>true</c>).
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.PFXPassword">
+            <summary>
+            If the Binary stream or path to the file outside of the package is a password protected PFX file, the password for that PFX must be specified here.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.StoreLocation">
+            <summary>
+            Sets the certificate StoreLocation.
+            </summary>
+        </member>
+        <member name="F:WixSharp.Certificate.StoreName">
+            <summary>
+            Sets the certificate StoreName.
+            </summary>
+        </member>
+        <member name="M:WixSharp.Certificate.ToXml">
+            <summary>
+            Emits WiX XML.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:WixSharp.CommonTasks.Tasks">
             <summary>
             
@@ -2257,6 +2412,15 @@
             </remarks>
             </summary>
             <param name="path">The path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.SetComponentPermanent``1(``0,System.Boolean)">
+            <summary>
+            Sets the parent component attribute 'Permanent'.
+            </summary>
+            <typeparam name="T">The type of the T.</typeparam>
+            <param name="obj">The obj.</param>
+            <param name="isPermanent">if set to <c>true</c> [is permanent].</param>
             <returns></returns>
         </member>
         <member name="M:WixSharp.Extensions.IsAdmin(System.Security.Principal.WindowsIdentity)">
@@ -9643,161 +9807,6 @@
             auto-generated addresses if <see cref="F:WixSharp.WebSite.AddressesDefinition"/> is specified either directly or via appropriate <see cref="T:WixSharp.WebSite"/> constructor.
             </para>
             </summary>
-        </member>
-        <member name="T:WixSharp.Certificate">
-            <summary>
-            This class defines website certificate attributes. It is a close equivalent of Certificate WiX element.
-            </summary>
-        </member>
-        <member name="M:WixSharp.Certificate.#ctor">
-            <summary>
-            Creates an instance of Certificate
-            </summary>
-        </member>
-        <member name="M:WixSharp.Certificate.#ctor(System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String)">
-            <summary>
-            Creates an instance of Certificate where the certificate is a binary resource
-            </summary>
-            <param name="name">The name.</param>
-            <param name="storeLocation">The store location.</param>
-            <param name="storeName">Name of the store.</param>
-            <param name="binaryKey">The binary key.</param>
-            <exception cref="T:System.ArgumentNullException">
-            name;name is a null reference or empty
-            or
-            binaryKey;binaryKey is a null reference or empty
-            </exception>
-        </member>
-        <member name="M:WixSharp.Certificate.#ctor(WixSharp.Id,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String)">
-            <summary>
-            Creates an instance of Certificate where the certificate is a binary resource
-            </summary>
-            <param name="id">The identifier.</param>
-            <param name="name">The name.</param>
-            <param name="storeLocation">The store location.</param>
-            <param name="storeName">Name of the store.</param>
-            <param name="binaryKey">The binary key.</param>
-        </member>
-        <member name="M:WixSharp.Certificate.#ctor(WixSharp.Feature,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String)">
-            <summary>
-            Creates an instance of Certificate where the certificate is a binary resource
-            </summary>
-            <param name="feature">The feature.</param>
-            <param name="name">The name.</param>
-            <param name="storeLocation">The store location.</param>
-            <param name="storeName">Name of the store.</param>
-            <param name="binaryKey">The binary key.</param>
-        </member>
-        <member name="M:WixSharp.Certificate.#ctor(WixSharp.Id,WixSharp.Feature,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String)">
-            <summary>
-            Creates an instance of Certificate where the certificate is a binary resource
-            </summary>
-            <param name="id">The identifier.</param>
-            <param name="feature">The feature.</param>
-            <param name="name">The name.</param>
-            <param name="storeLocation">The store location.</param>
-            <param name="storeName">Name of the store.</param>
-            <param name="binaryKey">The binary key.</param>
-        </member>
-        <member name="M:WixSharp.Certificate.#ctor(System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String,System.Boolean)">
-            <summary>
-            Creates an instance of Certificate where the certificate is requested or exists at the specified path
-            </summary>
-            <param name="name">The name.</param>
-            <param name="storeLocation">The store location.</param>
-            <param name="storeName">Name of the store.</param>
-            <param name="certificatePath">The certificate path.</param>
-            <param name="authorityRequest">if set to <c>true</c> [authority request].</param>
-            <exception cref="T:System.ArgumentNullException">name;name is a null reference or empty
-            or
-            certificatePath;certificatePath is a null reference or empty</exception>
-        </member>
-        <member name="M:WixSharp.Certificate.#ctor(WixSharp.Id,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String,System.Boolean)">
-            <summary>
-            Creates an instance of Certificate where the certificate is requested or exists at the specified path
-            </summary>
-            <param name="id">The identifier.</param>
-            <param name="name">The name.</param>
-            <param name="storeLocation">The store location.</param>
-            <param name="storeName">Name of the store.</param>
-            <param name="certificatePath">The certificate path.</param>
-            <param name="request">if set to <c>true</c> [request].</param>
-        </member>
-        <member name="M:WixSharp.Certificate.#ctor(WixSharp.Feature,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String,System.Boolean)">
-            <summary>
-            Creates an instance of Certificate where the certificate is requested or exists at the specified path
-            </summary>
-            <param name="feature">The feature.</param>
-            <param name="name">The name.</param>
-            <param name="storeLocation">The store location.</param>
-            <param name="storeName">Name of the store.</param>
-            <param name="certificatePath">The certificate path.</param>
-            <param name="request">if set to <c>true</c> [request].</param>
-        </member>
-        <member name="M:WixSharp.Certificate.#ctor(WixSharp.Id,WixSharp.Feature,System.String,WixSharp.StoreLocation,WixSharp.StoreName,System.String,System.Boolean)">
-            <summary>
-            Creates an instance of Certificate where the certificate is requested or exists at the specified path
-            </summary>
-            <param name="id">The identifier.</param>
-            <param name="feature">The feature.</param>
-            <param name="name">The name.</param>
-            <param name="storeLocation">The store location.</param>
-            <param name="storeName">Name of the store.</param>
-            <param name="certificatePath">The certificate path.</param>
-            <param name="request">if set to <c>true</c> [request].</param>
-        </member>
-        <member name="F:WixSharp.Certificate.Feature">
-            <summary>
-            <see cref="F:WixSharp.Certificate.Feature"></see> the WebSite belongs to.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Certificate.BinaryKey">
-            <summary>
-            The Id of a Binary instance that is the certificate to be installed
-            </summary>
-        </member>
-        <member name="F:WixSharp.Certificate.CertificatePath">
-            <summary>
-            If the Request attribute is <c>false</c> then this attribute is the path to the certificate file outside of the package.
-            If the Request attribute is <c>true</c> then this attribute is the certificate authority to request the certificate from.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Certificate.Name">
-            <summary>
-            The name of the certificate being installed
-            </summary>
-        </member>
-        <member name="F:WixSharp.Certificate.Overwrite">
-            <summary>
-            Flag to indicate if the certificate should be overwritten.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Certificate.Request">
-            <summary>
-            This attribute controls whether the CertificatePath attribute is a path to a certificate file (Request=<c>false</c>) or
-            the certificate authority to request the certificate from (Request=<c>true</c>).
-            </summary>
-        </member>
-        <member name="F:WixSharp.Certificate.PFXPassword">
-            <summary>
-            If the Binary stream or path to the file outside of the package is a password protected PFX file, the password for that PFX must be specified here.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Certificate.StoreLocation">
-            <summary>
-            Sets the certificate StoreLocation.
-            </summary>
-        </member>
-        <member name="F:WixSharp.Certificate.StoreName">
-            <summary>
-            Sets the certificate StoreName.
-            </summary>
-        </member>
-        <member name="M:WixSharp.Certificate.ToXml">
-            <summary>
-            Emits WiX XML.
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:WixSharp.WebAppPool">
             <summary>

@@ -212,6 +212,7 @@ namespace WixSharp
 
             AttributesDefinition = string.Join(";", items.ToArray());
         }
+
         /// <summary>
         /// Name of the <see cref="WixEntity"/>. 
         /// <para>This value is used as a <c>Name</c> for the corresponding WiX XML element.</para>

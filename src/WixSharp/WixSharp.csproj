@@ -113,6 +113,7 @@
     <Compile Include="Bootstrapper\Bundle.cs" />
     <Compile Include="Bootstrapper\BootstrapperApplication.cs" />
     <Compile Include="Bootstrapper\Packages.cs" />
+    <Compile Include="Certificate.cs" />
     <Compile Include="CommonTasks.cs" />
     <Compile Include="Compiler.Bootstrapper.cs" />
     <Compile Include="MajorUpgrade.cs" />

@@ -41,6 +41,21 @@ namespace WixSharp
     public static partial class Extensions
     {
         /// <summary>
+        /// Sets the parent component attribute 'Permanent'.
+        /// </summary>
+        /// <typeparam name="T">The type of the T.</typeparam>
+        /// <param name="obj">The obj.</param>
+        /// <param name="isPermanent">if set to <c>true</c> [is permanent].</param>
+        /// <returns></returns>
+        public static T SetComponentPermanent<T>(this T obj, bool isPermanent) where T: WixEntity
+        {
+            //While it is tempting to move the implementation to WixEntity the extension method gives a 
+            //better support for Fluent API as it returns not the base but the actual type.
+            obj.SetAttributeDefinition("Component:Permanent", isPermanent.ToYesNo());
+            return obj;
+        }
+
+        /// <summary>
         /// Determines whether the current user is administrator.
         /// </summary>
         /// <param name="identity">The identity.</param>
