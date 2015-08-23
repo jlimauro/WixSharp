@@ -151,12 +151,14 @@ namespace WixSharp
             return result;
         }
 
-        private static System.Reflection.Assembly Domain_AssemblyResolve(object sender, ResolveEventArgs args)
+        static System.Reflection.Assembly Domain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            var domain = (AppDomain)sender;
+            //args.Name -> "mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
 
-            //mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-            string potentialAsm = IO.Path.Combine(domain.SetupInformation.ApplicationBase, args.Name.Split(',').First() + ".dll");
+            string asmName = args.Name.Split(',').First() + ".dll";
+            string wixSharpAsmLocation = IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+            string potentialAsm = IO.Path.Combine(wixSharpAsmLocation, asmName);
 
             if (IO.File.Exists(potentialAsm))
                 try
