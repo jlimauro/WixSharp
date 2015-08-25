@@ -166,6 +166,7 @@ namespace WixSharp
                     return System.Reflection.Assembly.LoadFrom(potentialAsm);
                 }
                 catch { }
+
             return null;
         }
 

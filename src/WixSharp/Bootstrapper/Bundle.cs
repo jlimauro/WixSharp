@@ -58,17 +58,24 @@ namespace WixSharp.Bootstrapper
 
         /// <summary>
         /// The disable rollbackSpecifies whether the bundle will attempt to rollback packages executed in the chain.
-        /// If "yes" is specified then when a vital package fails to install only that package will rollback and the chain will stop with the error.
-        /// The default is "no" which indicates all packages executed during the chain will be rolldback to their previous state when a vital package fails.
+        /// If "true" is specified then when a vital package fails to install only that package will rollback and the chain will stop with the error.
+        /// The default is "false" which indicates all packages executed during the chain will be rolldback to their previous state when a vital package fails.
         /// </summary>
-        [Xml]
         public bool? DisableRollback;
 
         /// <summary>
-        /// Specifies whether the bundle will attempt to create a system restore point when executing the chain. If "yes" is specified then a system restore point will not be created. The default is "no" which indicates a system restore point will be created when the bundle is installed, uninstalled, repaired, modified, etc. If the system restore point cannot be created, the bundle will log the issue and continue.
+        /// Specifies whether the bundle will attempt to create a system restore point when executing the chain. If "true" is specified then a system restore 
+        /// point will not be created. The default is "false" which indicates a system restore point will be created when the bundle is installed, uninstalled, 
+        /// repaired, modified, etc. If the system restore point cannot be created, the bundle will log the issue and continue.
         /// </summary>
-        [Xml]
         public bool? DisableSystemRestore;
+
+        /// <summary>
+        /// Specifies whether the bundle will start installing packages while other packages are still being cached. 
+        /// If "true", packages will start executing when a rollback boundary is encountered. The default is "false" 
+        /// which dictates all packages must be cached before any packages will start to be installed.
+        /// </summary>
+        public bool? ParallelCache;
 
         /// <summary>
         /// The legal copyright found in the version resources of final bundle executable.
@@ -231,6 +238,10 @@ namespace WixSharp.Bootstrapper
             var xChain = root.AddElement("Chain");
             foreach (var item in this.Chain)
                 xChain.Add(item.ToXml());
+
+            xChain.SetAttribute("DisableRollback", DisableRollback);
+            xChain.SetAttribute("DisableSystemRestore", DisableSystemRestore);
+            xChain.SetAttribute("ParallelCache", ParallelCache);
 
             result.Add(root);
             return result.ToArray();

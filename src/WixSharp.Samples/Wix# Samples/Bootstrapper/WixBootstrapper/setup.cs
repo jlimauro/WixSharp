@@ -1,8 +1,11 @@
 //css_ref ..\..\..\WixSharp.dll;
 //css_ref System.Core.dll;
+//css_ref System.Xml.dll;
+//css_ref System.Xml.Linq.dll;
 //css_ref ..\..\..\Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 using System;
-using io=System.IO;
+using System.Xml;
+using io = System.IO;
 using WixSharp;
 using WixSharp.Bootstrapper;
 using WixSharp.CommonTasks;
@@ -14,14 +17,14 @@ public class InstallScript
         var productProj =
             new Project("My Product",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
-                    new File("readme.txt"))) 
-                    { InstallScope = InstallScope.perUser};
+                    new File("readme.txt")))
+            { InstallScope = InstallScope.perUser };
         //---------------------------------------------------------
         var crtProj =
             new Project("CRT",
                 new Dir(@"%ProgramFiles%\My Company\CRT",
                     new File("readme.txt")))
-                    { InstallScope = InstallScope.perUser};
+            { InstallScope = InstallScope.perUser };
 
         //---------------------------------------------------------
         string productMsi = productProj.BuildMsi();
@@ -47,7 +50,7 @@ public class InstallScript
         bootstrapper.Build();
         //---------------------------------------------------------
 
-        if(io.File.Exists(productMsi))
+        if (io.File.Exists(productMsi))
             io.File.Delete(productMsi);
 
         if (io.File.Exists(crtMsi))
