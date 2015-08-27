@@ -1644,6 +1644,12 @@
             it is saved by the compiler.
             </summary>
         </member>
+        <member name="F:WixSharp.Compiler.AssemblyResolve">
+            <summary>
+            The assembly resolve handler. If it is set then it will be used for all assembly probing (AppDomain.AssemblyResolve event) performed in all 
+            AppDomains.
+            </summary>
+        </member>
         <member name="F:WixSharp.Compiler.LightOptions">
             <summary>
             WiX linker <c>Light.exe</c> options.

@@ -24,6 +24,7 @@ using System;
 using System.Linq;
 using Microsoft.Deployment.WindowsInstaller;
 using IO = System.IO;
+using System.Diagnostics;
 
 namespace WixSharp
 {
@@ -139,19 +140,34 @@ namespace WixSharp
         {
             var domain = AppDomain.CurrentDomain.Clone();
 
+            AppDomain.CurrentDomain.AssemblyResolve += Domain_AssemblyResolve;
             domain.AssemblyResolve += Domain_AssemblyResolve;
+            try
+            {
+                var obj = domain.CreateInstanceFromAndUnwrap<T>();
 
-            var obj = domain.CreateInstanceFromAndUnwrap<T>();
+                var result = action(obj);
+                return result;
 
-            var result = action(obj);
-
-            domain.AssemblyResolve -= Domain_AssemblyResolve;
-            domain.Unload();
-
-            return result;
+            }
+            finally
+            {
+                domain.AssemblyResolve -= Domain_AssemblyResolve;
+                AppDomain.CurrentDomain.AssemblyResolve -= Domain_AssemblyResolve;
+                domain.Unload();
+            }
         }
 
         static System.Reflection.Assembly Domain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            if (Compiler.AssemblyResolve != null)
+                return Compiler.AssemblyResolve(sender, args);
+            else
+                return DefaultDomain_AssemblyResolve(sender, args);
+
+        }
+
+        static System.Reflection.Assembly DefaultDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             //args.Name -> "mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
 
