@@ -24,7 +24,7 @@ public class CustomActions
     [CustomAction]
     public static ActionResult MyAction(Session session)
     {
-        MessageBox.Show("Hello World!!!!!!!!!!!", "Embedded Managed CA (" + (Is64BitProcess?"x64" : "x86") + ")");
+        MessageBox.Show("Hello World!!!!!!!!!!!", "Embedded Managed CA (" + (Is64BitProcess ? "x64" : "x86") + ")");
         session.Log("Begin MyAction Hello World");
 
         return ActionResult.Success;
