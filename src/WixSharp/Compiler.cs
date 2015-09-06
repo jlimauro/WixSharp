@@ -253,6 +253,10 @@ namespace WixSharp
                         if (!wixDir.IsEmpty())
                             dir = Utils.PathCombine(wixDir, "bin");
                     }
+                    else
+                    {
+                        dir = IO.Path.GetFullPath(dir); //normalize
+                    }
 
                     if (!IO.Directory.Exists(dir))
                         throw new Exception("WiX binaries cannot be found. Please set environment variable WIXSHARP_WIXDIR or WixSharp.Compiler.WixLocation to valid path to the Wix binaries.");
@@ -473,8 +477,8 @@ namespace WixSharp
                 string objFile = IO.Path.GetFileNameWithoutExtension(wxsFile) + ".wixobj";
 
                 string extensionDlls = "";
-                foreach (string dll in project.WixExtensions.Distinct())
-                    extensionDlls += " -ext \"" + ResolveExtensionFile(dll) + "\"";
+                foreach (string dll in project.WixExtensions.Select(x => ResolveExtensionFile(x)).Distinct())
+                    extensionDlls += " -ext \"" + dll + "\"";
 
                 var candleOptions = CandleOptions + " " + project.CandleOptions;
                 var lightOptions = LightOptions + " " + project.LightOptions;
@@ -2057,7 +2061,7 @@ namespace WixSharp
 
             var uniqueWebSites = new List<WebSite>();
 
-            bool wasInserted = true;
+            bool wasInserted = false;
             foreach (IISVirtualDir wVDir in wVDirs)
             {
                 wasInserted = true;

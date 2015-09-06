@@ -12,6 +12,26 @@ namespace WixSharp.Test
     {
 
         [Fact]
+        [Description("Issue #60")]
+        public void Fix_Issue_60()
+        {
+            var project = new Project("MyProduct",
+                              new Dir("%ProgramFiles%",
+                              new File("abc.txt", new FilePermission("Guest", GenericPermission.All))));
+
+            project.AddAction(new QtCmdLineAction("cmd.exe", "/c \"echo abc\""));
+
+            var batchFile = project.BuildMsiCmd();
+            string cmd = System.IO.File.ReadAllLines(batchFile).First();
+
+            int firstPos = cmd.IndexOf("WixUtilExtension.dll");
+            int lastPos = cmd.LastIndexOf("WixUtilExtension.dll");
+
+            Assert.Equal(firstPos, lastPos);
+        }
+
+
+        [Fact]
         [Description("Issue #37")]
         public void Should_Preserve_ConstantsInAttrDefs()
         {
