@@ -14,7 +14,7 @@ namespace WixSharp.Test
             var bootstrapper = new Bundle("test_name")
             {
                 AboutUrl = "a_url",
-                DisableRollback = false,
+                DisableRollback = true,
                 IconFile = "icon.ico",
                 Version = new Version("1.2.3.4"),
                 UpgradeCode = new Guid("00000000-0000-0000-0000-000000000007")
@@ -22,17 +22,17 @@ namespace WixSharp.Test
 
             var xml = bootstrapper.ToXml().Cast<XElement>().First();
 
-            //<Bundle Name="test_name" DisableRollback="no" AboutUrl="a_url" IconSourceFile="icon.ico" UpgradeCode="00000000-0000-0000-0000-000000000007" Version="1.2.3.4" />
-            Assert.Equal(6, xml.Attributes().Count());
+            //<Bundle Name="test_name" AboutUrl="a_url" IconSourceFile="icon.ico" UpgradeCode="00000000-0000-0000-0000-000000000007" Version="1.2.3.4" />
+            Assert.Equal(5, xml.Attributes().Count());
 
             Assert.Equal("test_name", xml.ReadAttribute("Name"));
             Assert.Equal("a_url", xml.ReadAttribute("AboutUrl"));
-            Assert.Equal("no", xml.ReadAttribute("DisableRollback"));
+            Assert.Equal("yes", xml.Element("Chain").ReadAttribute("DisableRollback"));
             Assert.Equal("icon.ico", xml.ReadAttribute("IconSourceFile"));
             Assert.Equal("1.2.3.4", xml.ReadAttribute("Version"));
             Assert.Equal("00000000-0000-0000-0000-000000000007", xml.ReadAttribute("UpgradeCode"));
 
-            Assert.Null(xml.ReadAttribute("DisableSystemRestore")); //bool?
+            Assert.Null(xml.Element("Chain").ReadAttribute("DisableSystemRestore")); //bool?
             Assert.Null(xml.ReadAttribute("Copyright"));//string
         }
 
@@ -40,13 +40,13 @@ namespace WixSharp.Test
         public void Should_Produce_ExePackageXml()
         {
             var entity = new ExePackage(@"Samples\Setup1.exe")
-                             {
-                                 Id = "package1",
-                                 Name = "Setup1",
-                                 Payloads = new[] { @"Samples\setup1.dll", @"Samples\setup2.dll", },
-                                 InstallCommand = "/q /norestart",
-                                 Permanent = true,
-                             };
+            {
+                Id = "package1",
+                Name = "Setup1",
+                Payloads = new[] { @"Samples\setup1.dll", @"Samples\setup2.dll", },
+                InstallCommand = "/q /norestart",
+                Permanent = true,
+            };
 
             var xml = entity.ToXml().First().ToString();
             var expected = "<ExePackage Name=\"Setup1\" Id=\"package1\" InstallCommand=\"/q /norestart\" Permanent=\"yes\" SourceFile=\"Samples\\Setup1.exe\">\r\n" +

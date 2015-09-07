@@ -11,6 +11,8 @@ using io = System.IO;
 using WixSharp.UI;
 
 using WixMsi = WixSharpMsi::WixSharp;
+using WixSharp.CommonTasks;
+using Microsoft.Win32;
 
 namespace WixSharp.Test
 {
@@ -24,6 +26,26 @@ namespace WixSharp.Test
 
             var result = Utils.MakeRelative(path, baseDir);
             Assert.Equal(@"..\Content\readme.txt", result);
+        }
+
+        [Fact] //xUnit/VSTest runtime doesn't play nice with MSI interop when debugging
+        public void AppSearchTest()
+        {
+            var keyExist = AppSearch.RegKeyExists(Registry.LocalMachine, @"System\CurrentControlSet\services");
+            var fakeKeyExist = AppSearch.RegKeyExists(Registry.LocalMachine, "TTTT");
+            var regValue = AppSearch.GetRegValue(Registry.ClassesRoot, ".txt", null);
+            var code = AppSearch.GetProductCode("Windows Live Photo Common");
+            var name = AppSearch.GetProductName("{1D6432B4-E24D-405E-A4AB-D7E6D088CBC9}");
+            var installed = AppSearch.IsProductInstalled("{1D6432B4-E24D-405E-A4AB-D7E6D088CBC9}");
+            var products = AppSearch.GetProducts();
+
+            Assert.True(keyExist);
+            Assert.False(fakeKeyExist);
+            Assert.Equal("txtfile", regValue);
+            Assert.Equal("{1D6432B4-E24D-405E-A4AB-D7E6D088CBC9}", code.FirstOrDefault());
+            Assert.Equal("Windows Live Photo Common", name);
+            Assert.True(installed); //may fail on some machines
+            Assert.True(products.Any());
         }
 
         //[Fact]

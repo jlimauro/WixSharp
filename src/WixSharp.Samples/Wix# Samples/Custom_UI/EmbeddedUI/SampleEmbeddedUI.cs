@@ -59,7 +59,7 @@ namespace Microsoft.Deployment.Samples.EmbeddedUI
                     // Don't show custom UI when uninstalling.
                     return false;
 
-                    // An embedded UI could display an uninstall wizard, it's just not imlemented here.
+                    // An embedded UI could display an uninstall wizard, it's just not implemented here.
                 }
             }
 

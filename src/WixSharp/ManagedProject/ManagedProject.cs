@@ -81,6 +81,11 @@ namespace WixSharp
         public delegate void SetupEventHandler(SetupEventArgs e);
 
         /// <summary>
+        /// Occurs on EmbeddedUI initialized but before first dialog is displayed. It is only invoked if ManagedUI is set.
+        /// </summary>
+        public event SetupEventHandler UIInitialized;
+
+        /// <summary>
         /// Occurs before AppSearch standard action.
         /// </summary>
         public event SetupEventHandler Load;
@@ -105,7 +110,7 @@ namespace WixSharp
 
         string thisAsm = typeof(ManagedProject).Assembly.Location;
 
-        void Bind<T>(Expression<Func<T>> expression, When when, Step step, bool elevated = false)
+        void Bind<T>(Expression<Func<T>> expression, When when = When.Before, Step step = null, bool elevated = false)
         {
             var name = Reflect.NameOf(expression);
             var handler = expression.Compile()() as Delegate;
@@ -123,14 +128,16 @@ namespace WixSharp
                 this.Properties = this.Properties.Add(new Property("WixSharp_{0}_Handlers".FormatInline(name), GetHandlersInfo(handler as MulticastDelegate)));
 
                 string dllEntry = "WixSharp_{0}_Action".FormatInline(name);
-
-                if (elevated)
-                    this.Actions = this.Actions.Add(new ElevatedManagedAction(new Id(dllEntry), dllEntry, thisAsm, Return.check, when, step, Condition.Create("1"))
-                    {
-                        UsesProperties = "WixSharp_{0}_Handlers,{1},{2}".FormatInline(name, wixSharpProperties, DefaultDeferredProperties),
-                    });
-                else
-                    this.Actions = this.Actions.Add(new ManagedAction(new Id(dllEntry), dllEntry, thisAsm, Return.check, when, step, Condition.Create("1")));
+                if (step != null)
+                {
+                    if (elevated)
+                        this.Actions = this.Actions.Add(new ElevatedManagedAction(new Id(dllEntry), dllEntry, thisAsm, Return.check, when, step, Condition.Create("1"))
+                        {
+                            UsesProperties = "WixSharp_{0}_Handlers,{1},{2}".FormatInline(name, wixSharpProperties, DefaultDeferredProperties),
+                        });
+                    else
+                        this.Actions = this.Actions.Add(new ManagedAction(new Id(dllEntry), dllEntry, thisAsm, Return.check, when, step, Condition.Create("1")));
+                }
             }
         }
 
@@ -168,6 +175,8 @@ namespace WixSharp
                     this.EmbeddedUI = new EmbeddedAssembly(ManagedUI.GetType().Assembly.Location);
 
                     this.DefaultRefAssemblies.Add(ManagedUI.GetType().Assembly.Location);
+
+                    Bind(() => UIInitialized);
                 }
 
                 Bind(() => Load, When.Before, Step.AppSearch);
@@ -315,7 +324,7 @@ namespace WixSharp
                 method.Invoke(Activator.CreateInstance(method.DeclaringType), new object[] { eventArgs });
         }
 
-        internal static ActionResult InvokeClientHandlers(Session session, string eventName)
+        public static ActionResult InvokeClientHandlers(Session session, string eventName)
         {
             var eventArgs = Convert(session);
 
@@ -323,14 +332,17 @@ namespace WixSharp
             {
                 string handlersInfo = session.Property("WixSharp_{0}_Handlers".FormatInline(eventName));
 
-                foreach (string item in handlersInfo.Trim().Split('\n'))
+                if (!string.IsNullOrEmpty(handlersInfo))
                 {
-                    InvokeClientHandler(item.Trim(), eventArgs);
-                    if (eventArgs.Result == ActionResult.Failure || eventArgs.Result == ActionResult.UserExit)
-                        break;
-                }
+                    foreach (string item in handlersInfo.Trim().Split('\n'))
+                    {
+                        InvokeClientHandler(item.Trim(), eventArgs);
+                        if (eventArgs.Result == ActionResult.Failure || eventArgs.Result == ActionResult.UserExit)
+                            break;
+                    }
 
-                eventArgs.SaveData();
+                    eventArgs.SaveData();
+                }
             }
             catch (Exception e)
             {

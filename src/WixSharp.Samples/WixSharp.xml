@@ -133,6 +133,494 @@
             A <see cref="T:System.String" /> that represents this instance.
             </returns>
         </member>
+        <member name="T:WixSharp.CommonTasks.Tasks">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.BuildBootstrapper(System.String,System.String,System.String,System.String,System.Boolean,System.String)">
+             <summary>
+             Builds the bootstrapper.
+             </summary>
+             <param name="prerequisiteFile">The prerequisite file.</param>
+             <param name="primaryFile">The primary setup file.</param>
+             <param name="outputFile">The output (bootsrtapper) file.</param>
+             <param name="prerequisiteRegKeyValue">The prerequisite registry key value.
+             <para>This value is used to determine if the <c>PrerequisiteFile</c> should be launched.</para>
+             <para>This value must comply with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
+             <code>PrerequisiteRegKeyValue = @"HKLM:Software\My Company\My Product:Installed";</code>
+             Existence of the specified registry value at runtime is interpreted as an indication of the <c>PrerequisiteFile</c> has been alreday installed.
+             Thus bootstrapper will execute <c>PrimaryFile</c> without launching <c>PrerequisiteFile</c> first.</param>
+             <param name="doNotPostVerifyPrerequisite">The flag which allows you to disable verification of <c>PrerequisiteRegKeyValue</c> after the prerequisite setup is completed.
+             <para>Normally if <c>bootstrapper</c> checks if <c>PrerequisiteRegKeyValue</c>/> exists straight after the prerequisite installation and starts
+             the primary setup only if it does.</para>
+             <para>It is possible to instruct bootstrapper to continue with the primary setup regardless of the prerequisite installation outcome. This can be done
+             by setting DoNotPostVerifyPrerequisite to <c>true</c> (default is <c>false</c>)</para>
+            </param>
+             <param name="optionalArguments">The optional arguments for the bootstrapper compiler.</param>
+             <returns>Path to the built bootstrapper file. Returns <c>null</c> if bootstrapper cannot be built.</returns>
+            
+             <example>The following is an example of building bootstrapper <c>Setup.msi</c> for deploying .NET along with the <c>MyProduct.msi</c> file.
+             <code>
+             WixSharp.CommonTasks.Tasks.BuildBootstrapper(
+                     @"C:\downloads\dotnetfx.exe",
+                     "MainProduct.msi",
+                     "setup.exe",
+                     @"HKLM:Software\My Company\My Product:Installed"
+                     false,
+                     "");
+             </code>
+             </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.BuildBootstrapper(System.String,System.String,System.String,System.String,System.Boolean)">
+             <summary>
+             Builds the bootstrapper.
+             </summary>
+             <param name="prerequisiteFile">The prerequisite file.</param>
+             <param name="primaryFile">The primary setup file.</param>
+             <param name="outputFile">The output (bootsrtapper) file.</param>
+             <param name="prerequisiteRegKeyValue">The prerequisite registry key value.
+             <para>This value is used to determine if the <c>PrerequisiteFile</c> should be launched.</para>
+             <para>This value must comply with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
+             <code>PrerequisiteRegKeyValue = @"HKLM:Software\My Company\My Product:Installed";</code>
+             Existence of the specified registry value at runtime is interpreted as an indication of the <c>PrerequisiteFile</c> has been already installed.
+             Thus bootstrapper will execute <c>PrimaryFile</c> without launching <c>PrerequisiteFile</c> first.</param>
+             <param name="doNotPostVerifyPrerequisite">The flag which allows you to disable verification of <c>PrerequisiteRegKeyValue</c> after the prerequisite setup is completed.
+             <para>Normally if <c>bootstrapper</c> checkers if <c>PrerequisiteRegKeyValue</c>/> exists straight after the prerequisite installation and starts
+             the primary setup only if it does.</para>
+             <para>It is possible to instruct bootstrapper to continue with the primary setup regardless of the prerequisite installation outcome. This can be done
+             by setting DoNotPostVerifyPrerequisite to <c>true</c> (default is <c>false</c>)</para>
+            </param>
+             <returns>Path to the built bootstrapper file. Returns <c>null</c> if bootstrapper cannot be built.</returns>
+            
+             <example>The following is an example of building bootstrapper <c>Setup.msi</c> for deploying .NET along with the <c>MyProduct.msi</c> file.
+             <code>
+             WixSharp.CommonTasks.Tasks.BuildBootstrapper(
+                     @"C:\downloads\dotnetfx.exe",
+                     "MainProduct.msi",
+                     "setup.exe",
+                     @"HKLM:Software\My Company\My Product:Installed"
+                     false);
+             </code>
+             </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.BuildBootstrapper(System.String,System.String,System.String,System.String)">
+            <summary>
+            Builds the bootstrapper.
+            </summary>
+            <param name="prerequisiteFile">The prerequisite file.</param>
+            <param name="primaryFile">The primary setup file.</param>
+            <param name="outputFile">The output (bootsrtapper) file.</param>
+            <param name="prerequisiteRegKeyValue">The prerequisite registry key value.
+            <para>This value is used to determine if the <c>PrerequisiteFile</c> should be launched.</para>
+            <para>This value must comply with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
+            <code>PrerequisiteRegKeyValue = @"HKLM:Software\My Company\My Product:Installed";</code>
+            Existence of the specified registry value at runtime is interpreted as an indication of the <c>PrerequisiteFile</c> has been already installed.
+            Thus bootstrapper will execute <c>PrimaryFile</c> without launching <c>PrerequisiteFile</c> first.</param>
+            <returns>Path to the built bootstrapper file. Returns <c>null</c> if bootstrapper cannot be built.</returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.DigitalySign(System.String,System.String,System.String,System.String,System.String,System.String)">
+             <summary>
+             Applies digital signature to a file (e.g. msi, exe, dll) with MS <c>SignTool.exe</c> utility.
+             </summary>
+             <param name="fileToSign">The file to sign.</param>
+             <param name="pfxFile">Specify the signing certificate in a file. If this file is a PFX with a password, the password may be supplied
+             with the <c>password</c> parameter.</param>
+             <param name="timeURL">The timestamp server's URL. If this option is not present (pass to null), the signed file will not be timestamped.
+             A warning is generated if timestamping fails.</param>
+             <param name="password">The password to use when opening the PFX file. Should be <c>null</c> if no password required.</param>
+             <param name="optionalArguments">Extra arguments to pass to the <c>SignTool.exe</c> utility.</param>
+             <param name="wellKnownLocations">The optional ';' separated list of directories where SignTool.exe can be located.
+             If this parameter is not specified WixSharp will try to locate the SignTool in the built-in well-known locations (system PATH)</param>
+             <returns>Exit code of the <c>SignTool.exe</c> process.</returns>
+            
+             <example>The following is an example of signing <c>Setup.msi</c> file.
+             <code>
+             WixSharp.CommonTasks.Tasks.DigitalySign(
+                 "Setup.msi",
+                 "MyCert.pfx",
+                 "http://timestamp.verisign.com/scripts/timstamp.dll",
+                 "MyPassword",
+                 null);
+             </code>
+             </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.DigitalySign(System.String,System.String,System.String,System.String)">
+             <summary>
+             Applies digital signature to a file (e.g. msi, exe, dll) with MS <c>SignTool.exe</c> utility.
+             <para>If you need to specify extra SignTool.exe parameters or the location of the tool use the overloaded <c>DigitalySign</c> signature </para>
+             </summary>
+             <param name="fileToSign">The file to sign.</param>
+             <param name="pfxFile">Specify the signing certificate in a file. If this file is a PFX with a password, the password may be supplied
+             with the <c>password</c> parameter.</param>
+             <param name="timeURL">The timestamp server's URL. If this option is not present, the signed file will not be timestamped.
+             A warning is generated if timestamping fails.</param>
+             <param name="password">The password to use when opening the PFX file.</param>
+             <returns>Exit code of the <c>SignTool.exe</c> process.</returns>
+            
+             <example>The following is an example of signing <c>Setup.msi</c> file.
+             <code>
+             WixSharp.CommonTasks.Tasks.DigitalySign(
+                 "Setup.msi",
+                 "MyCert.pfx",
+                 "http://timestamp.verisign.com/scripts/timstamp.dll",
+                 "MyPassword");
+             </code>
+             </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.ImportRegFile(System.String)">
+             <summary>
+             Imports the reg file.
+             </summary>
+             <param name="regFile">The reg file.</param>
+             <returns></returns>
+             <example>The following is an example of importing registry entries from the *.reg file.
+             <code>
+             var project =
+                 new Project("MyProduct",
+                     new Dir(@"%ProgramFiles%\My Company\My Product",
+                         new File(@"readme.txt")),
+                     ...
+            
+             project.RegValues = CommonTasks.Tasks.ImportRegFile("app_settings.reg");
+            
+             Compiler.BuildMsi(project);
+             </code>
+             </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.ImportRegFile(WixSharp.Project,System.String)">
+             <summary>
+             Imports the reg file. It is nothing else but an extension method version of the 'plain' <see cref="T:WixSharp.CommonTasks.Tasks.ImportRegFile"/>.
+             </summary>
+             <param name="project">The project object.</param>
+             <param name="regFile">The reg file.</param>
+             <returns></returns>
+             <example>The following is an example of importing registry entries from the *.reg file.
+             <code>
+             var project =
+                 new Project("MyProduct",
+                     new Dir(@"%ProgramFiles%\My Company\My Product",
+                         new File(@"readme.txt")),
+                     ...
+            
+             project.ImportRegFile("app_settings.reg");
+            
+             Compiler.BuildMsi(project);
+             </code>
+             </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddProperty(WixSharp.Project,WixSharp.Property[])">
+            <summary>
+            Adds the property.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddAction(WixSharp.Project,WixSharp.Action[])">
+            <summary>
+            Adds the action.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddDir(WixSharp.Project,WixSharp.Dir[])">
+            <summary>
+            Adds the dir.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddRegValue(WixSharp.Project,WixSharp.RegValue[])">
+            <summary>
+            Adds the registry value.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddBinary(WixSharp.Project,WixSharp.Binary[])">
+            <summary>
+            Adds the binary.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddEnvironmentVariabl(WixSharp.Project,WixSharp.EnvironmentVariable[])">
+            <summary>
+            Adds the environment variable.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddEnvironmentVariable(WixSharp.Project,WixSharp.EnvironmentVariable[])">
+            <summary>
+            Adds the environment variable.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddRefAssembly(WixSharp.ManagedAction,System.String[])">
+            <summary>
+            Adds the assembly reference.
+            </summary>
+            <param name="action">The action.</param>
+            <param name="files">The files.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddAssociation(WixSharp.File,WixSharp.FileAssociation[])">
+            <summary>
+            Adds the file association.
+            </summary>
+            <param name="file">The file.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddShortcut(WixSharp.File,WixSharp.FileShortcut[])">
+            <summary>
+            Adds the shortcut.
+            </summary>
+            <param name="file">The file.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddDir(WixSharp.Dir,WixSharp.Dir[])">
+            <summary>
+            Adds the dir.
+            </summary>
+            <param name="dir">The dir.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddFile(WixSharp.Dir,WixSharp.File[])">
+            <summary>
+            Adds the file.
+            </summary>
+            <param name="dir">The dir.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddShortcut(WixSharp.Dir,WixSharp.ExeFileShortcut[])">
+            <summary>
+            Adds the shortcut.
+            </summary>
+            <param name="dir">The dir.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddMergeModule(WixSharp.Dir,WixSharp.Merge[])">
+            <summary>
+            Adds the merge module.
+            </summary>
+            <param name="dir">The dir.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddFileCollection(WixSharp.Dir,WixSharp.Files[])">
+            <summary>
+            Adds the file collection.
+            </summary>
+            <param name="dir">The dir.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.AddDirFileCollection(WixSharp.Dir,WixSharp.DirFiles[])">
+            <summary>
+            Adds the dir file collection.
+            </summary>
+            <param name="dir">The dir.</param>
+            <param name="items">The items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.RemoveDialogsBetween(WixSharp.Project,System.String,System.String)">
+            <summary>
+            Removes the dialogs between specified two dialogs. It simply connects 'next' button of the start dialog with the
+            'NewDialog' action associated with the end dialog. And vise versa for the 'back' button.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="start">The start.</param>
+            <param name="end">The end.</param>
+            <returns></returns>
+            <example>The following is an example of the setup that skips License dialog.
+            <code>
+            project.UI = WUI.WixUI_InstallDir;
+            project.RemoveDialogsBetween(Dialogs.WelcomeDlg, Dialogs.InstallDirDlg);
+            ...
+            Compiler.BuildMsi(project);
+            </code>
+            </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.SetVersionFrom(WixSharp.Project,System.String)">
+            <summary>
+            Sets the Project version from the file version of the file specified by it's ID.
+            <para>This method sets project WixSourceGenerated event handler and injects 
+            "!(bind.FileVersion.&lt;file ID&gt;" into the XML Product's Version attribute.</para>
+            </summary>
+            <param name="project">The project.</param>
+            <param name="fileId">The file identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.InjectClrDialog(WixSharp.Project,System.String,System.String,System.String)">
+             <summary>
+             Injects CLR dialog between MSI dialogs 'prevDialog' and 'nextDialog'.
+             Passes custom action CLR method name (showDialogMethod) for instantiating and popping up the CLR dialog.
+             </summary>
+             <param name="project">The project.</param>
+             <param name="showDialogMethod">The show dialog method.</param>
+             <param name="prevDialog">The previous dialog.</param>
+             <param name="nextDialog">The next dialog.</param>
+             <returns></returns>
+             <example>The following is an example of inserting CustomDialog dialog into the UI sequence between MSI dialogs InsallDirDlg and VerifyReadyDlg.
+             <code>
+             public class static Script
+             {
+                 public static void Main()
+                 {
+                     var project = new Project("CustomDialogTest");
+            
+                     project.InjectClrDialog("ShowCustomDialog", Dialogs.InstallDirDlg, Dialogs.VerifyReadyDlg);
+                     Compiler.BuildMsi(project);
+                 }
+            
+                 [CustomAction]
+                 public static ActionResult ShowCustomDialog(Session session)
+                 {
+                     return WixCLRDialog.ShowAsMsiDialog(new CustomDialog(session));
+                 }
+            }
+             </code>
+             </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.GetFileVersion(System.String)">
+            <summary>
+            Gets the file version.
+            </summary>
+            <param name="file">The path to the file.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.SetClrPrerequisite(WixSharp.Project,System.String,System.String)">
+            <summary>
+            Binds the LaunchCondition to the automatically created REQUIRED_NET property which is set to the value of the
+            Software\Microsoft\NET Framework Setup\NDP\{version}\Install registry entry.
+            <para>It is a single step equivalent of the "Wix# Samples\LaunchConditions" sample.</para>
+            <para>Note that the value of the version parameter is a precise sub-key of the corresponding 'Install' registry entry
+            (e.g. as in 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4.0\Client\Install').</para>
+            <para>The typical values are:</para>
+            <para>   v2.0.50727</para>
+            <para>   v3.0</para>
+            <para>   v3.5</para>
+            <para>   v4\Client</para>
+            <para>   v4\Full</para>
+            <para>   v4.0\Client</para>
+            <para>   ...</para>
+            </summary>
+            <param name="project">The project.</param>
+            <param name="version">The sub-key of the registry entry of the sub-key of the corresponding registry version of .NET to be checked.
+            </param>
+            <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.SetNetFxPrerequisite(WixSharp.Project,System.String,System.String)">
+            <summary>
+            Binds the LaunchCondition to the <c>version</c> condition based on WiXNetFxExtension properties.
+            <para>The typical conditions are:</para>
+            <para>   NETFRAMEWORK20="#1"</para>
+            <para>   NETFRAMEWORK40FULL="#1"</para>
+            <para>   NETFRAMEWORK35="#1"</para>
+            <para>   NETFRAMEWORK30_SP_LEVEL and NOT NETFRAMEWORK30_SP_LEVEL='#0'</para>
+            <para>   ...</para>
+            The full list of names and values can be found here http://wixtoolset.org/documentation/manual/v3/customactions/wixnetfxextension.html
+            </summary>
+            <param name="project">The project.</param>
+            <param name="versionCondition">Condition expression.
+            </param>
+            <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.SetConfigAttribute(System.String,System.String,System.String)">
+             <summary>
+             Sets the value of the attribute value in the .NET application configuration file according
+             the specified XPath expression.
+             <para>
+             This simple routine is to be used for the customization of the installed config files
+             (e.g. in the deferred custom actions).
+             </para>
+             </summary>
+             <param name="configFile">The configuration file.</param>
+             <param name="elementPath">The element XPath value. It should include the attribute name.</param>
+             <param name="value">The value to be set to the attribute.</param>
+            
+             <example>The following is an example demonstrates this simple technique:
+             <code>
+              Tasks.SetConfigAttribute(configFile, "//configuration/appSettings/add[@key='AppName']/@value", "My App");
+             </code>
+             </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.SetConfigAttribute(System.Xml.Linq.XElement,System.String,System.String)">
+             <summary>
+             Sets the value of the attribute value in the .NET application configuration file according
+             the specified XPath expression.
+             <para>
+             This simple routine is to be used for the customization of the installed config files
+             (e.g. in the deferred custom actions).
+             </para>
+             </summary>
+             <returns></returns>
+             <param name="config">The configuration file element.</param>
+             <param name="elementPath">The element XPath value. It should include the attribute name.</param>
+             <param name="value">The value to be set to the attribute.</param>
+            
+             <example>The following is an example demonstrates this simple technique:
+             <code>
+              XDocument.Load(configFile).Root
+                       .SetConfigAttribute("//configuration/appSettings/add[@key='AppName']/@value", "My App")
+                       .SetConfigAttribute(...
+                       .SetConfigAttribute(...
+                       .Document.Save(configFile);
+             </code>
+             </example>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.InstallService(System.String,System.Boolean)">
+            <summary>
+            Installs the windows service. It uses InstallUtil.exe to complete the actual installation/uninstallation.
+            During the run for the InstallUtil.exe console window is hidden. /// If any error occurred the console output is captured and embedded into the raised Exception object.
+            </summary>
+            <param name="serviceFile">The service file.</param>
+            <param name="isInstalling">if set to <c>true</c> [is installing].</param>
+            <returns></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.StartService(System.String,System.Boolean)">
+            <summary>
+            Starts the windows service. It uses sc.exe to complete the action.  During the action console window is hidden.
+            If any error occurred the console output is captured and embedded into the raised Exception object.
+            </summary>
+            <param name="service">The service.</param>
+            <param name="throwOnError">if set to <c>true</c> [throw on error].</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.Tasks.StopService(System.String,System.Boolean)">
+            <summary>
+            Stops the windows service. It uses sc.exe to complete the action.  During the action console window is hidden.
+            If any error occurred the console output is captured and embedded into the raised Exception object.
+            </summary>
+            <param name="service">The service.</param>
+            <param name="throwOnError">if set to <c>true</c> [throw on error].</param>
+            <returns></returns>
+        </member>
+        <member name="P:WixSharp.CommonTasks.Tasks.LatestFrameworkDirectory">
+            <summary>
+            Gets the directory of the latest installed verion of .NET framework.
+            </summary>
+            <value>
+            The latest framework directory.
+            </value>
+        </member>
         <member name="T:WixSharp.Assembly">
              <summary>
              Defines assembly file to be installed.
@@ -1054,494 +1542,6 @@
             Emits WiX XML.
             </summary>
             <returns></returns>
-        </member>
-        <member name="T:WixSharp.CommonTasks.Tasks">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.BuildBootstrapper(System.String,System.String,System.String,System.String,System.Boolean,System.String)">
-             <summary>
-             Builds the bootstrapper.
-             </summary>
-             <param name="prerequisiteFile">The prerequisite file.</param>
-             <param name="primaryFile">The primary setup file.</param>
-             <param name="outputFile">The output (bootsrtapper) file.</param>
-             <param name="prerequisiteRegKeyValue">The prerequisite registry key value.
-             <para>This value is used to determine if the <c>PrerequisiteFile</c> should be launched.</para>
-             <para>This value must comply with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
-             <code>PrerequisiteRegKeyValue = @"HKLM:Software\My Company\My Product:Installed";</code>
-             Existence of the specified registry value at runtime is interpreted as an indication of the <c>PrerequisiteFile</c> has been alreday installed.
-             Thus bootstrapper will execute <c>PrimaryFile</c> without launching <c>PrerequisiteFile</c> first.</param>
-             <param name="doNotPostVerifyPrerequisite">The flag which allows you to disable verification of <c>PrerequisiteRegKeyValue</c> after the prerequisite setup is completed.
-             <para>Normally if <c>bootstrapper</c> checks if <c>PrerequisiteRegKeyValue</c>/> exists straight after the prerequisite installation and starts
-             the primary setup only if it does.</para>
-             <para>It is possible to instruct bootstrapper to continue with the primary setup regardless of the prerequisite installation outcome. This can be done
-             by setting DoNotPostVerifyPrerequisite to <c>true</c> (default is <c>false</c>)</para>
-            </param>
-             <param name="optionalArguments">The optional arguments for the bootstrapper compiler.</param>
-             <returns>Path to the built bootstrapper file. Returns <c>null</c> if bootstrapper cannot be built.</returns>
-            
-             <example>The following is an example of building bootstrapper <c>Setup.msi</c> for deploying .NET along with the <c>MyProduct.msi</c> file.
-             <code>
-             WixSharp.CommonTasks.Tasks.BuildBootstrapper(
-                     @"C:\downloads\dotnetfx.exe",
-                     "MainProduct.msi",
-                     "setup.exe",
-                     @"HKLM:Software\My Company\My Product:Installed"
-                     false,
-                     "");
-             </code>
-             </example>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.BuildBootstrapper(System.String,System.String,System.String,System.String,System.Boolean)">
-             <summary>
-             Builds the bootstrapper.
-             </summary>
-             <param name="prerequisiteFile">The prerequisite file.</param>
-             <param name="primaryFile">The primary setup file.</param>
-             <param name="outputFile">The output (bootsrtapper) file.</param>
-             <param name="prerequisiteRegKeyValue">The prerequisite registry key value.
-             <para>This value is used to determine if the <c>PrerequisiteFile</c> should be launched.</para>
-             <para>This value must comply with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
-             <code>PrerequisiteRegKeyValue = @"HKLM:Software\My Company\My Product:Installed";</code>
-             Existence of the specified registry value at runtime is interpreted as an indication of the <c>PrerequisiteFile</c> has been already installed.
-             Thus bootstrapper will execute <c>PrimaryFile</c> without launching <c>PrerequisiteFile</c> first.</param>
-             <param name="doNotPostVerifyPrerequisite">The flag which allows you to disable verification of <c>PrerequisiteRegKeyValue</c> after the prerequisite setup is completed.
-             <para>Normally if <c>bootstrapper</c> checkers if <c>PrerequisiteRegKeyValue</c>/> exists straight after the prerequisite installation and starts
-             the primary setup only if it does.</para>
-             <para>It is possible to instruct bootstrapper to continue with the primary setup regardless of the prerequisite installation outcome. This can be done
-             by setting DoNotPostVerifyPrerequisite to <c>true</c> (default is <c>false</c>)</para>
-            </param>
-             <returns>Path to the built bootstrapper file. Returns <c>null</c> if bootstrapper cannot be built.</returns>
-            
-             <example>The following is an example of building bootstrapper <c>Setup.msi</c> for deploying .NET along with the <c>MyProduct.msi</c> file.
-             <code>
-             WixSharp.CommonTasks.Tasks.BuildBootstrapper(
-                     @"C:\downloads\dotnetfx.exe",
-                     "MainProduct.msi",
-                     "setup.exe",
-                     @"HKLM:Software\My Company\My Product:Installed"
-                     false);
-             </code>
-             </example>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.BuildBootstrapper(System.String,System.String,System.String,System.String)">
-            <summary>
-            Builds the bootstrapper.
-            </summary>
-            <param name="prerequisiteFile">The prerequisite file.</param>
-            <param name="primaryFile">The primary setup file.</param>
-            <param name="outputFile">The output (bootsrtapper) file.</param>
-            <param name="prerequisiteRegKeyValue">The prerequisite registry key value.
-            <para>This value is used to determine if the <c>PrerequisiteFile</c> should be launched.</para>
-            <para>This value must comply with the following pattern: &lt;RegistryHive&gt;:&lt;KeyPath&gt;:&lt;ValueName&gt;.</para>
-            <code>PrerequisiteRegKeyValue = @"HKLM:Software\My Company\My Product:Installed";</code>
-            Existence of the specified registry value at runtime is interpreted as an indication of the <c>PrerequisiteFile</c> has been already installed.
-            Thus bootstrapper will execute <c>PrimaryFile</c> without launching <c>PrerequisiteFile</c> first.</param>
-            <returns>Path to the built bootstrapper file. Returns <c>null</c> if bootstrapper cannot be built.</returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.DigitalySign(System.String,System.String,System.String,System.String,System.String,System.String)">
-             <summary>
-             Applies digital signature to a file (e.g. msi, exe, dll) with MS <c>SignTool.exe</c> utility.
-             </summary>
-             <param name="fileToSign">The file to sign.</param>
-             <param name="pfxFile">Specify the signing certificate in a file. If this file is a PFX with a password, the password may be supplied
-             with the <c>password</c> parameter.</param>
-             <param name="timeURL">The timestamp server's URL. If this option is not present (pass to null), the signed file will not be timestamped.
-             A warning is generated if timestamping fails.</param>
-             <param name="password">The password to use when opening the PFX file. Should be <c>null</c> if no password required.</param>
-             <param name="optionalArguments">Extra arguments to pass to the <c>SignTool.exe</c> utility.</param>
-             <param name="wellKnownLocations">The optional ';' separated list of directories where SignTool.exe can be located.
-             If this parameter is not specified WixSharp will try to locate the SignTool in the built-in well-known locations (system PATH)</param>
-             <returns>Exit code of the <c>SignTool.exe</c> process.</returns>
-            
-             <example>The following is an example of signing <c>Setup.msi</c> file.
-             <code>
-             WixSharp.CommonTasks.Tasks.DigitalySign(
-                 "Setup.msi",
-                 "MyCert.pfx",
-                 "http://timestamp.verisign.com/scripts/timstamp.dll",
-                 "MyPassword",
-                 null);
-             </code>
-             </example>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.DigitalySign(System.String,System.String,System.String,System.String)">
-             <summary>
-             Applies digital signature to a file (e.g. msi, exe, dll) with MS <c>SignTool.exe</c> utility.
-             <para>If you need to specify extra SignTool.exe parameters or the location of the tool use the overloaded <c>DigitalySign</c> signature </para>
-             </summary>
-             <param name="fileToSign">The file to sign.</param>
-             <param name="pfxFile">Specify the signing certificate in a file. If this file is a PFX with a password, the password may be supplied
-             with the <c>password</c> parameter.</param>
-             <param name="timeURL">The timestamp server's URL. If this option is not present, the signed file will not be timestamped.
-             A warning is generated if timestamping fails.</param>
-             <param name="password">The password to use when opening the PFX file.</param>
-             <returns>Exit code of the <c>SignTool.exe</c> process.</returns>
-            
-             <example>The following is an example of signing <c>Setup.msi</c> file.
-             <code>
-             WixSharp.CommonTasks.Tasks.DigitalySign(
-                 "Setup.msi",
-                 "MyCert.pfx",
-                 "http://timestamp.verisign.com/scripts/timstamp.dll",
-                 "MyPassword");
-             </code>
-             </example>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.ImportRegFile(System.String)">
-             <summary>
-             Imports the reg file.
-             </summary>
-             <param name="regFile">The reg file.</param>
-             <returns></returns>
-             <example>The following is an example of importing registry entries from the *.reg file.
-             <code>
-             var project =
-                 new Project("MyProduct",
-                     new Dir(@"%ProgramFiles%\My Company\My Product",
-                         new File(@"readme.txt")),
-                     ...
-            
-             project.RegValues = CommonTasks.Tasks.ImportRegFile("app_settings.reg");
-            
-             Compiler.BuildMsi(project);
-             </code>
-             </example>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.ImportRegFile(WixSharp.Project,System.String)">
-             <summary>
-             Imports the reg file. It is nothing else but an extension method version of the 'plain' <see cref="T:WixSharp.CommonTasks.Tasks.ImportRegFile"/>.
-             </summary>
-             <param name="project">The project object.</param>
-             <param name="regFile">The reg file.</param>
-             <returns></returns>
-             <example>The following is an example of importing registry entries from the *.reg file.
-             <code>
-             var project =
-                 new Project("MyProduct",
-                     new Dir(@"%ProgramFiles%\My Company\My Product",
-                         new File(@"readme.txt")),
-                     ...
-            
-             project.ImportRegFile("app_settings.reg");
-            
-             Compiler.BuildMsi(project);
-             </code>
-             </example>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddProperty(WixSharp.Project,WixSharp.Property[])">
-            <summary>
-            Adds the property.
-            </summary>
-            <param name="project">The project.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddAction(WixSharp.Project,WixSharp.Action[])">
-            <summary>
-            Adds the action.
-            </summary>
-            <param name="project">The project.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddDir(WixSharp.Project,WixSharp.Dir[])">
-            <summary>
-            Adds the dir.
-            </summary>
-            <param name="project">The project.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddRegValue(WixSharp.Project,WixSharp.RegValue[])">
-            <summary>
-            Adds the registry value.
-            </summary>
-            <param name="project">The project.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddBinary(WixSharp.Project,WixSharp.Binary[])">
-            <summary>
-            Adds the binary.
-            </summary>
-            <param name="project">The project.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddEnvironmentVariabl(WixSharp.Project,WixSharp.EnvironmentVariable[])">
-            <summary>
-            Adds the environment variable.
-            </summary>
-            <param name="project">The project.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddEnvironmentVariable(WixSharp.Project,WixSharp.EnvironmentVariable[])">
-            <summary>
-            Adds the environment variable.
-            </summary>
-            <param name="project">The project.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddRefAssembly(WixSharp.ManagedAction,System.String[])">
-            <summary>
-            Adds the assembly reference.
-            </summary>
-            <param name="action">The action.</param>
-            <param name="files">The files.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddAssociation(WixSharp.File,WixSharp.FileAssociation[])">
-            <summary>
-            Adds the file association.
-            </summary>
-            <param name="file">The file.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddShortcut(WixSharp.File,WixSharp.FileShortcut[])">
-            <summary>
-            Adds the shortcut.
-            </summary>
-            <param name="file">The file.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddDir(WixSharp.Dir,WixSharp.Dir[])">
-            <summary>
-            Adds the dir.
-            </summary>
-            <param name="dir">The dir.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddFile(WixSharp.Dir,WixSharp.File[])">
-            <summary>
-            Adds the file.
-            </summary>
-            <param name="dir">The dir.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddShortcut(WixSharp.Dir,WixSharp.ExeFileShortcut[])">
-            <summary>
-            Adds the shortcut.
-            </summary>
-            <param name="dir">The dir.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddMergeModule(WixSharp.Dir,WixSharp.Merge[])">
-            <summary>
-            Adds the merge module.
-            </summary>
-            <param name="dir">The dir.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddFileCollection(WixSharp.Dir,WixSharp.Files[])">
-            <summary>
-            Adds the file collection.
-            </summary>
-            <param name="dir">The dir.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.AddDirFileCollection(WixSharp.Dir,WixSharp.DirFiles[])">
-            <summary>
-            Adds the dir file collection.
-            </summary>
-            <param name="dir">The dir.</param>
-            <param name="items">The items.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.RemoveDialogsBetween(WixSharp.Project,System.String,System.String)">
-            <summary>
-            Removes the dialogs between specified two dialogs. It simply connects 'next' button of the start dialog with the
-            'NewDialog' action associated with the end dialog. And vise versa for the 'back' button.
-            </summary>
-            <param name="project">The project.</param>
-            <param name="start">The start.</param>
-            <param name="end">The end.</param>
-            <returns></returns>
-            <example>The following is an example of the setup that skips License dialog.
-            <code>
-            project.UI = WUI.WixUI_InstallDir;
-            project.RemoveDialogsBetween(Dialogs.WelcomeDlg, Dialogs.InstallDirDlg);
-            ...
-            Compiler.BuildMsi(project);
-            </code>
-            </example>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.SetVersionFrom(WixSharp.Project,System.String)">
-            <summary>
-            Sets the Project version from the file version of the file specified by it's ID.
-            <para>This method sets project WixSourceGenerated event handler and injects 
-            "!(bind.FileVersion.&lt;file ID&gt;" into the XML Product's Version attribute.</para>
-            </summary>
-            <param name="project">The project.</param>
-            <param name="fileId">The file identifier.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.InjectClrDialog(WixSharp.Project,System.String,System.String,System.String)">
-             <summary>
-             Injects CLR dialog between MSI dialogs 'prevDialog' and 'nextDialog'.
-             Passes custom action CLR method name (showDialogMethod) for instantiating and popping up the CLR dialog.
-             </summary>
-             <param name="project">The project.</param>
-             <param name="showDialogMethod">The show dialog method.</param>
-             <param name="prevDialog">The previous dialog.</param>
-             <param name="nextDialog">The next dialog.</param>
-             <returns></returns>
-             <example>The following is an example of inserting CustomDialog dialog into the UI sequence between MSI dialogs InsallDirDlg and VerifyReadyDlg.
-             <code>
-             public class static Script
-             {
-                 public static void Main()
-                 {
-                     var project = new Project("CustomDialogTest");
-            
-                     project.InjectClrDialog("ShowCustomDialog", Dialogs.InstallDirDlg, Dialogs.VerifyReadyDlg);
-                     Compiler.BuildMsi(project);
-                 }
-            
-                 [CustomAction]
-                 public static ActionResult ShowCustomDialog(Session session)
-                 {
-                     return WixCLRDialog.ShowAsMsiDialog(new CustomDialog(session));
-                 }
-            }
-             </code>
-             </example>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.GetFileVersion(System.String)">
-            <summary>
-            Gets the file version.
-            </summary>
-            <param name="file">The path to the file.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.SetClrPrerequisite(WixSharp.Project,System.String,System.String)">
-            <summary>
-            Binds the LaunchCondition to the automatically created REQUIRED_NET property which is set to the value of the
-            Software\Microsoft\NET Framework Setup\NDP\{version}\Install registry entry.
-            <para>It is a single step equivalent of the "Wix# Samples\LaunchConditions" sample.</para>
-            <para>Note that the value of the version parameter is a precise sub-key of the corresponding 'Install' registry entry
-            (e.g. as in 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4.0\Client\Install').</para>
-            <para>The typical values are:</para>
-            <para>   v2.0.50727</para>
-            <para>   v3.0</para>
-            <para>   v3.5</para>
-            <para>   v4\Client</para>
-            <para>   v4\Full</para>
-            <para>   v4.0\Client</para>
-            <para>   ...</para>
-            </summary>
-            <param name="project">The project.</param>
-            <param name="version">The sub-key of the registry entry of the sub-key of the corresponding registry version of .NET to be checked.
-            </param>
-            <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.SetNetFxPrerequisite(WixSharp.Project,System.String,System.String)">
-            <summary>
-            Binds the LaunchCondition to the <c>version</c> condition based on WiXNetFxExtension properties.
-            <para>The typical conditions are:</para>
-            <para>   NETFRAMEWORK20="#1"</para>
-            <para>   NETFRAMEWORK40FULL="#1"</para>
-            <para>   NETFRAMEWORK35="#1"</para>
-            <para>   NETFRAMEWORK30_SP_LEVEL and NOT NETFRAMEWORK30_SP_LEVEL='#0'</para>
-            <para>   ...</para>
-            The full list of names and values can be found here http://wixtoolset.org/documentation/manual/v3/customactions/wixnetfxextension.html
-            </summary>
-            <param name="project">The project.</param>
-            <param name="versionCondition">Condition expression.
-            </param>
-            <param name="errorMessage">The error message to be displayed if .NET version is not present.</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.SetConfigAttribute(System.String,System.String,System.String)">
-             <summary>
-             Sets the value of the attribute value in the .NET application configuration file according
-             the specified XPath expression.
-             <para>
-             This simple routine is to be used for the customization of the installed config files
-             (e.g. in the deferred custom actions).
-             </para>
-             </summary>
-             <param name="configFile">The configuration file.</param>
-             <param name="elementPath">The element XPath value. It should include the attribute name.</param>
-             <param name="value">The value to be set to the attribute.</param>
-            
-             <example>The following is an example demonstrates this simple technique:
-             <code>
-              Tasks.SetConfigAttribute(configFile, "//configuration/appSettings/add[@key='AppName']/@value", "My App");
-             </code>
-             </example>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.SetConfigAttribute(System.Xml.Linq.XElement,System.String,System.String)">
-             <summary>
-             Sets the value of the attribute value in the .NET application configuration file according
-             the specified XPath expression.
-             <para>
-             This simple routine is to be used for the customization of the installed config files
-             (e.g. in the deferred custom actions).
-             </para>
-             </summary>
-             <returns></returns>
-             <param name="config">The configuration file element.</param>
-             <param name="elementPath">The element XPath value. It should include the attribute name.</param>
-             <param name="value">The value to be set to the attribute.</param>
-            
-             <example>The following is an example demonstrates this simple technique:
-             <code>
-              XDocument.Load(configFile).Root
-                       .SetConfigAttribute("//configuration/appSettings/add[@key='AppName']/@value", "My App")
-                       .SetConfigAttribute(...
-                       .SetConfigAttribute(...
-                       .Document.Save(configFile);
-             </code>
-             </example>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.InstallService(System.String,System.Boolean)">
-            <summary>
-            Installs the windows service. It uses InstallUtil.exe to complete the actual installation/uninstallation.
-            During the run for the InstallUtil.exe console window is hidden. /// If any error occurred the console output is captured and embedded into the raised Exception object.
-            </summary>
-            <param name="serviceFile">The service file.</param>
-            <param name="isInstalling">if set to <c>true</c> [is installing].</param>
-            <returns></returns>
-            <exception cref="T:System.Exception"></exception>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.StartService(System.String,System.Boolean)">
-            <summary>
-            Starts the windows service. It uses sc.exe to complete the action.  During the action console window is hidden.
-            If any error occurred the console output is captured and embedded into the raised Exception object.
-            </summary>
-            <param name="service">The service.</param>
-            <param name="throwOnError">if set to <c>true</c> [throw on error].</param>
-            <returns></returns>
-        </member>
-        <member name="M:WixSharp.CommonTasks.Tasks.StopService(System.String,System.Boolean)">
-            <summary>
-            Stops the windows service. It uses sc.exe to complete the action.  During the action console window is hidden.
-            If any error occurred the console output is captured and embedded into the raised Exception object.
-            </summary>
-            <param name="service">The service.</param>
-            <param name="throwOnError">if set to <c>true</c> [throw on error].</param>
-            <returns></returns>
-        </member>
-        <member name="P:WixSharp.CommonTasks.Tasks.LatestFrameworkDirectory">
-            <summary>
-            Gets the directory of the latest installed verion of .NET framework.
-            </summary>
-            <value>
-            The latest framework directory.
-            </value>
         </member>
         <member name="T:WixSharp.Compiler">
              <summary>
@@ -5469,6 +5469,11 @@
             Event handler of the ManagedSetup for the MSI runtime events.
             </summary>
             <param name="e">The <see cref="T:WixSharp.SetupEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="E:WixSharp.ManagedProject.UIInitialized">
+            <summary>
+            Occurs on EmbeddedUI initialized but before first dialog is displayed. It is only invoked if ManagedUI is set.
+            </summary>
         </member>
         <member name="E:WixSharp.ManagedProject.Load">
             <summary>

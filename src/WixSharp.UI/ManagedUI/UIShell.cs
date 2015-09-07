@@ -148,33 +148,43 @@ namespace WixSharp
         /// <param name="ui">The MSI external/embedded UI.</param>
         public void ShowModal(MsiRuntime msiRuntime, IManagedUI ui)
         {
-            //Debugger.Launch();
+            //Debug.Assert(false);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             UI = ui;
             MsiRuntime = msiRuntime;
 
-            if (MsiRuntime.Session.IsInstalling())
-            {
-                Dialogs = ui.InstallDialogs;
-            }
-            else if (MsiRuntime.Session.IsRepairing())
-            {
-                Dialogs = ui.ModifyDialogs;
-            }
 
-            if (Dialogs.Any())
+            ActionResult result = ManagedProject.InvokeClientHandlers(MsiRuntime.Session, "UIInitialized");
+
+            if (result == ActionResult.Success)
             {
-                shellView = new ShellView();
-                GoNext();
-                shellView.ShowDialog();
+                if (MsiRuntime.Session.IsInstalling())
+                {
+                    Dialogs = ui.InstallDialogs;
+                }
+                else if (MsiRuntime.Session.IsRepairing())
+                {
+                    Dialogs = ui.ModifyDialogs;
+                }
+
+                if (Dialogs.Any())
+                {
+                    shellView = new ShellView();
+                    GoNext();
+                    shellView.ShowDialog();
+                }
+                else
+                {
+                    this.StartExecute();
+                    while (!finished)
+                        Thread.Sleep(1000);
+                }
             }
             else
             {
-                this.StartExecute();
-                while (!finished)
-                    Thread.Sleep(1000);
+                MsiRuntime.Session.Log("UIInitialized returned " + result);
             }
         }
 

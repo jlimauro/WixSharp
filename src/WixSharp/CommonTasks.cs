@@ -26,11 +26,15 @@ THE SOFTWARE.
 using Microsoft.Win32;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using WixSharp;
 using WixSharp.Controls;
 using IO = System.IO;
 
@@ -348,7 +352,6 @@ namespace WixSharp.CommonTasks
             project.EnvironmentVariables = project.EnvironmentVariables.AddRange(items);
             return project;
         }
-
 
         /// <summary>
         /// Adds the assembly reference.
@@ -757,10 +760,10 @@ namespace WixSharp.CommonTasks
         static public string InstallService(string serviceFile, bool isInstalling)
         {
             var util = new ExternalTool
-                {
-                    ExePath = IO.Path.Combine(LatestFrameworkDirectory, "InstallUtil.exe"),
-                    Arguments = string.Format("{1} \"{0}\"", serviceFile, isInstalling ? "" : "/u")
-                };
+            {
+                ExePath = IO.Path.Combine(LatestFrameworkDirectory, "InstallUtil.exe"),
+                Arguments = string.Format("{1} \"{0}\"", serviceFile, isInstalling ? "" : "/u")
+            };
 
             var buf = new StringBuilder();
             int retval = util.ConsoleRun(line => buf.AppendLine(line));
@@ -830,109 +833,143 @@ namespace WixSharp.CommonTasks
                                    .FirstOrDefault();
             }
         }
+
+        static bool RegKeyExist()
+        {
+            return false;
+        }
+
+        static object GetRegKeyValue()
+        {
+            return false;
+        }
+
+        [DllImport("msi", CharSet = CharSet.Unicode)]
+        static extern Int32 MsiGetProductInfo(string product, string property, [Out] StringBuilder valueBuf, ref Int32 len);
+
+        [DllImport("msi.dll", SetLastError = true)]
+        static extern int MsiEnumProducts(int iProductIndex, StringBuilder lpProductBuf);
+
+        public static bool PrtoductInstalled()
+        {
+
+            return false;
+        }
+
+        public static void GetInstalledProducts()
+        {
+            var keyExist = AppSearch.RegKeyExists(Registry.LocalMachine, @"System\CurrentControlSet\services");
+            var regValue = AppSearch.GetRegValue(Registry.ClassesRoot, ".txt", null);
+
+
+            var code = AppSearch.GetProductCode("Windows Live Photo Common");
+            var name = AppSearch.GetProductName("{1D6432B4-E24D-405E-A4AB-D7E6D088CBC9}");
+            var installed = AppSearch.IsProductInstalled("{1D6432B4-E24D-405E-A4AB-D7E6D088CBC9}");
+        }
     }
 
-    internal class ExternalTool
+}
+
+internal class ExternalTool
+{
+    public string ExePath { set; get; }
+
+    public string Arguments { set; get; }
+
+    public string WellKnownLocations { set; get; }
+
+    public int WinRun()
     {
-        public string ExePath { set; get; }
-
-        public string Arguments { set; get; }
-
-        public string WellKnownLocations { set; get; }
-
-        public int WinRun()
+        string systemPathOriginal = Environment.GetEnvironmentVariable("PATH");
+        try
         {
-            string systemPathOriginal = Environment.GetEnvironmentVariable("PATH");
-            try
-            {
-                Environment.SetEnvironmentVariable("PATH", systemPathOriginal + ";" + Environment.ExpandEnvironmentVariables(this.WellKnownLocations ?? ""));
+            Environment.SetEnvironmentVariable("PATH", systemPathOriginal + ";" + Environment.ExpandEnvironmentVariables(this.WellKnownLocations ?? ""));
 
-                var process = new Process();
-                process.StartInfo.FileName = this.ExePath;
-                process.StartInfo.Arguments = this.Arguments;
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.CreateNoWindow = true;
-                process.Start();
+            var process = new Process();
+            process.StartInfo.FileName = this.ExePath;
+            process.StartInfo.Arguments = this.Arguments;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
 
-                process.WaitForExit();
-                return process.ExitCode;
-            }
-            finally
-            {
-                Environment.SetEnvironmentVariable("PATH", systemPathOriginal);
-            }
+            process.WaitForExit();
+            return process.ExitCode;
         }
-
-        public int ConsoleRun()
+        finally
         {
-            return ConsoleRun(Console.WriteLine);
+            Environment.SetEnvironmentVariable("PATH", systemPathOriginal);
         }
+    }
 
-        public int ConsoleRun(Action<string> onConsoleOut)
+    public int ConsoleRun()
+    {
+        return ConsoleRun(Console.WriteLine);
+    }
+
+    public int ConsoleRun(Action<string> onConsoleOut)
+    {
+        string systemPathOriginal = Environment.GetEnvironmentVariable("PATH");
+        try
         {
-            string systemPathOriginal = Environment.GetEnvironmentVariable("PATH");
-            try
+            Environment.SetEnvironmentVariable("PATH", Environment.ExpandEnvironmentVariables(this.WellKnownLocations ?? "") + ";" + "%WIXSHARP_PATH%;" + systemPathOriginal);
+
+            string exePath = GetFullPath(this.ExePath);
+
+            if (exePath == null)
             {
-                Environment.SetEnvironmentVariable("PATH", Environment.ExpandEnvironmentVariables(this.WellKnownLocations ?? "") + ";" + "%WIXSHARP_PATH%;" + systemPathOriginal);
+                Console.WriteLine("Error: Cannot find " + this.ExePath);
+                Console.WriteLine("Make sure it is in the System PATH or WIXSHARP_PATH environment variables or WellKnownLocations member/parameter is initialized properly. ");
+                return 1;
+            }
 
-                string exePath = GetFullPath(this.ExePath);
+            Console.WriteLine("Execute:\n\"" + this.ExePath + "\" " + this.Arguments);
 
-                if (exePath == null)
+            var process = new Process();
+            process.StartInfo.FileName = exePath;
+            process.StartInfo.Arguments = this.Arguments;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+
+            if (onConsoleOut != null)
+            {
+                string line = null;
+                while (null != (line = process.StandardOutput.ReadLine()))
                 {
-                    Console.WriteLine("Error: Cannot find " + this.ExePath);
-                    Console.WriteLine("Make sure it is in the System PATH or WIXSHARP_PATH environment variables or WellKnownLocations member/parameter is initialized properly. ");
-                    return 1;
+                    onConsoleOut(line);
                 }
 
-                Console.WriteLine("Execute:\n\"" + this.ExePath + "\" " + this.Arguments);
-
-                var process = new Process();
-                process.StartInfo.FileName = exePath;
-                process.StartInfo.Arguments = this.Arguments;
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-
-                process.StartInfo.CreateNoWindow = true;
-                process.Start();
-
-                if (onConsoleOut != null)
-                {
-                    string line = null;
-                    while (null != (line = process.StandardOutput.ReadLine()))
-                    {
-                        onConsoleOut(line);
-                    }
-
-                    string error = process.StandardError.ReadToEnd();
-                    if (!error.IsEmpty())
-                        onConsoleOut(error);
-                }
-                process.WaitForExit();
-                return process.ExitCode;
+                string error = process.StandardError.ReadToEnd();
+                if (!error.IsEmpty())
+                    onConsoleOut(error);
             }
-            finally
-            {
-                Environment.SetEnvironmentVariable("PATH", systemPathOriginal);
-            }
+            process.WaitForExit();
+            return process.ExitCode;
         }
-
-        string GetFullPath(string path)
+        finally
         {
-            if (IO.File.Exists(path))
-                return IO.Path.GetFullPath(path);
-
-            foreach (string dir in Environment.GetEnvironmentVariable("PATH").Split(';'))
-            {
-                if (IO.Directory.Exists(dir))
-                {
-                    string fullPath = IO.Path.Combine(Environment.ExpandEnvironmentVariables(dir).Trim(), path);
-                    if (IO.File.Exists(fullPath))
-                        return fullPath;
-                }
-            }
-
-            return null;
+            Environment.SetEnvironmentVariable("PATH", systemPathOriginal);
         }
+    }
+
+    string GetFullPath(string path)
+    {
+        if (IO.File.Exists(path))
+            return IO.Path.GetFullPath(path);
+
+        foreach (string dir in Environment.GetEnvironmentVariable("PATH").Split(';'))
+        {
+            if (IO.Directory.Exists(dir))
+            {
+                string fullPath = IO.Path.Combine(Environment.ExpandEnvironmentVariables(dir).Trim(), path);
+                if (IO.File.Exists(fullPath))
+                    return fullPath;
+            }
+        }
+
+        return null;
     }
 }

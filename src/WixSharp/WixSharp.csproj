@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Action.cs" />
+    <Compile Include="AppSearch.cs" />
     <Compile Include="Assembly.cs" />
     <Compile Include="AutoElements.cs" />
     <Compile Include="BinaryFileAction.cs" />
