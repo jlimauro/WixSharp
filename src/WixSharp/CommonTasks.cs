@@ -833,39 +833,6 @@ namespace WixSharp.CommonTasks
                                    .FirstOrDefault();
             }
         }
-
-        static bool RegKeyExist()
-        {
-            return false;
-        }
-
-        static object GetRegKeyValue()
-        {
-            return false;
-        }
-
-        [DllImport("msi", CharSet = CharSet.Unicode)]
-        static extern Int32 MsiGetProductInfo(string product, string property, [Out] StringBuilder valueBuf, ref Int32 len);
-
-        [DllImport("msi.dll", SetLastError = true)]
-        static extern int MsiEnumProducts(int iProductIndex, StringBuilder lpProductBuf);
-
-        public static bool PrtoductInstalled()
-        {
-
-            return false;
-        }
-
-        public static void GetInstalledProducts()
-        {
-            var keyExist = AppSearch.RegKeyExists(Registry.LocalMachine, @"System\CurrentControlSet\services");
-            var regValue = AppSearch.GetRegValue(Registry.ClassesRoot, ".txt", null);
-
-
-            var code = AppSearch.GetProductCode("Windows Live Photo Common");
-            var name = AppSearch.GetProductName("{1D6432B4-E24D-405E-A4AB-D7E6D088CBC9}");
-            var installed = AppSearch.IsProductInstalled("{1D6432B4-E24D-405E-A4AB-D7E6D088CBC9}");
-        }
     }
 
 }

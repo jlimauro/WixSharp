@@ -12,8 +12,6 @@ public class Script
 {
     static public void Main()
     {
-        Tasks.GetInstalledProducts(); return;
-
         var binaries = new Feature("Binaries", "Product binaries", true, false);
         var docs = new Feature("Documentation", "Product documentation (manuals and user guides)", true);
         var tuts = new Feature("Tutorials", "Product tutorials", false);
@@ -28,7 +26,8 @@ public class Script
 
         project.ManagedUI = new ManagedUI();
 
-        project.UIInitialized += UIInitialized;
+        project.UIInitialized += CheckCompatibility; //will be fired on the embedded UI start
+        project.Load += CheckCompatibility;          //will be fired on the MSI start
 
         //removing all entry dialogs and installdir
         project.ManagedUI.InstallDialogs//.Add(Dialogs.Welcome)
@@ -52,11 +51,20 @@ public class Script
         project.BuildMsi();
     }
 
-    private static void UIInitialized(SetupEventArgs e)
+    static void CheckCompatibility(SetupEventArgs e)
     {
         if (e.IsInstalling)
         {
-            MessageBox.Show(e.ToString(), "Before UI");
+            var conflictingProductCode = "{1D6432B4-E24D-405E-A4AB-D7E6D088C111}";
+
+            if (AppSearch.IsProductInstalled(conflictingProductCode))
+            {
+                string msg = string.Format("Installed '{0}' is incompatible with this product.\n" +
+                                           "Setup will be aborted.",
+                                           AppSearch.GetProductName(conflictingProductCode) ?? conflictingProductCode);
+                MessageBox.Show(msg, "Setup");
+                e.Result = ActionResult.UserExit;
+            }
         }
     }
 }

@@ -86,8 +86,15 @@ namespace WixSharp
 
     }
 
+    /// <summary>
+    /// The interface for the Wix# types that can generate WiX XML.
+    /// </summary>
     public interface IXmlAware
     {
+        /// <summary>
+        /// Emits WiX XML.
+        /// </summary>
+        /// <returns></returns>
         XContainer[] ToXml();
     }
 }

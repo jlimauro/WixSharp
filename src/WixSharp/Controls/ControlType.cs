@@ -9,7 +9,7 @@ namespace WixSharp.Controls
     public delegate void ClickHandler();
 
     /// <summary>
-    /// The interface for the WinForm control representing WiX custom UI control exhibiting interactive behaviour.
+    /// The interface for the WinForm control representing WiX custom UI control exhibiting interactive behavior.
     /// </summary>
     public interface IWixInteractiveControl
     {

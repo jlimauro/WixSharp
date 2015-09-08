@@ -133,6 +133,68 @@
             A <see cref="T:System.String" /> that represents this instance.
             </returns>
         </member>
+        <member name="T:WixSharp.CommonTasks.AppSearch">
+            <summary>
+            The utility class implementing the common 'MSI AppSearch' tasks (Directory, File, Registry and Product searches). 
+            </summary>
+        </member>
+        <member name="M:WixSharp.CommonTasks.AppSearch.GetProductCode(System.String)">
+            <summary>
+            Gets the 'product code' of the installed product.
+            </summary>
+            <param name="name">The product name.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.AppSearch.GetProducts">
+            <summary>
+            Gets array of 'product codes' (GUIDs) of all installed products.
+            </summary>
+        </member>
+        <member name="M:WixSharp.CommonTasks.AppSearch.GetProductName(System.String)">
+            <summary>
+            Gets the 'product name' of the installed product.
+            </summary>
+            <param name="productCode">The product code.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.AppSearch.IsProductInstalled(System.String)">
+            <summary>
+            Determines whether the product is installed.
+            </summary>
+            <param name="productCode">The product code.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.AppSearch.FileExists(System.String)">
+            <summary>
+            Determines whether the file exists.
+            </summary>
+            <param name="file">The file path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.AppSearch.DirExists(System.String)">
+            <summary>
+            Determines whether the dir exists.
+            </summary>
+            <param name="dir">The directory path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.AppSearch.RegKeyExists(Microsoft.Win32.RegistryKey,System.String)">
+            <summary>
+            Determines whether the registry key exists.
+            </summary>
+            <param name="root">The root.</param>
+            <param name="keyPath">The key path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.CommonTasks.AppSearch.GetRegValue(Microsoft.Win32.RegistryKey,System.String,System.String)">
+            <summary>
+            Gets the registry value.
+            </summary>
+            <param name="root">The root.</param>
+            <param name="keyPath">The key path.</param>
+            <param name="valueName">Name of the value.</param>
+            <returns></returns>
+        </member>
         <member name="T:WixSharp.CommonTasks.Tasks">
             <summary>
             
@@ -767,7 +829,7 @@
         </member>
         <member name="F:WixSharp.AutoElements.DisableAutoUserProfileRegistry">
             <summary>
-            The disable automatic insertion of user profile registry elements.
+            Disables automatic insertion of user profile registry elements.
             Required for: AllInOne, ConditionalInstallation, CustomAttributes, ReleaseFolder, Shortcuts,
             Shortcuts (advertised), Shortcuts-2, WildCardFiles samples.
             <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
@@ -3872,6 +3934,17 @@
             Well-known Wix Extension Sql
             </summary>
         </member>
+        <member name="T:WixSharp.IXmlAware">
+            <summary>
+            The interface for the Wix# types that can generate WiX XML.
+            </summary>
+        </member>
+        <member name="M:WixSharp.IXmlAware.ToXml">
+            <summary>
+            Emits WiX XML.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:WixSharp.WixProject">
             <summary>
             Base class for WiX projects (e.g. Project, Bundle).
@@ -3983,7 +4056,7 @@
         <member name="F:WixSharp.Controls.Control.Type">
             <summary>
             The type of the control. Could be one of the following: Billboard, Bitmap, CheckBox, ComboBox, DirectoryCombo, DirectoryList, Edit, GroupBox, Icon, Line, ListBox, ListView, MaskedEdit, PathEdit, ProgressBar, PushButton, RadioButtonGroup, ScrollableText, SelectionTree, Text, VolumeCostList, VolumeSelectCombo.
-            Use <see cref="!:WixSharp.ControlType"></see> constants to define the type of the control.
+            Use <see cref="T:WixSharp.Controls.ControlType"></see> constants to define the type of the control.
             </summary>
         </member>
         <member name="F:WixSharp.Controls.Control.X">
@@ -4060,7 +4133,7 @@
         </member>
         <member name="T:WixSharp.Controls.IWixInteractiveControl">
             <summary>
-            The interface for the WinForm control representing WiX custom UI control exhibiting interactive behaviour.
+            The interface for the WinForm control representing WiX custom UI control exhibiting interactive behavior.
             </summary>
         </member>
         <member name="P:WixSharp.Controls.IWixInteractiveControl.Actions">
@@ -7582,7 +7655,7 @@
         <member name="F:WixSharp.Project.CustomUI">
             <summary>
             The custom UI definition. Use CustomUIBuilder to generate the WiX UI definition or compose 
-            <see cref="!:WixSharp.CustomUI"/> manually.
+            <see cref="T:WixSharp.Controls.CustomUI"/> manually.
             </summary>
         </member>
         <member name="F:WixSharp.Project.MajorUpgrade">

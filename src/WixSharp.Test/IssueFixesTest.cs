@@ -93,8 +93,6 @@ namespace WixSharp.Test
         [Description("Discussions #642332")]
         public void Should_Process_DirAttributes_2()
         {
-            Dir dir1, dir2;
-
             var project =
                 new Project("My Product",
                     new Dir(@"%ProgramFiles%\MyCompany",
@@ -141,6 +139,7 @@ namespace WixSharp.Test
 
                            new Dir(@"%PersonalFolder%\Test Project",
                                new File(@"Files\Baskets.bbd")));
+
 
             project.WixSourceGenerated += xml =>
             {

@@ -26,7 +26,7 @@ namespace WixSharp.Controls
 
         /// <summary>
         /// The type of the control. Could be one of the following: Billboard, Bitmap, CheckBox, ComboBox, DirectoryCombo, DirectoryList, Edit, GroupBox, Icon, Line, ListBox, ListView, MaskedEdit, PathEdit, ProgressBar, PushButton, RadioButtonGroup, ScrollableText, SelectionTree, Text, VolumeCostList, VolumeSelectCombo.
-        /// Use <see cref="WixSharp.ControlType"></see> constants to define the type of the control.
+        /// Use <see cref="WixSharp.Controls.ControlType"></see> constants to define the type of the control.
         /// </summary>
         public string Type;
 

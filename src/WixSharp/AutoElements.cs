@@ -64,7 +64,7 @@ namespace WixSharp
         public static bool DisableAutoCreateFolder = false;
 
         /// <summary>
-        /// The disable automatic insertion of user profile registry elements.
+        /// Disables automatic insertion of user profile registry elements.
         /// Required for: AllInOne, ConditionalInstallation, CustomAttributes, ReleaseFolder, Shortcuts,
         /// Shortcuts (advertised), Shortcuts-2, WildCardFiles samples.
         /// <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
@@ -79,7 +79,7 @@ namespace WixSharp
                                    new XAttribute("On", when)));
         }
 
-        public static XElement InsertUserProfileRemoveFolder(this XElement xComponent)
+        internal static XElement InsertUserProfileRemoveFolder(this XElement xComponent)
         {
             var xDir = xComponent.Parent("Directory");
             if (!xDir.Descendants("RemoveFolder").Any() && !xDir.IsUserProfileRoot())
@@ -102,7 +102,7 @@ namespace WixSharp
             }
         }
 
-        public static XElement InsertUserProfileRegValue(this XElement xComponent)
+        internal static XElement InsertUserProfileRegValue(this XElement xComponent)
         {
             var keyPathes = xComponent.Elements()
                           .Select(e => e.Attribute("KeyPath"))

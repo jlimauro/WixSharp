@@ -286,7 +286,7 @@ namespace WixSharp
 
         /// <summary>
         /// The custom UI definition. Use CustomUIBuilder to generate the WiX UI definition or compose 
-        /// <see cref="WixSharp.CustomUI"/> manually.
+        /// <see cref="WixSharp.Controls.CustomUI"/> manually.
         /// </summary>
         public Controls.CustomUI CustomUI = null; 
 

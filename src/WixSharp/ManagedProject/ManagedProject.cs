@@ -324,7 +324,7 @@ namespace WixSharp
                 method.Invoke(Activator.CreateInstance(method.DeclaringType), new object[] { eventArgs });
         }
 
-        public static ActionResult InvokeClientHandlers(Session session, string eventName)
+        internal static ActionResult InvokeClientHandlers(Session session, string eventName)
         {
             var eventArgs = Convert(session);
 
