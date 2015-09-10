@@ -685,6 +685,8 @@ namespace WixSharp
             return null;
         }
 
+        public int InstallerVersion = 200;
+
         string codepage = "";
         /// <summary>
         /// Installation UI Codepage. If not specified 

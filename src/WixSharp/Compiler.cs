@@ -951,7 +951,7 @@ namespace WixSharp
                     @"<?xml version=""1.0"" encoding=""utf-8""?>
                          <Wix xmlns=""http://schemas.microsoft.com/wix/2006/wi"" " + extraNamespaces + @">
                             <Product>
-                                <Package InstallerVersion=""200"" Compressed=""yes""/>
+                                <Package InstallerVersion="""+ project.InstallerVersion + @""" Compressed=""yes""/>
                                 <Media Id=""1"" Cabinet=""" + (project as WixEntity).Id + @".cab"" EmbedCab=""yes"" />
                             </Product>
                         </Wix>");

@@ -5,7 +5,8 @@
 using System;
 using System.IO;
 using File = WixSharp.File;
-using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
 using WixSharp;
 
 class Script
@@ -23,7 +24,9 @@ class Script
                         new Merge(complete, @"Files\MyMergeModule.msm")));
 
         project.UI = WUI.WixUI_FeatureTree;
-
-        Compiler.BuildMsi(project);
+        project.InstallerVersion = 200; //you may want to change it to match MSM module installer version
+        
+        project.BuildMsi();
     }
+
 }
