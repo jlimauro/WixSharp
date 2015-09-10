@@ -25,7 +25,7 @@ class Script
 
         project.UI = WUI.WixUI_FeatureTree;
         project.InstallerVersion = 200; //you may want to change it to match MSM module installer version
-        
+
         project.BuildMsi();
     }
 

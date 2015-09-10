@@ -951,7 +951,7 @@ namespace WixSharp
                     @"<?xml version=""1.0"" encoding=""utf-8""?>
                          <Wix xmlns=""http://schemas.microsoft.com/wix/2006/wi"" " + extraNamespaces + @">
                             <Product>
-                                <Package InstallerVersion="""+ project.InstallerVersion + @""" Compressed=""yes""/>
+                                <Package InstallerVersion=""" + project.InstallerVersion + @""" Compressed=""yes""/>
                                 <Media Id=""1"" Cabinet=""" + (project as WixEntity).Id + @".cab"" EmbedCab=""yes"" />
                             </Product>
                         </Wix>");
@@ -1556,7 +1556,7 @@ namespace WixSharp
                         new XAttribute("DiskId", diskId))
                         .AddAttributes(msm.Attributes));
 
-                if (!featureComponents.ContainsKey(msm.Feature))
+                if (msm.Feature != null && !featureComponents.ContainsKey(msm.Feature))
                     featureComponents[msm.Feature] = new List<string>();
 
                 //currently WiX does not allow child Condition element but in the future release it most likely will
