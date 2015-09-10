@@ -759,6 +759,16 @@ namespace WixSharp
                 return e.Current.Select(path.Substring(parts[0].Length + 1)); //be careful RECURSION
         }
 
+        internal static XDocument AddDefaultNamespaces(this XDocument doc)
+        {
+            doc.Descendants().ForEach(x =>
+            {
+                if (x.Name.Namespace.NamespaceName.IsEmpty())
+                    x.Name = doc.Root.Name.Namespace + x.Name.LocalName;
+            });
+            return doc;
+        }
+
         /// <summary>
         /// Selects from the given element the first child element Directory matching the specified path (e.g. <c>Select("ProgramFiles/MyCompany") by </c>).
         /// </summary>

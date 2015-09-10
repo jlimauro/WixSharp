@@ -31,7 +31,7 @@ class Script
     {
         //Will make MyApp.exe directory writable.
         //It is actually a bad practice to write to program files and this code is provided for sample purposes only.
-        document.Descendants("Component")
+        document.FindAll("Component")
                 .Single(x => x.HasAttribute("Id", value=>value.EndsWith("MyApp.exe")))
                 .AddElement("CreateFolder/Permission", "User=Everyone;GenericAll=yes");
     }

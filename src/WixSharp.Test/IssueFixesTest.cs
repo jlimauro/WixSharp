@@ -182,7 +182,7 @@ namespace WixSharp.Test
                               .Where(x => x.HasAttribute("Name", "Test Project") && x.Parent.HasAttribute("Name", "PersonalFolder"))
                               .First();
 
-            var comp = dir.Element("Component");
+            var comp = dir.FindSingle("Component");
             comp.AddElement("RemoveFolder", "On=uninstall; Id=" + dir.Attribute("Id").Value);
             comp.AddElement("RegistryValue", @"Root=HKCU; Key=Software\[Manufacturer]\[ProductName]; Type=string; Value=; KeyPath=yes");
         }

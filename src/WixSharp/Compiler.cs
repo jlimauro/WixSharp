@@ -743,9 +743,16 @@ namespace WixSharp
                 ConvertMsiToMsm(doc);
             }
 
+            //issue#63 Inconsistent XML namespace usage in generated Wix source
+            doc.AddDefaultNamespaces();
+
+
             project.InvokeWixSourceGenerated(doc);
             if (WixSourceGenerated != null)
+            {
                 WixSourceGenerated(doc);
+                doc.AddDefaultNamespaces();
+            }
 
             string xml = "";
             using (IO.StringWriter sw = new StringWriterWithEncoding(project.Encoding))
@@ -754,9 +761,9 @@ namespace WixSharp
                 xml = sw.ToString();
             }
 
-            //of course you can use XmlTextWriter.WriteRaw but this is just a temporary quick'n'dirty solution
-            //http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2657663&SiteID=1
-            xml = xml.Replace("xmlns=\"\"", "");
+            ////of course you can use XmlTextWriter.WriteRaw but this is just a temporary quick'n'dirty solution
+            ////http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2657663&SiteID=1
+            //xml = xml.Replace("xmlns=\"\"", "");
 
             DefaultWixSourceFormatedHandler(ref xml);
 

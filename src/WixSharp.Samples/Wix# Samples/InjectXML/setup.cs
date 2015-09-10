@@ -33,7 +33,7 @@ class Script
                 document.Root.Select("Product/Package")
                              .SetAttributeValue("Platform", "x64");
 
-                document.Descendants("Component")
+                document.FindAll("Component")
                         .ForEach(e => e.SetAttributeValue("Win64", "yes"));
             };
 

@@ -311,7 +311,7 @@ namespace WixSharp
         /// </summary>
         x64,
         /// <summary>
-        ///  Set this value to declare that the package is an arm package. This value requires that the InstallerVersion property be set to 500 or greater.
+        ///  Set this value to declare that the package is an arm package. This value requires that the  InstallerVersion property be set to 500 or greater.
         /// </summary>
         arm
     }

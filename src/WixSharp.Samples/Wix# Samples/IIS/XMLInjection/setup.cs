@@ -33,7 +33,7 @@ class Script
 
     static void Compiler_WixSourceGenerated(System.Xml.Linq.XDocument document)
     {
-        XElement aspxFileComponent = (from e in document.Descendants("File")
+        XElement aspxFileComponent = (from e in document.FindAll("File")
                                       where e.Attribute("Source").Value.EndsWith("Default.aspx")
                                       select e)
                                      .First()
