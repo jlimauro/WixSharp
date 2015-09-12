@@ -523,10 +523,16 @@
         </member>
         <member name="P:WixSharp.UI.ManagedUI.Resources.WixSharp_LicenceFile">
              <summary>
-               Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\deflang3081{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
-            {\*\generator Msftedit 5.41.21.2507;}\viewkind4\uc1\pard\f0\fs20 My Licence\par
-            }
-            .
+               Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang3081{\fonttbl{\f0\fswiss\fprq2\fcharset0 Tahoma;}{\f1\fnil\fcharset0 Calibri;}}
+            {\*\generator Riched20 6.3.9600}\viewkind4\uc1 
+            \pard\b\f0\fs22\lang1033 Common Public License Version 1.0\par
+            \b0\fs20\par
+            THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS COMMON PUBLIC LICENSE (&quot;AGREEMENT&quot;). ANY USE, REPRODUCTION OR DISTRIBUTION OF THE PROGRAM CONSTITUTES RECIPIENT&apos;S ACCEPTANCE OF THIS AGREEMENT.\par
+            \par
+            \par
+            1. DEFINITIONS \par
+            \par
+            &quot;Contri [rest of string was truncated]&quot;;.
              </summary>
         </member>
         <member name="P:WixSharp.UI.ManagedUI.Resources.WixUI_Bmp_Banner">

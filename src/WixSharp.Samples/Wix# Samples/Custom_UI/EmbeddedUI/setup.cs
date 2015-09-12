@@ -15,6 +15,7 @@ public class Script
 
         project.EmbeddedUI = new EmbeddedAssembly(sys.Assembly.GetExecutingAssembly().Location);
 
+        project.CAConfigFile = "CustomAction.config";
         project.PreserveTempFiles = true;
         project.BuildMsi();
     }
