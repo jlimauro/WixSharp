@@ -47,7 +47,7 @@ namespace WixSharp
         /// <param name="obj">The obj.</param>
         /// <param name="isPermanent">if set to <c>true</c> [is permanent].</param>
         /// <returns></returns>
-        public static T SetComponentPermanent<T>(this T obj, bool isPermanent) where T: WixEntity
+        public static T SetComponentPermanent<T>(this T obj, bool isPermanent) where T : WixEntity
         {
             //While it is tempting to move the implementation to WixEntity the extension method gives a 
             //better support for Fluent API as it returns not the base but the actual type.
@@ -89,9 +89,26 @@ namespace WixSharp
         /// <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
         public static XElement AddElement(this XElement obj, string elementName)
         {
+            var ns = obj.GetDefaultNamespace();
             var parent = obj;
             foreach (var item in elementName.Split('/'))
-                parent = parent.AddElement(new XElement(item));
+                if (ns != null)
+                    parent = parent.AddElement(new XElement(ns + item));
+                else
+                    parent = parent.AddElement(new XElement(item));
+            return parent;
+        }
+
+        /// <summary>
+        /// Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
+        /// </summary>
+        /// <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
+        /// <param name="elementName">Name of the element.</param>
+        /// <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
+        public static XElement AddElement(this XElement obj, XName elementName)
+        {
+            var parent = obj;
+            parent = parent.AddElement(new XElement(elementName));
             return parent;
         }
 
@@ -744,7 +761,6 @@ namespace WixSharp
         {
             string[] parts = path.Split('/');
 
-            var ttt = element.Elements().ToArray();
 
             var e = (from el in element.Elements()
                      where el.Name.LocalName == parts[0]
@@ -1282,7 +1298,7 @@ namespace WixSharp
             using (var sql = session.Database.OpenView(sqlText))
             {
                 sql.Execute();
-                
+
                 Record record;
                 while ((record = sql.Fetch()) != null)
                     using (record)
@@ -1432,7 +1448,7 @@ namespace WixSharp
         public static byte[] DecodeFromHex(this string obj)
         {
             var data = new List<byte>();
-            for (int i = 0; !string.IsNullOrEmpty(obj) && i < obj.Length; )
+            for (int i = 0; !string.IsNullOrEmpty(obj) && i < obj.Length;)
             {
                 if (obj[i] == ',')
                 {

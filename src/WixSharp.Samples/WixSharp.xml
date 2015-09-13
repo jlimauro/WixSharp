@@ -2526,6 +2526,14 @@
             <param name="elementName">Element to add.</param>
             <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
         </member>
+        <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.Xml.Linq.XName)">
+            <summary>
+            Adds the element to a given XML element. It is a Fluent version of <see cref="T:System.Xml.Linq.XElement.Add"/>.
+            </summary>
+            <param name="obj">The instance of the <see cref="T:System.Xml.Linq.XElement"/>.</param>
+            <param name="elementName">Name of the element.</param>
+            <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
+        </member>
         <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.String,System.String)">
             <summary>
             Adds the element to a given XML element and sets the attributes of the newly created element.

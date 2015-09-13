@@ -169,6 +169,7 @@ namespace WixSharp
 
                 var uiThread = new Thread(() =>
                 {
+                    Debug.Assert(false);
                     shell = new UIShell(); //important to create the instance in the same thread that call ShowModal
                     shell.ShowModal(new MsiRuntime(session) { StartExecute = () => startEvent.Set() }, this);
                     uiExitEvent.Set();
