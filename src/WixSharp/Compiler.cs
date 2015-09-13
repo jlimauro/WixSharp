@@ -749,10 +749,9 @@ namespace WixSharp
 
             project.InvokeWixSourceGenerated(doc);
             if (WixSourceGenerated != null)
-            {
                 WixSourceGenerated(doc);
-                doc.AddDefaultNamespaces();
-            }
+
+            doc.AddDefaultNamespaces();
 
             string xml = "";
             using (IO.StringWriter sw = new StringWriterWithEncoding(project.Encoding))
@@ -760,10 +759,6 @@ namespace WixSharp
                 doc.Save(sw, SaveOptions.None);
                 xml = sw.ToString();
             }
-
-            ////of course you can use XmlTextWriter.WriteRaw but this is just a temporary quick'n'dirty solution
-            ////http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2657663&SiteID=1
-            //xml = xml.Replace("xmlns=\"\"", "");
 
             DefaultWixSourceFormatedHandler(ref xml);
 
