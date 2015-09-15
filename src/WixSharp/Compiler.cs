@@ -1477,6 +1477,49 @@ namespace WixSharp
                 wShortcut.EmitAttributes(sc);
             }
 
+            #endregion
+
+            #region Process ODBCDataSources
+
+            //insert directory owned shortcuts
+            foreach (ODBCDataSource wODBCDataSource in wDir.ODBCDataSources)
+            {
+                string dsnId = wODBCDataSource.Id;
+                string compId = "Component." + wODBCDataSource.Id;
+
+                if (wODBCDataSource.Feature != null)
+                {
+                    if (!featureComponents.ContainsKey(wODBCDataSource.Feature))
+                        featureComponents[wODBCDataSource.Feature] = new List<string>();
+
+                    featureComponents[wODBCDataSource.Feature].Add(compId);
+                }
+                else
+                {
+                    defaultFeatureComponents.Add(compId);
+                }
+
+                XElement comp = dirItem.AddElement(
+                   new XElement("Component",
+                       new XAttribute("Id", compId),
+                       new XAttribute("Guid", WixGuid.NewGuid(compId))));
+
+                XElement dsn = comp.AddElement(
+                    new XElement("ODBCDataSource",
+                        new XAttribute("Id", wODBCDataSource.Id),
+                        new XAttribute("Name", wODBCDataSource.Name),
+                        new XAttribute("DriverName", wODBCDataSource.DriverName),
+                        new XAttribute("KeyPath", (wODBCDataSource.KeyPath ? "yes" : "no")),
+                        new XAttribute("Registration", (wODBCDataSource.PerMachineRegistration ? "machine" : "user"))));
+
+                foreach (Property prop in wODBCDataSource.Properties)
+                {
+                    dsn.AddElement(
+                        new XElement("Property", 
+                                    new XAttribute("Id", prop.Name), 
+                                    new XAttribute("Value", prop.Value)));
+                }
+            }
 
             #endregion
 

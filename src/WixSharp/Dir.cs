@@ -250,6 +250,11 @@ namespace WixSharp
         public Files[] FileCollections = new Files[0];
 
         /// <summary>
+        /// Collection of WiX/MSI <see cref="ODBCDataSource"/> objects to be created during the installed.
+        /// </summary>
+        public ODBCDataSource[] ODBCDataSources = new ODBCDataSource[0];
+
+        /// <summary>
         /// Collection of the contained <see cref="Merge"/> modules.
         /// </summary>
         public Merge[] MergeModules = new Merge[0];
@@ -320,6 +325,7 @@ namespace WixSharp
             var shortcuts = new List<ExeFileShortcut>();
             var mergeModules = new List<Merge>();
             var dirPermissions = new List<DirPermission>();
+            var odbcSources = new List<ODBCDataSource>();
 
             foreach (WixEntity item in items)
                 if (item is Dir)
@@ -336,6 +342,8 @@ namespace WixSharp
                     mergeModules.Add(item as Merge);
                 else if (item is DirPermission)
                     dirPermissions.Add(item as DirPermission);
+                else if (item is ODBCDataSource)
+                    odbcSources.Add(item as ODBCDataSource);
                 else
                     throw new Exception(item.GetType().Name + " is not expected to be a child of WixSharp.Dir");
 
@@ -346,6 +354,7 @@ namespace WixSharp
             Shortcuts = shortcuts.ToArray();
             MergeModules = mergeModules.ToArray();
             Permissions = dirPermissions.ToArray();
+            ODBCDataSources = odbcSources.ToArray();
         }
     }
 

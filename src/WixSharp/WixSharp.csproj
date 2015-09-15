@@ -118,6 +118,7 @@
     <Compile Include="CommonTasks.cs" />
     <Compile Include="Compiler.Bootstrapper.cs" />
     <Compile Include="MajorUpgrade.cs" />
+    <Compile Include="ODBCDataSource.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="SharedExtensions.cs" />
     <Compile Include="Sql.cs" />
