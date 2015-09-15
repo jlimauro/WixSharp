@@ -1938,6 +1938,18 @@
             <para>If set to <c>false</c> PDB file will not be included and debugging of such CustomAction will not be possible.</para>
             </summary>
         </member>
+        <member name="M:WixSharp.Compiler.BuildPackageAsmCmd(System.String,System.String,System.String[],System.String,System.String,System.Nullable{WixSharp.Platform})">
+            <summary>
+            Builds the batch file for packaging the assembly containing managed CA or UI.
+            </summary>
+            <param name="asm">The assembly to be packaged.</param>
+            <param name="nativeDll">The package file (native DLL) to be build.</param>
+            <param name="refAssemblies">The referenced assemblies.</param>
+            <param name="outDir">The out dir.</param>
+            <param name="configFilePath">The app config file path.</param>
+            <param name="platform">The platform.</param>
+            <returns></returns>
+        </member>
         <member name="T:WixSharp.Compiler.Wildcard">
             <summary>
             Represents a wildcard running on the
@@ -2090,6 +2102,87 @@
         <member name="F:WixSharp.UpgradeSchedule.afterInstallFinalize">
             <summary>
             Schedules RemoveExistingProducts after the InstallFinalize standard action. This is similar to the afterInstallExecute and afterInstallExecuteAgain schedulings but takes place outside the installation transaction so if installation of the upgrade product fails, Windows Installer does not roll back the removal of the installed product, so the machine will have both versions installed.
+            </summary>
+        </member>
+        <member name="T:WixSharp.ODBCDataSource">
+             <summary>
+             Represents an ODBCDataSource to be registered.
+             
+            <example>The following is an example of using ODBCDataSource.
+            <code>
+             var project = 
+                 new Project("My Product",
+                 
+                     new Dir(@"%ProgramFiles%\My Company\My Product",
+                     ...
+                     
+                         new ODBCDataSource("DsnName", "SQL Server", true, true,
+                             new Property("Database", "MyDb"),
+                             new Property("Server", "MyServer")),
+                             
+                     ...
+                     
+             Compiler.BuildMsi(project);
+             </code>
+             </example>
+             </summary>
+        </member>
+        <member name="M:WixSharp.ODBCDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.ODBCDataSource"/> class.
+            </summary>
+        </member>
+        <member name="M:WixSharp.ODBCDataSource.#ctor(System.String,System.String,System.Boolean,System.Boolean,WixSharp.WixEntity[])">
+            <summary>
+            Creates instance of the <see cref="T:WixSharp.ODBCDataSource"></see> class with properties initialized with specified parameters.
+            </summary>
+            <param name="name">The name with which the odbc datasource is registered</param>
+            <param name="driverName">The odbc driver named</param>
+            <param name="keyPath">a boolean value indicating if the element is a KeyPath or not</param>
+            <param name="perMachine">a boolean value to set machine or user level registration of the data source</param>
+            <param name="items">Optional parameters defining properties for dsn registration.
+            These are driver specific</param>
+            
+        </member>
+        <member name="M:WixSharp.ODBCDataSource.#ctor(WixSharp.Feature,System.String,System.String,System.Boolean,System.Boolean,WixSharp.WixEntity[])">
+            <summary>
+            Creates instance of the <see cref="T:WixSharp.ODBCDataSource"></see> class with properties initialized with specified parameters.
+            </summary>
+            <param name="feature">The feature the datasource will be added to</param>
+            <param name="name">The name with which the odbc datasource is registered</param>
+            <param name="driverName">The odbc driver named</param>
+            <param name="keyPath">a boolean value indicating if the element is a KeyPath or not</param>
+            <param name="perMachine">a boolean value to set machine or user level registration of the data source</param>
+            <param name="items">Optional parameters defining properties for dsn registration.
+            These are driver specific</param>
+            
+        </member>
+        <member name="F:WixSharp.ODBCDataSource.Feature">
+            <summary>
+            <see cref="F:WixSharp.ODBCDataSource.Feature"></see> the file belongs to.
+            </summary>
+        </member>
+        <member name="P:WixSharp.ODBCDataSource.DriverName">
+            <summary>
+            String containing ODBC driver Name
+            </summary>
+        </member>
+        <member name="P:WixSharp.ODBCDataSource.KeyPath">
+            <summary>
+            if true this is translated to 'yes' else 'no'
+             Set 'yes' to force this file to be key path for parent Component
+            </summary>
+        </member>
+        <member name="P:WixSharp.ODBCDataSource.PerMachineRegistration">
+            <summary>
+            Scope for which the data source should be registered. This attribute's value must be one of the following:
+            if true Data source is registered per machine
+            else Data source is registered per user.
+            </summary>
+        </member>
+        <member name="F:WixSharp.ODBCDataSource.Properties">
+            <summary>
+            Collection of WiX/MSI <see cref="T:WixSharp.Property"/> objects to be created during the installed.
             </summary>
         </member>
         <member name="T:WixSharp.GenericPermission">
@@ -6448,6 +6541,11 @@
             <see cref="F:WixSharp.Dir.Files"/> type is related to but not identical to <see cref="T:WixSharp.DirFiles"/>, which defines only files
             of a single level directory.
             </para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.Dir.ODBCDataSources">
+            <summary>
+            Collection of WiX/MSI <see cref="T:WixSharp.ODBCDataSource"/> objects to be created during the installed.
             </summary>
         </member>
         <member name="F:WixSharp.Dir.MergeModules">
