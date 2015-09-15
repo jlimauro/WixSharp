@@ -2550,7 +2550,24 @@ namespace WixSharp
             return newName;
         }
 
-        static void PackageManagedAsm(string asm, string nativeDll, string[] refAssemblies, string outDir, string configFilePath, Platform? platform = null)
+        /// <summary>
+        /// Builds the batch file for packaging the assembly containing managed CA or UI.
+        /// </summary>
+        /// <param name="asm">The assembly to be packaged.</param>
+        /// <param name="nativeDll">The package file (native DLL) to be build.</param>
+        /// <param name="refAssemblies">The referenced assemblies.</param>
+        /// <param name="outDir">The out dir.</param>
+        /// <param name="configFilePath">The app config file path.</param>
+        /// <param name="platform">The platform.</param>
+        /// <returns></returns>
+        static public  string BuildPackageAsmCmd(string asm, string nativeDll, string[] refAssemblies, string outDir, string configFilePath, Platform? platform = null)
+        {
+            string batchFile = IO.Path.Combine(outDir, "Build_CA_DLL.cmd");
+            PackageManagedAsm(asm, nativeDll, refAssemblies, outDir, configFilePath, platform, batchFile);
+            return batchFile;
+        }
+
+        static void PackageManagedAsm(string asm, string nativeDll, string[] refAssemblies, string outDir, string configFilePath, Platform? platform = null, string batchFile = null)
         {
             string platformDir = "x86";
             if (platform.HasValue && platform.Value == Platform.x64)
@@ -2647,12 +2664,19 @@ namespace WixSharp
             Console.WriteLine(makeSfxCA + " " + makeSfxCA_args);
             Console.WriteLine("->");
 #endif
-            Run(makeSfxCA, makeSfxCA_args);
+            if (batchFile == null)
+            {
+                Run(makeSfxCA, makeSfxCA_args);
 
-            if (!IO.File.Exists(outDll))
-                throw new ApplicationException("Cannot package ManagedCA assembly(" + asm + ")");
+                if (!IO.File.Exists(outDll))
+                    throw new ApplicationException("Cannot package ManagedCA assembly(" + asm + ")");
 
-            Compiler.TempFiles.Add(outDll);
+                Compiler.TempFiles.Add(outDll);
+            }
+            else
+            {
+                IO.File.WriteAllText(batchFile, string.Format("\"{0}\" {1}\r\npause", makeSfxCA, makeSfxCA_args));
+            }
         }
 
         internal static Dictionary<string, string> EnvironmentFolders64Mapping = new Dictionary<string, string>

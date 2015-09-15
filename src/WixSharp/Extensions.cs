@@ -491,7 +491,10 @@ namespace WixSharp
         /// <returns></returns>
         public static bool SamePathAs(this string pathA, string pathB)
         {
-            return 0 == string.Compare(IO.Path.GetFullPath(pathA), IO.Path.GetFullPath(pathB), true);
+            if (pathA.IsNotEmpty() && pathB.IsNotEmpty())
+                return 0 == string.Compare(IO.Path.GetFullPath(pathA), IO.Path.GetFullPath(pathB), true);
+            else
+                return false;
         }
 
         /// <summary>
