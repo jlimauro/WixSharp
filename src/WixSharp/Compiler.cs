@@ -2283,7 +2283,7 @@ namespace WixSharp
                 else if (wAction.When == When.After && wAction.Step == Step.PreviousActionOrInstallInitialize)
                     step = lastActionName ?? Step.InstallInitialize.ToString();
 
-                lastActionName = wAction.Name.Expand();
+                lastActionName = wAction.Id;
 
                 List<XElement> sequences = new List<XElement>();
 
