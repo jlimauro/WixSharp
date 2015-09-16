@@ -1938,7 +1938,7 @@
             <para>If set to <c>false</c> PDB file will not be included and debugging of such CustomAction will not be possible.</para>
             </summary>
         </member>
-        <member name="M:WixSharp.Compiler.BuildPackageAsmCmd(System.String,System.String,System.String[],System.String,System.String,System.Nullable{WixSharp.Platform})">
+        <member name="M:WixSharp.Compiler.BuildPackageAsmCmd(System.String,System.String,System.String[],System.String,System.String,System.Nullable{WixSharp.Platform},System.Boolean)">
             <summary>
             Builds the batch file for packaging the assembly containing managed CA or UI.
             </summary>

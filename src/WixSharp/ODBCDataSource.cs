@@ -114,7 +114,10 @@ namespace WixSharp
             {
                 if (item is Property)
                     props.Add(item as Property);
+                else
+                    throw new Exception(item.GetType().Name + " is not expected to be a child of WixSharp.ODBCDataSource");
             }
+
 
             Properties = props.ToArray();
         }

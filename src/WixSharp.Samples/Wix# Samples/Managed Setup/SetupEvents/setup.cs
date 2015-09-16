@@ -44,7 +44,7 @@ public class Script
                 string installDirProperty = e.Session.Property("WixSharp_UI_INSTALLDIR");
                 string defaultinstallDir = e.Session.GetDirectoryPath(installDirProperty);
 
-                e.Session["INSTALLDIR"]= System.IO.Path.Combine(defaultinstallDir, Environment.UserName);
+                e.Session["INSTALLDIR"] = System.IO.Path.Combine(defaultinstallDir, Environment.UserName);
             }
         }
         catch { }

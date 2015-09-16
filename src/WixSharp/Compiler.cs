@@ -1047,7 +1047,7 @@ namespace WixSharp
                                                       .Distinct()
                                                       .ToArray();
 
-                    PackageManagedAsm(asmBin.Name, bynaryPath, refAsms, project.OutDir, project.CustomActionConfig);
+                    PackageManagedAsm(asmBin.Name, bynaryPath, refAsms, project.OutDir, project.CustomActionConfig, null, true);
                 }
 
                 product.AddElement("UI")
@@ -1514,7 +1514,7 @@ namespace WixSharp
                         new XAttribute("Id", wODBCDataSource.Id),
                         new XAttribute("Name", wODBCDataSource.Name),
                         new XAttribute("DriverName", wODBCDataSource.DriverName),
-                        new XAttribute("KeyPath", (wODBCDataSource.KeyPath ? "yes" : "no")),
+                        new XAttribute("KeyPath", wODBCDataSource.KeyPath.ToYesNo()),
                         new XAttribute("Registration", (wODBCDataSource.PerMachineRegistration ? "machine" : "user"))));
 
                 foreach (Property prop in wODBCDataSource.Properties)
@@ -2372,7 +2372,8 @@ namespace WixSharp
                             wManagedAction.RefAssemblies.Concat(wProject.DefaultRefAssemblies).Distinct().ToArray(),
                             wProject.OutDir,
                             wProject.CustomActionConfig,
-                            wProject.Platform);
+                            wProject.Platform,
+                            false);
 
                         bynaryKey = wAction.Name.Expand() + "_File";
                         product.Add(new XElement("Binary",
@@ -2599,14 +2600,14 @@ namespace WixSharp
         /// <param name="configFilePath">The app config file path.</param>
         /// <param name="platform">The platform.</param>
         /// <returns></returns>
-        static public string BuildPackageAsmCmd(string asm, string nativeDll, string[] refAssemblies, string outDir, string configFilePath, Platform? platform = null)
+        static public string BuildPackageAsmCmd(string asm, string nativeDll, string[] refAssemblies, string outDir, string configFilePath, Platform? platform = null, bool embeddedUI = false)
         {
             string batchFile = IO.Path.Combine(outDir, "Build_CA_DLL.cmd");
-            PackageManagedAsm(asm, nativeDll, refAssemblies, outDir, configFilePath, platform, batchFile);
+            PackageManagedAsm(asm, nativeDll, refAssemblies, outDir, configFilePath, platform, embeddedUI, batchFile);
             return batchFile;
         }
 
-        static void PackageManagedAsm(string asm, string nativeDll, string[] refAssemblies, string outDir, string configFilePath, Platform? platform = null, string batchFile = null)
+        static void PackageManagedAsm(string asm, string nativeDll, string[] refAssemblies, string outDir, string configFilePath, Platform? platform = null, bool embeddedUI = false, string batchFile = null)
         {
             string platformDir = "x86";
             if (platform.HasValue && platform.Value == Platform.x64)
@@ -2659,11 +2660,15 @@ namespace WixSharp
                 referencedAssemblies += "\"" + IO.Path.GetFullPath(refAasmFile) + "\" ";
             }
 
-            var configFile = IO.Path.GetFullPath("CustomAction.config");
+            var configFile = IO.Path.GetFullPath(embeddedUI ? "EmbeddedUI.config" : "CustomAction.config");
 
             if (configFilePath.IsNotEmpty())
             {
-                configFile = configFilePath;
+                if (configFile != configFilePath)
+                {
+                    IO.File.Copy(configFilePath, configFile);
+                    Compiler.TempFiles.Add(configFile);
+                }
             }
             else
             {
@@ -2679,8 +2684,8 @@ namespace WixSharp
                                                         <supportedRuntime version=""v1.1.4322""/>
                                                     </startup>
                                                 </configuration>");
+                Compiler.TempFiles.Add(configFile);
             }
-            Compiler.TempFiles.Add(configFile);
 
             string pdbFileArgument = null;
             if (!IgnoreClientAssemblyPDB && IO.File.Exists(IO.Path.ChangeExtension(asmFile, ".pdb")))

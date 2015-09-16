@@ -53,6 +53,8 @@ public class Script
 
     static void CheckCompatibility(SetupEventArgs e)
     {
+        //MessageBox.Show("Hello World! (CLR: v" + Environment.Version + ")", "Embedded Managed UI (" + ((IntPtr.Size == 8) ? "x64" : "x86") + ")");
+
         if (e.IsInstalling)
         {
             var conflictingProductCode = "{1D6432B4-E24D-405E-A4AB-D7E6D088C111}";
