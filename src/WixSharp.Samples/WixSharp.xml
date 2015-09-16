@@ -2745,6 +2745,7 @@
             <param name="attributeName">Name of the source attribute to copy.</param>
             <returns>The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</returns>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:WixSharp.Extensions.InjectWxs(System.Xml.Linq.XDocument,System.String)" -->
         <member name="M:WixSharp.Extensions.ReadAttribute(System.Xml.Linq.XElement,System.String)">
             <summary>
             Reads the attribute value. Returns null if attribute doesn't exist.

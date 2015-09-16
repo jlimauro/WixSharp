@@ -342,6 +342,46 @@ namespace WixSharp
         }
 
         /// <summary>
+        /// Injects the Wxs (WiX source) into Wxs document. It merges 'Wix/Product' elements of document with 
+        /// 'Wix/Product' elements of wxsFile. 
+        /// <para> This method is nothing else but a 'syntactic sugar' method, which wraps the following code:
+        /// <code>
+        /// document.Root.Select("Product")
+        ///              .Add(XDocument.Load(wxsFile)
+        ///              .Root.Select("Product").Elements());
+        /// </code>
+        /// </para>
+        /// <example>The following is an example of using InjectWxs.
+        /// <code>
+        /// Compiler.WixSourceGenerated += 
+        ///            document => document.InjectWxs("CommonProperies.wxs");
+        ///                 
+        /// //where CommonProperies.wxs contains the following XML
+        /// <?xml version="1.0" encoding="Windows-1252"?>
+        /// <Wix xmlns = "http://schemas.microsoft.com/wix/2006/wi" >
+        ///   < Product >
+        ///     < Property Id="Prop1" Value="1" />
+        ///     <Property Id = "Prop2" Value="2" />
+        ///     <Property Id = "Prop3" Value="3" />
+        ///     <Property Id = "Prop4" Value="4" />
+        ///   </Product>
+        /// </Wix>
+        /// </code>
+        /// </example>
+        /// </summary>
+        /// <param name="document">The document.</param>
+        /// <param name="wxsFile">The WXS file.</param>
+        /// <returns></returns>
+        public static XDocument InjectWxs(this XDocument document, string wxsFile)
+        {
+
+            document.Root.Select("Product")
+                            .Add(XDocument.Load(wxsFile)
+                                          .Root.Select("Product").Elements());
+            return document;
+        }
+
+        /// <summary>
         /// Reads the attribute value. Returns null if attribute doesn't exist.
         /// </summary>
         /// <param name="e">The e.</param>

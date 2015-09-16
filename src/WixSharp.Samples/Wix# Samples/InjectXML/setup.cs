@@ -17,7 +17,12 @@ class Script
                 new Dir(@"%ProgramFiles64Folder%\My Company\My Product",
                     new File(@"Files\Bin\MyApp.exe"),
                     new Dir(@"Docs\Manual",
-                        new File(@"Files\Docs\Manual.txt"))));
+                        new File(@"Files\Docs\Manual.txt")))
+                //, new Property("Prop1", "1"),
+                //new Property("Prop2", "2"),
+                //new Property("Prop3", "3"),
+                //new Property("Prop4", "4")
+                );
 
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
@@ -35,8 +40,10 @@ class Script
 
                 document.FindAll("Component")
                         .ForEach(e => e.SetAttributeValue("Win64", "yes"));
-            };
 
+                document.InjectWxs("CommonProperies.wxs");
+            };
+        
         Compiler.PreserveTempFiles = true;
         Compiler.BuildMsi(project);
     }
