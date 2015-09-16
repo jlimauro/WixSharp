@@ -685,6 +685,9 @@ namespace WixSharp
             return null;
         }
 
+        /// <summary>
+        /// The installer version
+        /// </summary>
         public int InstallerVersion = 200;
 
         string codepage = "";

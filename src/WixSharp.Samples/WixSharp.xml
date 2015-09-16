@@ -1948,6 +1948,7 @@
             <param name="outDir">The out dir.</param>
             <param name="configFilePath">The app config file path.</param>
             <param name="platform">The platform.</param>
+            <param name="embeddedUI">if set to <c>true</c> the assembly as an 'EmbeddedUI' assembly.</param>
             <returns></returns>
         </member>
         <member name="T:WixSharp.Compiler.Wildcard">
@@ -2941,7 +2942,14 @@
             Reverse equivalent of Enum.HasFlag of .NET v4.5
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:WixSharp.Extensions.None``1(System.Collections.Generic.IEnumerable{``0})" -->
+        <member name="M:WixSharp.Extensions.None``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Determines if the specified sequence has no items. It is opposite of IEnumerable&lt;TSource&gt;.Any().
+            </summary>
+            <typeparam name="TSource">The type of the T source.</typeparam>
+            <param name="source">The source.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.IsEmpty(System.String)">
             <summary>
             Determines whether the given string is empty.
@@ -8027,6 +8035,11 @@
             </summary>
             <param name="path">The path string.</param>
             <returns><see cref="T:WixSharp.Dir"/> instance if the search was succesfull, otherwise return <c>null</c></returns>
+        </member>
+        <member name="F:WixSharp.Project.InstallerVersion">
+            <summary>
+            The installer version
+            </summary>
         </member>
         <member name="P:WixSharp.Project.Codepage">
             <summary>

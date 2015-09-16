@@ -746,7 +746,6 @@ namespace WixSharp
             //issue#63 Inconsistent XML namespace usage in generated Wix source
             doc.AddDefaultNamespaces();
 
-
             project.InvokeWixSourceGenerated(doc);
             if (WixSourceGenerated != null)
                 WixSourceGenerated(doc);
@@ -2600,6 +2599,7 @@ namespace WixSharp
         /// <param name="outDir">The out dir.</param>
         /// <param name="configFilePath">The app config file path.</param>
         /// <param name="platform">The platform.</param>
+        /// <param name="embeddedUI">if set to <c>true</c> the assembly as an 'EmbeddedUI' assembly.</param>
         /// <returns></returns>
         static public string BuildPackageAsmCmd(string asm, string nativeDll, string[] refAssemblies, string outDir, string configFilePath, Platform? platform = null, bool embeddedUI = false)
         {

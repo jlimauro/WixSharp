@@ -357,15 +357,15 @@ namespace WixSharp
         ///            document => document.InjectWxs("CommonProperies.wxs");
         ///                 
         /// //where CommonProperies.wxs contains the following XML
-        /// <?xml version="1.0" encoding="Windows-1252"?>
-        /// <Wix xmlns = "http://schemas.microsoft.com/wix/2006/wi" >
-        ///   < Product >
-        ///     < Property Id="Prop1" Value="1" />
-        ///     <Property Id = "Prop2" Value="2" />
-        ///     <Property Id = "Prop3" Value="3" />
-        ///     <Property Id = "Prop4" Value="4" />
-        ///   </Product>
-        /// </Wix>
+        /// &lt;?xml version=&quot;1.0&quot; encoding=&quot;Windows-1252&quot;?&gt;
+        /// &lt;Wix xmlns = &quot"http://schemas.microsoft.com/wix/2006/wi&quot; &gt;
+        ///   &lt;Product&gt;
+        ///     &lt;Property Id=&quot;Prop1&quot; Value=&quot;1&quot; /&gt;
+        ///     &lt;Property Id=&quot;Prop2&quot; Value=&quot;2&quot; /&gt;
+        ///     &lt;Property Id=&quot;Prop3&quot; Value=&quot;3&quot; /&gt;
+        ///     &lt;Property Id=&quot;Prop4&quot; Value=&quot;4&quot; /&gt;
+        ///   &lt;/Product&gt;
+        /// &lt;/Wix&gt;
         /// </code>
         /// </example>
         /// </summary>
@@ -744,7 +744,7 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Determines if the specified sequence has no items. It is opposite of IEnumerable<TSource>.Any().
+        /// Determines if the specified sequence has no items. It is opposite of IEnumerable&lt;TSource&gt;.Any().
         /// </summary>
         /// <typeparam name="TSource">The type of the T source.</typeparam>
         /// <param name="source">The source.</param>
@@ -831,11 +831,22 @@ namespace WixSharp
 
         internal static XDocument AddDefaultNamespaces(this XDocument doc)
         {
-            doc.Descendants().ForEach(x =>
-            {
-                if (x.Name.Namespace.NamespaceName.IsEmpty())
-                    x.Name = doc.Root.Name.Namespace + x.Name.LocalName;
-            });
+            //For some reason WixVariable element triggers exception "The prefix '' cannot be redefined 
+            //from 'http://schemas.microsoft.com/wix/2006/wi' to '' within the same start element tag."
+            //and this happens only with WixVariable !!?? 
+            //doc.Descendants().ForEach(x =>
+            //{
+            //    if (x.Name.Namespace.NamespaceName.IsEmpty())
+            //       x.Name = doc.Root.Name.Namespace + x.Name.LocalName;
+            //});
+
+            //Thus using simplistic string manipulation with regeneration of all elements
+            var xml = doc.ToString().Replace("xmlns=\"\"", "");
+            var newRoot  = XElement.Parse(xml);
+
+            doc.Root.RemoveAll();
+            doc.Root.Add(newRoot.Elements());
+
             return doc;
         }
 

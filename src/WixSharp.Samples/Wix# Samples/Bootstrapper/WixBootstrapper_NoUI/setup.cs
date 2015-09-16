@@ -21,6 +21,7 @@ public class InstallScript
                     new File("readme.txt"))) { InstallScope = InstallScope.perUser };
         
         productProj.GUID = new Guid("6f330b47-2577-43ad-9095-1861bb258777");
+        productProj.LicenceFile = "License.rtf";
         string productMsi = productProj.BuildMsi();
 
         var bootstrapper =
