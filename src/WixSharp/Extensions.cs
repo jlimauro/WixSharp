@@ -744,9 +744,20 @@ namespace WixSharp
         }
 
         /// <summary>
+        /// Determines if the specified sequence has no items. It is opposite of IEnumerable<TSource>.Any().
+        /// </summary>
+        /// <typeparam name="TSource">The type of the T source.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static bool None<TSource>(this IEnumerable<TSource> source)
+        {
+            return !source.Any();
+        }
+
+        /// <summary>
         /// Determines whether the given string is empty.
         /// </summary>
-        /// <param name="s">The string to analyse.</param>
+        /// <param name="s">The string to analyze.</param>
         /// <returns>
         /// 	<c>true</c> if the specified s is empty; otherwise, <c>false</c>.
         /// </returns>

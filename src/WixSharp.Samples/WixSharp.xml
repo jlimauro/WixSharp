@@ -2941,11 +2941,12 @@
             Reverse equivalent of Enum.HasFlag of .NET v4.5
             </summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:WixSharp.Extensions.None``1(System.Collections.Generic.IEnumerable{``0})" -->
         <member name="M:WixSharp.Extensions.IsEmpty(System.String)">
             <summary>
             Determines whether the given string is empty.
             </summary>
-            <param name="s">The string to analyse.</param>
+            <param name="s">The string to analyze.</param>
             <returns>
             	<c>true</c> if the specified s is empty; otherwise, <c>false</c>.
             </returns>

@@ -41,7 +41,8 @@ class Script
                 document.FindAll("Component")
                         .ForEach(e => e.SetAttributeValue("Win64", "yes"));
 
-                document.InjectWxs("CommonProperies.wxs");
+                //merge 'Wix/Product' elements of document with 'Wix/Product' elements of CommonProperies.wxs 
+                document.InjectWxs("CommonProperies.wxs"); 
             };
         
         Compiler.PreserveTempFiles = true;
