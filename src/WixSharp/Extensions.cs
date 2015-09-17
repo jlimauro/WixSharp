@@ -358,7 +358,7 @@ namespace WixSharp
         ///                 
         /// //where CommonProperies.wxs contains the following XML
         /// &lt;?xml version=&quot;1.0&quot; encoding=&quot;Windows-1252&quot;?&gt;
-        /// &lt;Wix xmlns = &quot"http://schemas.microsoft.com/wix/2006/wi&quot; &gt;
+        /// &lt;Wix xmlns = &quot;http://schemas.microsoft.com/wix/2006/wi&quot; &gt;
         ///   &lt;Product&gt;
         ///     &lt;Property Id=&quot;Prop1&quot; Value=&quot;1&quot; /&gt;
         ///     &lt;Property Id=&quot;Prop2&quot; Value=&quot;2&quot; /&gt;

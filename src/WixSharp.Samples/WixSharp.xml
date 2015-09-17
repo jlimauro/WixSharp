@@ -2746,7 +2746,39 @@
             <param name="attributeName">Name of the source attribute to copy.</param>
             <returns>The instance of the <see cref="T:System.Xml.Linq.XElement"/> to copy the attribute to.</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:WixSharp.Extensions.InjectWxs(System.Xml.Linq.XDocument,System.String)" -->
+        <member name="M:WixSharp.Extensions.InjectWxs(System.Xml.Linq.XDocument,System.String)">
+            <summary>
+            Injects the Wxs (WiX source) into Wxs document. It merges 'Wix/Product' elements of document with 
+            'Wix/Product' elements of wxsFile. 
+            <para> This method is nothing else but a 'syntactic sugar' method, which wraps the following code:
+            <code>
+            document.Root.Select("Product")
+                         .Add(XDocument.Load(wxsFile)
+                         .Root.Select("Product").Elements());
+            </code>
+            </para>
+            <example>The following is an example of using InjectWxs.
+            <code>
+            Compiler.WixSourceGenerated += 
+                       document => document.InjectWxs("CommonProperies.wxs");
+                            
+            //where CommonProperies.wxs contains the following XML
+            &lt;?xml version=&quot;1.0&quot; encoding=&quot;Windows-1252&quot;?&gt;
+            &lt;Wix xmlns = &quot;http://schemas.microsoft.com/wix/2006/wi&quot; &gt;
+              &lt;Product&gt;
+                &lt;Property Id=&quot;Prop1&quot; Value=&quot;1&quot; /&gt;
+                &lt;Property Id=&quot;Prop2&quot; Value=&quot;2&quot; /&gt;
+                &lt;Property Id=&quot;Prop3&quot; Value=&quot;3&quot; /&gt;
+                &lt;Property Id=&quot;Prop4&quot; Value=&quot;4&quot; /&gt;
+              &lt;/Product&gt;
+            &lt;/Wix&gt;
+            </code>
+            </example>
+            </summary>
+            <param name="document">The document.</param>
+            <param name="wxsFile">The WXS file.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.ReadAttribute(System.Xml.Linq.XElement,System.String)">
             <summary>
             Reads the attribute value. Returns null if attribute doesn't exist.
@@ -6908,6 +6940,13 @@
             <summary>
             Child <see cref="T:WixSharp.Feature"/>. To be added in the nested Features scenarios.
             </summary>
+        </member>
+        <member name="M:WixSharp.Feature.Add(WixSharp.Feature[])">
+            <summary>
+            Adds the specified nested features.
+            </summary>
+            <param name="features">The features.</param>
+            <returns></returns>
         </member>
         <member name="F:WixSharp.Feature.Condition">
             <summary>

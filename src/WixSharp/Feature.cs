@@ -231,6 +231,17 @@ namespace WixSharp
         public List<Feature> Children = new List<Feature>();
 
         /// <summary>
+        /// Adds the specified nested features.
+        /// </summary>
+        /// <param name="features">The features.</param>
+        /// <returns></returns>
+        public Feature Add(params Feature[] features)
+        {
+            Children.AddRange(features);
+            return this;
+        }
+
+        /// <summary>
         /// Defines the installation <see cref="Condition"/>, which is to be checked during the installation to 
         /// determine if the feature should be installed on the target system.
         /// </summary>

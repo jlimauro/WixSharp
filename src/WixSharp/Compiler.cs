@@ -1618,7 +1618,7 @@ namespace WixSharp
                               MsmId = msm.Id
                           };
 
-            var features = (from f in product.Elements("Feature")
+            var features = (from f in product.Descendants("Feature")
                             select f)
                            .ToDictionary(x => x.Attribute("Id").Value);
 
@@ -1638,13 +1638,17 @@ namespace WixSharp
                     if (features.ContainsKey(item.Feature.Id))
                         xFeature = features[item.Feature.Id];
                     else
+                    {
                         xFeature = product.AddElement(
-                                             new XElement("Feature",
-                                                 new XAttribute("Id", item.Feature.Id),
-                                                 new XAttribute("Title", item.Feature.Name),
-                                                 new XAttribute("Absent", item.Feature.AllowChange ? "allow" : "disallow"),
-                                                 new XAttribute("Level", item.Feature.IsEnabled ? "1" : "2"))
-                                                 .AddAttributes(item.Feature.Attributes));
+                                            new XElement("Feature",
+                                                new XAttribute("Id", item.Feature.Id),
+                                                new XAttribute("Title", item.Feature.Name),
+                                                new XAttribute("Absent", item.Feature.AllowChange ? "allow" : "disallow"),
+                                                new XAttribute("Level", item.Feature.IsEnabled ? "1" : "2"))
+                                                .AddAttributes(item.Feature.Attributes));
+
+                        features.Add(item.Feature.Id, xFeature);
+                    }
                 }
 
                 xFeature.Add(new XElement("MergeRef",
