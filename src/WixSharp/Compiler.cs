@@ -1618,9 +1618,8 @@ namespace WixSharp
                               MsmId = msm.Id
                           };
 
-            var features = (from f in product.Descendants("Feature")
-                            select f)
-                           .ToDictionary(x => x.Attribute("Id").Value);
+            var features = product.Descendants("Feature")
+                                  .ToDictionary(x => x.Attribute("Id").Value);
 
             foreach (var item in modules)
             {

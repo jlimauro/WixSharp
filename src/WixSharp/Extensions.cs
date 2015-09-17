@@ -1,37 +1,15 @@
-#region Licence...
-/*
-The MIT License (MIT)
-Copyright (c) 2014 Oleg Shilo
-Permission is hereby granted, 
-free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-*/
-#endregion
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Xml.Linq;
 using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
 using IO = System.IO;
-using System.Data;
-using System.Security.Principal;
 
 namespace WixSharp
 {
@@ -829,24 +807,66 @@ namespace WixSharp
                 return e.Current.Select(path.Substring(parts[0].Length + 1)); //be careful RECURSION
         }
 
+        static bool IsXmlNamespaceAsigningDangerous()
+        {
+            var doc = XDocument.Parse(@"<Root xmlns=""http://www.test.com/xml/2015"">
+                                          <Element xmlns=""""/>
+                                        </Root>");
+            var xml = doc.ToString();
+
+            XNamespace ns = doc.Root.Name.NamespaceName;
+
+            var e = doc.Root.Elements().First();
+            e.Name = ns + e.Name.LocalName;
+
+            try
+            {
+                xml = doc.ToString();
+                return false;
+            }
+            catch
+            {
+                return true;
+            }
+        }
+
+        static bool? canSetXmlNamespaceSafely;
+        static bool CanSetXmlNamespaceSafely
+        {
+            get
+            {
+                if (!canSetXmlNamespaceSafely.HasValue)
+                    canSetXmlNamespaceSafely = !IsXmlNamespaceAsigningDangerous();
+                return canSetXmlNamespaceSafely.Value;
+            }
+        }
+
         internal static XDocument AddDefaultNamespaces(this XDocument doc)
         {
-            //For some reason WixVariable element triggers exception "The prefix '' cannot be redefined 
+            //part of Issue#67 workaround
+            //For some reason after changing the XML namespace dox.ToString() triggers exception "The prefix '' cannot be redefined 
             //from 'http://schemas.microsoft.com/wix/2006/wi' to '' within the same start element tag."
-            //and this happens only with WixVariable !!?? 
-            //doc.Descendants().ForEach(x =>
-            //{
-            //    if (x.Name.Namespace.NamespaceName.IsEmpty())
-            //       x.Name = doc.Root.Name.Namespace + x.Name.LocalName;
-            //});
+            //This error leads to the failure of the XML serialization with StringWriterWithEncoding (in BuildWxs). 
+            //Strangle enough serialization is affected by presence of WixVariable element !!?? 
+            //While ToString fails always
+            if (CanSetXmlNamespaceSafely)
+            {
+                XNamespace ns = doc.Root.Name.NamespaceName;
+                doc.Root.Descendants().ForEach(x =>
+                {
+                    if (x.Name.Namespace.NamespaceName.IsEmpty())
+                        x.Name = ns + x.Name.LocalName;
+                });
+            }
+            else
+            {
+                //Using simplistic, inefficient but safe string manipulation with regeneration of all elements
+                var xml = doc.ToString().Replace("xmlns=\"\"", "");
+                var newRoot = XElement.Parse(xml);
 
-            //Thus using simplistic string manipulation with regeneration of all elements
-            var xml = doc.ToString().Replace("xmlns=\"\"", "");
-            var newRoot  = XElement.Parse(xml);
-
-            doc.Root.RemoveAll();
-            doc.Root.Add(newRoot.Elements());
-
+                doc.Root.RemoveAll();
+                doc.Root.Add(newRoot.Elements());
+            }
             return doc;
         }
 
@@ -923,6 +943,12 @@ namespace WixSharp
                 featureComponents[feature] = new List<string>();
 
             featureComponents[feature].Add(componentId);
+        }
+
+        public static T AddXmlInclude<T>(this T entity, string xmlFile, string parentElement = null) where T: WixEntity
+        {
+            entity.AddInclude(xmlFile, parentElement);
+            return entity;
         }
 
 

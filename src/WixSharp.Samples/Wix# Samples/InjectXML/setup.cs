@@ -17,21 +17,18 @@ class Script
                 new Dir(@"%ProgramFiles64Folder%\My Company\My Product",
                     new File(@"Files\Bin\MyApp.exe"),
                     new Dir(@"Docs\Manual",
-                        new File(@"Files\Docs\Manual.txt")))
-                //, new Property("Prop1", "1"),
-                //new Property("Prop2", "2"),
-                //new Property("Prop3", "3"),
-                //new Property("Prop4", "4")
-                );
+                        new File(@"Files\Docs\Manual.txt"))));
 
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
 
         //Note: setting x64 is done via XML injection for demo purposes only.
         //The x64 install can be achieved by "project.Platform = Platform.x64;"
 
+        project.AddXmlInclude("CommonProperies.wxi")
+               .AddXmlInclude("CommonProperies2.wxi");
+
         //project specific build event
         project.WixSourceGenerated += InjectImages;
-
         //global build event
         Compiler.WixSourceGenerated += document =>
             {
@@ -42,9 +39,12 @@ class Script
                         .ForEach(e => e.SetAttributeValue("Win64", "yes"));
 
                 //merge 'Wix/Product' elements of document with 'Wix/Product' elements of CommonProperies.wxs 
-                document.InjectWxs("CommonProperies.wxs"); 
+                document.InjectWxs("CommonProperies.wxs");
+
+                //the code below is the equivalent of project.AddXmlInclude(...)
+                //document.FindSingle("Product").Add(new XProcessingInstruction("include", @"CommonProperies.wxi"));
             };
-        
+
         Compiler.PreserveTempFiles = true;
         Compiler.BuildMsi(project);
     }

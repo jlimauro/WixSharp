@@ -142,6 +142,13 @@ namespace WixSharp
                 attributes = value;
             }
         }
+
+        internal void AddInclude(string xmlFile, string parentElement)
+        {
+            //SetAttributeDefinition("WixSharpCustomAttributes:xml_include:" + xmlFile, parentElement??"<none>");
+            SetAttributeDefinition("WixSharpCustomAttributes:xml_include", parentElement+"|"+ xmlFile, append:true);
+        }
+
         Dictionary<string, string> attributes = new Dictionary<string, string>();
 
         /// <summary>
@@ -200,15 +207,31 @@ namespace WixSharp
                                              .FirstOrDefault();
         }
 
-        internal void SetAttributeDefinition(string name, string value)
+        internal void SetAttributeDefinition(string name, string value, bool append = false)
         {
             var preffix = name + "=";
-            var items = (AttributesDefinition ?? "").Trim()
-                                                    .Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-                                                    .Where(x => !x.StartsWith(preffix))
-                                                    .ToList();
+
+            var allItems = (AttributesDefinition ?? "").Trim()
+                                                       .Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                                                       .ToList();
+
+            var items = allItems;
+
             if (value.IsNotEmpty())
-                items.Add(name + "=" + value);
+            {
+                if (append)
+                {
+                    //add index to the items with the same key 
+                    var similarNamedItems = allItems.Where(x => x.StartsWith(name)).ToArray();
+                    items.Add(name + similarNamedItems.Count() + "=" + value);
+                }
+                else
+                {
+                    //reset items with the same key 
+                    items.RemoveAll(x => x.StartsWith(preffix));
+                    items.Add(name + "=" + value);
+                }
+            }
 
             AttributesDefinition = string.Join(";", items.ToArray());
         }
@@ -273,7 +296,7 @@ namespace WixSharp
                         id = rawName + "." + index;
                         idMaps[GetType()][rawNameKey] = index;
                     }
-                    
+
                     //Trace.WriteLine(">>> " + GetType() + " >>> " + id);
 
                     if (rawName.IsNotEmpty() && char.IsDigit(rawName[0]))
@@ -296,7 +319,7 @@ namespace WixSharp
         /// </summary>
         protected string id;
 
-        internal string RawId { get {return id;} }
+        internal string RawId { get { return id; } }
 
         /// <summary>
         /// The do not reset auto-ID generator before starting the build.

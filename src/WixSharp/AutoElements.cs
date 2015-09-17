@@ -264,7 +264,7 @@ namespace WixSharp
                         new XAttribute("SourceFile", file)));
         }
 
-        static void InjectPlatforAttributes(XDocument doc)
+        static void InjectPlatformAttributes(XDocument doc)
         {
             var is64BitPlatform = doc.Root.Select("Product/Package").HasAttribute("Platform", val => val == "x64");
 
@@ -330,12 +330,30 @@ namespace WixSharp
                 }
             }
 
+            if (key.StartsWith("xml_include"))
+            {
+                var parts = value.Split('|');
+
+                string parentName = parts[0];
+                string xmlFile = parts[1];
+
+                var placement = source;
+                if (!parentName.IsEmpty())
+                    placement = source.Parent(parentName);
+
+                if (placement != null)
+                {
+                    placement.Add(new XProcessingInstruction("include", xmlFile));
+                    return true;
+                }
+            }
+
             return false;
         }
 
         internal static void InjectAutoElementsHandler(XDocument doc)
         {
-            InjectPlatforAttributes(doc);
+            InjectPlatformAttributes(doc);
             ExpandCustomAttributes(doc);
             InjectShortcutIcons(doc);
 

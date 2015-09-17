@@ -10,6 +10,17 @@ namespace WixSharp.Test
 {
     public class IssueFixesTest
     {
+        [Fact]
+        [Description("Issue #67")]
+        public void Fix_Issue_67()
+        {
+            var project = new Project("MyProduct",
+                              new Dir("%ProgramFiles%"));
+
+            project.LicenceFile = "license.rtf";
+
+            var file = project.BuildWxs();
+        }
 
         [Fact]
         [Description("Issue #60")]
