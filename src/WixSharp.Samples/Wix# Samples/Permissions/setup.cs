@@ -7,14 +7,27 @@ using WixSharp;
 class Script
 {
     static public void Main(string[] args)
-    {
-        var project = new Project("My Product",
-                         new Dir(@"%ProgramFiles%\My Company\My Product",
-                             new ODBCDataSource("DsnName", "SQL Server", true, true,
-                                 new Property("Database", "MyDb"),
-                                 new Property("Server", "MyServer"))));
+    {        
+    var project =
+        new Project("MyProduct",
+            new Dir(@"%ProgramFiles%\My Company\My Product",
+                new File(@"Files\Bin\MyApp.exe"),
+                new File(@"Files\Docs\Manual.txt",
+                    new FilePermission("Everyone", GenericPermission.Read | GenericPermission.Execute),
+                    new FilePermission("Administrator")
+                        {
+                            Append = true,
+                            Delete = true,
+                            Write = true
+                        }),
+                new Dir(@"Docs"),
+                new Dir(@"Docs2",
+                    new DirPermission("Everyone", GenericPermission.All)),
+                new Dir("Empty")));
 
+        project.UI = WUI.WixUI_InstallDir;
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
+        project.EmitConsistentPackageId = true;
         project.PreserveTempFiles = true;
 
         project.BuildMsi();

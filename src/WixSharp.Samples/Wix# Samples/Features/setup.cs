@@ -11,8 +11,9 @@ class Script
         var binaries = new Feature("MyApp Binaries", "Application binaries");
         var docs = new Feature("MyApp Documentation");
         var tuts = new Feature("MyApp Tutorial");
-        docs.Children.Add(tuts);
-        binaries.Children.Add(docs);
+
+        docs.Add(tuts);
+        binaries.Add(docs);
 
         var project =
             new Project("MyProduct",

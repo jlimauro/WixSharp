@@ -1,58 +1,22 @@
 //css_dir ..\..\;
 //css_ref Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
 //css_ref System.Core.dll;
-
 using System;
-using System.Windows.Forms;
-using Microsoft.Deployment.WindowsInstaller;
 using WixSharp;
 
 class Script
 {
     static public void Main(string[] args)
     {
-        var project = new Project()
-        {
-            UI = WUI.WixUI_ProgressOnly,
-            Name = "PropertiesTest",
+        var project = new Project("My Product",
+                         new Dir(@"%ProgramFiles%\My Company\My Product",
+                             new ODBCDataSource("DsnName", "SQL Server", true, true,
+                                 new Property("Database", "MyDb"),
+                                 new Property("Server", "MyServer"))));
 
-            Actions = new WixSharp.Action[] 
-            { 
-                new SetPropertyAction("Gritting", "Hello World!"),
-                new SetPropertyAction("Title", "SetProperties Test"),
-                new SetPropertyAction("NOTEPAD_FILE", @"C:\boot.ini"),
+        project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
+        project.PreserveTempFiles = true;
 
-                new ManagedAction(@"ShowGritting"), 
-                new QtCmdLineAction("notepad.exe", "[NOTEPAD_FILE]"),
-            },
-            Properties = new[] 
-            { 
-                new Property("Gritting", "empty"),
-                new Property("Title", "empty"),
-                new Property("NOTEPAD_FILE", "empty")
-            }
-        };
-
-        Compiler.BuildMsi(project);
+        project.BuildMsiCmd();
     }
 }
-
-public class CustonActions
-{
-    [CustomAction]
-    public static ActionResult ShowGritting(Session session)
-    {
-        try
-        {
-            MessageBox.Show(session["Gritting"], session["Title"]);
-        }
-        catch (Exception e)
-        {
-            MessageBox.Show(e.ToString(), "Error");
-        }
-        return ActionResult.Success;
-    }
-}
-
-
-

@@ -222,14 +222,14 @@ namespace WixSharp
             var element = new XElement(WixExtension.IIs.ToXNamespace() + "Certificate");
 
             element.SetAttribute("Id", Id)
-            .SetAttribute("BinaryKey", BinaryKey)
-            .SetAttribute("CertificatePath", CertificatePath)
-            .SetAttribute("Name", Name)
-            .SetAttribute("Overwrite", Overwrite)
-            .SetAttribute("PFXPassword", PFXPassword)
-            .SetAttribute("Request", Request)
-            .SetAttribute("StoreLocation", Enum.GetName(typeof(StoreLocation), StoreLocation))
-            .SetAttribute("StoreName", Enum.GetName(typeof(StoreName), StoreName));
+                   .SetAttribute("BinaryKey", BinaryKey)
+                   .SetAttribute("CertificatePath", CertificatePath)
+                   .SetAttribute("Name", Name)
+                   .SetAttribute("Overwrite", Overwrite)
+                   .SetAttribute("PFXPassword", PFXPassword)
+                   .SetAttribute("Request", Request)
+                   .SetAttribute("StoreLocation", Enum.GetName(typeof(StoreLocation), StoreLocation))
+                   .SetAttribute("StoreName", Enum.GetName(typeof(StoreName), StoreName));
 
             return new[] { element };
         }

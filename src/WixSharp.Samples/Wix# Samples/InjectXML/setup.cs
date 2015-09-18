@@ -12,7 +12,7 @@ class Script
 {
     static public void Main(string[] args)
     {
-        Project project =
+        var project =
             new Project("MyProduct",
                 new Dir(@"%ProgramFiles64Folder%\My Company\My Product",
                     new File(@"Files\Bin\MyApp.exe"),
@@ -45,8 +45,8 @@ class Script
                 //document.FindSingle("Product").Add(new XProcessingInstruction("include", @"CommonProperies.wxi"));
             };
 
-        Compiler.PreserveTempFiles = true;
-        Compiler.BuildMsi(project);
+        project.PreserveTempFiles = true;
+        project.BuildMsi();
     }
 
     static void InjectImages(System.Xml.Linq.XDocument document)

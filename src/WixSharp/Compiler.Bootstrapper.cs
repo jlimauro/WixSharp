@@ -85,7 +85,11 @@ namespace WixSharp
                     foreach (string dll in project.WixExtensions.Distinct())
                         extensionDlls += " -ext \"" + dll + "\"";
 
-                    Run(compiler, CandleOptions + " " + extensionDlls + " \"" + wxsFile + "\" -out \"" + objFile + "\"");
+                    string wxsFiles = "";
+                    foreach (string file in project.WxsFiles.Distinct())
+                        wxsFiles += " \"" + file + "\"";
+
+                    Run(compiler, CandleOptions + " " + extensionDlls + " \"" + wxsFile + "\" "+ wxsFiles + " -out \"" + objFile + "\"");
 
                     if (IO.File.Exists(objFile))
                     {
@@ -182,7 +186,11 @@ namespace WixSharp
                 foreach (string dll in project.WixExtensions.Distinct())
                     extensionDlls += " -ext \"" + dll + "\"";
 
-                string batchFileContent = "\"" + compiler + "\" " + CandleOptions + " " + extensionDlls + " \"" + IO.Path.GetFileName(wxsFile) + "\"\r\n";
+                string wxsFiles = "";
+                foreach (string file in project.WxsFiles.Distinct())
+                    wxsFiles += " \"" + file + "\"";
+
+                string batchFileContent = "\"" + compiler + "\" " + CandleOptions + " " + extensionDlls + " \"" + IO.Path.GetFileName(wxsFile) + "\" "+ wxsFiles + "\r\n";
                 //Run(compiler, CandleOptions + " " + extensionDlls + " \"" + wxsFile + "\" -out \"" + objFile + "\"");
 
 

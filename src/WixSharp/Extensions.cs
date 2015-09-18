@@ -945,6 +945,23 @@ namespace WixSharp
             featureComponents[feature].Add(componentId);
         }
 
+        /// <summary>
+        /// Adds the XML (*.wxi) include.
+        /// <example>The following is an example of including external XML files.
+        /// <code>
+        /// project.AddXmlInclude("CommonProperies.wxi")
+        ///        .AddXmlInclude("CommonProperies2.wxi");
+        /// 
+        /// new File(@"Files\Bin\MyApp.exe")
+        ///           .AddXmlInclude("FileItems.wxi", parentElement: "Component");
+        /// </code>
+        /// </example>
+        /// </summary>
+        /// <typeparam name="T">The type of the T.</typeparam>
+        /// <param name="entity">The entity.</param>
+        /// <param name="xmlFile">The XML file.</param>
+        /// <param name="parentElement">The parent element.</param>
+        /// <returns></returns>
         public static T AddXmlInclude<T>(this T entity, string xmlFile, string parentElement = null) where T: WixEntity
         {
             entity.AddInclude(xmlFile, parentElement);

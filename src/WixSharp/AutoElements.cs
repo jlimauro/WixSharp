@@ -60,8 +60,27 @@ namespace WixSharp
         /// Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties,
         /// ReleaseFolder, Shortcuts and WildCardFiles samples.
         /// <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
+        /// <para>
+        /// This flag is a heavier alternative of DisableAutoKeyPath. 
+        /// See: http://stackoverflow.com/questions/10358989/wix-using-keypath-on-components-directories-files-registry-etc-etc 
+        /// for some background info.
+        ///  
+        /// </para>
         /// </summary>
-        public static bool DisableAutoCreateFolder = false;
+        public static bool DisableAutoCreateFolder = true;
+
+        /// <summary>
+        /// The disable automatic insertion of <c>KeyPath=yes</c> attribute for the Component element.
+        /// Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties,
+        /// ReleaseFolder, Shortcuts and WildCardFiles samples.
+        /// <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
+        /// <para>
+        /// This flag is a lighter alternative of DisableAutoCreateFolder. 
+        /// See: http://stackoverflow.com/questions/10358989/wix-using-keypath-on-components-directories-files-registry-etc-etc 
+        /// for some background info.
+        /// </para>
+        /// </summary>
+        public static bool DisableAutoKeyPath = false;
 
         /// <summary>
         /// Disables automatic insertion of user profile registry elements.
@@ -100,16 +119,44 @@ namespace WixSharp
                               .All(element => element.HasAttribute("Directory")))
                     xComponent.Add(new XElement("CreateFolder"));
             }
+
+            if (!DisableAutoKeyPath)
+            {
+                //a component must have KeyPath set on itself or on a single (just one) nested element
+                if (!xComponent.HasKeyPathElements())
+                    xComponent.SetAttribute("KeyPath=yes");
+            }
+        }
+
+
+        internal static bool HasKeyPathElements(this XElement xComponent)
+        {
+            return xComponent.Descendants()
+                             .Where(e => e.HasKeyPathSet())
+                             .Any();
+        }
+
+        internal static XElement ClearKeyPath(this XElement element)
+        {
+            return element.SetAttribute("KeyPath", null);
+        }
+
+        internal static bool HasKeyPathSet(this XElement element)
+        {
+            var attr = element.Attribute("KeyPath");
+
+            if (attr != null && attr.Value == "yes")
+                return true;
+            return false;
         }
 
         internal static XElement InsertUserProfileRegValue(this XElement xComponent)
         {
-            var keyPathes = xComponent.Elements()
-                          .Select(e => e.Attribute("KeyPath"))
-                          .Where(a => a != null && a.Value == "yes")
-                          .ToList();
+            //UserProfileRegValue has to be a KeyPath fo need to remove any KeyPath on other elements
+            var keyPathes = xComponent.Descendants()
+                                      .ForEach(e => e.ClearKeyPath());
 
-            keyPathes.ForEach(a => a.Remove());
+            xComponent.ClearKeyPath();
 
             xComponent.Add(
                         new XElement("RegistryKey",
@@ -118,7 +165,7 @@ namespace WixSharp
                             new XElement("RegistryValue",
                                 new XAttribute("Value", "0"),
                                 new XAttribute("Type", "string"),
-                                new XAttribute("KeyPath", "yes"))));
+                                new XAttribute("KeyPath", "yes")))); 
             return xComponent;
         }
 

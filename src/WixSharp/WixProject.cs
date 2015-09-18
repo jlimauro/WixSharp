@@ -71,6 +71,15 @@ namespace WixSharp
         public List<string> WixExtensions = new List<string>();
 
         /// <summary>
+        /// Collection of paths to the external wsx files containing Fragment(s). 
+        /// <para>
+        /// At the compile time files will be pases to candle.exe but the referencing them fragments in the primary wxs (XML)
+        /// needs to be done from WixSourceGenerated event handler.
+        /// </para>
+        /// </summary>
+        public List<string> WxsFiles = new List<string>();
+
+        /// <summary>
         /// Installation UI Language. If not specified <c>"en-US"</c> will be used.
         /// </summary>
         public string Language = "en-US";

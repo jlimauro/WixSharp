@@ -825,6 +825,25 @@
             Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties,
             ReleaseFolder, Shortcuts and WildCardFiles samples.
             <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
+            <para>
+            This flag is a heavier alternative of DisableAutoKeyPath. 
+            See: http://stackoverflow.com/questions/10358989/wix-using-keypath-on-components-directories-files-registry-etc-etc 
+            for some background info.
+             
+            </para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.AutoElements.DisableAutoKeyPath">
+            <summary>
+            The disable automatic insertion of <c>KeyPath=yes</c> attribute for the Component element.
+            Required for: NativeBootstrapper, EmbeddedMultipleActions,  EmptyDirectories, InstallDir, Properties,
+            ReleaseFolder, Shortcuts and WildCardFiles samples.
+            <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
+            <para>
+            This flag is a lighter alternative of DisableAutoCreateFolder. 
+            See: http://stackoverflow.com/questions/10358989/wix-using-keypath-on-components-directories-files-registry-etc-etc 
+            for some background info.
+            </para>
             </summary>
         </member>
         <member name="F:WixSharp.AutoElements.DisableAutoUserProfileRegistry">
@@ -3050,6 +3069,25 @@
             <param name="ignoreCase">if set to <c>true</c> [ignore case].</param>
             <returns></returns>
         </member>
+        <member name="M:WixSharp.Extensions.AddXmlInclude``1(``0,System.String,System.String)">
+            <summary>
+            Adds the XML (*.wxi) include.
+            <example>The following is an example of including external XML files.
+            <code>
+            project.AddXmlInclude("CommonProperies.wxi")
+                   .AddXmlInclude("CommonProperies2.wxi");
+            
+            new File(@"Files\Bin\MyApp.exe")
+                      .AddXmlInclude("FileItems.wxi", parentElement: "Component");
+            </code>
+            </example>
+            </summary>
+            <typeparam name="T">The type of the T.</typeparam>
+            <param name="entity">The entity.</param>
+            <param name="xmlFile">The XML file.</param>
+            <param name="parentElement">The parent element.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.FindSingle(System.Xml.Linq.XContainer,System.String)">
             <summary>
             Selects single descendant element with a given name (LocalName). Throws if no or more then one match found
@@ -4122,6 +4160,15 @@
         <member name="F:WixSharp.WixProject.WixExtensions">
             <summary>
             Collection of paths to the WiX extensions.
+            </summary>
+        </member>
+        <member name="F:WixSharp.WixProject.WxsFiles">
+            <summary>
+            Collection of paths to the external wsx files containing Fragment(s). 
+            <para>
+            At the compile time files will be pases to candle.exe but the referencing them fragments in the primary wxs (XML)
+            needs to be done from WixSourceGenerated event handler.
+            </para>
             </summary>
         </member>
         <member name="F:WixSharp.WixProject.Language">

@@ -480,10 +480,14 @@ namespace WixSharp
                 foreach (string dll in project.WixExtensions.Select(x => ResolveExtensionFile(x)).Distinct())
                     extensionDlls += " -ext \"" + dll + "\"";
 
+                string wxsFiles = "";
+                foreach (string file in project.WxsFiles.Distinct())
+                    wxsFiles += " \"" + file + "\"";
+
                 var candleOptions = CandleOptions + " " + project.CandleOptions;
                 var lightOptions = LightOptions + " " + project.LightOptions;
 
-                string batchFileContent = "\"" + compiler + "\" " + candleOptions + " " + extensionDlls + " \"" + IO.Path.GetFileName(wxsFile) + "\"\r\n";
+                string batchFileContent = "\"" + compiler + "\" " + candleOptions + " " + extensionDlls + " \"" + IO.Path.GetFileName(wxsFile) + "\" " + wxsFiles + "\r\n";
 
                 if (project.IsLocalized && IO.File.Exists(project.LocalizationFile))
                     batchFileContent += "\"" + linker + "\" " + lightOptions + " \"" + objFile + "\" " + extensionDlls + " -cultures:" + project.Language + " -loc " + project.LocalizationFile + "\r\npause";
@@ -611,11 +615,15 @@ namespace WixSharp
                     foreach (string dll in project.WixExtensions.Distinct())
                         extensionDlls += " -ext \"" + dll + "\"";
 
+                    string wxsFiles = "";
+                    foreach (string file in project.WxsFiles.Distinct())
+                        wxsFiles += " \"" + file + "\"";
+
                     var candleOptions = CandleOptions + " " + project.CandleOptions;
                     var lightOptions = LightOptions + " " + project.LightOptions;
 
                     //AppDomain.CurrentDomain.ExecuteAssembly(compiler, null, new string[] { projFile }); //a bit unsafer version
-                    Run(compiler, candleOptions + " " + extensionDlls + " \"" + wxsFile + "\" -out \"" + objFile + "\"");
+                    Run(compiler, candleOptions + " " + extensionDlls + " \"" + wxsFile + "\" " + wxsFiles + " -out \"" + objFile + "\"");
 
                     if (IO.File.Exists(objFile))
                     {
@@ -1273,11 +1281,11 @@ namespace WixSharp
         {
             XElement dirItem = AddDir(parent, wDir);
 
-            bool isEmptyDir = wDir.Files.None() && 
-                              wDir.Shortcuts.None() && 
-                              wDir.Dirs.None() && 
-                              wDir.MergeModules.None() && 
-                              wDir.Permissions.None() && 
+            bool isEmptyDir = wDir.Files.None() &&
+                              wDir.Shortcuts.None() &&
+                              wDir.Dirs.None() &&
+                              wDir.MergeModules.None() &&
+                              wDir.Permissions.None() &&
                               wDir.ODBCDataSources.None();
 
             if (isEmptyDir)
