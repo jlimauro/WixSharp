@@ -2611,12 +2611,33 @@ namespace WixSharp
         /// <param name="configFilePath">The app config file path.</param>
         /// <param name="platform">The platform.</param>
         /// <param name="embeddedUI">if set to <c>true</c> the assembly as an 'EmbeddedUI' assembly.</param>
-        /// <returns></returns>
+        /// <returns>Batch file path.</returns>
         static public string BuildPackageAsmCmd(string asm, string nativeDll, string[] refAssemblies, string outDir, string configFilePath, Platform? platform = null, bool embeddedUI = false)
         {
             string batchFile = IO.Path.Combine(outDir, "Build_CA_DLL.cmd");
             PackageManagedAsm(asm, nativeDll, refAssemblies, outDir, configFilePath, platform, embeddedUI, batchFile);
             return batchFile;
+        }
+        /// <summary>
+        /// Packages the assembly containing managed CA or UI.
+        /// </summary>
+        /// <param name="asm">The assembly to be packaged.</param>
+        /// <param name="nativeDll">The package file (native DLL) to be build.</param>
+        /// <param name="refAssemblies">The referenced assemblies.</param>
+        /// <param name="outDir">The out dir.</param>
+        /// <param name="configFilePath">The app config file path.</param>
+        /// <param name="platform">The platform.</param>
+        /// <param name="embeddedUI">if set to <c>true</c> the assembly as an 'EmbeddedUI' assembly.</param>
+        /// <returns>Package file path.</returns>
+        static public string BuildPackageAsm(string asm, string nativeDll = null, string[] refAssemblies = null, string outDir = null, string configFilePath = null, Platform? platform = null, bool embeddedUI = false)
+        {
+            if (ClientAssembly.IsEmpty())
+                ClientAssembly = System.Reflection.Assembly.GetCallingAssembly().Location;
+
+            nativeDll = nativeDll ?? IO.Path.ChangeExtension(asm, ".CA.dll");
+
+            PackageManagedAsm(asm, nativeDll ?? IO.Path.ChangeExtension(asm, ".CA.dll"), refAssemblies ?? new string[0], outDir ?? Environment.CurrentDirectory, configFilePath, platform, embeddedUI);
+            return IO.Path.GetFullPath(nativeDll);
         }
 
         static void PackageManagedAsm(string asm, string nativeDll, string[] refAssemblies, string outDir, string configFilePath, Platform? platform = null, bool embeddedUI = false, string batchFile = null)

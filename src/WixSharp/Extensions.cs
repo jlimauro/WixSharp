@@ -99,11 +99,15 @@ namespace WixSharp
         /// <param name="obj">The object.</param>
         /// <param name="elementName">The element.</param>
         /// <param name="attributesDefinition">The attributes definition. Rules of the composing the
-        /// definition are the same as for <see cref="WixEntity.AttributesDefinition"/>.</param>
+        /// definition are the same as for <see cref="P:WixSharp.WixEntity.AttributesDefinition" />.</param>
+        /// <param name="value">The value of the added element.</param>
         /// <returns></returns>
-        public static XElement AddElement(this XElement obj, string elementName, string attributesDefinition)
+        public static XElement AddElement(this XElement obj, string elementName, string attributesDefinition, string value = null)
         {
-            return obj.AddElement(elementName).AddAttributes(attributesDefinition);
+            var result = obj.AddElement(elementName).AddAttributes(attributesDefinition);
+            if (value != null)
+                result.Value = value;
+            return result;
         }
 
         /// <summary>
@@ -962,7 +966,7 @@ namespace WixSharp
         /// <param name="xmlFile">The XML file.</param>
         /// <param name="parentElement">The parent element.</param>
         /// <returns></returns>
-        public static T AddXmlInclude<T>(this T entity, string xmlFile, string parentElement = null) where T: WixEntity
+        public static T AddXmlInclude<T>(this T entity, string xmlFile, string parentElement = null) where T : WixEntity
         {
             entity.AddInclude(xmlFile, parentElement);
             return entity;

@@ -1968,7 +1968,20 @@
             <param name="configFilePath">The app config file path.</param>
             <param name="platform">The platform.</param>
             <param name="embeddedUI">if set to <c>true</c> the assembly as an 'EmbeddedUI' assembly.</param>
-            <returns></returns>
+            <returns>Batch file path.</returns>
+        </member>
+        <member name="M:WixSharp.Compiler.BuildPackageAsm(System.String,System.String,System.String[],System.String,System.String,System.Nullable{WixSharp.Platform},System.Boolean)">
+            <summary>
+            Packages the assembly containing managed CA or UI.
+            </summary>
+            <param name="asm">The assembly to be packaged.</param>
+            <param name="nativeDll">The package file (native DLL) to be build.</param>
+            <param name="refAssemblies">The referenced assemblies.</param>
+            <param name="outDir">The out dir.</param>
+            <param name="configFilePath">The app config file path.</param>
+            <param name="platform">The platform.</param>
+            <param name="embeddedUI">if set to <c>true</c> the assembly as an 'EmbeddedUI' assembly.</param>
+            <returns>Package file path.</returns>
         </member>
         <member name="T:WixSharp.Compiler.Wildcard">
             <summary>
@@ -2647,7 +2660,7 @@
             <param name="elementName">Name of the element.</param>
             <returns>Added <see cref="T:System.Xml.Linq.XElement"/>.</returns>
         </member>
-        <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.String,System.String)">
+        <member name="M:WixSharp.Extensions.AddElement(System.Xml.Linq.XElement,System.String,System.String,System.String)">
             <summary>
             Adds the element to a given XML element and sets the attributes of the newly created element.
             <para>
@@ -2657,7 +2670,8 @@
             <param name="obj">The object.</param>
             <param name="elementName">The element.</param>
             <param name="attributesDefinition">The attributes definition. Rules of the composing the
-            definition are the same as for <see cref="P:WixSharp.WixEntity.AttributesDefinition"/>.</param>
+            definition are the same as for <see cref="P:WixSharp.WixEntity.AttributesDefinition" />.</param>
+            <param name="value">The value of the added element.</param>
             <returns></returns>
         </member>
         <member name="M:WixSharp.Extensions.ToDictionary(System.String,System.Char,System.Char)">
