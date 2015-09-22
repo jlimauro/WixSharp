@@ -22,8 +22,9 @@ class Script
     static void BuildWithInclude(string package)
     {
         var project = new Project("CustomActionTest",
-                          new Binary(new Id("MyAction_File"), package)
-                              .AddXmlInclude("myaction.wxi", "Product"));
+                          new Binary(new Id("MyAction_File"), package));
+
+        project.AddXmlInclude("myaction.wxi");
         project.BuildMsi();
     }
 
