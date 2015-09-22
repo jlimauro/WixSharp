@@ -28,7 +28,7 @@ public class Script
         project.SourceBaseDir = @"..\..\";
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
         project.LocalizationFile = "MyProduct.en-us.wxl";
-
+        
         project.ManagedUI = new ManagedUI();
         project.ManagedUI.InstallDialogs.Add<WelcomeDialog>()
                                         .Add<MyProduct.UserNameDialog>()

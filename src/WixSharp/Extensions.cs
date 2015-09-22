@@ -470,15 +470,20 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// A simple generic wrapper around more specialized <see cref="T:String.Join"/>, which is limited to
+        /// A simple generic wrapper around more specialized <see cref="T:String.Join" />, which is limited to
         /// work with string arrays only.
         /// </summary>
         /// <param name="strings">The strings.</param>
         /// <param name="separator">The separator.</param>
+        /// <param name="selector"> A transform function to apply to each source element; the second parameter of the function represents the index of the source element.
+        /// </param>
         /// <returns></returns>
-        public static string Join(this IEnumerable<string> strings, string separator)
+        public static string Join(this IEnumerable<string> strings, string separator, Func<string, string> selector = null)
         {
-            return string.Join(separator, strings.ToArray());
+            if(selector != null)
+                return string.Join(separator, strings.Select(selector).ToArray());
+            else
+                return string.Join(separator, strings.ToArray());
         }
 
         /// <summary>
@@ -491,6 +496,30 @@ namespace WixSharp
             int result = 0;
             int.TryParse(value, out result);
             return (IntPtr)result;
+        }
+
+        /// <summary>
+        /// Deletes File/Directory from by the specified path if it exists.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="throw">if set to <c>false</c> handle all exceptions silently.</param>
+        /// <returns></returns>
+        public static string DeleteIfExists(this string path, bool @throw = false)
+        {
+            try
+            {
+                var fullPath = IO.Path.GetFullPath(path);
+                if (IO.File.Exists(fullPath))
+                    IO.File.Delete(fullPath);
+                if (IO.Directory.Exists(fullPath))
+                    IO.Directory.Delete(fullPath);
+            }
+            catch
+            {
+                if (@throw)
+                    throw;
+            }
+            return path;
         }
 
         /// <summary>
