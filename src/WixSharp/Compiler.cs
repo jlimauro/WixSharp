@@ -619,11 +619,38 @@ namespace WixSharp
                     foreach (string file in project.WxsFiles.Distinct())
                         wxsFiles += " \"" + file + "\"";
 
+                    string fragmentObjectFiles = "";
+                    foreach (string file in project.WxsFiles.Distinct())
+                        fragmentObjectFiles += " \"" + IO.Path.ChangeExtension(IO.Path.GetFileName(file), ".wixobj") + "\"";
+
                     var candleOptions = CandleOptions + " " + project.CandleOptions;
                     var lightOptions = LightOptions + " " + project.LightOptions;
 
                     //AppDomain.CurrentDomain.ExecuteAssembly(compiler, null, new string[] { projFile }); //a bit unsafer version
-                    Run(compiler, candleOptions + " " + extensionDlls + " \"" + wxsFile + "\" " + wxsFiles + " -out \"" + objFile + "\"");
+                    StringBuilder candleCmdLineParams = new StringBuilder();
+                    candleCmdLineParams.AppendFormat("{0} {1} \"{2}\" ", candleOptions, extensionDlls, wxsFile);
+
+                    if (!string.IsNullOrEmpty(wxsFiles))
+                    {
+                        candleCmdLineParams.AppendFormat("{0} ", wxsFiles);
+
+                        // if multiple files are specified candle expect a path for the -out switch
+                        // or no path at all (use current directory)
+
+                        string outputPath = IO.Path.GetDirectoryName(wxsFile);
+
+                        if (!string.IsNullOrEmpty(outputPath))
+                        {
+                            candleCmdLineParams.AppendFormat(" -out \"{0}\\\\\"", outputPath);
+                        }
+                    }
+                    else
+                        candleCmdLineParams.AppendFormat(" -out \"{0}\"", objFile);
+
+                    Console.WriteLine("-- candle command line: " + candleCmdLineParams.ToString());
+
+
+                    Run(compiler, candleCmdLineParams.ToString());
 
                     if (IO.File.Exists(objFile))
                     {
@@ -631,12 +658,24 @@ namespace WixSharp
                         if (IO.File.Exists(msiFile))
                             IO.File.Delete(msiFile);
 
+                        StringBuilder lightCmdLineParams = new StringBuilder();
+                        lightCmdLineParams.Append(lightOptions);
+                        lightCmdLineParams.AppendFormat(" -b \"{0}\" \"{1}\" ", IO.Path.GetDirectoryName(objFile), IO.Path.GetFileName(objFile));
+
+                        if (!string.IsNullOrEmpty(fragmentObjectFiles))
+                            lightCmdLineParams.Append(fragmentObjectFiles);
+
+                        lightCmdLineParams.Append(" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language);
+
+
                         if (project.IsLocalized && IO.File.Exists(project.LocalizationFile))
                         {
-                            Run(linker, lightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language + " -loc \"" + project.LocalizationFile + "\"");
+                            lightCmdLineParams.Append(" -loc \"" + project.LocalizationFile + "\"");
                         }
-                        else
-                            Run(linker, lightOptions + " \"" + objFile + "\" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language);
+
+                        Console.WriteLine("-- light command line: " + lightCmdLineParams.ToString());
+
+                        Run(linker, lightCmdLineParams.ToString());
 
                         if (IO.File.Exists(msiFile))
                         {
@@ -653,7 +692,12 @@ namespace WixSharp
                                 Console.WriteLine(" Auto-generated InstallDir ID:");
                                 Console.WriteLine("   " + Compiler.AutoGeneration.InstallDirDefaultId + "=" + project.AutoAssignedInstallDirPath);
                             }
-                            IO.File.Delete(objFile);
+
+                            foreach (string f in IO.Directory.GetFiles(IO.Path.GetDirectoryName(objFile), "*.wixobj"))
+                            {
+                                IO.File.Delete(f);
+                            }
+
                             IO.File.Delete(pdbFile);
 
                             if (path != msiFile)
