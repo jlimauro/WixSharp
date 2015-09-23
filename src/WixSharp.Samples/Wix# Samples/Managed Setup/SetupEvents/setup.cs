@@ -4,12 +4,14 @@
 //css_ref System.Core.dll;
 //css_ref System.Xml.dll;
 
+using Microsoft.Deployment.WindowsInstaller;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 //using System.Linq;
 using System.Windows.Forms;
 using WixSharp;
+using WixSharp.CommonTasks;
 using WixSharp.Forms;
 using WixSharp.UI.Forms;
 
@@ -26,6 +28,7 @@ public class Script
 
         project.ManagedUI = ManagedUI.Empty;
 
+        project.UIInitialized += project_UIInit;
         project.Load += project_Load;
         project.BeforeInstall += project_BeforeInstall;
         project.AfterInstall += project_AfterInstall;
@@ -35,10 +38,25 @@ public class Script
         Compiler.BuildMsi(project);
     }
 
+    static void project_UIInit(SetupEventArgs e)
+    {
+        SetEnvVErsion(e.Session);
+    }
+
+    static void SetEnvVErsion(Session session)
+    {
+        if(session["EnvVersion"].IsEmpty())
+            session["EnvVersion"] = AppSearch.IniFileValue(Environment.ExpandEnvironmentVariables(@"%windir%\win.ini"),
+                                                           "System",
+                                                           "Version") ?? "<unknown>";
+    }
+
     static void project_Load(SetupEventArgs e)
     {
         try
         {
+            SetEnvVErsion(e.Session);
+
             if (string.IsNullOrEmpty(e.Session["INSTALLDIR"])) //installdir is not set yet
             {
                 string installDirProperty = e.Session.Property("WixSharp_UI_INSTALLDIR");
@@ -48,7 +66,7 @@ public class Script
             }
         }
         catch { }
-        MessageBox.Show(e.ToString(), "Load");
+        MessageBox.Show(e.ToString(), "Load " + e.Session["EnvVersion"]);
     }
 
     static void project_BeforeInstall(SetupEventArgs e)
