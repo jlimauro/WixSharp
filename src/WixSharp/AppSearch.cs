@@ -129,10 +129,11 @@ namespace WixSharp.CommonTasks
         /// Converts INI file content into dictionary.
         /// </summary>
         /// <param name="iniFile">The INI file.</param>
+        /// <param name="encoding">The encoding.</param>
         /// <returns></returns>
-        static public Dictionary<string, Dictionary<string, string>> IniToDictionary(string iniFile)
+        static public Dictionary<string, Dictionary<string, string>> IniFileToDictionary(string iniFile, Encoding encoding = null)
         {
-            return IniToDictionary(IO.File.ReadAllLines(iniFile));
+            return IniToDictionary(IO.File.ReadAllLines(iniFile, encoding ?? Encoding.Default));
         }
 
         static internal Dictionary<string, Dictionary<string, string>> IniToDictionary(string[] iniFileContent)
@@ -165,18 +166,19 @@ namespace WixSharp.CommonTasks
         }
 
         /// <summary>
-        /// Returns INI file the field value. 
-        ///  <para>It returns null if file or the field not found.</para>
+        /// Returns INI file the field value.
+        /// <para>It returns null if file or the field not found.</para>
         /// </summary>
         /// <param name="file">The INI file path.</param>
         /// <param name="section">The section.</param>
         /// <param name="field">The field.</param>
+        /// <param name="encoding">The encoding.</param>
         /// <returns></returns>
-        static public string IniFileValue(string file, string section, string field)
+        static public string IniFileValue(string file, string section, string field, Encoding encoding = null)
         {
             try
             {
-                return IniToDictionary(file)[section][field];
+                return IniFileToDictionary(file)[section][field];
             }
             catch { }
             return null;

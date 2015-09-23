@@ -178,21 +178,23 @@
             <param name="dir">The directory path.</param>
             <returns></returns>
         </member>
-        <member name="M:WixSharp.CommonTasks.AppSearch.IniToDictionary(System.String)">
+        <member name="M:WixSharp.CommonTasks.AppSearch.IniFileToDictionary(System.String,System.Text.Encoding)">
             <summary>
             Converts INI file content into dictionary.
             </summary>
             <param name="iniFile">The INI file.</param>
+            <param name="encoding">The encoding.</param>
             <returns></returns>
         </member>
-        <member name="M:WixSharp.CommonTasks.AppSearch.IniFileValue(System.String,System.String,System.String)">
+        <member name="M:WixSharp.CommonTasks.AppSearch.IniFileValue(System.String,System.String,System.String,System.Text.Encoding)">
             <summary>
-            Returns INI file the field value. 
-             <para>It returns null if file or the field not found.</para>
+            Returns INI file the field value.
+            <para>It returns null if file or the field not found.</para>
             </summary>
             <param name="file">The INI file path.</param>
             <param name="section">The section.</param>
             <param name="field">The field.</param>
+            <param name="encoding">The encoding.</param>
             <returns></returns>
         </member>
         <member name="M:WixSharp.CommonTasks.AppSearch.RegKeyExists(Microsoft.Win32.RegistryKey,System.String)">
