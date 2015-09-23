@@ -1,16 +1,17 @@
+using Microsoft.Win32;
 using System;
-using IO = System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using Microsoft.Win32;
+using IO = System.IO;
 
 namespace WixSharp.CommonTasks
 {
     /// <summary>
-    /// The utility class implementing the common 'MSI AppSearch' tasks (Directory, File, Registry and Product searches). 
+    /// The utility class implementing the common 'MSI AppSearch' tasks (Directory, File, Registry and Product searches).
     /// </summary>
-    public class AppSearch
+    public static class AppSearch
     {
         [DllImport("msi", CharSet = CharSet.Unicode)]
         static extern Int32 MsiGetProductInfo(string product, string property, [Out] StringBuilder valueBuf, ref Int32 len);
@@ -122,6 +123,63 @@ namespace WixSharp.CommonTasks
             }
             catch { }
             return false;
+        }
+
+        /// <summary>
+        /// Converts INI file content into dictionary.
+        /// </summary>
+        /// <param name="iniFile">The INI file.</param>
+        /// <returns></returns>
+        static public Dictionary<string, Dictionary<string, string>> IniToDictionary(string iniFile)
+        {
+            return IniToDictionary(IO.File.ReadAllLines(iniFile));
+        }
+
+        static internal Dictionary<string, Dictionary<string, string>> IniToDictionary(string[] iniFileContent)
+        {
+            var result = new Dictionary<string, Dictionary<string, string>>();
+
+            var section = "default";
+            var entries = iniFileContent.Select(l => l.Trim())
+                                        .Where(l => !l.StartsWith(";") && l.IsNotEmpty());
+
+            foreach (var line in entries)
+            {
+                if (line.StartsWith("["))
+                {
+                    section = line.Trim('[', ']');
+                    continue;
+                }
+
+                if (!result.ContainsKey(section))
+                    result[section] = new Dictionary<string, string>();
+
+                var pair = line.Split('=').Select(x => x.Trim());
+                if (pair.Count() < 2)
+                    result[section][pair.First()] = null;
+                else
+                    result[section][pair.First()] = pair.Last();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns INI file the field value. 
+        ///  <para>It returns null if file or the field not found.</para>
+        /// </summary>
+        /// <param name="file">The INI file path.</param>
+        /// <param name="section">The section.</param>
+        /// <param name="field">The field.</param>
+        /// <returns></returns>
+        static public string IniFileValue(string file, string section, string field)
+        {
+            try
+            {
+                return IniToDictionary(file)[section][field];
+            }
+            catch { }
+            return null;
         }
 
         /// <summary>

@@ -6,11 +6,15 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using WixSharp;
+using WixSharp.CommonTasks;
 
 class Script
 {
     static public void Main(string[] args)
     {
+        var ttt = AppSearch.IniFileField(@"C:\Temp\test.txt", "Pets", "dog");
+
+        return;
         var project =
             new Project("MyProduct",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
