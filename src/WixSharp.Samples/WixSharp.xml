@@ -2919,6 +2919,14 @@
             <param name="throw">if set to <c>false</c> handle all exceptions silently.</param>
             <returns></returns>
         </member>
+        <member name="M:WixSharp.Extensions.Enquote(System.String,System.Char)">
+            <summary>
+            Surrounds the specified text into quotation characters.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="quotationCharacter">The quotation character.</param>
+            <returns></returns>
+        </member>
         <member name="M:WixSharp.Extensions.SameAs(System.String,System.String,System.Boolean)">
             <summary>
             Simple wrapper around System.String.Compare(string strA, string strB, bool ignoreCase);
@@ -4212,6 +4220,11 @@
             At the compile time files will be pases to candle.exe but the referencing them fragments in the primary wxs (XML)
             needs to be done from WixSourceGenerated event handler.
             </para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.WixProject.LibFiles">
+            <summary>
+            Collection of paths to the external wsxlib files to be passed to the Light linker. 
             </summary>
         </member>
         <member name="F:WixSharp.WixProject.Language">

@@ -474,28 +474,19 @@ namespace WixSharp
             else
             {
                 string wxsFile = BuildWxs(project, type);
-                string objFile = IO.Path.GetFileNameWithoutExtension(wxsFile) + ".wixobj";
 
-                string extensionDlls = "";
-                foreach (string dll in project.WixExtensions.Select(x => ResolveExtensionFile(x)).Distinct())
-                    extensionDlls += " -ext \"" + dll + "\"";
+                string extensionDlls, objFile;
+                string outDir = IO.Path.GetDirectoryName(wxsFile);
+                string msiFile = IO.Path.ChangeExtension(wxsFile, "." + type.ToString().ToLower());
 
-                string wxsFiles = "";
-                foreach (string file in project.WxsFiles.Distinct())
-                    wxsFiles += " \"" + file + "\"";
-
-                var candleOptions = CandleOptions + " " + project.CandleOptions;
-                var lightOptions = LightOptions + " " + project.LightOptions;
-
-                string batchFileContent = "\"" + compiler + "\" " + candleOptions + " " + extensionDlls + " \"" + IO.Path.GetFileName(wxsFile) + "\" " + wxsFiles + "\r\n";
-
-                if (project.IsLocalized && IO.File.Exists(project.LocalizationFile))
-                    batchFileContent += "\"" + linker + "\" " + lightOptions + " \"" + objFile + "\" " + extensionDlls + " -cultures:" + project.Language + " -loc " + project.LocalizationFile + "\r\npause";
-                else
-                    batchFileContent += "\"" + linker + "\" " + lightOptions + " \"" + objFile + "\" " + extensionDlls + " -cultures:" + project.Language + "\r\npause";
+                string candleCmd = GenerateCandleCommand(project, wxsFile, outDir, out objFile, out extensionDlls);
+                string lightCmd = GenerateLightCommand(project, msiFile, outDir, objFile, extensionDlls);
 
                 using (var sw = new IO.StreamWriter(batchFile))
-                    sw.Write(batchFileContent);
+                {
+                    sw.WriteLine("\"" + compiler + "\" " + candleCmd);
+                    sw.WriteLine("\"" + linker + "\" " + lightCmd);
+                }
             }
         }
 
@@ -582,6 +573,70 @@ namespace WixSharp
             IO.File.WriteAllLines(dest, content.ToArray());
         }
 
+        static string GenerateCandleCommand(Project project, string wxsFile, string outDir, out string objFile, out string extensionDlls)
+        {
+            objFile = IO.Path.ChangeExtension(wxsFile, ".wixobj");
+
+            extensionDlls = project.WixExtensions
+                                   .Distinct()
+                                   .Join(" ", dll => " -ext \"" + dll + "\"");
+
+            string wxsFiles = project.WxsFiles
+                                     .Distinct()
+                                     .Join(" ", file => "\"" + file + "\"");
+
+
+
+            var candleOptions = CandleOptions + " " + project.CandleOptions;
+
+            var candleCmdLineParams = new StringBuilder();
+            candleCmdLineParams.AppendFormat("{0} {1} \"{2}\" ", candleOptions, extensionDlls, wxsFile);
+
+            if (wxsFiles.IsNotEmpty())
+            {
+                candleCmdLineParams.Append(wxsFiles);
+
+                // if multiple files are specified candle expect a path for the -out switch
+                // or no path at all (use current directory)
+
+                if (outDir.IsNotEmpty())
+                    candleCmdLineParams.AppendFormat(" -out \"{0}\\\\\"", outDir);
+            }
+            else
+                candleCmdLineParams.AppendFormat(" -out \"{0}\"", objFile);
+
+            return candleCmdLineParams.ToString();
+        }
+
+        static string GenerateLightCommand(Project project, string msiFile, string outDir, string objFile, string extensionDlls)
+        {
+            string lightOptions = LightOptions + " " + project.LightOptions;
+
+            string libFiles = project.LibFiles
+                                     .Distinct()
+                                     .Join(" ", x => x.Enquote());
+
+            string fragmentObjectFiles = project.WxsFiles
+                                                .Distinct()
+                                                .Join(" ", file => "\"" + IO.Path.GetFileNameWithoutExtension(file) + ".wixobj\"");
+
+            var lightCmdLineParams = new StringBuilder();
+
+            lightCmdLineParams.AppendFormat("{0} -b \"{1}\" \"{2}\" {3}", lightOptions, outDir, objFile, libFiles);
+
+            if (fragmentObjectFiles.IsNotEmpty())
+                lightCmdLineParams.Append(fragmentObjectFiles);
+
+            lightCmdLineParams.Append(" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language);
+
+            if (project.IsLocalized && IO.File.Exists(project.LocalizationFile))
+            {
+                lightCmdLineParams.Append(" -loc \"" + project.LocalizationFile + "\"");
+            }
+
+            return lightCmdLineParams.ToString();
+        }
+
         static void Build(Project project, string path, OutputType type)
         {
             string oldCurrDir = Environment.CurrentDirectory;
@@ -608,48 +663,19 @@ namespace WixSharp
                     if (!project.SourceBaseDir.IsEmpty())
                         Environment.CurrentDirectory = project.SourceBaseDir;
 
+                    string extensionDlls, objFile;
+
                     string outDir = IO.Path.GetDirectoryName(wxsFile);
-                    string objFile = IO.Path.ChangeExtension(wxsFile, ".wixobj");
-                    string pdbFile = IO.Path.ChangeExtension(wxsFile, ".wixpdb");
 
-                    string extensionDlls = project.WixExtensions
-                                                  .Distinct()
-                                                  .Join(" ", dll => " -ext \"" + dll + "\"");
-
-                    string wxsFiles = project.WxsFiles
-                                             .Distinct()
-                                             .Join(" ", file => "\"" + file + "\"");
-
-                    string fragmentObjectFiles = project.WxsFiles
-                                                        .Distinct()
-                                                        .Join(" ", file => "\"" + IO.Path.GetFileNameWithoutExtension(file) + ".wixobj" + "\"");
-
-                    var candleOptions = CandleOptions + " " + project.CandleOptions;
-                    var lightOptions = LightOptions + " " + project.LightOptions;
-
-                    var candleCmdLineParams = new StringBuilder();
-                    candleCmdLineParams.AppendFormat("{0} {1} \"{2}\" ", candleOptions, extensionDlls, wxsFile);
-
-                    if (wxsFiles.IsNotEmpty())
-                    {
-                        candleCmdLineParams.Append(wxsFiles);
-
-                        // if multiple files are specified candle expect a path for the -out switch
-                        // or no path at all (use current directory)
-
-                        if (outDir.IsNotEmpty())
-                            candleCmdLineParams.AppendFormat(" -out \"{0}\\\\\"", outDir);
-                    }
-                    else
-                        candleCmdLineParams.AppendFormat(" -out \"{0}\"", objFile);
+                    string candleCmd = GenerateCandleCommand(project, wxsFile, outDir, out objFile, out extensionDlls);
 
 #if DEBUG
                     Console.WriteLine("<- Compiling");
-                    Console.WriteLine(compiler + " " + candleCmdLineParams);
+                    Console.WriteLine(compiler + " " + candleCmd);
                     Console.WriteLine("->");
 #endif
 
-                    Run(compiler, candleCmdLineParams.ToString());
+                    Run(compiler, candleCmd);
 
                     if (IO.File.Exists(objFile))
                     {
@@ -657,26 +683,14 @@ namespace WixSharp
                         if (IO.File.Exists(msiFile))
                             IO.File.Delete(msiFile);
 
-                        var lightCmdLineParams = new StringBuilder();
-                        lightCmdLineParams.Append(lightOptions);
-                        lightCmdLineParams.AppendFormat(" -b \"{0}\" \"{1}\" ", outDir, objFile);
-
-                        if (fragmentObjectFiles.IsNotEmpty())
-                            lightCmdLineParams.Append(fragmentObjectFiles);
-
-                        lightCmdLineParams.Append(" -out \"" + msiFile + "\"" + extensionDlls + " -cultures:" + project.Language);
-
-                        if (project.IsLocalized && IO.File.Exists(project.LocalizationFile))
-                        {
-                            lightCmdLineParams.Append(" -loc \"" + project.LocalizationFile + "\"");
-                        }
+                        string lightCmd = GenerateLightCommand(project, msiFile, outDir, objFile, extensionDlls);
 #if DEBUG
                         Console.WriteLine("<- Linking");
-                        Console.WriteLine(linker + " " + lightCmdLineParams);
+                        Console.WriteLine(linker + " " + lightCmd);
                         Console.WriteLine("->");
 #endif
 
-                        Run(linker, lightCmdLineParams.ToString());
+                        Run(linker, lightCmd);
 
                         if (IO.File.Exists(msiFile))
                         {
@@ -697,7 +711,7 @@ namespace WixSharp
                             IO.Directory.GetFiles(outDir, "*.wixobj")
                                         .ForEach(file => file.DeleteIfExists());
 
-                            pdbFile.DeleteIfExists();
+                            IO.Path.ChangeExtension(wxsFile, ".wixpdb").DeleteIfExists();
 
                             if (path != msiFile)
                             {

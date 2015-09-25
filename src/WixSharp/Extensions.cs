@@ -523,6 +523,16 @@ namespace WixSharp
         }
 
         /// <summary>
+        /// Surrounds the specified text into quotation characters.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="quotationCharacter">The quotation character.</param>
+        /// <returns></returns>
+        public static string Enquote(this string text, char quotationCharacter = '"')
+        {
+            return string.Format("{1}{0}{1}", text, quotationCharacter);
+        }
+        /// <summary>
         /// Simple wrapper around System.String.Compare(string strA, string strB, bool ignoreCase);
         /// </summary>
         /// <param name="strA">The string a.</param>

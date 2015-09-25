@@ -79,6 +79,12 @@ namespace WixSharp
         /// </summary>
         public List<string> WxsFiles = new List<string>();
 
+
+        /// <summary>
+        /// Collection of paths to the external wsxlib files to be passed to the Light linker. 
+        /// </summary>
+        public List<string> LibFiles = new List<string>();
+
         /// <summary>
         /// Installation UI Language. If not specified <c>"en-US"</c> will be used.
         /// </summary>
