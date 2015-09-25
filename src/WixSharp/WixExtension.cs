@@ -70,6 +70,11 @@ namespace WixSharp
         }
 
         /// <summary>
+        /// Well-known Wix Extension: difx
+        /// </summary>
+        public static WixExtension Difx = new WixExtension("WixDifxAppExtension.dll", "difx", "http://schemas.microsoft.com/wix/DifxAppExtension");
+
+        /// <summary>
         /// Well-known Wix Extension: Util
         /// </summary>
         public static WixExtension Util = new WixExtension("WixUtilExtension.dll", "util", "http://schemas.microsoft.com/wix/UtilExtension");

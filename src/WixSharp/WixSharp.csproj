@@ -110,6 +110,7 @@
     <Compile Include="AppSearch.cs" />
     <Compile Include="Assembly.cs" />
     <Compile Include="AutoElements.cs" />
+    <Compile Include="DriverInstaller.cs" />
     <Compile Include="BinaryFileAction.cs" />
     <Compile Include="Bootstrapper\Bundle.cs" />
     <Compile Include="Bootstrapper\BootstrapperApplication.cs" />

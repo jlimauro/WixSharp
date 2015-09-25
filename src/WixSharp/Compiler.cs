@@ -1428,6 +1428,10 @@ namespace WixSharp
                              new XAttribute("ProcessorArchitecture", ((Assembly)wFile).ProcessorArchitecture.ToString()));
                 }
 
+
+                wFile.DriverInstaller.Compile(wProject, comp);
+
+
                 //insert file associations
                 foreach (FileAssociation wFileAssociation in wFile.Associations)
                 {
@@ -2034,7 +2038,8 @@ namespace WixSharp
                         featureComponents[sqlScript.Feature] = new List<string>();
                     featureComponents[sqlScript.Feature].Add(compId);
                 }
-                else defaultFeatureComponents.Add(compId);
+                else
+                    defaultFeatureComponents.Add(compId);
 
                 //anchoring the generated component to the top level directory
                 var topLevelDir = GetTopLevelDir(product);
@@ -2068,7 +2073,8 @@ namespace WixSharp
                         featureComponents[sqlString.Feature] = new List<string>();
                     featureComponents[sqlString.Feature].Add(compId);
                 }
-                else defaultFeatureComponents.Add(compId);
+                else
+                    defaultFeatureComponents.Add(compId);
 
                 //anchoring the generated component to the top level directory
                 var topLevelDir = GetTopLevelDir(product);

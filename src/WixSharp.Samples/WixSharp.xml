@@ -873,6 +873,86 @@
             <para>Can also be managed by disabling ICE validation via Light.exe command line arguments.</para>
             </summary>
         </member>
+        <member name="T:WixSharp.DriverInstaller">
+             <summary>
+             Defines the file driver installation approach.
+             </summary>
+            <example>The following is an example of installing <c>driver.sys</c> file.
+            <code>
+             var project = new Project("MyProduct",
+                               new Dir(@"%ProgramFiles%\My Company\My Device",
+                                     new File("driver.sys",
+                                              new DriverInstaller
+                                              {
+                                                  AddRemovePrograms = false,
+                                                  DeleteFiles = false,
+                                                  Legacy = true,
+                                                  PlugAndPlayPrompt = false,
+                                                  Sequence = 1,
+                                                  Architecture = DriverArchitecture.x64
+                                              })));
+                     ...
+            project.BuildMsi();
+             </code>
+             </example>
+        </member>
+        <member name="F:WixSharp.DriverInstaller.AddRemovePrograms">
+            <summary>
+            Specifies that the DIFxApp CustomActions should add an entry in the Add/Remove Programs Control Panel applet. The default is 'true'.
+            </summary>
+        </member>
+        <member name="F:WixSharp.DriverInstaller.DeleteFiles">
+            <summary>
+            If set to "true", configures DIFxApp to delete binary files that were copied to the system from the driver store when a driver package 
+            was installed. If this attribute is set to "no" or not present, DIFxApp does not remove these files from a system. Note that configuring 
+            DIFxApp to delete these files is controlled by the Flags entry value of the component that represents the driver package in the 
+            MsiDriverPackages custom table. Setting DeleteFiles to "true" sets the corresponding bit in the Flags entry value. Setting DeleteFiles 
+            to "false" clears the corresponding bit in the Flags entry value. If this attribute is not present, DIFxApp uses a default value of "false".
+            </summary>
+        </member>
+        <member name="F:WixSharp.DriverInstaller.ForceInstall">
+            <summary>
+            If set to "true", configures DIFxApp to install unsigned driver packages and driver packages with missing files. For more information, 
+            see "Installing Unsigned Driver Packages in Legacy Mode" earlier in this paper. If this attribute is set to "false" or not present, DIFxApp 
+            will install only signed driver packages. Note that configuring DIFxApp to install unsigned drivers is controlled by the Flags entry value 
+            of the component that represents the driver package in the MsiDriverPackages custom table. Setting Legacy to "true" sets the corresponding 
+            bit in the Flags entry value. Setting Legacy to "false" clears the bit in the Flags entry value that configures DIFxApp to install unsigned 
+            driver packages. If this attribute is not present, DIFxApp uses a default value of "false".
+            </summary>
+        </member>
+        <member name="F:WixSharp.DriverInstaller.Legacy">
+            <summary>
+            If set to "true", configures DIFxApp to install unsigned driver packages and driver packages with missing files. For more information, 
+            see "Installing Unsigned Driver Packages in Legacy Mode" earlier in this paper. If this attribute is set to "false" or not present, 
+            DIFxApp will install only signed driver packages. Note that configuring DIFxApp to install unsigned drivers is controlled by the Flags 
+            entry value of the component that represents the driver package in the MsiDriverPackages custom table. Setting Legacy to "true" sets the 
+            corresponding bit in the Flags entry value. Setting Legacy to "false" clears the bit in the Flags entry value that configures DIFxApp to 
+            install unsigned driver packages. If this attribute is not present, DIFxApp uses a default value of "false"
+            </summary>
+        </member>
+        <member name="F:WixSharp.DriverInstaller.PlugAndPlayPrompt">
+            <summary>
+            Specifies that the DIFxApp CustomActions should prompt the user to connect the Plug and Play device if it is not connected. The default is 'true'.
+            </summary>
+        </member>
+        <member name="F:WixSharp.DriverInstaller.Sequence">
+            <summary>
+            Specifies an optional installation sequence number. DIFxApp CustomActions install the driver packages in an installation package in the order 
+            of increasing sequence numbers. The same sequence number can be used for more than one driver; however, the order in which packages with the 
+            same sequence number are actually installed cannot be determined.
+            </summary>
+        </member>
+        <member name="F:WixSharp.DriverInstaller.Architecture">
+            <summary>
+            The architecture of the driver to be installed. Default value is 'x86'
+            </summary>
+        </member>
+        <member name="M:WixSharp.DriverInstaller.ToXml">
+            <summary>
+            Emits WiX XML.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:WixSharp.BinaryFileAction">
             <summary>
             Defines WiX BinaryFileAction for executing binary (not installed) file. 
@@ -4151,6 +4231,11 @@
             <param name="namespace"></param>
             <returns></returns>
         </member>
+        <member name="F:WixSharp.WixExtension.Difx">
+            <summary>
+            Well-known Wix Extension: difx
+            </summary>
+        </member>
         <member name="F:WixSharp.WixExtension.Util">
             <summary>
             Well-known Wix Extension: Util
@@ -7145,8 +7230,14 @@
         </member>
         <member name="F:WixSharp.File.ServiceInstaller">
             <summary>
-            The service installer associated with the file. Set this field to the properly initialized
-            instance of <see cref="F:WixSharp.File.ServiceInstaller"/> if the file is a windows service module.
+            The service installer associated with the file.
+             Set this field to the properly initialized instance of <see cref="F:WixSharp.File.ServiceInstaller"/> if the file is a windows service module.
+            </summary>
+        </member>
+        <member name="F:WixSharp.File.DriverInstaller">
+            <summary>
+            The driver installer associated with the file. Set this field to the properly initialized
+            instance of <see cref="F:WixSharp.File.DriverInstaller"/> if the file is a windows driver.
             </summary>
         </member>
         <member name="F:WixSharp.File.IISVirtualDirs">
@@ -11128,6 +11219,26 @@
         <member name="F:WixSharp.ProcessorArchitecture.ia64">
             <summary>
             The file is a .NET Framework assembly for the ia64 processor. 
+            </summary>
+        </member>
+        <member name="T:WixSharp.DriverArchitecture">
+            <summary>
+            Specifies the architecture for the driver to be installed.
+            </summary>
+        </member>
+        <member name="F:WixSharp.DriverArchitecture.x86">
+            <summary>
+            The driver is for the x86 processor. 
+            </summary>
+        </member>
+        <member name="F:WixSharp.DriverArchitecture.x64">
+            <summary>
+            The driver is for the x64 processor. 
+            </summary>
+        </member>
+        <member name="F:WixSharp.DriverArchitecture.ia64">
+            <summary>
+            The driver is for the ia64 processor. 
             </summary>
         </member>
         <member name="T:WixSharp.RegistryKeyAction">

@@ -132,6 +132,7 @@ namespace WixSharp
             Associations = items.OfType<FileAssociation>().ToArray();
             IISVirtualDirs = items.OfType<IISVirtualDir>().ToArray();
             ServiceInstaller = items.OfType<ServiceInstaller>().FirstOrDefault();
+            DriverInstaller = items.OfType<DriverInstaller>().FirstOrDefault();
             Permissions = items.OfType<FilePermission>().ToArray();
 
             var firstUnExpectedItem = items.Except(Shortcuts)
@@ -139,14 +140,16 @@ namespace WixSharp
                                            .Except(IISVirtualDirs)
                                            .Except(Permissions)
                                            .Where(x => x != ServiceInstaller)
+                                           .Where(x => x != DriverInstaller)
                                            .ToArray();
 
             if (firstUnExpectedItem.Any())
-                throw new ApplicationException("{4} is unexpected. Only {0}, {1}, {2}, and {3} items can be added to {4}".FormatInline(
+                throw new ApplicationException("{4} is unexpected. Only {0}, {1}, {2}, {3}, and {4} items can be added to {5}".FormatInline(
                                                                                                        typeof(FileShortcut),
                                                                                                        typeof(FileAssociation),
                                                                                                        typeof(ServiceInstaller),
                                                                                                        typeof(FilePermission),
+                                                                                                       typeof(DriverInstaller),
                                                                                                        this.GetType(),
                                                                                                        firstUnExpectedItem.First().GetType()));
         }
@@ -157,10 +160,17 @@ namespace WixSharp
         public FileAssociation[] Associations = new FileAssociation[0];
 
         /// <summary>
-        /// The service installer associated with the file. Set this field to the properly initialized
-        /// instance of <see cref="ServiceInstaller"/> if the file is a windows service module.
+        /// The service installer associated with the file.
+        ///  Set this field to the properly initialized instance of <see cref="ServiceInstaller"/> if the file is a windows service module.
         /// </summary>
         public ServiceInstaller ServiceInstaller = null;
+
+        /// <summary>
+        /// The driver installer associated with the file. Set this field to the properly initialized
+        /// instance of <see cref="DriverInstaller"/> if the file is a windows driver.
+        /// </summary>
+        public DriverInstaller DriverInstaller = null;
+
 
         /// <summary>
         /// Collection of the contained <see cref="IISVirtualDir"/>s. 
@@ -200,7 +210,7 @@ namespace WixSharp
                 if (value == null)
                     return null;
                 else
-                   return (value == "yes");
+                    return (value == "yes");
             }
             set
             {

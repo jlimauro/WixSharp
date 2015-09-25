@@ -559,6 +559,25 @@ namespace WixSharp
     }
 
     /// <summary>
+    /// Specifies the architecture for the driver to be installed.
+    /// </summary>
+    public enum DriverArchitecture
+    {
+        /// <summary>
+        /// The driver is for the x86 processor. 
+        /// </summary>
+        x86,
+        /// <summary>
+        /// The driver is for the x64 processor. 
+        /// </summary>
+        x64,
+        /// <summary>
+        /// The driver is for the ia64 processor. 
+        /// </summary>
+        ia64
+    }
+
+    /// <summary>
     /// Specifies what Action should be executed on the RegistryKey when un-/installing
     /// </summary>
     public enum RegistryKeyAction
