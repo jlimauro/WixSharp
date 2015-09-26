@@ -1,31 +1,6 @@
-#region Licence...
-/*
-The MIT License (MIT)
-
-Copyright (c) 2014 Oleg Shilo
-
-Permission is hereby granted, 
-free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-*/
-#endregion
-
 using System.Collections.Generic;
+using System.Xml.Linq;
+
 namespace WixSharp
 {
     /// <summary>
@@ -174,7 +149,7 @@ namespace WixSharp
         /// <c>Configure</c> button for the feature in the <c>Feature Selection</c> dialog.</param>
         public Feature(string name, string description, string configurableDir)
             : this(name, description)
-        {          
+        {
             ConfigurableDir = configurableDir;
         }
 
@@ -191,11 +166,11 @@ namespace WixSharp
         /// <c>Configure</c> button for the feature in the <c>Feature Selection</c> dialog.</param>
         public Feature(string name, string description, bool isEnabled, bool allowChange, string configurableDir)
             : this(name, description, isEnabled)
-        {         
+        {
             AllowChange = allowChange;
             ConfigurableDir = configurableDir;
         }
-        
+
         /// <summary>
         /// <para>
         /// Defines if the <see cref="Feature"/> is enabled at startup. 
@@ -256,6 +231,26 @@ namespace WixSharp
         public override string ToString()
         {
             return Name;
+        }
+
+        internal XElement ToXml()
+        {
+            var element = new XElement("Feature");
+            element.SetAttribute("Id", Id)
+                   .SetAttribute("Title", Name)
+                   .SetAttribute("Absent", AllowChange ? "allow" : "disallow")
+                   .SetAttribute("Level", IsEnabled ? "1" : "2")
+                   .SetAttribute("Description", Description)
+                   .SetAttribute("ConfigurableDirectory", ConfigurableDir)
+                   .AddAttributes(Attributes);
+
+            if (Condition != null)
+                element.Add( //intentionally leaving out AddAttributes(...) as Level is the only valid attribute on */Feature/Condition
+                    new XElement("Condition",
+                        new XAttribute("Level", Condition.Level),
+                        new XCData(Condition.ToCData())));
+
+            return element;
         }
     }
 }

@@ -13,8 +13,8 @@ class Script
 {
     static public void Main(string[] args)
     {
-        var featureA = new Feature("Feature A");
-        var featureB = new Feature("Feature B");
+        var featureA = new Feature("Feature A", "Feature A description");
+        var featureB = new Feature("Feature B", "Feature B description");
         var complete = new Feature("Complete");
             
         complete.Add(featureA)
@@ -31,7 +31,9 @@ class Script
         project.UI = WUI.WixUI_FeatureTree;
         project.InstallerVersion = 200; //you may want to change it to match MSM module installer version
 
-        project.BuildMsi();
+        project.PreserveTempFiles = true;
+
+        project.BuildWxs();
     }
 
 }
