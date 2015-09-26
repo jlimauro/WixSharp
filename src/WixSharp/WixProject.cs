@@ -68,7 +68,14 @@ namespace WixSharp
         /// <summary>
         /// Collection of paths to the WiX extensions.
         /// </summary>
-        public List<string> WixExtensions = new List<string>();
+        public List<string> WixExtensions
+        {
+            get
+            {
+                return wixExtensions;
+            }
+        }
+        public List<string> wixExtensions = new List<string>();
 
         /// <summary>
         /// Collection of paths to the external wsx files containing Fragment(s). 
@@ -166,10 +173,13 @@ namespace WixSharp
             if (!this.WixExtensions.Contains(extensionAssembly))
                 this.WixExtensions.Add(extensionAssembly);
 
-            var namespaceDeclaration = WixExtension.GetNamespaceDeclaration(namespacePrefix, @namespace);
-            //could use detection of duplicate prefixes
-            if (!this.WixNamespaces.Contains(namespaceDeclaration))
-                this.WixNamespaces.Add(namespaceDeclaration);
+            if (namespacePrefix.IsEmpty())
+            {
+                var namespaceDeclaration = WixExtension.GetNamespaceDeclaration(namespacePrefix, @namespace);
+                //could use detection of duplicate prefixes
+                if (!this.WixNamespaces.Contains(namespaceDeclaration))
+                    this.WixNamespaces.Add(namespaceDeclaration);
+            }
         }
     }
 }

@@ -686,8 +686,7 @@ namespace WixSharp.CommonTasks
             foreach (var prop in condition.GetDistinctProperties())
                 project.Properties = project.Properties.Add(new PropertyRef(prop));
 
-            project.WixExtensions.Add("WiXNetFxExtension");
-            project.WixNamespaces.Add("netfx=\"http://schemas.microsoft.com/wix/NetFxExtension\"");
+            project.IncludeWixExtension(WixExtension.NetFx);
 
             return project;
         }

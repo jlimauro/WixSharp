@@ -4186,7 +4186,7 @@
             Represents a Wix Extension
             </summary>
         </member>
-        <member name="F:WixSharp.WixExtension.Assembly">
+        <member name="P:WixSharp.WixExtension.Assembly">
             <summary>
             File name of the represented Wix Extension assembly
             </summary>
@@ -4251,6 +4251,16 @@
             Well-known Wix Extension Sql
             </summary>
         </member>
+        <member name="F:WixSharp.WixExtension.NetFx">
+            <summary>
+            Well-known Wix Extension NetFx
+            </summary>
+        </member>
+        <member name="F:WixSharp.WixExtension.UI">
+            <summary>
+            Well-known Wix Extension UI
+            </summary>
+        </member>
         <member name="T:WixSharp.IXmlAware">
             <summary>
             The interface for the Wix# types that can generate WiX XML.
@@ -4293,7 +4303,7 @@
             Collection of XML namespaces (e.g. <c>xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"</c>) to be declared in the XML (WiX project) root.
             </summary>
         </member>
-        <member name="F:WixSharp.WixProject.WixExtensions">
+        <member name="P:WixSharp.WixProject.WixExtensions">
             <summary>
             Collection of paths to the WiX extensions.
             </summary>
@@ -8354,8 +8364,7 @@
                  new PropertyRef("NETFRAMEWORK20"),
                  new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_BeingRemoved));
             
-             project.WixExtensions.Add("WiXNetFxExtension");
-             project.WixNamespaces.Add("netfx=\"http://schemas.microsoft.com/wix/NetFxExtension\"");
+             project.IncludeWixExtension(WixExtension.NetFx);
             
              Compiler.BuildMsi(project);
             

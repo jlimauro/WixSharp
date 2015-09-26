@@ -262,11 +262,16 @@ namespace WixSharp
                         throw new Exception("WiX binaries cannot be found. Please set environment variable WIXSHARP_WIXDIR or WixSharp.Compiler.WixLocation to valid path to the Wix binaries.");
 
                     wixLocation = dir;
+                    Environment.SetEnvironmentVariable("WixLocation", wixLocation);
                 }
 
                 return wixLocation;
             }
-            set { wixLocation = value; }
+            set
+            {
+                wixLocation = value;
+                Environment.SetEnvironmentVariable("WixLocation", wixLocation);
+            }
         }
 
         static string wixLocation = Environment.GetEnvironmentVariable("WIXSHARP_WIXDIR");
@@ -1084,9 +1089,7 @@ namespace WixSharp
                 product.Add(new XElement("UIRef",
                                 new XAttribute("Id", project.UI.ToString())));
 
-                var extensionAssembly = Utils.PathCombine(WixLocation, @"WixUIExtension.dll");
-                if (project.WixExtensions.Find(x => x == extensionAssembly) == null)
-                    project.WixExtensions.Add(extensionAssembly);
+                project.IncludeWixExtension(WixExtension.UI);
             }
 
             if (project.EmbeddedUI != null)
@@ -2246,11 +2249,7 @@ namespace WixSharp
 
             if (wasInserted)
             {
-                if (!project.WixExtensions.Contains("WixIIsExtension.dll"))
-                    project.WixExtensions.Add("WixIIsExtension.dll");
-
-                if (!project.WixNamespaces.Contains("xmlns:iis=\"http://schemas.microsoft.com/wix/IIsExtension\""))
-                    project.WixNamespaces.Add("xmlns:iis=\"http://schemas.microsoft.com/wix/IIsExtension\"");
+                project.IncludeWixExtension(WixExtension.IIs);
             }
         }
 
@@ -2525,9 +2524,7 @@ namespace WixSharp
                                 new XAttribute("Action", cmdLineActionId),
                                 new XAttribute("After", setCmdLineActionId))));
 
-                    var extensionAssembly = Utils.PathCombine(WixLocation, @"WixUtilExtension.dll");
-                    if (wProject.WixExtensions.Find(x => x == extensionAssembly) == null)
-                        wProject.WixExtensions.Add(extensionAssembly);
+                    wProject.IncludeWixExtension(WixExtension.Util);
                 }
                 else if (wAction is InstalledFileAction)
                 {

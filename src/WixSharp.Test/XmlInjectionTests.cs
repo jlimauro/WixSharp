@@ -32,8 +32,7 @@ namespace WixSharp.Test
                                                             new Merge(featureB, "MyMergeModule.msm"))));
             });
 
-            //Assert.Equal("WixSharp.Merge is unexpected. Only WixSharp.FileShortcut, WixSharp.FileAssociation, WixSharp.ServiceInstaller, and WixSharp.FilePermission items can be added to WixSharp.File", ex.Message);
-            Assert.Equal("WixSharp.File is unexpected. Only WixSharp.FileShortcut, WixSharp.FileAssociation, WixSharp.ServiceInstaller, and WixSharp.FilePermission items can be added to WixSharp.File", ex.Message);
+            Assert.True(ex.Message.StartsWith("WixSharp.Merge is unexpected."));
          }
     }
 

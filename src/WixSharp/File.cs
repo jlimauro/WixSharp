@@ -144,14 +144,14 @@ namespace WixSharp
                                            .ToArray();
 
             if (firstUnExpectedItem.Any())
-                throw new ApplicationException("{4} is unexpected. Only {0}, {1}, {2}, {3}, and {4} items can be added to {5}".FormatInline(
-                                                                                                       typeof(FileShortcut),
-                                                                                                       typeof(FileAssociation),
-                                                                                                       typeof(ServiceInstaller),
-                                                                                                       typeof(FilePermission),
-                                                                                                       typeof(DriverInstaller),
-                                                                                                       this.GetType(),
-                                                                                                       firstUnExpectedItem.First().GetType()));
+                throw new ApplicationException("{0} is unexpected. Only {1}, {2}, {3}, {4}, and {5} items can be added to {6}".FormatInline(
+                                                firstUnExpectedItem.First().GetType(),
+                                                typeof(FileShortcut),
+                                                typeof(FileAssociation),
+                                                typeof(ServiceInstaller),
+                                                typeof(FilePermission),
+                                                typeof(DriverInstaller),
+                                                this.GetType()));
         }
 
         /// <summary>

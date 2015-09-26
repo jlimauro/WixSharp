@@ -47,8 +47,7 @@ namespace WixSharp
     ///     new PropertyRef("NETFRAMEWORK20"),
     ///     new ManagedAction("MyAction", Return.check, When.After, Step.InstallInitialize, Condition.NOT_BeingRemoved));
     ///
-    /// project.WixExtensions.Add("WiXNetFxExtension");
-    /// project.WixNamespaces.Add("netfx=\"http://schemas.microsoft.com/wix/NetFxExtension\"");
+    /// project.IncludeWixExtension(WixExtension.NetFx);
     ///
     /// Compiler.BuildMsi(project);
     ///

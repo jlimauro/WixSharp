@@ -22,11 +22,11 @@ class Script
                            new File(@"MyWebApp\Web.config"))));
 
         project.GUID = new Guid("6fe30b47-2577-43ad-9095-1861ba25889b");
-        project.WixExtensions.Add("WixIIsExtension.dll");
-        project.WixNamespaces.Add("xmlns:iis=\"http://schemas.microsoft.com/wix/IIsExtension\"");
+
+        project.IncludeWixExtension(WixExtension.IIs);
+        project.WixSourceGenerated += Compiler_WixSourceGenerated;
 
         project.PreserveTempFiles = true;
-        project.WixSourceGenerated += Compiler_WixSourceGenerated;
 
         project.BuildMsi();
     }
@@ -41,7 +41,7 @@ class Script
 
         string dirID = aspxFileComponent.Parent.Attribute("Id").Value;
 
-        XNamespace ns = "http://schemas.microsoft.com/wix/IIsExtension";
+        XNamespace ns = WixExtension.IIs.ToXNamespace();
 
         aspxFileComponent.Add(new XElement(ns + "WebVirtualDir",
                                   new XAttribute("Id", "MyWebApp"),

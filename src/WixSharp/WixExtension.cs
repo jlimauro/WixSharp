@@ -13,7 +13,12 @@ namespace WixSharp
         /// </summary>
         /// <remarks>The represented value must include the file name and extension. See example</remarks>
         /// <example>WixIIsExtension.dll</example>
-        public readonly string Assembly;
+        public string Assembly
+        {
+            get { return Environment.ExpandEnvironmentVariables(assembly); }
+        }
+
+        string assembly;
         /// <summary>
         /// Xml namespace declaration prefix for the represented Wix Extension
         /// </summary>
@@ -32,10 +37,10 @@ namespace WixSharp
         public WixExtension(string assembly, string prefix, string @namespace)
         {
             if (assembly.IsNullOrEmpty()) throw new ArgumentNullException("assembly", "assembly is a null reference or empty");
-            if (prefix.IsNullOrEmpty()) throw new ArgumentNullException("prefix", "prefix is a null reference or empty");
-            if (@namespace.IsNullOrEmpty()) throw new ArgumentNullException("@namespace", "@namespace is a null reference or empty");
 
-            Assembly = assembly;
+            //note some extensions do not have associated XML namespace (e.g. WixUIExtension.dll).
+
+            this.assembly = assembly;
             XmlNamespacePrefix = prefix;
             XmlNamespace = @namespace;
         }
@@ -72,23 +77,32 @@ namespace WixSharp
         /// <summary>
         /// Well-known Wix Extension: difx
         /// </summary>
-        public static WixExtension Difx = new WixExtension("WixDifxAppExtension.dll", "difx", "http://schemas.microsoft.com/wix/DifxAppExtension");
+        public static WixExtension Difx = new WixExtension("%WixLocation%\\WixDifxAppExtension.dll", "difx", "http://schemas.microsoft.com/wix/DifxAppExtension");
+
 
         /// <summary>
         /// Well-known Wix Extension: Util
         /// </summary>
-        public static WixExtension Util = new WixExtension("WixUtilExtension.dll", "util", "http://schemas.microsoft.com/wix/UtilExtension");
+        public static WixExtension Util = new WixExtension("%WixLocation%\\WixUtilExtension.dll", "util", "http://schemas.microsoft.com/wix/UtilExtension");
 
         /// <summary>
         /// Well-known Wix Extension IIs
         /// </summary>
-        public static WixExtension IIs = new WixExtension("WixIIsExtension.dll", "iis", "http://schemas.microsoft.com/wix/IIsExtension");
+        public static WixExtension IIs = new WixExtension("%WixLocation%\\WixIIsExtension.dll", "iis", "http://schemas.microsoft.com/wix/IIsExtension");
 
         /// <summary>
         /// Well-known Wix Extension Sql
         /// </summary>
-        public static WixExtension Sql = new WixExtension("WixSqlExtension.dll", "sql", "http://schemas.microsoft.com/wix/SqlExtension");
-
+        public static WixExtension Sql = new WixExtension("%WixLocation%\\WixSqlExtension.dll", "sql", "http://schemas.microsoft.com/wix/SqlExtension");
+        
+        /// <summary>
+        /// Well-known Wix Extension NetFx
+        /// </summary>
+        public static WixExtension NetFx = new WixExtension("%WixLocation%\\WiXNetFxExtension.dll", "netfx", "http://schemas.microsoft.com/wix/NetFxExtension");
+        /// <summary>
+        /// Well-known Wix Extension UI
+        /// </summary>
+        public static WixExtension UI = new WixExtension("%WixLocation%\\WixUIExtension.dll", null, null);
     }
 
     /// <summary>
