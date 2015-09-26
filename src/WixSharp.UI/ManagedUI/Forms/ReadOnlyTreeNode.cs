@@ -101,15 +101,17 @@ namespace WixSharp.UI.Forms
                 treeView.MouseDown += (s, e) =>
                 {
                     TreeNode clickedNode = treeView.GetNodeAt(e.X, e.Y);
+                    if (clickedNode != null)
+                    {
+                        Rectangle selectionClickableArea = clickedNode.Bounds;
+                        selectionClickableArea.Offset(-15, 0);
+                        if (treeView.CheckBoxes)
+                            selectionClickableArea.Offset(13, 0);
 
-                    Rectangle selectionClickableArea = clickedNode.Bounds;
-                    selectionClickableArea.Offset(-15, 0);
-                    if (treeView.CheckBoxes)
-                        selectionClickableArea.Offset(13, 0);
-
-                    if (selectionClickableArea.Contains(e.X, e.Y))
-                        treeView.SelectedNode = clickedNode;
-                }; ;
+                        if (selectionClickableArea.Contains(e.X, e.Y))
+                            treeView.SelectedNode = clickedNode;
+                    }
+                }; 
             }
 
             static void treeView_BeforeCheck(object sender, TreeViewCancelEventArgs e)
