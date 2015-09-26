@@ -116,10 +116,11 @@ namespace WixSharp
 
                 try
                 {
-                    shellView.ClearChildren();
 
                     if (currentViewIndex >= 0 && currentViewIndex < Dialogs.Count)
                     {
+                        shellView.ClearChildren();
+
                         Type viewType = Dialogs[currentViewIndex];
 
                         var view = (Form)Activator.CreateInstance(viewType);

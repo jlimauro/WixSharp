@@ -13,7 +13,7 @@ namespace WixSharp.UI.Forms
     /// different user experience as it has checkboxes bound to the features instead of icons context menu
     /// as MSI dialog has.
     /// </summary>
-    public partial class FeaturesDialog : ManagedForm
+    public partial class FeaturesDialog : ManagedForm, IManagedDialog
     {
         /*https://msdn.microsoft.com/en-us/library/aa367536(v=vs.85).aspx
          * ADDLOCAL - list of features to install 
@@ -37,6 +37,8 @@ namespace WixSharp.UI.Forms
             banner.Image = MsiRuntime.Session.GetEmbeddedBitmap("WixUI_Bmp_Banner");
             BuildFeaturesHierarchy();
         }
+
+        static List<string> userSelectedItems;
 
         void BuildFeaturesHierarchy()
         {
@@ -79,6 +81,9 @@ namespace WixSharp.UI.Forms
                                      c.Parent = item; //link child model to parent model
                                      itemsToProcess.Enqueue(c); //schedule for further processing
                                  });
+
+                if (userSelectedItems != null)
+                    view.Checked = userSelectedItems.Contains(view.Text);
             }
 
             //add views to the treeView control
@@ -89,8 +94,16 @@ namespace WixSharp.UI.Forms
             isAutoCheckingActive = true;
         }
 
+        void SaveUserSelection()
+        {
+            userSelectedItems = features.Where(x => x.IsViewChecked())
+                                        .Select(x => x.Name)
+                                        .ToList();
+        }
+
         void back_Click(object sender, System.EventArgs e)
         {
+            SaveUserSelection();
             Shell.GoPrev();
         }
 
@@ -109,6 +122,8 @@ namespace WixSharp.UI.Forms
 
             if (itemsToInstall.Any())
                 MsiRuntime.Session["ADDLOCAL"] = itemsToInstall;
+
+            SaveUserSelection();
 
             Shell.GoNext();
         }
