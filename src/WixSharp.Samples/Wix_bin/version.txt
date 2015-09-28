@@ -1,1 +1,1 @@
-WiX Toolset v3.9 R2 (v3.9.1208.0)
+WiX Toolset v3.10 (v3.10.2103.0)
