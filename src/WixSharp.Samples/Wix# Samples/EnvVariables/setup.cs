@@ -1,10 +1,6 @@
-//css_dir ..\..\;
-//css_ref Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
-//css_ref System.Core.dll;
 using System;
-using System.IO;
-using System.Xml;
-using System.Xml.Linq;
+using System.Linq;
+using System.Globalization;
 using WixSharp;
 using WixSharp.CommonTasks;
 using WixSharp.Controls;
@@ -35,6 +31,7 @@ class Script
 
         project.OutDir = @"%LATEST_RELEASE%\MSI";
         project.SourceBaseDir = "%LATEST_RELEASE%";
+
         project.BuildMsi();
     }
 }

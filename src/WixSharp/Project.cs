@@ -692,7 +692,7 @@ namespace WixSharp
 
         string codepage = "";
         /// <summary>
-        /// Installation UI Codepage. If not specified 
+        /// Installation UI Code Page. If not specified 
         /// ANSICodePage of the <see cref="T:WixSharp.WixProject.Language"/> will be used.
         /// </summary>
         public string Codepage
@@ -702,7 +702,7 @@ namespace WixSharp
                 if (!codepage.IsEmpty())
                     return codepage;
                 else
-                    return Encoding.GetEncoding(new CultureInfo(Language).TextInfo.ANSICodePage).WebName;
+                    return Encoding.GetEncoding(new CultureInfo(Language.Split(',',';').FirstOrDefault()).TextInfo.ANSICodePage).WebName;
             }
             set
             {
@@ -711,11 +711,13 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// <see cref="CultureInfo"/> object based on the specified <see cref="T:WixSharp.WixProject.Language"/>
+        /// List of culture names (see <see cref="CultureInfo"/>) based on the specified <see cref="T:WixSharp.WixProject.Language"/>
         /// </summary>
         public string Culture
         {
-            get { return new CultureInfo(Language).Name; }
+            get { return string.Join(",", Language.Split(',', ';')
+                                                  .Select(x => new CultureInfo(x.Trim()).Name)
+                                                  .ToArray());}
         }
 
         internal bool IsLocalized

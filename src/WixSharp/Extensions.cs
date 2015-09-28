@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
 using IO = System.IO;
+using System.Globalization;
 
 namespace WixSharp
 {
@@ -496,6 +497,32 @@ namespace WixSharp
             int result = 0;
             int.TryParse(value, out result);
             return (IntPtr)result;
+        }
+
+        /// <summary>
+        /// Converts semicolon or comma delimited list of language/culture name into the list of LCIDs.
+        /// </summary>
+        /// <param name="languages">The languages.</param>
+        /// <returns></returns>
+        internal static string ToLcidList(this string languages)
+        {
+            var result = string.Join(",", languages.Split(',', ';')
+                                                   .Select(x => new CultureInfo(x.Trim()).LCID.ToString())
+                                                   .ToArray());
+            return result;
+        }
+
+        /// <summary>
+        /// LCID of the first language in the semicolon or comma delimited list of languages
+        /// </summary>
+        /// <param name="languages">The languages.</param>
+        /// <returns></returns>
+        internal static string FirstLcid(this string languages)
+        {
+            var result = languages.Split(',', ';')
+                                  .Select(x => new CultureInfo(x.Trim()).LCID.ToString())
+                                  .FirstOrDefault();
+            return result;
         }
 
         /// <summary>

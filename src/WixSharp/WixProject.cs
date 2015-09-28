@@ -94,6 +94,8 @@ namespace WixSharp
 
         /// <summary>
         /// Installation UI Language. If not specified <c>"en-US"</c> will be used.
+        /// <para>It is possible to specify multiple languages separated by coma or semicolon. All extra languages will be used 
+        /// as additional values for 'Package.Languages' attribute and light.exe '-cultures:' command line parameters.</para>
         /// </summary>
         public string Language = "en-US";
 

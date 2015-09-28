@@ -1020,13 +1020,15 @@ namespace WixSharp
                             </Product>
                         </Wix>");
 
+
+
             XElement product = doc.Root.Select("Product");
-            product.Add(new XAttribute("Id", project.ProductId),
-                         new XAttribute("Name", project.Name),
-                         new XAttribute("Language", new CultureInfo(project.Language).LCID),
-                         new XAttribute("Codepage", project.Codepage),
-                         new XAttribute("Version", project.Version),
-                         new XAttribute("UpgradeCode", project.UpgradeCode));
+            product.SetAttribute("Id", project.ProductId)
+                   .SetAttribute("Name", project.Name)
+                   .SetAttribute("Language", project.Language.FirstLcid())
+                   .SetAttribute("Codepage", project.Codepage)
+                   .SetAttribute("Version", project.Version)
+                   .SetAttribute("UpgradeCode", project.UpgradeCode);
 
             if (project.ControlPanelInfo != null && project.ControlPanelInfo.Manufacturer.IsNotEmpty())
                 product.SetAttribute("Manufacturer", project.ControlPanelInfo.Manufacturer);
@@ -1037,7 +1039,7 @@ namespace WixSharp
             package.SetAttribute("Description", project.Description)
                    .SetAttribute("Platform", project.Platform)
                    .SetAttribute("SummaryCodepage", project.Codepage)
-                   .SetAttribute("Languages", new CultureInfo(project.Language).LCID)
+                   .SetAttribute("Languages", project.Language.ToLcidList())
                    .SetAttribute("InstallScope", project.InstallScope);
 
             if (project.EmitConsistentPackageId)
