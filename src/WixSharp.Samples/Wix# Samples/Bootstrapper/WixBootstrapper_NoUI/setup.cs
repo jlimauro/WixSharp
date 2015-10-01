@@ -10,6 +10,7 @@ using WixSharp.Bootstrapper;
 using Microsoft.Deployment.WindowsInstaller;
 using System.Windows.Forms;
 using System.Diagnostics;
+using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
 
 public class InstallScript
 {
@@ -19,21 +20,23 @@ public class InstallScript
             new Project("My Product",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
                     new File("readme.txt"))) { InstallScope = InstallScope.perUser };
-        
+
         productProj.GUID = new Guid("6f330b47-2577-43ad-9095-1861bb258777");
         productProj.LicenceFile = "License.rtf";
         string productMsi = productProj.BuildMsi();
 
         var bootstrapper =
-                new Bundle("My Product",
+                new Bundle("My Product Suite",
                     new PackageGroupRef("NetFx40Web"),
-                    new MsiPackage(productMsi) { DisplayInternalUI = true });
+                    new MsiPackage(productMsi) { Id = "MyProductPackageId", DisplayInternalUI = true });
 
         bootstrapper.Version = new Version("1.0.0.0");
-        bootstrapper.UpgradeCode = new Guid("6f330b47-2577-43ad-9095-1861bb25889b");
-        bootstrapper.Application = new SilentBootstrapperApplication();
+        bootstrapper.UpgradeCode = new Guid("6f330b47-2577-43ad-9095-1861bb25889c");
+        //bootstrapper.Application = new SilentBootstrapperApplication();
+        bootstrapper.Application = new ManagedBootstrapperApplication("%this%");
 
         bootstrapper.PreserveTempFiles = true;
         bootstrapper.Build();
     }
 }
+

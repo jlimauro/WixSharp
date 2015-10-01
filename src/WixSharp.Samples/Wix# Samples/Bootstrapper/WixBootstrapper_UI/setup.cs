@@ -26,11 +26,13 @@ public class Script
                     new MsiPackage(productMsi) { Id = "MyProductPackageId" });
 
         bootstrapper.Version = new Version("1.0.0.0");
-        bootstrapper.UpgradeCode = new Guid("6f330b47-2577-43ad-9095-1861bb25889b");
+        bootstrapper.UpgradeCode = new Guid("6f330b47-2577-43ad-9095-1861bb25889a");
         bootstrapper.Application = new ManagedBootstrapperApplication("%this%"); // you can also use System.Reflection.Assembly.GetExecutingAssembly().Location
+
+        bootstrapper.PreserveTempFiles = true;
 
         bootstrapper.Build();
 
-        io.File.Delete(productMsi);
+        //io.File.Delete(productMsi);
     }
 }

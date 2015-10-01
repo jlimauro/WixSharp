@@ -95,10 +95,20 @@ namespace WixSharp.UI.Forms
 
         public class Behavior
         {
-            public static void AttachTo(TreeView treeView)
+            bool DrawTextOnly = false;
+
+            public static void AttachTo(TreeView treeView, bool drawTextOnly = false)
             {
-                treeView.DrawMode = TreeViewDrawMode.OwnerDrawAll;
-                treeView.DrawNode += treeView_DrawNode;
+                if (drawTextOnly)
+                {
+                    treeView.DrawMode = TreeViewDrawMode.OwnerDrawText;
+                    treeView.DrawNode += treeView_DrawNodeText;
+                }
+                else
+                {
+                    treeView.DrawMode = TreeViewDrawMode.OwnerDrawAll;
+                    treeView.DrawNode += treeView_DrawNode;
+                }
                 treeView.BeforeCheck += treeView_BeforeCheck;
             }
 
@@ -121,6 +131,28 @@ namespace WixSharp.UI.Forms
             static int cIndentBy = -1;
             static int cMargin = -1;
 
+            static void treeView_DrawNodeText(object sender, DrawTreeNodeEventArgs e)
+            {
+                //Loosely based on Jason Williams solution (http://stackoverflow.com/questions/1003459/c-treeview-owner-drawing-with-ownerdrawtext-and-the-weird-black-highlighting-w)
+                if (e.Bounds.Height < 1 || e.Bounds.Width < 1)
+                    return;
+
+                var treeView = (TreeView)sender;
+
+                if (e.Node.IsSelected)
+                {
+                    e.Graphics.FillRectangle(selectionModeBrush, e.Bounds);
+                    e.Graphics.DrawString(e.Node.Text, treeView.Font, Brushes.White, e.Bounds);
+                }
+                else
+                {
+                    if (IsReadOnly(e.Node))
+                        e.Graphics.DrawString(e.Node.Text, treeView.Font, Brushes.Gray, e.Bounds);
+                    else
+                        e.Graphics.DrawString(e.Node.Text, treeView.Font, Brushes.Black, e.Bounds);
+                }
+            }
+
             static void treeView_DrawNode(object sender, DrawTreeNodeEventArgs e)
             {
                 //Loosely based on Jason Williams solution (http://stackoverflow.com/questions/1003459/c-treeview-owner-drawing-with-ownerdrawtext-and-the-weird-black-highlighting-w)
@@ -130,7 +162,7 @@ namespace WixSharp.UI.Forms
                 if (cIndentBy == -1)
                 {
                     cIndentBy = e.Bounds.Height;
-                    cMargin = e.Bounds.Height/2;
+                    cMargin = e.Bounds.Height / 2;
                 }
 
                 var treeView = (TreeView)sender;
@@ -199,7 +231,7 @@ namespace WixSharp.UI.Forms
                     //e.Graphics.FillRectangle(Brushes.Salmon, bounds);
 
                     //deflate (resize and center) icon within bounds 
-                    var dif = (iconWidth - iconTrueSize.Height)/2;
+                    var dif = (iconWidth - iconTrueSize.Height) / 2 - 1; //-1 is to compensate for rounding as icon is not getting rendered if the bounds is too small
                     bounds.Inflate(-dif, -dif);
                     renderer.DrawBackground(e.Graphics, bounds);
                 }

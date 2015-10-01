@@ -40,6 +40,8 @@ class Script
                 //merge 'Wix/Product' elements of document with 'Wix/Product' elements of CommonProperies.wxs 
                 document.InjectWxs("CommonProperies.wxs");
 
+                //document.Root.DescendantsAndSelf("Property").toList();
+
                 //the code below is the equivalent of project.AddXmlInclude(...)
                 //document.FindSingle("Product").Add(new XProcessingInstruction("include", @"CommonProperies.wxi"));
             };

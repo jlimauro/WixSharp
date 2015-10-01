@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
 
-
+[assembly: BootstrapperApplication(typeof(ManagedBA))]
 
 public class ManagedBA : BootstrapperApplication
 {

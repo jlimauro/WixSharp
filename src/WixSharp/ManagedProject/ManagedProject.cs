@@ -74,6 +74,31 @@ namespace WixSharp
         {
         }
 
+        
+        public bool MinimalCustomDrawing
+        {
+            get
+            {
+                return Properties.Where(x => x.Name == "WixSharpUI_TreeNode_TexOnlyDrwing").FirstOrDefault() != null;
+            }
+        
+            set
+            {
+                if (value)
+                {
+                    var prop = Properties.Where(x => x.Name == "WixSharpUI_TreeNode_TexOnlyDrwing").FirstOrDefault();
+                    if (prop != null)
+                        prop.Value = "true";
+                    else
+                        this.AddProperty(new Property("WixSharpUI_TreeNode_TexOnlyDrwing", "true"));
+                }
+                else
+                {
+                    Properties = Properties.Where(x => x.Name != "WixSharpUI_TreeNode_TexOnlyDrwing").ToArray();
+                }
+            }
+        }
+
         /// <summary>
         /// Event handler of the ManagedSetup for the MSI runtime events.
         /// </summary>

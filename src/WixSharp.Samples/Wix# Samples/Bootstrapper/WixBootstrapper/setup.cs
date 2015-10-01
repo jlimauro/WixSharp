@@ -47,7 +47,7 @@ public class InstallScript
         //bootstrapper.Application.LicensePath = "http://opensource.org/licenses/MIT"; //HyperlinkLicense app with online license file
         //bootstrapper.Application.LicensePath = null; //HyperlinkLicense app with no license
 
-        bootstrapper.Build();
+        bootstrapper.BuildCmd();
         //---------------------------------------------------------
 
         if (io.File.Exists(productMsi))

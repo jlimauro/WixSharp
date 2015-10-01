@@ -29,11 +29,14 @@ namespace WixSharp.UI.Forms
         public FeaturesDialog()
         {
             InitializeComponent();
-            ReadOnlyTreeNode.Behavior.AttachTo(featuresTree);
         }
 
         void FeaturesDialog_Load(object sender, System.EventArgs e)
         {
+            bool drawTextOnly = MsiRuntime.Session.Property("WixSharpUI_TreeNode_TexOnlyDrwing").IsNotEmpty();
+            
+            ReadOnlyTreeNode.Behavior.AttachTo(featuresTree, drawTextOnly);
+
             banner.Image = MsiRuntime.Session.GetEmbeddedBitmap("WixUI_Bmp_Banner");
             BuildFeaturesHierarchy();
         }
@@ -60,12 +63,12 @@ namespace WixSharp.UI.Forms
 
                 //create the view of the feature
                 var view = new ReadOnlyTreeNode
-                        {
-                            Text = item.Title,
-                            Tag = item, //link view to model
-                            IsReadOnly = item.DisallowAbsent,
-                            Checked = item.DefaultIsToBeInstalled()
-                        };
+                {
+                    Text = item.Title,
+                    Tag = item, //link view to model
+                    IsReadOnly = item.DisallowAbsent,
+                    Checked = item.DefaultIsToBeInstalled()
+                };
 
                 item.View = view;
 

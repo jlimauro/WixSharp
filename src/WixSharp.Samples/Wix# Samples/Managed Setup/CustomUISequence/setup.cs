@@ -26,6 +26,8 @@ public class Script
 
         project.ManagedUI = new ManagedUI();
 
+        project.MinimalCustomDrawing = true;
+
         project.UIInitialized += CheckCompatibility; //will be fired on the embedded UI start
         project.Load += CheckCompatibility;          //will be fired on the MSI start
 
