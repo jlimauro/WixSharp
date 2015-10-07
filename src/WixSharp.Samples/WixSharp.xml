@@ -2984,6 +2984,12 @@
             </param>
             <returns></returns>
         </member>
+        <member name="M:WixSharp.Extensions.FindIndex``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>Finds the index of the first item matching an expression in an enumerable.</summary>
+            <param name="items">The enumerable to search.</param>
+            <param name="predicate">The expression to test the items against.</param>
+            <returns>The index of the first matching item, or -1 if no items match.</returns>
+        </member>
         <member name="M:WixSharp.Extensions.ToIntPtr(System.String)">
             <summary>
             Safely converts string to IntPtr.
@@ -3397,6 +3403,14 @@
             <summary>
             </summary>
             <param name="session">The session.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WixSharp.Extensions.IsFeatureSelected(Microsoft.Deployment.WindowsInstaller.Session,System.String)">
+            <summary>
+            Determines whether the feature is selected in the feature tree of the Features dialog.
+            </summary>
+            <param name="session">The session.</param>
+            <param name="featureName">Name of the feature.</param>
             <returns></returns>
         </member>
         <member name="M:WixSharp.Extensions.IsBasic(Microsoft.Deployment.WindowsInstaller.InstallUIOptions)">
@@ -5727,6 +5741,12 @@
             </summary>
         </member>
         <member name="M:WixSharp.IManagedUIShell.GoTo(System.Int32)">
+            <summary>
+            Moves to the UI Dialog by the specified index in the <see cref="T:WixSharp.IManagedUIShell.Dialogs"/> sequence.
+            </summary>
+            <param name="index">The index.</param>
+        </member>
+        <member name="M:WixSharp.IManagedUIShell.GoTo``1">
             <summary>
             Moves to the UI Dialog by the specified index in the <see cref="T:WixSharp.IManagedUIShell.Dialogs"/> sequence.
             </summary>

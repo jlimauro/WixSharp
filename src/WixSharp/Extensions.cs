@@ -481,10 +481,28 @@ namespace WixSharp
         /// <returns></returns>
         public static string Join(this IEnumerable<string> strings, string separator, Func<string, string> selector = null)
         {
-            if(selector != null)
+            if (selector != null)
                 return string.Join(separator, strings.Select(selector).ToArray());
             else
                 return string.Join(separator, strings.ToArray());
+        }
+
+        ///<summary>Finds the index of the first item matching an expression in an enumerable.</summary>
+        ///<param name="items">The enumerable to search.</param>
+        ///<param name="predicate">The expression to test the items against.</param>
+        ///<returns>The index of the first matching item, or -1 if no items match.</returns>
+        public static int FindIndex<T>(this IEnumerable<T> items, Func<T, bool> predicate)
+        {
+            if (items == null) throw new ArgumentNullException("items");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+
+            int retVal = 0;
+            foreach (var item in items)
+            {
+                if (predicate(item)) return retVal;
+                retVal++;
+            }
+            return -1;
         }
 
         /// <summary>
@@ -1359,6 +1377,17 @@ namespace WixSharp
         static public bool IsUninstalling(this Session session)
         {
             return session.Property("REMOVE").SameAs("All", true);
+        }
+
+        /// <summary>
+        /// Determines whether the feature is selected in the feature tree of the Features dialog.
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <param name="featureName">Name of the feature.</param>
+        /// <returns></returns>
+        static public bool IsFeatureEnabled(this Session session, string featureName)
+        {
+            return (session.Property("ADDLOCAL") ?? "").Split(',').Where(x => x.SameAs(featureName)).Any();
         }
 
         /// <summary>

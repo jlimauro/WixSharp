@@ -41,7 +41,7 @@ namespace WixSharp.UI.Forms
             BuildFeaturesHierarchy();
         }
 
-        static List<string> userSelectedItems;
+        public static List<string> UserSelectedItems;
 
         void BuildFeaturesHierarchy()
         {
@@ -85,8 +85,8 @@ namespace WixSharp.UI.Forms
                                      itemsToProcess.Enqueue(c); //schedule for further processing
                                  });
 
-                if (userSelectedItems != null)
-                    view.Checked = userSelectedItems.Contains(view.Text);
+                if (UserSelectedItems != null)
+                    view.Checked = UserSelectedItems.Contains(view.Text);
             }
 
             //add views to the treeView control
@@ -99,7 +99,7 @@ namespace WixSharp.UI.Forms
 
         void SaveUserSelection()
         {
-            userSelectedItems = features.Where(x => x.IsViewChecked())
+            UserSelectedItems = features.Where(x => x.IsViewChecked())
                                         .Select(x => x.Name)
                                         .ToList();
         }

@@ -1104,6 +1104,11 @@
             </summary>
             <param name="index">The index.</param>
         </member>
+        <member name="M:WixSharp.UIShell.GoTo``1">
+            <summary>
+            Moves to the UI Dialog by the specified dialog type in the <see cref="T:WixSharp.IManagedUIShell.Dialogs" /> sequence.
+            </summary>
+        </member>
         <member name="M:WixSharp.UIShell.Exit">
             <summary>
             Exits this MSI UI application.

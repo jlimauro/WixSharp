@@ -19,11 +19,12 @@ public class InstallScript
         var productProj =
             new Project("My Product",
                 new Dir(@"%ProgramFiles%\My Company\My Product",
-                    new File("readme.txt"))) { InstallScope = InstallScope.perUser };
+                    new File("readme.txt"))) { InstallScope = InstallScope.perMachine };
 
         productProj.GUID = new Guid("6f330b47-2577-43ad-9095-1861bb258777");
         productProj.LicenceFile = "License.rtf";
         string productMsi = productProj.BuildMsi();
+        //string productMsi = @"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Managed Setup\CustomUISequence\bin\Debug\ManagedSetup.msi";
 
         var bootstrapper =
                 new Bundle("My Product Suite",
@@ -32,8 +33,10 @@ public class InstallScript
 
         bootstrapper.Version = new Version("1.0.0.0");
         bootstrapper.UpgradeCode = new Guid("6f330b47-2577-43ad-9095-1861bb25889c");
-        //bootstrapper.Application = new SilentBootstrapperApplication();
-        bootstrapper.Application = new ManagedBootstrapperApplication("%this%");
+        bootstrapper.Application = new SilentBootstrapperApplication();
+        
+        //use this custom BA to modify it's behavior to meet your requirements
+        //bootstrapper.Application = new ManagedBootstrapperApplication("%this%"); 
 
         bootstrapper.PreserveTempFiles = true;
         bootstrapper.Build();

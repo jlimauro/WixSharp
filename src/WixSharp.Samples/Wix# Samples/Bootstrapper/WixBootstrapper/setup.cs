@@ -28,7 +28,7 @@ public class InstallScript
 
         //---------------------------------------------------------
         string productMsi = productProj.BuildMsi();
-        string crtMsi = crtProj.BuildMsi();
+        string crtMsi = crtProj.BuildMsi();        
         //---------------------------------------------------------
 
         var bootstrapper =
@@ -47,11 +47,12 @@ public class InstallScript
         //bootstrapper.Application.LicensePath = "http://opensource.org/licenses/MIT"; //HyperlinkLicense app with online license file
         //bootstrapper.Application.LicensePath = null; //HyperlinkLicense app with no license
 
-        bootstrapper.BuildCmd();
+        bootstrapper.PreserveTempFiles = true;
+        bootstrapper.Build();
         //---------------------------------------------------------
 
-        if (io.File.Exists(productMsi))
-            io.File.Delete(productMsi);
+        //if (io.File.Exists(productMsi))
+          //  io.File.Delete(productMsi);
 
         if (io.File.Exists(crtMsi))
             io.File.Delete(crtMsi);

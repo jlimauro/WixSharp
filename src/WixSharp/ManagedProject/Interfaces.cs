@@ -117,6 +117,11 @@ namespace WixSharp
         /// <param name="index">The index.</param>
         void GoTo(int index);
         /// <summary>
+        /// Moves to the UI Dialog by the specified index in the <see cref="T:WixSharp.IManagedUIShell.Dialogs"/> sequence.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        void GoTo<T>();
+        /// <summary>
         /// Cancels the MSI installation.
         /// </summary>
         void Cancel();

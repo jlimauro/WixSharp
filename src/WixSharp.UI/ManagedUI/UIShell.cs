@@ -215,6 +215,16 @@ namespace WixSharp
         }
 
         /// <summary>
+        /// Moves to the UI Dialog by the specified dialog type in the <see cref="T:WixSharp.IManagedUIShell.Dialogs" /> sequence.
+        /// </summary>
+        public void GoTo<T>()
+        {
+            int index = Dialogs.FindIndex(t=>t==typeof(T)); 
+            if (index != -1)
+                CurrentDialogIndex = index;
+        }
+
+        /// <summary>
         /// Exits this MSI UI application.
         /// </summary>
         public void Exit()
