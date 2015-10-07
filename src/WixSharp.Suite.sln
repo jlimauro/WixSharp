@@ -203,6 +203,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Embedding_CA_Package", "Wix
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Driver", "WixSharp.Samples\VSProjects\Driver.csproj", "{3D1A5F82-CEEF-4CD6-A590-79497A8BCA10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbeddedUI_WPF", "WixSharp.Samples\Wix# Samples\Custom_UI\EmbeddedUI_WPF\EmbeddedUI_WPF.csproj", "{29DF07CE-4648-47DE-8440-3DB54D49D5D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1063,6 +1065,18 @@ Global
 		{3D1A5F82-CEEF-4CD6-A590-79497A8BCA10}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3D1A5F82-CEEF-4CD6-A590-79497A8BCA10}.Release|x86.ActiveCfg = Release|Any CPU
 		{3D1A5F82-CEEF-4CD6-A590-79497A8BCA10}.Release|x86.Build.0 = Release|Any CPU
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2}.Debug|x86.Build.0 = Debug|Any CPU
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2}.Release|x86.ActiveCfg = Release|Any CPU
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1150,5 +1164,6 @@ Global
 		{C233F793-339E-4651-A430-78EF1D9769C4} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{4DD90151-15D1-44F5-B11B-DCBA71F8F436} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
 		{3D1A5F82-CEEF-4CD6-A590-79497A8BCA10} = {DB40BEF1-64CF-4308-9740-AF22284F4491}
+		{29DF07CE-4648-47DE-8440-3DB54D49D5D2} = {C8D0CD2D-0340-4E97-9E62-5A8334AD9E2D}
 	EndGlobalSection
 EndGlobal

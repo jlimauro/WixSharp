@@ -1380,7 +1380,8 @@ namespace WixSharp
         }
 
         /// <summary>
-        /// Determines whether the feature is selected in the feature tree of the Features dialog.
+        /// Determines whether the feature is selected in the feature tree of the Features dialog
+        /// and will be installed.
         /// </summary>
         /// <param name="session">The session.</param>
         /// <param name="featureName">Name of the feature.</param>
