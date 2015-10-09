@@ -1656,7 +1656,7 @@ namespace WixSharp
                 //In the future it can be improved by allowing MergeRef to be added in the global collection featureMergeModules/DefaultfeatureComponents.
                 //Then PostProcessMsm will not be needed. 
                 if (msm.Feature != null && !featureComponents.ContainsKey(msm.Feature))
-                   featureComponents[msm.Feature] = new List<string>();
+                    featureComponents[msm.Feature] = new List<string>();
             }
         }
 
@@ -2273,9 +2273,9 @@ namespace WixSharp
                 }
                 else
                 {
-                    product.Add(new XElement("Property",
-                                    new XAttribute("Id", prop.Name),
-                                    new XAttribute("Value", prop.Value))
+                    product.Add(new XElement("Property")
+                                    .SetAttribute("Id", prop.Name)
+                                    .SetAttribute("Value", prop.Value)
                                     .AddAttributes(prop.Attributes));
                 }
             }
