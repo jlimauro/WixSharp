@@ -93,7 +93,7 @@ namespace WixSharp
     /// <para>
     /// Traditional property usage involves defining the property by instantiating the <see cref="Property"/>
     /// class (in the <see cref="Project"/> structure) and then setting it from CustomAction (e.g. <see cref="SetPropertyAction"/>).
-    ///<para>Property value can be analysed and used in <c>CustomActions</c> or it can be a base for the <see cref="Condition"/>
+    ///<para>Property value can be analyzed and used in <c>CustomActions</c> or it can be a base for the <see cref="Condition"/>
     ///of item to be installed.</para>
     /// </para>
     /// </summary>
@@ -135,6 +135,14 @@ namespace WixSharp
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Property"/> class with properties/fields initialized with specified parameters.
+        /// </summary>
+        /// <param name="name">The name of the property.</param>
+        public Property(string name)
+        {
+            Name = name;
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="Property"/> class with properties/fields initialized with specified parameters.
         /// </summary>
