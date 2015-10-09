@@ -38,7 +38,7 @@ namespace WixSharp.Test
 
     public class XmlInjectionTests
     {
-        [Fact(Skip = "as non-production test")]
+        //[Fact(Skip = "as non-production test")]
         public void Test()
         {
             Project project =
