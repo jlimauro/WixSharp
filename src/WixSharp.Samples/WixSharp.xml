@@ -8441,7 +8441,7 @@
              <para>
              Traditional property usage involves defining the property by instantiating the <see cref="T:WixSharp.Property"/>
              class (in the <see cref="T:WixSharp.Project"/> structure) and then setting it from CustomAction (e.g. <see cref="T:WixSharp.SetPropertyAction"/>).
-            <para>Property value can be analysed and used in <c>CustomActions</c> or it can be a base for the <see cref="T:WixSharp.Condition"/>
+            <para>Property value can be analyzed and used in <c>CustomActions</c> or it can be a base for the <see cref="T:WixSharp.Condition"/>
             of item to be installed.</para>
              </para>
              </summary>
@@ -8479,6 +8479,12 @@
             <summary>
             Initializes a new instance of the <see cref="T:WixSharp.Property"/> class.
             </summary>
+        </member>
+        <member name="M:WixSharp.Property.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WixSharp.Property"/> class with properties/fields initialized with specified parameters.
+            </summary>
+            <param name="name">The name of the property.</param>
         </member>
         <member name="M:WixSharp.Property.#ctor(System.String,System.String)">
             <summary>

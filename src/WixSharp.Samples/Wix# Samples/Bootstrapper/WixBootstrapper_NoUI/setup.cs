@@ -3,6 +3,7 @@
 //css_ref WixSharp.UI.dll;
 //css_ref System.Core.dll;
 //css_ref Wix_bin\SDK\Microsoft.Deployment.WindowsInstaller.dll;
+
 using System;
 using sys = System.Reflection;
 using WixSharp;
@@ -10,7 +11,6 @@ using WixSharp.Bootstrapper;
 using Microsoft.Deployment.WindowsInstaller;
 using System.Windows.Forms;
 using System.Diagnostics;
-using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
 
 public class InstallScript
 {
@@ -24,7 +24,6 @@ public class InstallScript
         productProj.GUID = new Guid("6f330b47-2577-43ad-9095-1861bb258777");
         productProj.LicenceFile = "License.rtf";
         string productMsi = productProj.BuildMsi();
-        //string productMsi = @"E:\Galos\Projects\WixSharp\src\WixSharp.Samples\Wix# Samples\Managed Setup\CustomUISequence\bin\Debug\ManagedSetup.msi";
 
         var bootstrapper =
                 new Bundle("My Product Suite",

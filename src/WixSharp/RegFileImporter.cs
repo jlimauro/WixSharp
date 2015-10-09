@@ -123,7 +123,10 @@ namespace WixSharp
                 return rawValue.Unescape();
 
             if (isPreffix("\""))
-                return rawValue.Trim('\"');
+            {
+                var strValue = rawValue.Substring(0, rawValue.Length-1); //trim a single " char
+                return Regex.Unescape(strValue);
+            }
 
             if (SkipUnknownTypes)
                 return null;
