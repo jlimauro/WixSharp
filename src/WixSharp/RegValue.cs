@@ -241,7 +241,7 @@ namespace WixSharp
         /// <summary>
         /// Set this to remove the key with all its values and subkeys when the parent component is uninstalled.
         /// </summary>
-        public bool ForceDeleteOnUninstall = true;
+        public bool ForceDeleteOnUninstall;
 
         internal string RegValueString
         {
