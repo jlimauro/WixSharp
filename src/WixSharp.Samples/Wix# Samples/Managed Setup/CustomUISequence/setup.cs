@@ -57,10 +57,8 @@ public class Script
         //project.ControlPanelInfo.InstallLocation = @"C:\";
 
         project.SourceBaseDir = @"..\..\";
-
         project.BuildMsi();
     }
-
 
     static void CheckCompatibility(SetupEventArgs e)
     {
