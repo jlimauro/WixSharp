@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using WixSharp;
@@ -28,7 +30,7 @@ public class Script
         project.SourceBaseDir = @"..\..\";
         project.GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b");
         project.LocalizationFile = "MyProduct.en-us.wxl";
-        
+
         project.ManagedUI = new ManagedUI();
         project.ManagedUI.InstallDialogs.Add<WelcomeDialog>()
                                         .Add<MyProduct.UserNameDialog>()
@@ -39,10 +41,17 @@ public class Script
         project.ManagedUI.ModifyDialogs.Add<ProgressDialog>()
                                        .Add<ExitDialog>();
 
+        project.UILoaded += msi_UILoaded;
         project.BeforeInstall += msi_BeforeInstall;
 
         project.BuildMsi();
     }
+
+    static void msi_UILoaded(SetupEventArgs e)
+    {
+        //You can set the size of the shell view window if requred
+        //e.ManagedUIShell.SetSize(700, 500);
+    } 
 
     static void msi_BeforeInstall(SetupEventArgs e)
     {

@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 using WixSharp.UI.Forms;
 
@@ -43,7 +44,7 @@ namespace WixSharp.Forms
         static public Type Exit = typeof(ExitDialog);
     }
 
-    class ShellView : Form
+    class ShellView : Form, IShellView
     {
         public ShellView()
         {
@@ -67,6 +68,13 @@ namespace WixSharp.Forms
             this.TopMost = true;
             this.Icon = ".msi".GetAssiciatedIcon();
             this.ResumeLayout(false);
+        }
+
+        public void SetSize(int width, int height)
+        {
+            this.MaximumSize =
+            this.MinimumSize =
+            this.Size = new Size(width, height);
         }
     }
 }

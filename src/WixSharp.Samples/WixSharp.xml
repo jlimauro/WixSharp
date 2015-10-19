@@ -91,7 +91,9 @@
         </member>
         <member name="F:WixSharp.Action.Impersonate">
             <summary>
-            This attribute specifies whether the Windows Installer, which executes as LocalSystem, should impersonate the user context of the installing user when executing this custom action. Typically the value should be <c>true</c>, except when the custom action needs elevated privileges to apply changes to the machine.
+            This attribute specifies whether the Windows Installer, which executes as LocalSystem, should impersonate the user context of the
+            installing user when executing this custom action. Typically the value should be <c>true</c>, except when the custom action needs 
+            elevated privileges to apply changes to the machine.
             </summary>
         </member>
         <member name="F:WixSharp.Action.Sequence">
@@ -5684,6 +5686,18 @@
             </summary>
             <param name="progressPercentage">The progress percentage.</param>
         </member>
+        <member name="T:WixSharp.IShellView">
+            <summary>
+            The interface representing main window of the embedded UI.
+            </summary>
+        </member>
+        <member name="M:WixSharp.IShellView.SetSize(System.Int32,System.Int32)">
+            <summary>
+            Sets the size of the main window of the embedded UI.
+            </summary>
+            <param name="width">The width.</param>
+            <param name="height">The height.</param>
+        </member>
         <member name="T:WixSharp.IManagedUIShell">
             <summary>
             Interface of the main window implementation of the MSI external/embedded UI. This interface is designed to be 
@@ -5751,7 +5765,6 @@
             <summary>
             Moves to the UI Dialog by the specified index in the <see cref="T:WixSharp.IManagedUIShell.Dialogs"/> sequence.
             </summary>
-            <param name="index">The index.</param>
         </member>
         <member name="M:WixSharp.IManagedUIShell.Cancel">
             <summary>
@@ -5915,6 +5928,18 @@
             <param name="name">The name of the project. Typically it is the name of the product to be installed.</param>
             <param name="items">The project installable items (e.g. directories, files, registry keys, Custom Actions).</param>
         </member>
+        <member name="P:WixSharp.ManagedProject.MinimalCustomDrawing">
+            <summary>
+            Gets or sets a value indicating whether the full or reduced custom drawing algorithm should be used for rendering the Features dialog 
+            tree view control. The reduced algorithm involves no manual positioning of the visual elements so it handles better custom screen resolutions.
+            However it also leads to the slightly less intuitive tree view item appearance.
+            <para>Reduced custom drawing will render disabled tree view items with the text grayed out.</para>
+            <para>Full custom drawing will render disabled tree view items with the checkbox grayed out.</para>
+            </summary>
+            <value>
+            <c>true</c> (default) if custom drawing should be reduced otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="T:WixSharp.ManagedProject.SetupEventHandler">
             <summary>
             Event handler of the ManagedSetup for the MSI runtime events.
@@ -5923,7 +5948,16 @@
         </member>
         <member name="E:WixSharp.ManagedProject.UIInitialized">
             <summary>
-            Occurs on EmbeddedUI initialized but before first dialog is displayed. It is only invoked if ManagedUI is set.
+            Occurs on EmbeddedUI initialized but before the first dialog is displayed. It is only invoked if ManagedUI is set.
+            </summary>
+        </member>
+        <member name="E:WixSharp.ManagedProject.UILoaded">
+            <summary>
+            Occurs on EmbeddedUI loaded and ShellView (main window) is displayed but before first dialog is positioned within ShellView. 
+            It is only invoked if ManagedUI is set.
+            <para>Note that this event is fired on the loading the UI main window thus it's not a good stage for any decision regarding 
+            aborting/continuing the whole setup process. That is UILoaded event will ignore any value set to SetupEventArgs.Result by the user.
+            </para>
             </summary>
         </member>
         <member name="E:WixSharp.ManagedProject.Load">
@@ -6032,6 +6066,13 @@
             <value>
             The UI level.
             </value>
+        </member>
+        <member name="F:WixSharp.SetupEventArgs.ManagedUIShell">
+            <summary>
+            The managed UI main window object. It is a main System.Windows.Forms.Form window of the standard Wix# embedded UI.
+            <para>This member is only populated when it is handled by the <see cref="T:WixSharp.ManagedProject.UILoaded"/> event handler.
+            It has the default <c>null</c> value for all other events.</para>   
+            </summary>
         </member>
         <member name="P:WixSharp.SetupEventArgs.IsElevated">
             <summary>

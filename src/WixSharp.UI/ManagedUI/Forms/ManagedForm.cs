@@ -1,4 +1,5 @@
 using Microsoft.Deployment.WindowsInstaller;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace WixSharp.UI.Forms
@@ -53,7 +54,7 @@ namespace WixSharp.UI.Forms
         public IManagedUIShell Shell
         {
             get { return shell; }
-        
+
             set
             {
                 shell = value;
@@ -130,6 +131,18 @@ namespace WixSharp.UI.Forms
         public void Localize()
         {
             this.LocalizeWith(MsiRuntime.Localize);
+        }
+
+        /// <summary>
+        /// Sets the size of the shell.
+        /// </summary>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        public void SetShellSize(int width, int height)
+        {
+            this.MaximumSize =
+            this.MinimumSize =
+            this.Size = new Size(width, height);
         }
     }
 }

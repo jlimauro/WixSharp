@@ -75,7 +75,8 @@ namespace WixSharp
                 return wixExtensions;
             }
         }
-        public List<string> wixExtensions = new List<string>();
+
+        List<string> wixExtensions = new List<string>();
 
         /// <summary>
         /// Collection of paths to the external wsx files containing Fragment(s). 

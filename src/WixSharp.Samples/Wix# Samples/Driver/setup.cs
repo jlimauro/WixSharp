@@ -13,9 +13,9 @@ class Script
 {
     static void Main()
     {
-        //NOTE: 'driver.sys' is a mock but not are real driver. Thus running msi will fail.
+        //NOTE: 'driver.sys' is a mock but not a real driver. Thus running msi will fail.
         var project = new Project("MyProduct",
-                          new Dir(@"%ProgramFiles%\My Compant\My Device",
+                          new Dir(@"%ProgramFiles%\My Company\My Device",
                               new File("driver.sys",
                                         new DriverInstaller
                                         {

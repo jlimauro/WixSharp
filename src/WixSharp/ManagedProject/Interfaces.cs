@@ -60,6 +60,19 @@ namespace WixSharp
     }
 
     /// <summary>
+    /// The interface representing main window of the embedded UI.
+    /// </summary>
+    public interface IShellView
+    {
+        /// <summary>
+        /// Sets the size of the main window of the embedded UI.
+        /// </summary>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        void SetSize(int width, int height);
+    }
+
+    /// <summary>
     /// Interface of the main window implementation of the MSI external/embedded UI. This interface is designed to be 
     /// used by the Wix#/MSI UI dialogs. It is the interface that is directly available for all UI dialogs and it
     /// allows the dialogs accessing the MSI runtime context.
@@ -93,7 +106,7 @@ namespace WixSharp
         /// <value>
         ///   <c>true</c> if error was detected; otherwise, <c>false</c>.
         /// </value>
-        bool ErrorDetected { get;}
+        bool ErrorDetected { get; }
 
         /// <summary>
         /// Gets the sequence of the UI dialogs specific for the current setup type (e.g. install vs. modify).
@@ -119,7 +132,6 @@ namespace WixSharp
         /// <summary>
         /// Moves to the UI Dialog by the specified index in the <see cref="T:WixSharp.IManagedUIShell.Dialogs"/> sequence.
         /// </summary>
-        /// <param name="index">The index.</param>
         void GoTo<T>();
         /// <summary>
         /// Cancels the MSI installation.

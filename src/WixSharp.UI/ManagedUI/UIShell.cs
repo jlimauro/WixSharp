@@ -173,6 +173,10 @@ namespace WixSharp
                 if (Dialogs.Any())
                 {
                     shellView = new ShellView();
+                    shellView.Load += (s, e) =>
+                    {
+                        ManagedProject.InvokeClientHandlers(MsiRuntime.Session, "UILoaded", (IShellView)shellView);
+                    };
                     GoNext();
                     shellView.ShowDialog();
                 }
@@ -219,7 +223,7 @@ namespace WixSharp
         /// </summary>
         public void GoTo<T>()
         {
-            int index = Dialogs.FindIndex(t=>t==typeof(T)); 
+            int index = Dialogs.FindIndex(t => t == typeof(T));
             if (index != -1)
                 CurrentDialogIndex = index;
         }

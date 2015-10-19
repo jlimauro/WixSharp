@@ -74,27 +74,37 @@ namespace WixSharp
         {
         }
 
-        
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the full or reduced custom drawing algorithm should be used for rendering the Features dialog 
+        /// tree view control. The reduced algorithm involves no manual positioning of the visual elements so it handles better custom screen resolutions.
+        /// However it also leads to the slightly less intuitive tree view item appearance.
+        /// <para>Reduced custom drawing will render disabled tree view items with the text grayed out.</para>
+        /// <para>Full custom drawing will render disabled tree view items with the checkbox grayed out.</para>
+        /// </summary>
+        /// <value>
+        /// <c>true</c> (default) if custom drawing should be reduced otherwise, <c>false</c>.
+        /// </value>
         public bool MinimalCustomDrawing
         {
             get
             {
-                return Properties.Where(x => x.Name == "WixSharpUI_TreeNode_TexOnlyDrwing").FirstOrDefault() != null;
+                return Properties.Where(x => x.Name == "WixSharpUI_TreeNode_TexOnlyDrawing").FirstOrDefault() != null;
             }
         
             set
             {
                 if (value)
                 {
-                    var prop = Properties.Where(x => x.Name == "WixSharpUI_TreeNode_TexOnlyDrwing").FirstOrDefault();
+                    var prop = Properties.Where(x => x.Name == "WixSharpUI_TreeNode_TexOnlyDrawing").FirstOrDefault();
                     if (prop != null)
                         prop.Value = "true";
                     else
-                        this.AddProperty(new Property("WixSharpUI_TreeNode_TexOnlyDrwing", "true"));
+                        this.AddProperty(new Property("WixSharpUI_TreeNode_TexOnlyDrawing", "true"));
                 }
                 else
                 {
-                    Properties = Properties.Where(x => x.Name != "WixSharpUI_TreeNode_TexOnlyDrwing").ToArray();
+                    Properties = Properties.Where(x => x.Name != "WixSharpUI_TreeNode_TexOnlyDrawing").ToArray();
                 }
             }
         }
@@ -106,9 +116,17 @@ namespace WixSharp
         public delegate void SetupEventHandler(SetupEventArgs e);
 
         /// <summary>
-        /// Occurs on EmbeddedUI initialized but before first dialog is displayed. It is only invoked if ManagedUI is set.
+        /// Occurs on EmbeddedUI initialized but before the first dialog is displayed. It is only invoked if ManagedUI is set.
         /// </summary>
         public event SetupEventHandler UIInitialized;
+        /// <summary>
+        /// Occurs on EmbeddedUI loaded and ShellView (main window) is displayed but before first dialog is positioned within ShellView. 
+        /// It is only invoked if ManagedUI is set.
+        /// <para>Note that this event is fired on the loading the UI main window thus it's not a good stage for any decision regarding 
+        /// aborting/continuing the whole setup process. That is UILoaded event will ignore any value set to SetupEventArgs.Result by the user.
+        /// </para>
+        /// </summary>
+        public event SetupEventHandler UILoaded;
 
         /// <summary>
         /// Occurs before AppSearch standard action.
@@ -202,6 +220,7 @@ namespace WixSharp
                     this.DefaultRefAssemblies.Add(ManagedUI.GetType().Assembly.Location);
 
                     Bind(() => UIInitialized);
+                    Bind(() => UILoaded);
                 }
 
                 Bind(() => Load, When.Before, Step.AppSearch);
@@ -349,9 +368,10 @@ namespace WixSharp
                 method.Invoke(Activator.CreateInstance(method.DeclaringType), new object[] { eventArgs });
         }
 
-        internal static ActionResult InvokeClientHandlers(Session session, string eventName)
+        internal static ActionResult InvokeClientHandlers(Session session, string eventName, IShellView UIShell = null)
         {
             var eventArgs = Convert(session);
+            eventArgs.ManagedUIShell = UIShell;
 
             try
             {

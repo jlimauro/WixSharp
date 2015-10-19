@@ -95,7 +95,6 @@ namespace WixSharp.UI.Forms
 
         public class Behavior
         {
-            bool DrawTextOnly = false;
 
             public static void AttachTo(TreeView treeView, bool drawTextOnly = false)
             {

@@ -138,9 +138,11 @@ namespace WixSharp
         /// </summary>
         public Execute Execute = Execute.immediate;
         /// <summary>
-        /// This attribute specifies whether the Windows Installer, which executes as LocalSystem, should impersonate the user context of the installing user when executing this custom action. Typically the value should be <c>true</c>, except when the custom action needs elevated privileges to apply changes to the machine.
+        /// This attribute specifies whether the Windows Installer, which executes as LocalSystem, should impersonate the user context of the
+        /// installing user when executing this custom action. Typically the value should be <c>true</c>, except when the custom action needs 
+        /// elevated privileges to apply changes to the machine.
         /// </summary>
-        public bool Impersonate = true;
+        public bool? Impersonate;
         /// <summary>
         /// Defines <see cref="Sequence"/> the action belongs to.
         /// </summary>

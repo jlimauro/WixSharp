@@ -33,7 +33,7 @@ namespace WixSharp.UI.Forms
 
         void FeaturesDialog_Load(object sender, System.EventArgs e)
         {
-            bool drawTextOnly = MsiRuntime.Session.Property("WixSharpUI_TreeNode_TexOnlyDrwing").IsNotEmpty();
+            bool drawTextOnly = MsiRuntime.Session.Property("WixSharpUI_TreeNode_TexOnlyDrawing").IsNotEmpty();
             
             ReadOnlyTreeNode.Behavior.AttachTo(featuresTree, drawTextOnly);
 
@@ -41,6 +41,9 @@ namespace WixSharp.UI.Forms
             BuildFeaturesHierarchy();
         }
 
+        /// <summary>
+        /// The collection of the features selected by user as the features to be installed.
+        /// </summary>
         public static List<string> UserSelectedItems;
 
         void BuildFeaturesHierarchy()

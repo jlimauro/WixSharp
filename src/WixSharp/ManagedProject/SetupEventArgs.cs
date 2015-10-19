@@ -79,6 +79,13 @@ namespace WixSharp
         public int UILevel { get { return Data["UILevel"].ToInt(-1); } }
 
         /// <summary>
+        /// The managed UI main window object. It is a main System.Windows.Forms.Form window of the standard Wix# embedded UI.
+        /// <para>This member is only populated when it is handled by the <see cref="T:WixSharp.ManagedProject.UILoaded"/> event handler.
+        /// It has the default <c>null</c> value for all other events.</para>   
+        /// </summary>
+        public IShellView ManagedUIShell = null;
+
+        /// <summary>
         /// Gets a value indicating whether the event handler is executed from the elevated context.
         /// </summary>
         /// <value>
