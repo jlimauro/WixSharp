@@ -8010,6 +8010,11 @@
             Optional comments for browsing.
             </summary>
         </member>
+        <member name="P:WixSharp.Project.UseGUIDWildcard">
+            <summary>
+            Use this property to automatically generate a new application GUID on each building of the project.
+            </summary>
+        </member>
         <member name="F:WixSharp.Project.Package">
              <summary>
              Generic <see cref="T:WixSharp.WixEntity"/> container for defining WiX <c>Package</c> element attributes.
@@ -8189,6 +8194,11 @@
              Note that %this% will be replaced by Wix# compiler with <c>project.Version.ToString()</c> during the MSI building.
              However you can use explicit values (e.g. 1.0.0) if you prefer.
              </example>
+        </member>
+        <member name="F:WixSharp.Project.MinorUpgradeStrategy">
+            <summary>
+            Defines Minor Upgrade behavior.
+            </summary>
         </member>
         <member name="M:WixSharp.Project.GenerateProductGuids">
             <summary>
@@ -10122,6 +10132,36 @@
             </summary>
         </member>
         <member name="F:WixSharp.MajorUpgradeStrategy.Default">
+            <summary>
+            Default <see cref="T:WixSharp.MajorUpgradeStrategy"/>. Ensures that all older versions of the product are automatically uninstalled and if
+            a newer version is detected, <c>"Newer version already installed"</c> message is displayed.
+            </summary>
+        </member>
+        <member name="T:WixSharp.MinorUpgradeStrategy">
+            <summary>
+            This class defines the Minor Upgrade scenario.
+            </summary>
+        </member>
+        <member name="F:WixSharp.MinorUpgradeStrategy.UpgradeVersions">
+            <summary>
+            Range of versions which should be automatically uninstalled during the installation of the product MSI being built.
+            <para>Typically these are all versions older then the version being installed. </para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.MinorUpgradeStrategy.PreventDowngradingVersions">
+            <summary>
+            Range of versions, which should not be automatically uninstalled during the installation of the product MSI being built.
+            <para>Typically these are all versions newer then the version being installed (downgrade scenario). </para>
+            </summary>
+        </member>
+        <member name="F:WixSharp.MinorUpgradeStrategy.RemoveExistingProductBefore">
+            <summary>
+            Step, which determines when the RemoveExistingProducts standard action is to be performed.
+            <para>The default value is <c>InstallInitialize</c>. </para>
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:WixSharp.MinorUpgradeStrategy.NewerProductInstalledErrorMessage" -->
+        <member name="F:WixSharp.MinorUpgradeStrategy.Default">
             <summary>
             Default <see cref="T:WixSharp.MajorUpgradeStrategy"/>. Ensures that all older versions of the product are automatically uninstalled and if
             a newer version is detected, <c>"Newer version already installed"</c> message is displayed.

@@ -199,6 +199,11 @@ namespace WixSharp
         }
 
         /// <summary>
+        /// Use this property to automatically generate a new application GUID on each building of the project.
+        /// </summary>
+        public bool UseGUIDWildcard { get; set; }
+
+        /// <summary>
         /// Generic <see cref="T:WixSharp.WixEntity"/> container for defining WiX <c>Package</c> element attributes.
         /// <para>These attributes are the properties about the package to be placed in the Summary Information Stream. These are visible from COM through the IStream interface, and these properties can be seen on the package in Explorer. </para>
         ///<example>The following is an example of defining the <c>Package</c> attributes.
@@ -395,6 +400,11 @@ namespace WixSharp
         /// However you can use explicit values (e.g. 1.0.0) if you prefer.
         /// </example>
         public MajorUpgradeStrategy MajorUpgradeStrategy;
+
+        /// <summary>
+        /// Defines Minor Upgrade behavior.
+        /// </summary>
+        public MinorUpgradeStrategy MinorUpgradeStrategy;
 
         /// <summary>
         /// Generates all missing product Guids (e.g. <see cref="UpgradeCode"/> and <see cref="ProductId"/>).

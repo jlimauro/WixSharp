@@ -1022,13 +1022,27 @@ namespace WixSharp
 
 
 
-            XElement product = doc.Root.Select("Product");
-            product.SetAttribute("Id", project.ProductId)
-                   .SetAttribute("Name", project.Name)
-                   .SetAttribute("Language", project.Language.FirstLcid())
-                   .SetAttribute("Codepage", project.Codepage)
-                   .SetAttribute("Version", project.Version)
-                   .SetAttribute("UpgradeCode", project.UpgradeCode);
+            XElement product;
+            if (project.UseGUIDWildcard)
+            {
+                product = doc.Root.Select("Product");
+                product.SetAttribute("Id", "*")
+                       .SetAttribute("Name", project.Name)
+                       .SetAttribute("Language", project.Language.FirstLcid())
+                       .SetAttribute("Codepage", project.Codepage)
+                       .SetAttribute("Version", project.Version)
+                       .SetAttribute("UpgradeCode", project.UpgradeCode);
+            }
+            else
+            {
+                product = doc.Root.Select("Product");
+                product.SetAttribute("Id", project.ProductId)
+                       .SetAttribute("Name", project.Name)
+                       .SetAttribute("Language", project.Language.FirstLcid())
+                       .SetAttribute("Codepage", project.Codepage)
+                       .SetAttribute("Version", project.Version)
+                       .SetAttribute("UpgradeCode", project.UpgradeCode);
+            }
 
             if (project.ControlPanelInfo != null && project.ControlPanelInfo.Manufacturer.IsNotEmpty())
                 product.SetAttribute("Manufacturer", project.ControlPanelInfo.Manufacturer);
@@ -1310,6 +1324,57 @@ namespace WixSharp
                     installExec.Add(new XElement("RemoveExistingProducts",
                                         new XAttribute("After", project.MajorUpgradeStrategy.RemoveExistingProductAfter.ToString())));
                 }
+            }
+            else if (project.MinorUpgradeStrategy != null)
+            {
+                Func<string, string> ExpandVersion = (version) => version == "%this%" ? project.Version.ToString() : version;
+
+                string propID = "PREVIOUSVERSIONSINSTALLED";
+
+                var upgradeProperty = product.AddElement(
+                    new XElement("Property",
+                    new XAttribute("Id", propID),
+                    new XAttribute("Secure", "yes")));
+
+                var upgradeElement = product.AddElement(
+                    new XElement("Upgrade",
+                       new XAttribute("Id", project.UpgradeCode)));
+
+                if (project.MinorUpgradeStrategy.UpgradeVersions != null)
+                {
+                    VersionRange versions = project.MinorUpgradeStrategy.UpgradeVersions;
+
+                    var upgradeVersion = upgradeElement.AddElement(
+                        new XElement("UpgradeVersion",
+                           new XAttribute("Minimum", ExpandVersion(versions.Minimum)),
+                           new XAttribute("IncludeMinimum", versions.IncludeMinimum.ToYesNo()),
+                           new XAttribute("Maximum", ExpandVersion(versions.Maximum)),
+                           new XAttribute("IncludeMaximum", versions.IncludeMaximum.ToYesNo()),
+                           new XAttribute("Property", propID)));
+                }
+
+                var installUI = product.SelectOrCreate("InstallUISequence");
+                var installExec = product.SelectOrCreate("InstallExecuteSequence");
+
+                bool preventDowngrading = (project.MajorUpgradeStrategy.NewerProductInstalledErrorMessage != null);
+
+                if (preventDowngrading)
+                {
+                    product.Add(new XElement("CustomAction",
+                                    new XAttribute("Id", "PreventDowngrading"),
+                                    new XAttribute("Error", project.MajorUpgradeStrategy.NewerProductInstalledErrorMessage)));
+
+                    installExec.Add(new XElement("Custom", "NEWPRODUCTFOUND",
+                                        new XAttribute("Action", "PreventDowngrading"),
+                                        new XAttribute("After", "FindRelatedProducts")));
+
+                    installUI.Add(new XElement("Custom", "NEWPRODUCTFOUND",
+                                      new XAttribute("Action", "PreventDowngrading"),
+                                      new XAttribute("After", "FindRelatedProducts")));
+                }
+                                
+                installExec.Add(new XElement("RemoveExistingProducts",
+                                        new XAttribute("Before", project.MinorUpgradeStrategy.RemoveExistingProductBefore.ToString())));
             }
         }
 

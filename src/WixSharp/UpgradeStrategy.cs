@@ -85,6 +85,43 @@ namespace WixSharp
             NewerProductInstalledErrorMessage = "Newer version already installed",
         };
     }
+
+    /// <summary>
+    /// This class defines the Minor Upgrade scenario.
+    /// </summary>
+    public partial class MinorUpgradeStrategy
+    {
+        /// <summary>
+        /// Range of versions which should be automatically uninstalled during the installation of the product MSI being built.
+        /// <para>Typically these are all versions older then the version being installed. </para>
+        /// </summary>
+        public VersionRange UpgradeVersions;
+        /// <summary>
+        /// Range of versions, which should not be automatically uninstalled during the installation of the product MSI being built.
+        /// <para>Typically these are all versions newer then the version being installed (downgrade scenario). </para>
+        /// </summary>
+        public VersionRange PreventDowngradingVersions;
+        /// <summary>
+        /// Step, which determines when the RemoveExistingProducts standard action is to be performed.
+        /// <para>The default value is <c>InstallInitialize</c>. </para>
+        /// </summary>
+        public Step RemoveExistingProductBefore = Step.InstallInitialize;
+        /// <summary>
+        /// Error message to be displayed if setup is aborted because of restricted downgrade attempt (see <see cref="PreventDowngradingVersions"/>).
+        /// </summary
+        public string NewerProductInstalledErrorMessage;
+        /// <summary>
+        /// Default <see cref="MajorUpgradeStrategy"/>. Ensures that all older versions of the product are automatically uninstalled and if
+        /// a newer version is detected, <c>"Newer version already installed"</c> message is displayed.
+        /// </summary>
+
+        public static MinorUpgradeStrategy Default = new MinorUpgradeStrategy
+        {
+            UpgradeVersions = VersionRange.OlderThanThis,
+            PreventDowngradingVersions = VersionRange.NewerThanThis,
+            NewerProductInstalledErrorMessage = "Newer version already installed",
+        };
+    }
 }
 
 
